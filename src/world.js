@@ -399,11 +399,14 @@ export const world = {
     const map = this.map;
     const mw = map.rows[0].length, mh = map.rows.length;
     const px = this.x * T + this.ox, py = this.y * T + this.oy;
+    // メッセージわくの ぶんだけ 下に よぶんに スクロールできるように する
+    //（そうしないと まちの はしで 主人公が わくに かくれてしまう）
+    const EXTRA = 96;
     let camX = px - (G.W - T) / 2, camY = py - (G.H - T) / 2 - 24;
     camX = Math.max(0, Math.min(mw * T - G.W, camX));
-    camY = Math.max(0, Math.min(mh * T - G.H, camY));
+    camY = Math.max(0, Math.min(mh * T - G.H + EXTRA, camY));
     if (mw * T < G.W) camX = (mw * T - G.W) / 2;
-    if (mh * T < G.H) camY = (mh * T - G.H) / 2;
+    if (mh * T + EXTRA < G.H) camY = (mh * T - G.H) / 2;
 
     G.clear(map.kind === "cave" ? 3 : 0);
 
@@ -411,7 +414,8 @@ export const world = {
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     for (let ty = y0; ty <= y0 + Math.ceil(G.H / T); ty++) {
       for (let tx = x0; tx <= x0 + Math.ceil(G.W / T); tx++) {
-        const ch = tileAt(map, tx, ty);
+        // 地図の そとは いちばん はしの マスを つづけて えがく
+        const ch = edgeTile(map, tx, ty);
         if (ch === null) continue;
         G.draw(tileFor(ch, frame), tx * T - camX, ty * T - camY);
       }
@@ -466,6 +470,14 @@ export function tileAt(map, x, y) {
   const row = map.rows[y];
   if (x < 0 || x >= row.length) return null;
   return row[x];
+}
+
+// えがく ときだけ つかう：地図の そとは はしの マスを くりかえす
+function edgeTile(map, x, y) {
+  const ty = Math.max(0, Math.min(map.rows.length - 1, y));
+  const row = map.rows[ty];
+  const tx = Math.max(0, Math.min(row.length - 1, x));
+  return row[tx];
 }
 
 export function bgmFor(mapId) {

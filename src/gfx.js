@@ -63,8 +63,12 @@ export function window9(x, y, w, h) {
 }
 
 let fontReady = false;
-export function markFontReady() { fontReady = true; }
+let fontRev = 0;
+export function markFontReady() { fontReady = true; fontRev++; }
 export function fontOk() { return fontReady; }
+// フォントが よみこまれると 文字の はばが かわるので、
+// おりかえしを やりなおす めじるしに つかいます
+export function fontRevision() { return fontRev; }
 
 export function setFont(size) {
   ctx.font = (size || 16) + 'px "DotGothic16", "MS Gothic", monospace';
@@ -79,19 +83,57 @@ export function textW(str, size) { setFont(size); return ctx.measureText(str).wi
 export function textRight(str, x, y, c, size) { text(str, x - textW(str, size), y, c, size); }
 export function textCenter(str, cx, y, c, size) { text(str, cx - textW(str, size) / 2, y, c, size); }
 
-// 文字を おりかえす
+/* --- 文字の おりかえし ------------------------------------------
+   ・まず「スペース」で 切る（日本語の 分かち書きに あわせる）
+   ・1つの かたまりが 長すぎるときだけ 文字で 切る
+   ・行あたまに 、。！？ などが こないように する（禁則）
+------------------------------------------------------------------ */
+const NO_LINE_START = "、。，．！？」』）〕】〉》”’ー…・ゝゞ々ぁぃぅぇぉっゃゅょァィゥェォッャュョ";
+const NO_LINE_END = "「『（〔【〈《“‘";
+
 export function wrap(str, maxW, size) {
   const out = [];
-  let line = "";
-  for (const ch of String(str)) {
-    if (ch === "\n") { out.push(line); line = ""; continue; }
-    const t = line + ch;
-    if (textW(t, size) > maxW && line) { out.push(line); line = ch; }
-    else line = t;
+  for (const para of String(str == null ? "" : str).split("\n")) {
+    let line = "";
+    const flush = () => { out.push(line.replace(/\s+$/, "")); line = ""; };
+
+    // スペースを のこしたまま かたまりに 分ける
+    const chunks = para.split(/(\s+)/).filter((s) => s !== "");
+    for (let chunk of chunks) {
+      if (/^\s+$/.test(chunk)) { if (line) line += chunk; continue; }   // 行あたまの スペースは すてる
+
+      if (line && textW(line + chunk, size) > maxW) flush();
+
+      // かたまり だけで はみ出すときは 文字で 分ける
+      while (textW(line + chunk, size) > maxW) {
+        let i = 1;
+        while (i < chunk.length && textW(line + chunk.slice(0, i + 1), size) <= maxW) i++;
+        // 禁則：つぎの行の あたまに おけない文字なら 1つ手前で 切る
+        if (i < chunk.length && NO_LINE_START.indexOf(chunk[i]) >= 0 && i > 1) i--;
+        // 禁則：行おわりに おけない文字なら 1つ手前で 切る
+        if (i > 1 && NO_LINE_END.indexOf(chunk[i - 1]) >= 0) i--;
+        if (i <= 0) break;
+        line += chunk.slice(0, i);
+        chunk = chunk.slice(i);
+        flush();
+        if (!chunk) break;
+      }
+      line += chunk;
+    }
+    if (line.replace(/\s+$/, "")) flush();
+    else if (!chunks.length) out.push("");     // わざと あけた 1行
   }
-  out.push(line);
-  return out;
+  return out.length ? out : [""];
 }
+
+// はみ出す文字を「…」で つめる
+export function fitText(str, maxW, size) {
+  let s = String(str == null ? "" : str);
+  if (textW(s, size) <= maxW) return s;
+  while (s.length > 1 && textW(s + "…", size) > maxW) s = s.slice(0, -1);
+  return s + "…";
+}
+export function textFit(str, x, y, maxW, c, size) { text(fitText(str, maxW, size), x, y, c, size); }
 
 /* --- ドット絵 --------------------------------------------------
    "0123." の もじれつ から えを つくります（. は とうめい）

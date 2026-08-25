@@ -3,7 +3,7 @@
 // ============================================================
 import * as G from "./gfx.js";
 import * as In from "./input.js";
-import { ui, BOX } from "./ui.js";
+import { ui, BOX, topRect, overlaps } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { MONART } from "./data/monart.js";
 import { effect, effectWord } from "./data/types.js";
@@ -126,7 +126,7 @@ export async function startBattle(opts) {
 async function chooseAction() {
   for (;;) {
     const i = await ui.choice(["たたかう", "どうぐ", "モンスター", "にげる"], {
-      x: 160, y: 196, w: 152, rows: 4, cancel: false, cols: 1,
+      x: 160, y: 168, w: 152, rows: 4, cancel: false,
     });
     if (i === 0) {
       const mv = await chooseMove();
@@ -149,7 +149,7 @@ async function chooseMove() {
     const d = moveData(mv.name);
     return mv.name + "  " + mv.pp + "/" + mv.max;
   });
-  const i = await ui.choice(labels, { x: 8, y: 196, w: 220, rows: 4 });
+  const i = await ui.choice(labels, { x: 8, y: 168, w: 220, rows: 4 });
   if (i < 0) return null;
   if (m.moves[i].pp <= 0) { await ui.say(["わざの のこりが ない！"]); return null; }
   return m.moves[i];
@@ -159,7 +159,7 @@ async function chooseItem() {
   const list = bagList("battle");
   if (!list.length) { await ui.say(["どうぐを もっていない。"]); return null; }
   const labels = list.map((x) => x.name + " ×" + x.n);
-  const i = await ui.choice(labels, { x: 8, y: 160, w: 240, rows: 5 });
+  const i = await ui.choice(labels, { x: 8, y: 140, w: 240, rows: 5 });
   if (i < 0) return null;
   return list[i].name;
 }
@@ -169,7 +169,7 @@ async function choosePartyMember() {
   const labels = p.map((m, i) => {
     return (i === p.indexOf(B.you.mon) ? "・" : "　") + monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m) + (m.status ? " " + m.status : "");
   });
-  const i = await ui.choice(labels, { x: 8, y: 140, w: 300, rows: 6 });
+  const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6 });
   if (i < 0) return -1;
   if (p[i] === B.you.mon) { await ui.say([monName(p[i]) + "は もう でている！"]); return -1; }
   if (fainted(p[i])) { await ui.say([monName(p[i]) + "は たたかえない！"]); return -1; }
@@ -452,7 +452,7 @@ async function useBattleItem(name) {
 async function choosePartyMemberForRevive() {
   const p = State.save.party;
   const labels = p.map((m) => monName(m) + " Lv" + m.lv + (fainted(m) ? " ひんし" : " " + m.hp + "/" + maxHp(m)));
-  const i = await ui.choice(labels, { x: 8, y: 140, w: 300, rows: 6 });
+  const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6 });
   if (i < 0) return -1;
   if (!fainted(p[i])) { await ui.say(["その モンスターは げんきだ。"]); return -1; }
   return i;
@@ -563,7 +563,7 @@ async function choosePartyMemberForce() {
   const p = State.save.party;
   for (;;) {
     const labels = p.map((m) => monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m));
-    const i = await ui.choice(labels, { x: 8, y: 140, w: 300, rows: 6, cancel: false });
+    const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6, cancel: false });
     if (i >= 0 && !fainted(p[i])) return i;
     await ui.say(["その モンスターは たたかえない！"]);
   }
@@ -609,10 +609,12 @@ function drawBattle() {
   // 下の わく（メニューが うかんで 見えないように）
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
 
-  // あいての じょうほう
-  infoBox(8, 12, B.foe, false);
-  // じぶんの じょうほう
-  infoBox(168, 128, B.you, true);
+  // じょうほうの わくは、メニューと かさなるときは かくす
+  const top = topRect();
+  const foeR = { x: 8, y: 12, w: 148, h: 60 };
+  const youR = { x: 164, y: 100, w: 148, h: 60 };
+  if (!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
+  if (!overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
 }
 
 function ellipse(cx, cy, rx, ry, c) {
@@ -624,17 +626,23 @@ function ellipse(cx, cy, rx, ry, c) {
 
 function infoBox(x, y, side, mine) {
   const m = side.mon;
-  const w = 144, h = mine ? 56 : 46;
+  const w = 148, h = 60;
   G.window9(x, y, w, h);
-  G.text(monName(m), x + 10, y + 8, 3, 16);
-  G.textRight("Lv" + m.lv, x + w - 10, y + 8, 3, 14);
 
-  const bx = x + 10, by = y + 30, bw = w - 20, bh = 8;
+  // なまえは Lv の ぶんを のこして つめる
+  const lv = "Lv" + m.lv;
+  const lvW = G.textW(lv, 14);
+  G.textFit(monName(m), x + 10, y + 8, w - 24 - lvW, 3, 16);
+  G.textRight(lv, x + w - 10, y + 10, 3, 14);
+
+  const bx = x + 10, by = y + 32, bw = w - 20, bh = 8;
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
   G.rect(bx, by, bw, bh, 0);
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx, by, Math.round(bw * ratio), bh, ratio > 0.5 ? 2 : ratio > 0.2 ? 1 : 3);
-  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 10, y + 40, 3, 13);
-  if (m.status) G.text(m.status, x + 10, y + (mine ? 40 : 8) + (mine ? 0 : 20), 3, 12);
+
+  // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
+  if (m.status) G.text(m.status, x + 10, y + 43, 3, 13);
+  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 10, y + 43, 3, 13);
 }

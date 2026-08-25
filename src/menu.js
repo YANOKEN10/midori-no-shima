@@ -75,9 +75,10 @@ export async function showStatus(m) {
     const img = G.makeArt(MONART[m.sp], 4, "m" + m.sp);
     G.draw(img, 16, 26);
     G.text("No." + String(sp.no).padStart(3, "0"), 100, 16, 3, 14);
-    G.text(monName(m), 100, 36, 3, 16);
-    G.textRight("Lv" + m.lv, 300, 36, 3, 16);
-    G.text("タイプ/" + sp.types.join("・"), 100, 60, 3, 14);
+    const lv = "Lv" + m.lv;
+    G.textFit(monName(m), 100, 36, 194 - G.textW(lv, 16), 3, 16);
+    G.textRight(lv, 300, 36, 3, 16);
+    G.textFit("タイプ/" + sp.types.join("・"), 100, 60, 200, 3, 14);
     G.text("HP " + m.hp + "/" + maxHp(m), 100, 82, 3, 14);
     if (m.status) G.textRight(m.status, 300, 82, 3, 14);
     G.text("こうげき " + statOf(m, "atk"), 20, 110, 3, 14);
@@ -89,8 +90,8 @@ export async function showStatus(m) {
     m.moves.forEach((mv, i) => {
       const d = moveData(mv.name);
       const y = 176 + i * 25;
-      G.text(mv.name, 18, y, 3, 15);
-      G.text(d.type, 170, y + 1, 3, 13);
+      G.textFit(mv.name, 18, y, 142, 3, 15);
+      G.text(d.type, 166, y + 1, 3, 13);
       G.textRight(mv.pp + "/" + mv.max, 304, y + 1, 3, 13);
     });
   });
@@ -180,12 +181,12 @@ async function dexEntry(n) {
     G.window9(4, 4, 312, 160);
     G.draw(G.makeArt(MONART[n], 5, "d" + n), 20, 24);
     G.text("No." + String(sp.no).padStart(3, "0"), 130, 24, 3, 14);
-    G.text(n, 130, 46, 3, 16);
-    G.text("タイプ/" + sp.types.join("・"), 130, 72, 3, 14);
+    G.textFit(n, 130, 46, 170, 3, 16);
+    G.textFit("タイプ/" + sp.types.join("・"), 130, 72, 170, 3, 14);
     G.text(State.save.dexOwn[n] ? "つかまえた" : "みつけた", 130, 94, 3, 14);
     G.window9(4, 170, 312, 110);
-    const lines = G.wrap(sp.dex, 280, 16);
-    lines.forEach((l, i) => G.text(l, 18, 184 + i * 24, 3, 16));
+    const lines = G.wrap(sp.dex, 276, 16).slice(0, 4);
+    lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
   });
 }
 
@@ -196,13 +197,14 @@ async function trainerCard() {
   await ui.custom(() => {
     G.clear(0);
     G.window9(8, 8, 304, 264);
+    const W = 264;   // わくの 内がわの はば
     G.text("トレーナーカード", 24, 24, 3, 16);
-    G.text("なまえ　" + s.name, 24, 60, 3, 16);
-    G.text("おかね　" + s.money + "円", 24, 88, 3, 16);
-    G.text("ずかん　みた " + c.seen + " / つかまえた " + c.own, 24, 116, 3, 16);
+    G.textFit("なまえ　" + s.name, 24, 60, W, 3, 16);
+    G.textFit("おかね　" + s.money + "円", 24, 88, W, 3, 16);
+    G.textFit("ずかん　みた " + c.seen + " / つかまえた " + c.own, 24, 116, W, 3, 16);
     G.text("バッジ　" + s.badges.length + "こ", 24, 144, 3, 16);
-    s.badges.forEach((b, i) => G.text("・" + b, 40, 168 + i * 24, 3, 14));
-    G.text(cloud.signedIn ? "☁ " + cloud.who + " で ログイン中" : "この たんまつだけで あそんでいます", 24, 236, 3, 13);
+    s.badges.slice(0, 3).forEach((b, i) => G.textFit("・" + b, 40, 170 + i * 22, W - 16, 3, 14));
+    G.textFit(cloud.signedIn ? "☁ " + cloud.who + " で ログイン中" : "この たんまつだけで あそんでいます", 24, 240, W, 3, 13);
   });
 }
 
@@ -369,7 +371,7 @@ async function buyMenu() {
     const n = [1, 2, 3, 5, 10][ci];
     const total = price * n;
     if (State.save.money < total) { await ui.say(["おかねが たりません。"]); continue; }
-    const yes = await ui.ask([name + " ×" + n + " で " + total + "円 です。", "よろしいですか？"]);
+    const yes = await ui.ask([name + " ×" + n, "ぜんぶで " + total + "円 です。", "よろしいですか？"]);
     if (!yes) continue;
     State.save.money -= total;
     addItem(name, n);
