@@ -7,6 +7,10 @@
 - メールアドレスを 登録しておけば、メールでも ログインできます
 - ログインしていれば、**パソコンでも スマホでも おなじ つづき**から遊べます
 
+**あそぶ → <https://midori-no-shima.vercel.app/>**
+
+スマホは「ホーム画面に追加」すると、アプリのように 全画面で あそべます。
+
 ---
 
 ## あそびかた
@@ -105,17 +109,17 @@ node serve.js
 <http://localhost:5179> をひらいてください。
 手元では アカウントの きろくが `.devdata/` フォルダに たまります（Vercel Blob のかわり）。
 
-## 公開するとき（Vercel）
+## 公開のしくみ（せっていずみ）
 
-1. Vercel でプロジェクトを作る（この フォルダを つなぐ）
-2. **Storage → Blob** を作って、プロジェクトに Connect する
-   → `BLOB_READ_WRITE_TOKEN` が自動で入ります
-3. **Settings → Environment Variables** に `AUTH_SECRET` を足す
-   （40文字以上の でたらめな文字列。ログインの券に署名します。あとで変えると 全員ログインし直しになります）
-4. デプロイ
+| | |
+|---|---|
+| URL | <https://midori-no-shima.vercel.app/> |
+| リポジトリ | <https://github.com/YANOKEN10/midori-no-shima> |
+| Vercel プロジェクト | `midori-no-shima`（GitHub と つながっているので `git push` で 自動デプロイ） |
+| きろくの保管庫 | Vercel Blob ストア `midori-no-shima-data`（東京 hnd1・非公開） |
+| 署名の鍵 | 環境変数 `AUTH_SECRET`（設定ずみ。**変えると 全員ログインし直しになります**） |
 
-`/api/health` で、その2つが入っているか 確認できます（値は 出ません）。
-どちらか 足りないときは、ゲームは「この たんまつだけ」モードとして 遊べます。
+ちゃんと動いているかは <https://midori-no-shima.vercel.app/api/health> で見られます（値は出ません。有無だけ）。
 
 ## 安全のはなし
 
