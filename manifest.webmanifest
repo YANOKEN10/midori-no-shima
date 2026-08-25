@@ -1,0 +1,10 @@
+{
+  "name": "VORAZ MONSTERS",
+  "short_name": "VORAZ MON",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#11150c",
+  "theme_color": "#0f380f",
+  "icons": []
+}
