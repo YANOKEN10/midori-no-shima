@@ -408,7 +408,9 @@ export const world = {
     if (mw * T < G.W) camX = (mw * T - G.W) / 2;
     if (mh * T + EXTRA < G.H) camY = (mh * T - G.H) / 2;
 
-    G.clear(map.kind === "cave" ? 3 : 0);
+    // そとの すきま（地図の むこう）は そのばしょに あう 色で うめる
+    G.use(map.kind === "cave" ? "cave" : map.kind === "in" ? "floor" : "grass");
+    G.clear(map.kind === "cave" ? 3 : map.kind === "in" ? 3 : 2);
 
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
@@ -417,7 +419,7 @@ export const world = {
         // 地図の そとは いちばん はしの マスを つづけて えがく
         const ch = edgeTile(map, tx, ty);
         if (ch === null) continue;
-        G.draw(tileFor(ch, frame), tx * T - camX, ty * T - camY);
+        G.draw(tileFor(ch, frame, map.sets), tx * T - camX, ty * T - camY);
       }
     }
 
@@ -435,12 +437,13 @@ export const world = {
       if (p.me) {
         const f = framesFor("player")[this.dir][this.moving ? this.walkFrame : 0];
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
-        G.draw(G.makeArt(f, 2, "p" + this.dir + (this.moving ? this.walkFrame : 0)), px - camX, py - camY - 8 + hopY);
+        G.draw(G.makeArt(f, 2, "p" + this.dir + (this.moving ? this.walkFrame : 0), "player"), px - camX, py - camY - 8 + hopY);
       } else {
         const n = p.n;
         const f = framesFor(n.look)[n.dir || "down"][0];
-        G.draw(G.makeArt(f, 2, "n" + n.look + (n.dir || "down")), n.x * T - camX, n.y * T - camY - 8);
+        G.draw(G.makeArt(f, 2, "n" + n.look + (n.dir || "down"), n.look), n.x * T - camX, n.y * T - camY - 8);
         if (n.alert) {
+          G.use("ui");
           G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);
           G.text("！", n.x * T - camX + 11, n.y * T - camY - 30, 3, 16);
         }
@@ -448,6 +451,7 @@ export const world = {
     }
 
     // まちの なまえ（はいってすぐ）
+    G.use("ui");
     if (this.showName > 0) {
       const wdt = G.textW(map.name, 16) + 32;
       G.window9(8, 8, wdt, 38);
@@ -458,11 +462,15 @@ export const world = {
 };
 
 function drawBall(x, y) {
-  G.ctx.fillStyle = G.PAL[3];
+  const pal = G.resolve("flower");
+  G.ctx.fillStyle = G.resolve("ui")[3];
   G.ctx.beginPath(); G.ctx.arc(x + 16, y + 18, 9, 0, Math.PI * 2); G.ctx.fill();
-  G.ctx.fillStyle = G.PAL[0];
-  G.ctx.beginPath(); G.ctx.arc(x + 16, y + 18, 6, 0, Math.PI * 2); G.ctx.fill();
-  G.rect(x + 10, y + 17, 12, 2, 3);
+  G.ctx.fillStyle = pal[0];
+  G.ctx.beginPath(); G.ctx.arc(x + 16, y + 18, 7, 0, Math.PI * 2); G.ctx.fill();
+  G.ctx.fillStyle = pal[2];
+  G.ctx.beginPath(); G.ctx.arc(x + 16, y + 18, 7, Math.PI, 0); G.ctx.fill();
+  G.ctx.fillStyle = G.resolve("ui")[3];
+  G.ctx.fillRect(x + 9, y + 17, 14, 2);
 }
 
 export function tileAt(map, x, y) {

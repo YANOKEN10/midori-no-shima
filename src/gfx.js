@@ -1,29 +1,112 @@
 // ============================================================
 //  えがく どうぐ
 //   ・画面は 320x288（ゲームボーイの ちょうど2ばい）
-//   ・いろは 4しょく だけ。0=いちばん あかるい … 3=いちばん くらい
+//   ・ゲームボーイカラーと おなじ かんがえかた：
+//      え は 4だんかいの こさ（0=あかるい … 3=いちばん こい）で かき、
+//      「どの いろセットで ぬるか」を ものごとに 切りかえます。
+//   ・G.use("water") のように セットを えらんでから えがきます。
 // ============================================================
 export const W = 320, H = 288;
 export const TILE = 32;          // マス1つの 大きさ（画面のドット）
 export const ART = 16;           // え1マスの ドット数（2ばいに ひきのばす）
 
-export const PALETTES = {
+/* --- いろセット（4色ずつ） ------------------------------------- */
+export const SETS = {
+  // まわりの けしき
+  grass:   ["#b8e070", "#7cc04c", "#3f8a34", "#1c4420"],
+  path:    ["#f0dfae", "#d9bd82", "#a8834c", "#5a4325"],
+  sand:    ["#f7e9b8", "#e0cd8a", "#b49a5c", "#6a5730"],
+  tree:    ["#8fd45f", "#3f9e46", "#1f6b31", "#0e3418"],
+  tallgrass:["#8ad066", "#4ba33e", "#26702a", "#0f3414"],
+  rock:    ["#d2ccbb", "#9d9484", "#6a6154", "#332d26"],
+  water:   ["#9fdcf7", "#4aa8e8", "#1f5fb0", "#0b2a55"],
+  ledge:   ["#e6d3a2", "#b99a63", "#8a6a3c", "#432f18"],
+  fence:   ["#e0d2b0", "#b09068", "#7a5c38", "#33240f"],
+
+  // たてもの
+  roof:    ["#f79a76", "#e05a44", "#9d2a24", "#3c0e10"],
+  roofBlue:["#8fc8f0", "#4d84cc", "#27508c", "#0e2244"],
+  wall:    ["#faeddb", "#dcc2a2", "#a8825b", "#4a3320"],
+  door:    ["#e0b878", "#a87840", "#6c4a22", "#2e1c0c"],
+  sign:    ["#f2dfae", "#c69a5c", "#8a6234", "#33210f"],
+
+  // ほらあな・おくない
+  cave:    ["#b9b0a0", "#877e6f", "#544c42", "#241f1a"],
+  floor:   ["#fbf3e3", "#e2d3ba", "#b0906a", "#4a3a28"],
+  carpet:  ["#f6bcc6", "#dd7d92", "#a04a63", "#3f1a2a"],
+  wood:    ["#e6c08a", "#bb8b52", "#825c2f", "#331f0e"],
+  machine: ["#e8f0f8", "#a8c0d8", "#5c7a9c", "#22303f"],
+  plant:   ["#bfe884", "#5fae4c", "#2f7332", "#123818"],
+
+  // ひと
+  player:  ["#ffd9ae", "#e34b4b", "#2f4fa8", "#231a14"],
+  rival:   ["#ffd9ae", "#7a4fc0", "#33305e", "#1a1626"],
+  prof:    ["#ffd9ae", "#f4f4f4", "#9aa2ad", "#2a2a2e"],
+  boy:     ["#ffd9ae", "#4fb0e0", "#2b5a7a", "#1b2630"],
+  girl:    ["#ffd9ae", "#f279b0", "#a03a6a", "#2c1526"],
+  oldman:  ["#ffd9ae", "#cfd6dd", "#7a8590", "#2a2e33"],
+  nurse:   ["#ffd9ae", "#ffffff", "#e05a6a", "#33161c"],
+  clerk:   ["#ffd9ae", "#8fd8a0", "#2f7a56", "#153224"],
+  sailor:  ["#ffd9ae", "#f0f0f0", "#2f5fa8", "#152238"],
+  hiker:   ["#ffd9ae", "#d8a84c", "#7a5320", "#2c1c0a"],
+  leader1: ["#ffd9ae", "#5fc8e8", "#1f5f9c", "#0c2338"],
+  leader2: ["#ffd9ae", "#f07840", "#a03410", "#331004"],
+
+  // モンスター（タイプごと）
+  ノーマル: ["#f6e6cb", "#cfa87f", "#8d6a48", "#33241a"],
+  くさ:     ["#dbf5a2", "#77c94a", "#2f8038", "#123318"],
+  ほのお:   ["#ffd9a0", "#f7893a", "#c03c12", "#3d1104"],
+  みず:     ["#c2e9ff", "#54a6f0", "#1f5cae", "#0b2445"],
+  でんき:   ["#fff2a8", "#f7d233", "#b98a08", "#3d2c04"],
+  じめん:   ["#eddbb0", "#c39a5e", "#83592a", "#301c0a"],
+  むし:     ["#e6f4a8", "#a8c94a", "#5f7a22", "#22300c"],
+  やみ:     ["#d5c6ee", "#8f6cc8", "#523382", "#1d1030"],
+
+  flower:  ["#ffffff", "#ffd45c", "#e8506a", "#5a1428"],
+  book:    ["#f4f0e0", "#4f8fd0", "#c04a3a", "#2a1c14"],
+
+  // がめん・わく
+  ui:      ["#ffffff", "#dfe4ee", "#7f8ba3", "#1b2230"],
+  uiDark:  ["#e6ebf5", "#a9b4c6", "#4f5b73", "#141a26"],
+  title:   ["#ffe9a8", "#f7b23a", "#c04a2a", "#2a1030"],
+  sky:     ["#cdeeff", "#8fd0f5", "#4f9ad8", "#1d3f66"],
+  battleBg:["#e8f6c8", "#bfe38a", "#7fb25a", "#2f5a2a"],
+};
+
+// ゲームボーイ（1色）で あそびたい人むけ
+const MONO = {
   green: ["#9bbc0f", "#8bac0f", "#306230", "#0f380f"],
   gray:  ["#e8e8d8", "#a8a898", "#585848", "#181810"],
-  blue:  ["#dfeff7", "#88b0c8", "#3a6a88", "#101c28"],
 };
-let palName = "green";
-export let PAL = PALETTES.green;
+
+let mode = "color";              // "color" | "green" | "gray"
+let curSet = "ui";
+export let PAL = SETS.ui;
+
+export function resolve(setName) {
+  if (mode !== "color") return MONO[mode] || MONO.green;
+  return SETS[setName] || SETS.ui;
+}
+
+// これから えがく ものの いろセットを えらぶ（まえの セットを かえす）
+export function use(setName) {
+  const prev = curSet;
+  curSet = setName || "ui";
+  PAL = resolve(curSet);
+  return prev;
+}
+export function currentSet() { return curSet; }
 
 export function setPalette(name) {
-  if (!PALETTES[name]) return;
-  palName = name;
-  PAL = PALETTES[name];
+  if (name !== "color" && !MONO[name]) return;
+  mode = name;
+  PAL = resolve(curSet);
   tileCache.clear();
   spriteCache.clear();
-  document.body.style.background = shade(PAL[3], -0.35);
+  document.body.style.background = mode === "color" ? "#141a26" : shade(MONO[mode][3], -0.35);
 }
-export function paletteName() { return palName; }
+export function paletteName() { return mode; }
+export function isColor() { return mode === "color"; }
 
 function shade(hex, amt) {
   const n = parseInt(hex.slice(1), 16);
@@ -141,8 +224,9 @@ export function textFit(str, x, y, maxW, c, size) { text(fitText(str, maxW, size
 const tileCache = new Map();
 const spriteCache = new Map();
 
-export function makeArt(rows, scale, key) {
-  const k = key ? key + "@" + scale + palName : null;
+export function makeArt(rows, scale, key, setName) {
+  const pal = setName ? resolve(setName) : PAL;
+  const k = key ? key + "@" + scale + "@" + mode + "@" + (setName || curSet) : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
   const s = scale || 1;
   const h = rows.length, w = rows[0].length;
@@ -155,7 +239,7 @@ export function makeArt(rows, scale, key) {
     for (let x = 0; x < w; x++) {
       const ch = row[x];
       if (ch === "." || ch === " ") continue;
-      c.fillStyle = PAL[+ch] || PAL[3];
+      c.fillStyle = pal[+ch] || pal[3];
       c.fillRect(x * s, y * s, s, s);
     }
   }
@@ -163,25 +247,38 @@ export function makeArt(rows, scale, key) {
   return cv;
 }
 
+// モンスターの え（白黒モードでは はいけいと まぎれないように こさを ずらす）
+const MONO_SHIFT = { "0": "0", "1": "2", "2": "3", "3": "3" };
+export function makeMonArt(rows, scale, key, setName) {
+  if (mode === "color") return makeArt(rows, scale, key, setName);
+  const shifted = rows.map((r) => r.replace(/[0-3]/g, (c) => MONO_SHIFT[c]));
+  return makeArt(shifted, scale, (key || "") + "#mono", setName);
+}
+
 // マスの え（32x32）を いちど つくって おぼえておく
-export function tileCanvas(name, painter) {
-  const k = name + palName;
+export function tileCanvas(name, painter, setName) {
+  const k = name + "@" + mode + "@" + (setName || curSet);
   if (tileCache.has(k)) return tileCache.get(k);
   const cv = document.createElement("canvas");
   cv.width = TILE; cv.height = TILE;
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
+  const prev = setName ? use(setName) : null;
   painter(new Pixel(c));
+  if (prev) use(prev);
   tileCache.set(k, cv);
   return cv;
 }
 
 // 16x16 の ドットで かくための ちいさな どうぐ（じっさいは 2x2 の 四角）
 export class Pixel {
-  constructor(c) { this.c = c; }
-  fill(i) { this.c.fillStyle = PAL[i]; this.c.fillRect(0, 0, TILE, TILE); return this; }
-  p(x, y, i) { this.c.fillStyle = PAL[i]; this.c.fillRect(x * 2, y * 2, 2, 2); return this; }
-  box(x, y, w, h, i) { this.c.fillStyle = PAL[i]; this.c.fillRect(x * 2, y * 2, w * 2, h * 2); return this; }
+  constructor(c) { this.c = c; this.pal = null; }
+  // とちゅうで べつの いろセットに きりかえる（き の みきを 茶色に する など）
+  set(name) { this.pal = name ? resolve(name) : null; return this; }
+  col(i) { return (this.pal || PAL)[i]; }
+  fill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE, TILE); return this; }
+  p(x, y, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x * 2, y * 2, 2, 2); return this; }
+  box(x, y, w, h, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x * 2, y * 2, w * 2, h * 2); return this; }
   line(x0, y0, x1, y1, i) {
     if (y0 === y1) return this.box(Math.min(x0, x1), y0, Math.abs(x1 - x0) + 1, 1, i);
     if (x0 === x1) return this.box(x0, Math.min(y0, y1), 1, Math.abs(y1 - y0) + 1, i);

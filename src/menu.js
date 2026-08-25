@@ -70,9 +70,11 @@ export async function partyMenu(forItem) {
 export async function showStatus(m) {
   const sp = species(m.sp);
   await ui.custom(() => {
-    G.clear(0);
+    G.use("uiDark");
+    G.clear(1);
+    G.use("ui");
     G.window9(4, 4, 312, 156);
-    const img = G.makeArt(MONART[m.sp], 4, "m" + m.sp);
+    const img = G.makeMonArt(MONART[m.sp], 4, "m" + m.sp, sp.types[0]);
     G.draw(img, 16, 26);
     G.text("No." + String(sp.no).padStart(3, "0"), 100, 16, 3, 14);
     const lv = "Lv" + m.lv;
@@ -177,9 +179,11 @@ export async function dexMenu() {
 async function dexEntry(n) {
   const sp = SPECIES[n];
   await ui.custom(() => {
-    G.clear(0);
+    G.use("uiDark");
+    G.clear(1);
+    G.use("ui");
     G.window9(4, 4, 312, 160);
-    G.draw(G.makeArt(MONART[n], 5, "d" + n), 20, 24);
+    G.draw(G.makeMonArt(MONART[n], 5, "d" + n, sp.types[0]), 20, 24);
     G.text("No." + String(sp.no).padStart(3, "0"), 130, 24, 3, 14);
     G.textFit(n, 130, 46, 170, 3, 16);
     G.textFit("タイプ/" + sp.types.join("・"), 130, 72, 170, 3, 14);
@@ -195,7 +199,9 @@ async function trainerCard() {
   const s = State.save;
   const c = dexCount();
   await ui.custom(() => {
-    G.clear(0);
+    G.use("uiDark");
+    G.clear(1);
+    G.use("ui");
     G.window9(8, 8, 304, 264);
     const W = 264;   // わくの 内がわの はば
     G.text("トレーナーカード", 24, 24, 3, 16);
@@ -246,9 +252,9 @@ export async function settingsMenu() {
     const i = await ui.choice(items, { x: 60, y: 60, w: 220 });
     if (i < 0 || i === 3) return;
     if (i === 0) {
-      const j = await ui.choice(["みどり（ゲームボーイ）", "グレー（ポケット）", "あお（ライト）"], { x: 40, y: 100, w: 250 });
+      const j = await ui.choice(["カラー（おすすめ）", "ゲームボーイ みどり", "ゲームボーイ グレー"], { x: 30, y: 100, w: 260 });
       if (j >= 0) {
-        const name = ["green", "gray", "blue"][j];
+        const name = ["color", "green", "gray"][j];
         G.setPalette(name);
         State.save.palette = name;
         saveLocal();

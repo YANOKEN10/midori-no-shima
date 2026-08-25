@@ -6,6 +6,7 @@ import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART } from "./data/monart.js";
+import { SPECIES } from "./data/species.js";
 import { G as State, loadInto, newGame } from "./state.js";
 import { world, bgmFor } from "./world.js";
 import { battle } from "./battle.js";
@@ -40,34 +41,72 @@ if (/^(localhost|127.0.0.1)$/.test(location.hostname)) {
     frame: frame,
     steps(n, dt) { for (let i = 0; i < (n || 1); i++) frame(dt || 16); },
     get scene() { return scene; },
+    setWorld() { scene = world; },
+    setTitle() { scene = title; },
     world: world, battle: battle, ui: ui, State: State, cloud: cloud,
   };
 }
 
 /* --- タイトル画面 ---------------------------------------------- */
+// ふちどり文字（まわりを こい色で かこんでから 白で かく）
+function outlined(str, cx, y, size) {
+  const w = G.textW(str, size);
+  const x = cx - w / 2;
+  const off = [[-2, 0], [2, 0], [0, -2], [0, 2], [-2, -2], [2, -2], [-2, 2], [2, 2]];
+  for (const [dx, dy] of off) G.text(str, x + dx, y + dy, 3, size);
+  G.text(str, x, y, 0, size);
+}
+
 const title = {
   t: 0,
   update(dt) { this.t += dt; ui.update(dt); },
   draw() {
-    G.clear(0);
     const t = this.t;
-    // ロゴ
-    G.rect(0, 40, G.W, 76, 1);
-    G.rect(0, 40, G.W, 3, 3);
-    G.rect(0, 113, G.W, 3, 3);
-    G.textCenter("VORAZ", G.W / 2, 52, 3, 32);
-    G.textCenter("MONSTERS", G.W / 2, 84, 3, 26);
-    G.textCenter("〜みどりのしまの ものがたり〜", G.W / 2, 128, 2, 14);
+    // そら → うみ → くさ の はいけい
+    G.use("sky");
+    G.clear(0);
+    G.rect(0, 96, G.W, 20, 1);
+    G.use("water");
+    G.rect(0, 116, G.W, 40, 1);
+    for (let i = 0; i < 5; i++) {
+      const x = ((t / 30) + i * 70) % (G.W + 40) - 20;
+      G.rect(x, 126 + (i % 2) * 14, 22, 3, 0);
+    }
+    G.use("grass");
+    G.rect(0, 156, G.W, G.H - 156, 1);
+    G.rect(0, 156, G.W, 4, 2);
+
+    // ロゴ（ふちどりを つけて はっきり 見せる）
+    G.use("title");
+    G.rect(20, 30, G.W - 40, 80, 3);
+    G.rect(24, 34, G.W - 48, 72, 2);
+    G.rect(24, 34, G.W - 48, 8, 1);
+    outlined("VORAZ", G.W / 2, 42, 32);
+    outlined("MONSTERS", G.W / 2, 76, 24);
+    G.use("title");
+    const sub = "〜みどりのしまの ものがたり〜";
+    const sw = G.textW(sub, 14) + 24;
+    G.rect((G.W - sw) / 2, 114, sw, 24, 3);
+    G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);
 
     // モンスターが 3びき
     const names = ["リーフィン", "ヒノコマ", "アワミィ"];
     names.forEach((n, i) => {
       const bob = Math.sin(t / 400 + i) * 3;
-      G.draw(G.makeArt(MONART[n], 3, "t" + n), 40 + i * 88, 168 + bob);
+      const set = SPECIES[n].types[0];
+      G.use("grass");
+      G.ctx.globalAlpha = 0.35;
+      G.rect(44 + i * 88, 214 + bob * 0.4, 40, 6, 3);
+      G.ctx.globalAlpha = 1;
+      G.draw(G.makeMonArt(MONART[n], 3, "t" + n, set), 40 + i * 88, 168 + bob);
     });
 
-    if (Math.floor(t / 500) % 2 === 0) G.textCenter("PUSH  START", G.W / 2, 236, 3, 18);
-    G.textCenter("(c) VORAZ  1998-2026", G.W / 2, 266, 2, 12);
+    G.use("ui");
+    if (Math.floor(t / 500) % 2 === 0) {
+      G.textCenter("PUSH  START", G.W / 2 + 2, 240, 3, 18);
+      G.textCenter("PUSH  START", G.W / 2, 238, 0, 18);
+    }
+    G.textCenter("(c) VORAZ  1998-2026", G.W / 2, 268, 0, 12);
     ui.draw();
   },
 };

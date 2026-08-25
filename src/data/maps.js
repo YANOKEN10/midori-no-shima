@@ -199,6 +199,7 @@ export const MAPS = {
   town2: {
     name: "みなとまち",
     kind: "out",
+    sets: { r: "roofBlue" },      // うみの まちは あおい やね
     rows: [
       "TTTTTTTTT,,TTTTTTTT",
       "T,,,,,,,,,,,,,,,,,T",
@@ -248,6 +249,7 @@ export const MAPS = {
   center: {
     name: "モンスターセンター",
     kind: "in",
+    sets: { c: "machine" },
     rows: [
       "##########",
       "#KffffffP#",
@@ -310,6 +312,7 @@ export const MAPS = {
   gym1: {
     name: "みなとジム",
     kind: "in",
+    sets: { g: "water" },
     rows: [
       "##########",
       "#ffffffff#",
@@ -495,6 +498,7 @@ export const MAPS = {
   gym2: {
     name: "かざんジム",
     kind: "in",
+    sets: { g: "roof" },
     rows: [
       "##########",
       "#ffffffff#",

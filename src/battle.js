@@ -3,7 +3,7 @@
 // ============================================================
 import * as G from "./gfx.js";
 import * as In from "./input.js";
-import { ui, BOX, topRect, overlaps } from "./ui.js";
+import { ui, BOX, topRect, overlaps, isSaying } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { MONART } from "./data/monart.js";
 import { effect, effectWord } from "./data/types.js";
@@ -577,37 +577,55 @@ export function popEvolution() { const e = lastEvo; lastEvo = null; return e; }
    えがく
 ============================================================ */
 function drawBattle() {
+  G.use("sky");
   G.clear(0);
   if (!B) return;
 
-  // はいけい
-  G.rect(0, 0, G.W, 176, 0);
-  G.rect(0, 96, G.W, 2, 2);
-  // じめん（あいて）
-  ellipse(232, 92, 56, 12, 1);
-  // じめん（じぶん）
-  ellipse(84, 176, 68, 14, 1);
+  // そら と じめん
+  G.use("sky");
+  G.rect(0, 0, G.W, 90, 0);
+  G.rect(0, 78, G.W, 12, 1);
+  G.use("battleBg");
+  G.rect(0, 90, G.W, 106, 1);
+  G.rect(0, 90, G.W, 3, 2);
+  // たっている ところ
+  ellipse(232, 92, 58, 13, 2);
+  ellipse(232, 90, 58, 13, 0);
+  ellipse(84, 178, 70, 15, 2);
+  ellipse(84, 175, 70, 15, 0);
 
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = MONART[B.you.mon.sp];
+  const foeSet = species(B.foe.mon.sp).types[0];
+  const youSet = species(B.you.mon.sp).types[0];
 
   if (!B.foe.hidden && foeArt) {
-    const img = G.makeArt(foeArt, 4, "m" + B.foe.mon.sp);
+    const img = G.makeMonArt(foeArt, 4, "m" + B.foe.mon.sp, foeSet);
     G.draw(img, 200 + (B.foe.shakeX | 0), 24);
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
+      G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(200, 24, 64, 64, 0); G.ctx.globalAlpha = 1;
     }
   }
   if (!B.you.hidden && youArt) {
-    const img = G.makeArt(youArt, 4, "m" + B.you.mon.sp);
+    const img = G.makeMonArt(youArt, 4, "m" + B.you.mon.sp, youSet);
     G.draw(img, 48 + (B.you.shakeX | 0), 108);
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
+      G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(48, 108, 64, 64, 0); G.ctx.globalAlpha = 1;
     }
   }
 
   // 下の わく（メニューが うかんで 見えないように）
+  G.use("ui");
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
+  // メッセージが 出ていない ときは、いま だしている モンスターを のせる
+  if (!isSaying()) {
+    const m = B.you.mon;
+    G.textFit(monName(m), BOX.x + 18, BOX.y + 18, 130, 3, 16);
+    G.text("Lv" + m.lv, BOX.x + 18, BOX.y + 46, 3, 14);
+    G.text(Math.round(B.you.showHp == null ? m.hp : B.you.showHp) + "/" + maxHp(m), BOX.x + 66, BOX.y + 46, 3, 14);
+  }
 
   // じょうほうの わくは、メニューと かさなるときは かくす
   const top = topRect();
@@ -627,6 +645,7 @@ function ellipse(cx, cy, rx, ry, c) {
 function infoBox(x, y, side, mine) {
   const m = side.mon;
   const w = 148, h = 60;
+  G.use("ui");
   G.window9(x, y, w, h);
 
   // なまえは Lv の ぶんを のこして つめる
@@ -636,11 +655,14 @@ function infoBox(x, y, side, mine) {
   G.textRight(lv, x + w - 10, y + 10, 3, 14);
 
   const bx = x + 10, by = y + 32, bw = w - 20, bh = 8;
-  G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
-  G.rect(bx, by, bw, bh, 0);
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
-  G.rect(bx, by, Math.round(bw * ratio), bh, ratio > 0.5 ? 2 : ratio > 0.2 ? 1 : 3);
+  G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
+  G.rect(bx, by, bw, bh, 1);
+  // のこりで 色が かわる（みどり → きいろ → あか）
+  G.use(ratio > 0.5 ? "くさ" : ratio > 0.2 ? "でんき" : "ほのお");
+  G.rect(bx, by, Math.round(bw * ratio), bh, 1);
+  G.use("ui");
 
   // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
   if (m.status) G.text(m.status, x + 10, y + 43, 3, 13);

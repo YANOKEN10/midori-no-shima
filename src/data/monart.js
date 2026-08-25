@@ -442,11 +442,11 @@ const A = {
 };
 
 // 8もじに そろえてから 左右に うつす
-// はいけいと まぎれないように、からだを ひとつ こい色へ ずらします
-const SHIFT = { "0": "0", "1": "2", "2": "3", "3": "3", ".": "." };
+// 0=ハイライト 1=からだ 2=かげ 3=ふち
+// （白黒モードのときは gfx.js の makeMonArt が こさを ずらします）
 const ART = {};
 for (const k of Object.keys(A)) {
-  const rows = A[k].map((r) => (r + "........").slice(0, 8).replace(/[0-3]/g, (c) => SHIFT[c]));
+  const rows = A[k].map((r) => (r + "........").slice(0, 8));
   ART[k] = mirror(rows);
 }
 export const MONART = ART;

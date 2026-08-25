@@ -85,6 +85,7 @@ export const ui = {
   },
 
   draw() {
+    G.use("ui");
     for (const w of stack) {
       if (w.kind === "say") drawSay(w);
       else if (w.kind === "choice") drawChoice(w);
@@ -100,6 +101,11 @@ export function topRect() {
   if (w.kind === "choice") return boxOf(w);
   if (w.kind === "say") return { x: BOX.x, y: BOX.y, w: BOX.w, h: BOX.h };
   return { x: 0, y: 0, w: G.W, h: G.H };
+}
+// いま メッセージを 出しているか
+export function isSaying() {
+  const w = stack[stack.length - 1];
+  return Boolean(w && w.kind === "say");
 }
 export function overlaps(a, b) {
   if (!a || !b) return false;
@@ -153,6 +159,7 @@ function updateSay(w, dt) {
 }
 
 function drawSay(w) {
+  G.use("ui");
   const cur = curPage(w);
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
   let left = Math.floor(w.shown);
@@ -214,6 +221,7 @@ function updateChoice(w) {
 }
 
 function drawChoice(w) {
+  G.use("ui");
   const b = boxOf(w);
   G.window9(b.x, b.y, b.w, b.h);
   const maxW = b.w - CH_PAD_L - CH_PAD_R;

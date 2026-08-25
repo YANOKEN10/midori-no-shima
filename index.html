@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#0f380f">
+<meta name="theme-color" content="#141a26">
 <title>VORAZ MONSTERS</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -18,16 +18,16 @@
   :root { color-scheme: dark; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0; height: 100%; overflow: hidden; background: #11150c;
+    margin: 0; height: 100%; overflow: hidden; background: #141a26;
     font-family: "DotGothic16", "MS Gothic", monospace;
-    color: #cfe08a; touch-action: none; user-select: none;
+    color: #dfe4ee; touch-action: none; user-select: none;
   }
   #stage { position: fixed; inset: 0; display: grid; place-items: center; }
   body.touch #stage { inset: 0 0 auto 0; height: 64vh; }
   #screen {
     image-rendering: pixelated; image-rendering: crisp-edges;
-    background: #9bbc0f; display: block;
-    box-shadow: 0 0 0 4px #232a16, 0 12px 40px rgba(0,0,0,.6);
+    background: #cdeeff; display: block;
+    box-shadow: 0 0 0 4px #2a3346, 0 12px 40px rgba(0,0,0,.55);
   }
 
   /* ---- スマホ用のボタン ---- */
@@ -35,15 +35,15 @@
   body.touch #pad { display: block; }
   .btn {
     position: absolute; pointer-events: auto; display: grid; place-items: center;
-    background: rgba(35,42,22,.72); border: 2px solid rgba(155,188,15,.5);
-    color: #cfe08a; font: 16px "DotGothic16", monospace; border-radius: 12px;
+    background: rgba(30,38,56,.78); border: 2px solid rgba(223,228,238,.45);
+    color: #eef2f8; font: 16px "DotGothic16", monospace; border-radius: 12px;
   }
-  .btn:active, .btn.on { background: rgba(155,188,15,.5); color: #11150c; }
+  .btn:active, .btn.on { background: rgba(247,178,58,.75); color: #141a26; }
   #dpad { position: absolute; left: 14px; bottom: 96px; width: 156px; height: 156px; pointer-events: auto; }
   #dpad .btn { width: 52px; height: 52px; border-radius: 10px; }
   #du { left: 52px; top: 0; } #dd { left: 52px; top: 104px; }
   #dl { left: 0; top: 52px; } #dr { left: 104px; top: 52px; }
-  #dc { left: 52px; top: 52px; background: rgba(35,42,22,.5); border-color: rgba(155,188,15,.25); pointer-events: none; }
+  #dc { left: 52px; top: 52px; background: rgba(30,38,56,.5); border-color: rgba(223,228,238,.2); pointer-events: none; }
   #ba { right: 18px; bottom: 150px; width: 76px; height: 76px; border-radius: 50%; font-size: 24px; }
   #bb { right: 100px; bottom: 96px; width: 68px; height: 68px; border-radius: 50%; font-size: 22px; }
   #bs { right: 18px; bottom: 40px; width: 96px; height: 40px; font-size: 13px; }
@@ -52,45 +52,45 @@
   /* ---- ログイン画面（HTMLで作っています） ---- */
   #gate {
     position: fixed; inset: 0; display: none; place-items: center; z-index: 20;
-    background: rgba(12,16,8,.94); padding: 16px; overflow: auto;
+    background: rgba(14,19,30,.95); padding: 16px; overflow: auto;
   }
   #gate.show { display: grid; }
   .card {
-    width: min(440px, 100%); background: #1b2110; border: 3px solid #6d8b1e;
+    width: min(440px, 100%); background: #1d2434; border: 3px solid #3d4c6a;
     border-radius: 6px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,.7);
   }
-  .card h1 { margin: 0 0 4px; font-size: 22px; color: #9bbc0f; letter-spacing: 1px; }
-  .card p.sub { margin: 0 0 16px; font-size: 13px; color: #7d9350; line-height: 1.6; }
+  .card h1 { margin: 0 0 4px; font-size: 22px; color: #ffd45c; letter-spacing: 1px; }
+  .card p.sub { margin: 0 0 16px; font-size: 13px; color: #9aa6bd; line-height: 1.6; }
   .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
   .tab {
     flex: 1; padding: 9px 4px; text-align: center; font-size: 13px; cursor: pointer;
-    background: #131807; border: 2px solid #3d4c1c; color: #8ba055; border-radius: 4px;
+    background: #151b28; border: 2px solid #36415a; color: #9aa6bd; border-radius: 4px;
   }
-  .tab.on { background: #6d8b1e; border-color: #9bbc0f; color: #11150c; }
-  label { display: block; font-size: 12px; margin: 12px 0 4px; color: #8ba055; }
+  .tab.on { background: #e05a44; border-color: #f79a76; color: #fff; }
+  label { display: block; font-size: 12px; margin: 12px 0 4px; color: #9aa6bd; }
   input {
     width: 100%; padding: 11px 10px; font: 16px "DotGothic16", monospace;
-    background: #0c1006; border: 2px solid #3d4c1c; color: #cfe08a; border-radius: 4px;
+    background: #121826; border: 2px solid #36415a; color: #eef2f8; border-radius: 4px;
   }
-  input:focus { outline: none; border-color: #9bbc0f; }
-  .hint { font-size: 11px; color: #66783f; margin-top: 4px; line-height: 1.5; }
+  input:focus { outline: none; border-color: #f7b23a; }
+  .hint { font-size: 11px; color: #7e89a0; margin-top: 4px; line-height: 1.5; }
   button.go {
     width: 100%; margin-top: 18px; padding: 13px; font: 16px "DotGothic16", monospace;
-    background: #9bbc0f; border: none; color: #11150c; border-radius: 4px; cursor: pointer;
+    background: #e05a44; border: none; color: #fff; border-radius: 4px; cursor: pointer;
   }
   button.go:disabled { opacity: .5; cursor: default; }
   button.ghost {
     width: 100%; margin-top: 9px; padding: 11px; font: 13px "DotGothic16", monospace;
-    background: transparent; border: 2px solid #3d4c1c; color: #8ba055; border-radius: 4px; cursor: pointer;
+    background: transparent; border: 2px solid #36415a; color: #9aa6bd; border-radius: 4px; cursor: pointer;
   }
   .msg { margin-top: 12px; font-size: 12.5px; min-height: 18px; line-height: 1.5; }
-  .msg.err { color: #e0a06a; }
-  .msg.ok { color: #9bbc0f; }
-  .row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; color: #8ba055; }
+  .msg.err { color: #ff9a76; }
+  .msg.ok { color: #8fe07a; }
+  .row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; color: #9aa6bd; }
   .row input[type=checkbox] { width: auto; }
   #whoami {
     position: fixed; top: 6px; right: 8px; z-index: 5; font-size: 11px;
-    color: #6d8b1e; background: rgba(12,16,8,.6); padding: 3px 8px; border-radius: 3px;
+    color: #b9c4d8; background: rgba(20,26,38,.7); padding: 3px 8px; border-radius: 3px;
     pointer-events: auto; cursor: pointer;
   }
 </style>
