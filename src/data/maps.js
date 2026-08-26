@@ -658,7 +658,7 @@ for (const r of ROUTE_DEFS) {
     kind: "out",
     rows: ROUTE.slice(),
     warps: routeWarps(r.south, r.southXY, r.north, r.northXY),
-    signs: [{ x: 3, y: 10, text: [r.name, "レベル " + r.lv[0] + "〜" + r.lv[1] + " くらいの ガオンが でる"] }],
+    signs: [{ x: 3, y: 10, text: [r.name, "でる ガオン　Lv" + r.lv[0] + "〜" + r.lv[1]] }],
     npcs: npcs,
     enc: { rate: 15, list: r.list },
   };
