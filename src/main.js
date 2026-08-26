@@ -96,9 +96,9 @@ const title = {
       const set = palOf(SPECIES[n]);
       G.use("grass");
       G.ctx.globalAlpha = 0.35;
-      G.rect(44 + i * 88, 214 + bob * 0.4, 40, 6, 3);
+      G.rect(46 + i * 88, 224 + bob * 0.4, 44, 6, 3);
       G.ctx.globalAlpha = 1;
-      G.draw(G.makeMonArt(MONART[n], 2, "t" + n, set), 40 + i * 88, 168 + bob);
+      G.draw(G.makeMonArt(MONART[n], 1, "t" + n, set), 44 + i * 88, 176 + bob);
     });
 
     G.use("ui");

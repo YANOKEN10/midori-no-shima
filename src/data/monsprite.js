@@ -1,50 +1,76 @@
 // ============================================================
-//  ガオンの ドットえを パーツから 組み立てる（32x32）
+//  ガオンの ドットえを パーツから 組み立てる（48x48）
 //   ・左右たいしょう。0=ハイライト 1=からだ 2=かげ 3=ふち .=とうめい
-//   ・からだ ごとに「目の ばしょ」「つばさの つくところ」などの
-//     めじるし(anchor)を もっているので パーツが きれいに つきます。
+//   ・かたちの すうじは 32ドット時代の ものを そのまま つかい、
+//     えがく どうぐの がわで K=1.5ばいに して 48ドットに おこします。
+//     （なめらかな まるみ・こまかい ふちが 出せます）
 //
 //   recipe の れい：
 //     { body:"quad", ear:"cat", crest:"flame", tail:"puff",
 //       eye:"round", mouth:"fang", pat:"belly" }
 // ============================================================
-const W = 32, H = 32;
-const CX = 15;              // 左がわの まん中の れつ（右は 16）
+const W = 48, H = 48;
+const CX = 23;              // 左がわの まん中の れつ（右は 24）
+const K = 1.5;              // 32ドットの すうじを 48ドットに なおす ばいりつ
+const U = (v) => Math.round(v * K);
 
 function blank() {
   const g = [];
   for (let y = 0; y < H; y++) g.push(new Array(W).fill("."));
   return g;
 }
-function put(g, x, y, c) { if (x >= 0 && x < W && y >= 0 && y < H) g[y][x] = c; }
+function put(g, x, y, c) { if (x >= 0 && x < W && y >= 0 && y < H) g[y][x] = String(c); }
 function get(g, x, y) { return (x >= 0 && x < W && y >= 0 && y < H) ? g[y][x] : "."; }
-// dx = まん中から いくつめ（0 が いちばん内がわ）
-function sym(g, dx, y, c) { put(g, CX - dx, y, c); put(g, CX + 1 + dx, y, c); }
-function symIf(g, dx, y, c, only) {
-  if (get(g, CX - dx, y) === only) put(g, CX - dx, y, c);
-  if (get(g, CX + 1 + dx, y) === only) put(g, CX + 1 + dx, y, c);
+
+/* --- ここから したは「32ドットの すうじ」で よべる どうぐ --- */
+// dx = まん中から いくつめ
+function symRaw(g, dx, y, c) { put(g, CX - dx, y, c); put(g, CX + 1 + dx, y, c); }
+function sym(g, dx, y, c) {
+  const x0 = U(dx), y0 = U(y);
+  for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) {
+    if (x0 + i > CX) continue;
+    symRaw(g, x0 + i, y0 + j, c);
+  }
 }
-function rowFill(g, y, w, c) { for (let dx = 0; dx < w; dx++) sym(g, dx, y, c); }
+function symIf(g, dx, y, c, only) {
+  const x0 = U(dx), y0 = U(y);
+  for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) {
+    const xx = CX - (x0 + i), yy = y0 + j;
+    if (get(g, xx, yy) === only) put(g, xx, yy, c);
+    const xr = CX + 1 + (x0 + i);
+    if (get(g, xr, yy) === only) put(g, xr, yy, c);
+  }
+}
+function rowFill(g, y, w, c) {
+  const y0 = U(y), wpx = U(w);
+  for (let j = 0; j < 2; j++) for (let dx = 0; dx < wpx; dx++) symRaw(g, dx, y0 + j, c);
+}
 function box(g, dx, y, w, h, c) {
-  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) sym(g, dx + i, y + j, c);
+  const x0 = U(dx), y0 = U(y), wpx = U(w), hpx = U(h);
+  for (let j = 0; j < hpx; j++) for (let i = 0; i < wpx; i++) symRaw(g, x0 + i, y0 + j, c);
 }
 function ellipseW(y, cy, ry, rx) {
   const t = (y - cy) / ry;
   if (Math.abs(t) > 1) return 0;
   return Math.max(1, Math.round(rx * Math.sqrt(1 - t * t)));
 }
+// たてよこの まるみ（48ドットの きめこまかさで えがく）
 function ell(g, cy, ry, rx, y0, y1, c) {
-  for (let y = Math.max(0, y0); y <= Math.min(H - 1, y1); y++) {
-    const w = ellipseW(y, cy, ry, rx);
-    if (w) rowFill(g, y, w, c || 1);
+  const CY = cy * K, RY = ry * K, RX = rx * K;
+  const from = Math.max(0, U(y0)), to = Math.min(H - 1, U(y1) + 1);
+  for (let y = from; y <= to; y++) {
+    const w = ellipseW(y, CY, RY, RX);
+    if (!w) continue;
+    for (let dx = 0; dx < w; dx++) symRaw(g, dx, y, c || 1);
   }
 }
 // さんかく（つの・ひれ など）dir: -1=うえむき 1=したむき
 function tri(g, dx, y, w, h, dir, c) {
-  for (let j = 0; j < h; j++) {
-    const ww = Math.max(1, Math.round(w * (1 - j / h)));
-    const yy = dir < 0 ? y + j : y + h - 1 - j;
-    for (let i = 0; i < ww; i++) sym(g, dx + i, yy, c || 1);
+  const x0 = U(dx), y0 = U(y), wpx = U(w), hpx = U(h);
+  for (let j = 0; j < hpx; j++) {
+    const ww = Math.max(1, Math.round(wpx * (1 - j / hpx)));
+    const yy = dir < 0 ? y0 + j : y0 + hpx - 1 - j;
+    for (let i = 0; i < ww; i++) symRaw(g, x0 + i, yy, c || 1);
   }
 }
 
@@ -285,6 +311,52 @@ const BODIES = {
     box(g, 2, 28, 6, 4, 1);
     return { eyeY: 9, eyeDX: 4, topY: 4, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
   },
+
+  /* ===== でんせつの ガオン せんよう ===== */
+
+  // ラテット：金の たてがみの ライオン
+  lion(g) {
+    // たてがみ（ぎざぎざの わ）
+    for (let y = 1; y <= 21; y++) {
+      const w = ellipseW(y, 11, 10.5, 11.5);
+      if (!w) continue;
+      rowFill(g, y, (y % 2 === 0) ? w : Math.max(1, w - 1), 1);
+    }
+    ell(g, 22, 8.5, 8.5, 15, 31);          // どうたい
+    ell(g, 11, 6, 6.5, 5, 17);             // かお
+    box(g, 2, 27, 4, 5, 1);                // まえあし
+    box(g, 8, 27, 4, 5, 1);                // うしろあし
+    box(g, 11, 18, 3, 2, 1);               // しっぽ
+    box(g, 12, 14, 3, 5, 1);
+    return { eyeY: 11, eyeDX: 3, topY: 1, botY: 31, sideY: 20, sideDX: 10, footY: 31 };
+  },
+
+  // ディーナ：にじいろの クジャク
+  peacock(g) {
+    // おおきな おびれ（おうぎ）
+    for (let y = 1; y <= 19; y++) {
+      const w = ellipseW(y, 12, 11, 14);
+      if (!w) continue;
+      rowFill(g, y, w, 1);
+    }
+    for (let dx = 0; dx < 14; dx += 3) box(g, dx, 1, 1, 3, 1);   // はねの さき
+    ell(g, 21, 6.5, 4.5, 15, 28);          // からだ
+    for (let y = 12; y <= 17; y++) rowFill(g, y, 2, 1);          // くび
+    ell(g, 9, 3.6, 4, 5, 13);              // あたま
+    box(g, 1, 28, 2, 4, 1);                // あし
+    box(g, 4, 28, 2, 4, 1);
+    return { eyeY: 9, eyeDX: 2, topY: 1, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
+  },
+
+  // メロロン：きょだいな アザラシ
+  seal(g) {
+    ell(g, 21, 11, 12.5, 9, 31);           // まるい からだ
+    ell(g, 12, 6.5, 8, 5, 19);             // あたま
+    tri(g, 9, 19, 5, 6, 1, 1);             // ひれ（よこ）
+    box(g, 0, 29, 5, 3, 1);                // しっぽの ひれ
+    box(g, 6, 30, 3, 2, 1);
+    return { eyeY: 11, eyeDX: 3, topY: 5, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
+  },
 };
 
 /* ============ かざり ============ */
@@ -407,7 +479,7 @@ const PATTERNS = {
   },
 };
 
-/* ============ 組み立て ============ */
+/* ============ しあげ ============ */
 function outline(g) {
   const out = g.map((r) => r.slice());
   for (let y = 0; y < H; y++) {
@@ -420,24 +492,59 @@ function outline(g) {
   }
   return out;
 }
-// かたちに そって 下がわに かげ、そとがわにも すこし かげ
-function shade(g, L) {
+
+// かたちに そって かげを つける（からだの 色を のこしつつ、
+// さかいめは あみかけで なじませる ＝ 金銀ふうの ぬり）
+function shade(g) {
   for (let x = 0; x < W; x++) {
-    let low = -1;
+    let low = -1, top = -1;
     for (let y = H - 1; y >= 0; y--) if (g[y][x] === "1") { low = y; break; }
-    if (low < 0) continue;
-    for (let y = Math.max(0, low - 3); y <= low; y++) if (g[y][x] === "1") g[y][x] = "2";
+    for (let y = 0; y < H; y++) if (g[y][x] === "1") { top = y; break; }
+    if (low < 0 || top < 0) continue;
+    const tall = low - top + 1;
+    const deep = Math.max(top + 1, low - Math.max(2, Math.round(tall * 0.22)));
+    for (let y = deep; y <= low; y++) if (g[y][x] === "1") g[y][x] = "2";
+    for (let y = deep - 2; y < deep; y++) {
+      if (y < 0) continue;
+      if (g[y][x] === "1" && ((x + y) % 2 === 0)) g[y][x] = "2";
+    }
   }
+  // そとがわの ふちの 内がわにも うすい かげ
   for (let y = 0; y < H; y++) {
-    for (let dx = 0; dx < 16; dx++) {
+    for (let dx = 0; dx < CX; dx++) {
       if (get(g, CX - dx, y) !== "1") continue;
-      if (get(g, CX - dx - 1, y) === "3") { sym(g, dx, y, "2"); break; }
+      if (get(g, CX - dx - 1, y) === "3") { symRaw(g, dx, y, "2"); break; }
     }
   }
 }
-function highlight(g, L) {
-  for (let j = 0; j < 3; j++) {
-    for (let dx = 1; dx < 5; dx++) symIf(g, dx, L.topY + 2 + j, "0", "1");
+
+// あたまの まん中あたりに ひかりを おく（ひろげすぎない）
+function highlight(g) {
+  let top = H, left = W, right = 0;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    if (g[y][x] === ".") continue;
+    if (y < top) top = y;
+    if (x < left) left = x;
+    if (x > right) right = x;
+  }
+  if (top >= H) return;
+  const cx = Math.round((left + right) / 2);
+  const half = Math.max(2, Math.round((right - left) * 0.18));
+  for (let x = cx - half; x <= cx + half; x++) {
+    let t = -1;
+    for (let y = 0; y < H; y++) if (g[y][x] === "1") { t = y; break; }
+    if (t < 0) continue;
+    for (let y = t; y < t + 2; y++) if (g[y][x] === "1") g[y][x] = "0";
+    for (let y = t + 2; y < t + 4; y++) if (g[y][x] === "1" && ((x + y) % 2 === 0)) g[y][x] = "0";
+  }
+}
+
+// 下の ふちを 1ドット ぶあつく して どっしり 見せる
+function groundLine(g) {
+  for (let x = 0; x < W; x++) {
+    for (let y = H - 1; y >= 1; y--) {
+      if (g[y][x] === "3" && g[y - 1][x] !== "." && g[y - 1][x] !== "3") { g[y - 1][x] = "3"; break; }
+    }
   }
 }
 
@@ -453,15 +560,16 @@ export function buildSprite(recipe) {
   (TAILS[r.tail] || TAILS.none)(g, L);
 
   g = outline(g);
-  shade(g, L);
-  highlight(g, L);
+  shade(g);
+  highlight(g);
+  groundLine(g);
   (PATTERNS[r.pat] || PATTERNS.none)(g, L);
   (EYES[r.eye] || EYES.dot)(g, L);
   (MOUTHS[r.mouth] || MOUTHS.none)(g, L);
 
   const rows = g.map((row) => row.join(""));
-  if (r.size === "s") return resize(rows, 24);
-  if (r.size === "m") return resize(rows, 28);
+  if (r.size === "s") return resize(rows, 36);
+  if (r.size === "m") return resize(rows, 42);
   return rows;
 }
 
@@ -473,7 +581,7 @@ function resize(rows, n) {
   for (let y = 0; y < n; y++) {
     const sy = Math.min(H - 1, Math.floor(y * H / n));
     for (let dx = 0; dx < h; dx++) {
-      const sdx = Math.min(15, Math.floor(dx * 16 / h));
+      const sdx = Math.min(CX, Math.floor(dx * (CX + 1) / h));
       const ch = rows[sy][CX - sdx];
       g[y + off][off + h - 1 - dx] = ch;
       g[y + off][off + h + dx] = ch;

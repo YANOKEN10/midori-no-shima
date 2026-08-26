@@ -606,10 +606,10 @@ function drawBattle() {
   G.rect(0, 90, G.W, 106, 1);
   G.rect(0, 90, G.W, 3, 2);
   // たっている ところ
-  ellipse(232, 92, 58, 13, 2);
-  ellipse(232, 90, 58, 13, 0);
-  ellipse(84, 178, 70, 15, 2);
-  ellipse(84, 175, 70, 15, 0);
+  ellipse(244, 100, 54, 12, 2);
+  ellipse(244, 98, 54, 12, 0);
+  ellipse(68, 176, 66, 14, 2);
+  ellipse(68, 173, 66, 14, 0);
 
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
@@ -618,18 +618,18 @@ function drawBattle() {
 
   if (!B.foe.hidden && foeArt) {
     const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet);
-    G.draw(img, 200 + (B.foe.shakeX | 0), 24);
+    G.draw(img, 196 + (B.foe.shakeX | 0), 4);
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
-      G.ctx.globalAlpha = 0.5; G.rect(200, 24, 64, 64, 0); G.ctx.globalAlpha = 1;
+      G.ctx.globalAlpha = 0.5; G.rect(196, 4, 96, 96, 0); G.ctx.globalAlpha = 1;
     }
   }
   if (B.you && !B.you.hidden && youArt) {
     const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet);
-    G.draw(img, 48 + (B.you.shakeX | 0), 108);
+    G.draw(img, 20 + (B.you.shakeX | 0), 78);
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
-      G.ctx.globalAlpha = 0.5; G.rect(48, 108, 64, 64, 0); G.ctx.globalAlpha = 1;
+      G.ctx.globalAlpha = 0.5; G.rect(20, 78, 96, 96, 0); G.ctx.globalAlpha = 1;
     }
   }
 

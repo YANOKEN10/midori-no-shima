@@ -77,13 +77,13 @@ export async function showStatus(m) {
     G.use("ui");
     G.window9(4, 4, 312, 156);
     const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp));
-    G.draw(img, 16, 26);
-    G.text("No." + String(sp.no).padStart(3, "0"), 100, 16, 3, 14);
+    G.draw(img, 10, 22);
+    G.text("No." + String(sp.no).padStart(3, "0"), 116, 16, 3, 14);
     const lv = "Lv" + m.lv;
-    G.textFit(monName(m), 100, 36, 194 - G.textW(lv, 16), 3, 16);
+    G.textFit(monName(m), 116, 36, 178 - G.textW(lv, 16), 3, 16);
     G.textRight(lv, 300, 36, 3, 16);
-    G.textFit("タイプ/" + sp.types.join("・"), 100, 60, 200, 3, 14);
-    G.text("HP " + m.hp + "/" + maxHp(m), 100, 82, 3, 14);
+    G.textFit("タイプ/" + sp.types.join("・"), 116, 60, 184, 3, 14);
+    G.text("HP " + m.hp + "/" + maxHp(m), 116, 82, 3, 14);
     if (m.status) G.textRight(m.status, 300, 82, 3, 14);
     G.text("こうげき " + statOf(m, "atk"), 20, 110, 3, 14);
     G.text("ぼうぎょ " + statOf(m, "def"), 170, 110, 3, 14);
@@ -185,7 +185,7 @@ async function dexEntry(n) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 160);
-    G.draw(G.makeMonArt(MONART[n], 3, "d" + n, palOf(sp)), 20, 24);
+    G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp)), 16, 24);
     G.text("No." + String(sp.no).padStart(3, "0"), 130, 24, 3, 14);
     G.textFit(n, 130, 46, 170, 3, 16);
     G.textFit("タイプ/" + sp.types.join("・"), 130, 72, 170, 3, 14);
