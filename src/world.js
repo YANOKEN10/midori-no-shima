@@ -658,7 +658,13 @@ export const world = {
         // 地図の そとは いちばん はしの マスを つづけて えがく
         const ch = edgeTile(map, tx, ty);
         if (ch === null) continue;
-        G.draw(tileFor(ch, frame, map.sets), tx * T - camX, ty * T - camY);
+        const gg = group(ch);
+        let mask = 0;
+        if (group(edgeTile(map, tx, ty - 1)) === gg) mask |= 1;
+        if (group(edgeTile(map, tx + 1, ty)) === gg) mask |= 2;
+        if (group(edgeTile(map, tx, ty + 1)) === gg) mask |= 4;
+        if (group(edgeTile(map, tx - 1, ty)) === gg) mask |= 8;
+        G.draw(tileFor(ch, frame, map.sets, mask), tx * T - camX, ty * T - camY);
       }
     }
 
@@ -726,6 +732,15 @@ export function tileAt(map, x, y) {
   if (x < 0 || x >= row.length) return null;
   return row[x];
 }
+
+// つなげて えがく ときの「なかま」わけ
+const GROUP = {
+  ",": "g", '"': "g", F: "g", S: "g", "=": "g",
+  ".": "p", s: "p", m: "p",
+  "~": "n", W: "w", T: "t", R: "r", X: "x", C: "c", d: "d",
+  r: "roof", "#": "wall", w: "wall", D: "wall",
+};
+function group(ch) { return ch == null ? "" : (GROUP[ch] || ch); }
 
 // えがく ときだけ つかう：地図の そとは はしの マスを くりかえす
 function edgeTile(map, x, y) {

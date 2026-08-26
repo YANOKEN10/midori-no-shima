@@ -326,6 +326,38 @@ export class Pixel {
     if (x0 === x1) return this.box(x0, Math.min(y0, y1), 1, Math.abs(y1 - y0) + 1, i);
     return this;
   }
+  /* --- こまかい えがきかた（32x32 の 1ドットずつ） --- */
+  f(x, y, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x, y, 1, 1); return this; }
+  fbox(x, y, w, h, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x, y, w, h); return this; }
+  ffill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE, TILE); return this; }
+  fdither(x, y, w, h, i, odd) {
+    for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) {
+      if (((x + xx) + (y + yy)) % 2 === (odd ? 1 : 0)) this.f(x + xx, y + yy, i);
+    }
+    return this;
+  }
+  // すこし ばらついた てん（草・砂の きめ）
+  fnoise(seed, n, i, x0, y0, w, h) {
+    let s = seed >>> 0;
+    for (let k = 0; k < n; k++) {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      const x = x0 + (s >>> 16) % w;
+      s = (s * 1664525 + 1013904223) >>> 0;
+      const y = y0 + (s >>> 16) % h;
+      this.f(x, y, i);
+    }
+    return this;
+  }
+  // まるい ふち（オートタイル用）
+  fcorner(cx, cy, r, i) {
+    for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+      const dx = x - cx, dy = y - cy;
+      if (dx * dx + dy * dy > r * r) continue;
+      this.f(x, y, i);
+    }
+    return this;
+  }
+
   // まだらもよう（ゲームボーイらしい あみかけ）
   dither(x, y, w, h, i, odd) {
     for (let yy = 0; yy < h; yy++) {
