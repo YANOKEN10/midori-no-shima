@@ -107,7 +107,8 @@ export async function startBattle(opts) {
     if (fainted(B.foe.mon)) {
       const r = await onFoeDown();
       if (r) result = r;
-    } else if (fainted(B.you.mon)) {
+    } else if (B.you && fainted(B.you.mon)) {
+      // さいしょの つかまえかた（てもちが いない）ときは ここを とばす
       const r = await onYouDown();
       if (r) result = r;
     }
@@ -128,7 +129,7 @@ export async function startBattle(opts) {
 async function chooseAction() {
   for (;;) {
     if (!B.you) {
-      const j = await ui.choice(["ラグ・ネットを なげる", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
+      const j = await ui.choice(["ラグ・ネットを つかう", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
       if (j === 1) return { kind: "run" };
       const list = bagList("battle").filter((x) => itemData(x.name).kind === "ball");
       if (!list.length) { await ui.say(["ラグ・ネットを もっていない！"]); return { kind: "run" }; }
@@ -477,7 +478,7 @@ async function choosePartyMemberForRevive() {
 
 async function throwBall(ballRate) {
   const m = B.foe.mon;
-  await ui.say(["ラグ・ネットを なげた！"]);
+  await ui.say(["ラグ・ネットを つかった！"]);
   B.foe.hidden = true;
   beep("ball");
   await wait(400);
@@ -518,6 +519,7 @@ async function onFoeDown() {
   B.foe.hidden = true;
   await wait(400);
   await ui.say([label(B.foe) + "は たおれた！"]);
+  if (!B.you) return "win";           // てもちが いない ときは けいけんち なし
 
   // けいけんち
   const base = species(B.foe.mon.sp).exp;
