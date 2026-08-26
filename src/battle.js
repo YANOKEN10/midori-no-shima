@@ -36,11 +36,13 @@ export const battle = {
     ui.update(dt);
     if (!B) return;
     for (const s of [B.you, B.foe]) {
+      if (!s) continue;
       if (s.shakeX) s.shakeX *= 0.82;
       if (s.flash > 0) s.flash -= dt;
     }
     if (B.hpAnim) {
       for (const s of [B.you, B.foe]) {
+      if (!s) continue;
         if (s.showHp == null) s.showHp = s.mon.hp;
         const d = s.mon.hp - s.showHp;
         if (Math.abs(d) < 0.6) s.showHp = s.mon.hp;
@@ -57,20 +59,19 @@ export const battle = {
    もどりち: "win" | "lose" | "run" | "caught"
 ============================================================ */
 export async function startBattle(opts) {
-  const you = State.save.party.find((m) => !fainted(m));
-  if (!you) return "lose";
-
+  const you = State.save.party.find((m) => !fainted(m)) || null;
   const isTrainer = Boolean(opts.trainer);
+  if (!you && isTrainer) return "lose";
   const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
   B = {
     isTrainer: isTrainer,
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0,
-    you: fresh(you, true), foe: fresh(foeParty[0], false),
+    you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
     turn: 0, runTries: 0, hpAnim: true, caught: false,
     intro: 0,
   };
-  B.you.showHp = you.hp;
+  if (B.you) B.you.showHp = you.hp;
   B.foe.showHp = B.foe.mon.hp;
   battle.active = true;
 
@@ -80,7 +81,8 @@ export async function startBattle(opts) {
   await wait(260);
   if (isTrainer) await ui.say([opts.trainer.name + "が しょうぶを しかけてきた！"]);
   else await ui.say(["あっ！ やせいの " + B.foe.mon.sp + "が とびだしてきた！"]);
-  await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
+  if (B.you) await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
+  else await ui.say(["まだ ガオンを もっていない。", "ラグ・ネットで つかまえてみよう！"]);
 
   let result = "";
   while (!result) {
@@ -125,7 +127,17 @@ export async function startBattle(opts) {
 /* --- こうどうを えらぶ ---------------------------------------- */
 async function chooseAction() {
   for (;;) {
-    const i = await ui.choice(["たたかう", "どうぐ", "モンスター", "にげる"], {
+    if (!B.you) {
+      const j = await ui.choice(["ラグ・ネットを なげる", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
+      if (j === 1) return { kind: "run" };
+      const list = bagList("battle").filter((x) => itemData(x.name).kind === "ball");
+      if (!list.length) { await ui.say(["ラグ・ネットを もっていない！"]); return { kind: "run" }; }
+      if (list.length === 1) return { kind: "item", item: list[0].name };
+      const k = await ui.choice(list.map((x) => x.name + " ×" + x.n), { x: 8, y: 140, w: 240, rows: 4 });
+      if (k >= 0) return { kind: "item", item: list[k].name };
+      continue;
+    }
+    const i = await ui.choice(["たたかう", "どうぐ", "ガオン", "にげる"], {
       x: 160, y: 168, w: 152, rows: 4, cancel: false,
     });
     if (i === 0) {
@@ -185,6 +197,7 @@ async function switchTo(i) {
 
 /* --- 1ターン --------------------------------------------------- */
 async function doTurn(playerMove, skipPlayer) {
+  if (!B.you) { await ui.say(["やせいの " + B.foe.mon.sp + "は こちらを じっと 見ている。"]); return; }
   const youSpd = statOf(B.you.mon, "spd") * stageMul(B.you.st.spd) * (B.you.mon.status === "まひ" ? 0.25 : 1);
   const foeSpd = statOf(B.foe.mon, "spd") * stageMul(B.foe.st.spd) * (B.foe.mon.status === "まひ" ? 0.25 : 1);
   const foeMove = pickFoeMove();
@@ -208,6 +221,7 @@ async function doTurn(playerMove, skipPlayer) {
 
   // ターンの おわり（どく・やけど・やどりぎ）
   for (const s of [B.you, B.foe]) {
+      if (!s) continue;
     if (fainted(s.mon)) continue;
     if (s.mon.status === "どく" || s.mon.status === "やけど") {
       const d = Math.max(1, Math.floor(maxHp(s.mon) / 16));
@@ -389,11 +403,12 @@ async function applyEffects(atk, def, fx, dealt) {
 }
 
 function statName(k) {
-  return { atk: "こうげき", def: "ぼうぎょ", spd: "すばやさ", spc: "とくしゅ", acc: "めいちゅう" }[k] || k;
+  return { atk: "こうげき", def: "ぼうぎょ", spd: "すばやさ", spc: "まほう", acc: "めいちゅう" }[k] || k;
 }
 
 /* --- にげる ---------------------------------------------------- */
 async function tryRun() {
+  if (!B.you) { beep("back"); await ui.say(["うまく にげきれた！"]); return true; }
   B.runTries++;
   const a = statOf(B.you.mon, "spd");
   const b = statOf(B.foe.mon, "spd");
@@ -411,11 +426,12 @@ async function tryRun() {
 async function useBattleItem(name) {
   const d = itemData(name);
   if (d.kind === "ball") {
-    if (B.isTrainer) { await ui.say(["ひとの モンスターを とるなんて だめ！"]); return "no"; }
+    if (B.isTrainer) { await ui.say(["ひとの ガオンを とるなんて だめ！"]); return "no"; }
     useItem(name);
     return await throwBall(d.rate);
   }
   if (d.kind === "heal") {
+    if (!B.you) { await ui.say(["いま つかっても いみが なさそうだ。"]); return "no"; }
     const m = B.you.mon;
     if (m.hp >= maxHp(m)) { await ui.say(["たいりょくは まんたんだ。"]); return "no"; }
     useItem(name);
@@ -426,6 +442,7 @@ async function useBattleItem(name) {
     return "used";
   }
   if (d.kind === "cure") {
+    if (!B.you) { await ui.say(["いま つかっても いみが なさそうだ。"]); return "no"; }
     const m = B.you.mon;
     if (!m.status || (d.cure !== "all" && m.status !== d.cure)) { await ui.say(["こうかが なさそうだ。"]); return "no"; }
     useItem(name);
@@ -454,13 +471,13 @@ async function choosePartyMemberForRevive() {
   const labels = p.map((m) => monName(m) + " Lv" + m.lv + (fainted(m) ? " ひんし" : " " + m.hp + "/" + maxHp(m)));
   const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6 });
   if (i < 0) return -1;
-  if (!fainted(p[i])) { await ui.say(["その モンスターは げんきだ。"]); return -1; }
+  if (!fainted(p[i])) { await ui.say(["その ガオンは げんきだ。"]); return -1; }
   return i;
 }
 
 async function throwBall(ballRate) {
   const m = B.foe.mon;
-  await ui.say(["ボールを なげた！"]);
+  await ui.say(["ラグ・ネットを なげた！"]);
   B.foe.hidden = true;
   beep("ball");
   await wait(400);
@@ -490,7 +507,7 @@ async function throwBall(ballRate) {
     return "caught";
   }
   B.foe.hidden = false;
-  const msg = ["ああ！ ボールから でてしまった！", "おしい！ あと すこしだったのに！", "ダメだ！ とびだされた！"];
+  const msg = ["ああ！ ネットから でてしまった！", "おしい！ あと すこしだったのに！", "ダメだ！ とびだされた！"];
   await ui.say([msg[Math.min(shakes, 2)]]);
   return "used";
 }
@@ -565,7 +582,7 @@ async function choosePartyMemberForce() {
     const labels = p.map((m) => monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m));
     const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6, cancel: false });
     if (i >= 0 && !fainted(p[i])) return i;
-    await ui.say(["その モンスターは たたかえない！"]);
+    await ui.say(["その ガオンは たたかえない！"]);
   }
 }
 
@@ -595,20 +612,20 @@ function drawBattle() {
   ellipse(84, 175, 70, 15, 0);
 
   const foeArt = MONART[B.foe.mon.sp];
-  const youArt = MONART[B.you.mon.sp];
+  const youArt = B.you ? MONART[B.you.mon.sp] : null;
   const foeSet = palOf(species(B.foe.mon.sp));
-  const youSet = palOf(species(B.you.mon.sp));
+  const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ノーマル";
 
   if (!B.foe.hidden && foeArt) {
-    const img = G.makeMonArt(foeArt, 4, "m" + B.foe.mon.sp, foeSet);
+    const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet);
     G.draw(img, 200 + (B.foe.shakeX | 0), 24);
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(200, 24, 64, 64, 0); G.ctx.globalAlpha = 1;
     }
   }
-  if (!B.you.hidden && youArt) {
-    const img = G.makeMonArt(youArt, 4, "m" + B.you.mon.sp, youSet);
+  if (B.you && !B.you.hidden && youArt) {
+    const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet);
     G.draw(img, 48 + (B.you.shakeX | 0), 108);
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
@@ -619,8 +636,8 @@ function drawBattle() {
   // 下の わく（メニューが うかんで 見えないように）
   G.use("ui");
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
-  // メッセージが 出ていない ときは、いま だしている モンスターを のせる
-  if (!isSaying()) {
+  // メッセージが 出ていない ときは、いま だしている ガオンを のせる
+  if (!isSaying() && B.you) {
     const m = B.you.mon;
     G.textFit(monName(m), BOX.x + 18, BOX.y + 18, 130, 3, 16);
     G.text("Lv" + m.lv, BOX.x + 18, BOX.y + 46, 3, 14);
@@ -632,7 +649,7 @@ function drawBattle() {
   const foeR = { x: 8, y: 12, w: 148, h: 60 };
   const youR = { x: 164, y: 100, w: 148, h: 60 };
   if (!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
-  if (!overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
+  if (B.you && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
 }
 
 function ellipse(cx, cy, rx, ry, c) {

@@ -49,6 +49,7 @@ export const SETS = {
   clerk:   ["#ffd9ae", "#8fd8a0", "#2f7a56", "#153224"],
   sailor:  ["#ffd9ae", "#f0f0f0", "#2f5fa8", "#152238"],
   hiker:   ["#ffd9ae", "#d8a84c", "#7a5320", "#2c1c0a"],
+  philoa:  ["#ffd9ae", "#3aa8e8", "#eaf6ff", "#12283f"],
   leader1: ["#ffd9ae", "#5fc8e8", "#1f5f9c", "#0c2338"],
   leader2: ["#ffd9ae", "#f07840", "#a03410", "#331004"],
 

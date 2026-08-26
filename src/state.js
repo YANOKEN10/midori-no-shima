@@ -76,9 +76,9 @@ export function learnMove(m, name) {
 /* --- セーブデータ --------------------------------------------- */
 export function newGame(playerName) {
   return {
-    ver: 1,
-    name: playerName || "ユウキ",
-    rival: "シュン",
+    ver: 2,
+    name: playerName || "レオ",
+    rival: "フィロア",
     money: 3000,
     party: [],
     box: [],

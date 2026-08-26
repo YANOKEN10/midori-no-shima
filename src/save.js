@@ -18,11 +18,17 @@ export function saveLocal() {
   catch (e) { return false; }
 }
 
+export const SAVE_VER = 2;
+
+// ものがたりが 大きく かわったので、ふるい きろくは つかいません
+export function compatible(d) { return Boolean(d) && (d.ver | 0) >= SAVE_VER; }
+
 export function loadLocal() {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return null;
-    return JSON.parse(raw);
+    const d = JSON.parse(raw);
+    return compatible(d) ? d : null;
   } catch (e) { return null; }
 }
 
@@ -71,5 +77,5 @@ export function describeSave(d) {
   const party = (d.party || []).length;
   const t = d.savedAt ? new Date(d.savedAt) : null;
   const when = t ? (t.getMonth() + 1) + "/" + t.getDate() + " " + String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0") : "";
-  return (d.name || "?") + "  バッジ" + badges + "  てもち" + party + "  " + when;
+  return (d.name || "?") + "  エンブレム" + badges + "  てもち" + party + "  " + when;
 }

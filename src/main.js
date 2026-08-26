@@ -12,7 +12,7 @@ import { world, bgmFor } from "./world.js";
 import { battle } from "./battle.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
-import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal } from "./save.js";
+import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
 import { START } from "./data/maps.js";
 
@@ -84,12 +84,12 @@ const title = {
     outlined("VORAZ", G.W / 2, 42, 32);
     outlined("MONSTERS", G.W / 2, 76, 24);
     G.use("title");
-    const sub = "〜みどりのしまの ものがたり〜";
+    const sub = "〜ガオンと ギャラクシー・タウン〜";
     const sw = G.textW(sub, 14) + 24;
     G.rect((G.W - sw) / 2, 114, sw, 24, 3);
     G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);
 
-    // モンスターが 3びき
+    // ガオンが 3びき
     const names = ["リーフィン", "ヒノコマ", "アワミィ"];
     names.forEach((n, i) => {
       const bob = Math.sin(t / 400 + i) * 3;
@@ -98,7 +98,7 @@ const title = {
       G.ctx.globalAlpha = 0.35;
       G.rect(44 + i * 88, 214 + bob * 0.4, 40, 6, 3);
       G.ctx.globalAlpha = 1;
-      G.draw(G.makeMonArt(MONART[n], 3, "t" + n, set), 40 + i * 88, 168 + bob);
+      G.draw(G.makeMonArt(MONART[n], 2, "t" + n, set), 40 + i * 88, 168 + bob);
     });
 
     G.use("ui");
@@ -156,7 +156,8 @@ function waitForKey() {
 
 async function mainFlow(local, restored) {
   for (;;) {
-    const cloudSave = restored && restored.payload ? restored.payload : null;
+    const raw = restored && restored.payload ? restored.payload : null;
+    const cloudSave = compatible(raw) ? raw : null;
     const items = [];
     if (local) items.push("つづきから（この たんまつ）");
     if (cloudSave) items.push("つづきから（クラウド）");
@@ -185,14 +186,14 @@ async function mainFlow(local, restored) {
       const r = await showForm({
         title: "きみの なまえは？",
         sub: "ぼうけんの あいだ つかう なまえです。",
-        fields: [{ el: "who", key: "name", label: "なまえ", type: "text", value: State.save.name || "ユウキ", placeholder: "ユウキ" }],
+        fields: [{ el: "who", key: "name", label: "なまえ", type: "text", value: State.save.name || "レオ", placeholder: "レオ" }],
         submit: "この なまえで はじめる",
       });
-      const name = r && String(r.name || "").trim() ? String(r.name).trim().slice(0, 8) : "ユウキ";
+      const name = r && String(r.name || "").trim() ? String(r.name).trim().slice(0, 8) : "レオ";
       loadInto(newGame(name));
       saveLocal();
       await ui.say([
-        "ようこそ モンスターの せかいへ！",
+        "ようこそ ガオンの せかいへ！",
         "きみの なまえは " + name + "。",
         "きたの けんきゅうじょで", "はかせが まっている。",
       ]);

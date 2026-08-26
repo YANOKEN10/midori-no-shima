@@ -280,7 +280,7 @@ export const MORE = [
   "いわの こぶしで だいちを たたきわる。"],
 ["ジシンヌシ", "じめん", null, "hp", 0, null, null,
   { body: "shell", crest: "spike", ear: "side", eye: "glow", mouth: "line", pat: "band" },
-  "この モンスターが うごくと じしんが おきるとか。"],
+  "この ガオンが うごくと じしんが おきるとか。"],
 
 /* ================= むし ================= */
 ["ムシリン", "むし", null, "def", 1, "カブトン", 14,
@@ -443,5 +443,17 @@ export const MORE = [
 ["カバリン", "ノーマル", "みず", "hp", 0, null, null,
   { body: "quad", ear: "round", eye: "sleepy", mouth: "open", pat: "belly" },
   "口を 大きく あけて あくびを する。"],
+
+
+/* ================= でんせつの ガオン ================= */
+["ラテット", "ノーマル", "じめん", "atk", 9, null, null,
+  { body: "beast", crest: "crown", ear: "cat", tail: "fan", eye: "glow", mouth: "fang", pat: "back" },
+  "やまの ぬし。金の たてがみを もつ ガオンの おうじゃ。"],
+["ディーナ", "でんき", "ノーマル", "spd", 9, null, null,
+  { body: "bird", crest: "fan", wing: "big", tail: "fan", eye: "big", mouth: "beak", pat: "dots" },
+  "にじいろの おびれを ひろげる。かぜより はやいという。"],
+["メロロン", "みず", null, "hp", 9, null, null,
+  { body: "blob", ear: "fin", eye: "big", mouth: "smile", pat: "belly" },
+  "みずうみの ぬし。おおきな からだで なみを おこす。"],
 
 ];

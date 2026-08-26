@@ -253,6 +253,16 @@ for (const e of MORE) {
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 
+// でんせつの ガオンは のうりょくを 手で きめる
+const LEGEND = {
+  "ラテット": { hp: 100, atk: 125, def: 100, spd: 110, spc: 105 },
+  "ディーナ": { hp: 85, atk: 95, def: 80, spd: 138, spc: 110 },
+  "メロロン": { hp: 145, atk: 95, def: 115, spd: 55, spc: 95 },
+};
+for (const [n, b] of Object.entries(LEGEND)) {
+  if (SPECIES[n]) { SPECIES[n].base = b; SPECIES[n].catch = 10; SPECIES[n].exp = 250; }
+}
+
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
 // その モンスターを ぬる いろセット
 export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ノーマル"; }

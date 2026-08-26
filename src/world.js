@@ -36,6 +36,8 @@ export const world = {
   npcs: [],
 
   enter(mapId, x, y, dir) {
+    // しらない ばしょ（ふるい きろく など）なら むらへ もどす
+    if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
     this.mapId = mapId;
     this.map = MAPS[mapId];
     this.x = x; this.y = y;
@@ -136,7 +138,7 @@ export const world = {
     beep("warp");
     await wait(160);
     if (wp.to === "@back") {
-      const b = State.save.backTo || { map: "town2", x: 4, y: 5 };
+      const b = State.save.backTo || { map: "village", x: 7, y: 6 };
       this.enter(b.map, b.x, b.y, "down");
     } else {
       if (wp.back) State.save.backTo = wp.back;
@@ -232,33 +234,27 @@ export const world = {
 
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
-    if (n.script === "starter" && !flag("gotStarter")) { await this.starterEvent(n); return; }
-    if (n.script === "champion" && !flag("champion")) {
-      if (State.save.badges.length < 2) {
-        await ui.say([n.name + "「バッジを 2つ あつめてから", "　もういちど こい！」"]);
-        return;
-      }
-    }
+    /* --- ものがたりの イベント --- */
+    if (n.script === "elder") { await this.elderEvent(n); return; }
+    if (n.script === "latette") { await this.latetteEvent(n); return; }
+    if (n.script === "gate") { await this.gateEvent(n); return; }
+    if (n.script === "legend") { await this.legendEvent(n); return; }
+    if (n.script === "entry") { await this.entryEvent(n); return; }
+    if (n.script === "tournament") { await this.tournamentEvent(n); return; }
 
     if (n.trainer && !flag(beatKey)) {
       await ui.say(n.talk || ["しょうぶだ！"]);
-      const party = n.trainer.party.map((p) => (p[0] === "@rivalStarter" ? [State.save.rivalStarter || "ネズミン", p[1]] : p));
-      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { party: party, name: n.name }) });
+      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name }) });
       if (res === "lose") { await this.blackout(); return; }
       setFlag(beatKey);
       await ui.say(n.win || ["やるな！"]);
       if (n.trainer.leader) {
-        const badge = n.trainer.leader;
-        if (State.save.badges.indexOf(badge) < 0) State.save.badges.push(badge);
-        addItem(badge);
+        const em = n.trainer.leader;
+        if (State.save.badges.indexOf(em) < 0) State.save.badges.push(em);
+        addItem(em);
         beep("levelup");
-        await ui.say([State.save.name + "は " + badge + "を てにいれた！"]);
-      }
-      if (n.script === "champion") {
-        setFlag("champion");
-        await ui.say(n.after || []);
-        await this.ending();
-        return;
+        await ui.say([State.save.name + "は " + em + "を てにいれた！",
+                      "エンブレム " + State.save.badges.length + "こめ！"]);
       }
       if (n.after) await ui.say(n.after);
       await this.checkEvolution();
@@ -270,7 +266,7 @@ export const world = {
 
     if (n.healAll) {
       await ui.say(n.talk);
-      const yes = await ui.ask(["モンスターを やすませますか？"]);
+      const yes = await ui.ask(["ガオンを やすませますか？"]);
       if (yes) {
         beep("heal");
         await ui.say(["…おやすみなさい。"], { speed: 6 });
@@ -297,7 +293,7 @@ export const world = {
       if (yes) {
         healParty();
         beep("heal");
-        await ui.say(["…すっきりした！", "モンスターたちも げんきに なった。"]);
+        await ui.say(["…すっきりした！", "ガオンたちも げんきに なった。"]);
         saveLocal();
       }
       return;
@@ -306,43 +302,266 @@ export const world = {
     await ui.say((flag(beatKey) && n.after) ? n.after : n.talk);
   },
 
-  /* --- さいしょの モンスター ---------------------------------- */
-  async starterEvent(n) {
-    await ui.say([
-      "ハカセ「おお、" + State.save.name + "！",
-      "　よく きたな。",
-      "　きみに モンスターを 1ぴき あげよう。",
-    ]);
-    const list = ["リーフィン", "ヒノコマ", "アワミィ"];
-    let picked = -1;
-    while (picked < 0) {
-      const i = await ui.choice(list.map((s) => s + "（" + species(s).types.join("") + "）"), { x: 20, y: 120, w: 280, cancel: false });
-      await ui.say([list[i] + "を えらびますか？"]);
-      const yes = await ui.ask([]);
-      if (yes) picked = i;
+  /* ============================================================
+     ものがたり
+  ============================================================ */
+
+  // ぞくちょう：ラグ・ネットを もらう → リーフ・コンパスを とってくる
+  async elderEvent(n) {
+    if (!flag("gotNet")) {
+      await ui.say([
+        "ぞくちょう「よく きた、" + State.save.name + "。",
+        "　おまえも もう この やまを 出る としだ。",
+        "　やまの そとには「ガオン」と よばれる",
+        "　とくいせいぶつが あふれておる。",
+      ]);
+      addItem("ラグ・ネット", 8);
+      addItem("ガオンずかん");
+      setFlag("gotNet");
+      beep("levelup");
+      await ui.say([
+        State.save.name + "は「ラグ・ネット」を てにいれた！",
+        "のびちぢみする あみ。よわった ガオンを つかまえられる。",
+      ]);
+      await ui.say([
+        "ぞくちょう「そして「ガオンずかん」だ。",
+        "　であった ガオンが きろくされる。",
+        "　やまを 出る まえに ひとつ しごとが ある。",
+        "　やまの おくちに ある",
+        "　「リーフ・コンパス」を とってくるのだ。",
+      ]);
+      saveLocal();
+      return;
     }
-    const starter = list[picked];
-    const mon = makeMon(starter, 5);
-    addToParty(mon);
-    ownMon(starter);
-    State.save.starter = starter;
-    State.save.rivalStarter = list[(picked + 1) % 3];
-    setFlag("gotStarter");
-    beep("levelup");
-    await ui.say([State.save.name + "は " + starter + "を てにいれた！"]);
-    await ui.say(["ハカセ「その こと なかよく してやってくれ。"]);
-    addItem("ずかん");
-    addItem("モンスターボール", 5);
+    if (!flag("gotCompass")) {
+      await ui.say([
+        "ぞくちょう「やまの おくちだ。",
+        "　きたの やまみちを ぬけた さきに ある。",
+        "　たかい くさでは ガオンを つかまえて",
+        "　なかまに してゆくと よい。",
+      ]);
+      return;
+    }
+    if (!flag("elderOK")) {
+      setFlag("elderOK");
+      beep("levelup");
+      await ui.say([
+        "ぞくちょう「おお…！ その コンパス。",
+        "　みごとだ、" + State.save.name + "。",
+        "　おまえを ひとりの ガオンつかいと みとめよう。",
+      ]);
+      await ui.say([
+        "ぞくちょう「みなみの でぐちから やまを 出ろ。",
+        "　せかいの ちゅうしん「ギャラクシー・タウン」で",
+        "　ガオンバトル大会が ひらかれる。",
+        "　8つの タウンを めぐり、7つの エンブレムを あつめよ。",
+      ]);
+      saveLocal();
+      if (cloud.signedIn) saveCloud(true);
+      return;
+    }
     await ui.say([
-      "ハカセ「これも もっていきなさい。",
-      "　ずかんと モンスターボール 5こだ。",
-      "　たかい くさで つかまえてみるといい！",
+      "ぞくちょう「よい たびを。",
+      "　ガオンたちと ともに ゆけ。",
+    ]);
+  },
+
+  // やまの おくち：ラテットに であい、リーフ・コンパスを 手に入れる
+  async latetteEvent(n) {
+    if (flag("gotCompass")) {
+      if (flag("champion") && !flag("latetteBack")) {
+        await ui.say(["やまの おくちに、また あの きんいろの かげが…！"]);
+        setFlag("latetteBack");
+        const res = await startBattle({ wild: makeMon("ラテット", 50) });
+        if (res === "lose") { await this.blackout(); return; }
+        await this.checkEvolution();
+        playBgm(bgmFor(this.mapId));
+        saveLocal();
+        return;
+      }
+      await ui.say(["しずかな いずみ。", "あの ガオンの すがたは もう ない。"]);
+      return;
+    }
+    n.gone = true;
+    beep("levelup");
+    await ui.say([
+      "いずみの ほとりに、金の たてがみの ガオンが いた。",
+      "……「ラテット」。やまの ぬしと よばれる でんせつの ガオン。",
+    ]);
+    await wait(400);
+    await ui.say([
+      "ラテットは " + State.save.name + "を じっと 見つめ、",
+      "かぜの ように はしり去っていった。",
+    ]);
+    addItem("リーフ・コンパス");
+    setFlag("gotCompass");
+    beep("catch");
+    await ui.say([
+      "ラテットが いた ばしょに、",
+      "「リーフ・コンパス」が おちていた！",
+      "むらへ もどって ぞくちょうに 見せよう。",
     ]);
     saveLocal();
     if (cloud.signedIn) saveCloud(true);
   },
 
-  /* --- やせいの たたかい -------------------------------------- */
+  // やまの でぐち：コンパスが ないと とおれない
+  async gateEvent(n) {
+    if (!flag("elderOK")) {
+      await ui.say([
+        "みはり「ここから さきは やまの そとだ。",
+        "　ぞくちょうさまに みとめられたのか？",
+        "　…まだ みたいだな。もどりな。",
+      ]);
+      return;
+    }
+    if (!flag("gateOpen")) {
+      setFlag("gateOpen");
+      n.x = 4; n.dir = "down";
+      await ui.say([
+        "みはり「その コンパス…！ みとめられたんだな。",
+        "　いってこい。せかいは ひろいぞ。",
+      ]);
+      saveLocal();
+      return;
+    }
+    await ui.say(["みはり「きを つけてな。"]);
+  },
+
+  // でんせつの ガオン（メロロン・ディーナ）
+  async legendEvent(n) {
+    const L = n.legend;
+    if (flag("legend:" + L.name)) {
+      await ui.say(["…あの ガオンの すがたは もう ない。"]);
+      return;
+    }
+    await ui.say(n.talk);
+    setFlag("legend:" + L.name);
+    n.gone = true;
+    const res = await startBattle({ wild: makeMon(L.name, L.lv) });
+    if (res === "lose") { await this.blackout(); return; }
+    await this.checkEvolution();
+    playBgm(bgmFor(this.mapId));
+    saveLocal();
+    if (cloud.signedIn) saveCloud(true);
+  },
+
+  // 大会の うけつけ：エンブレム 7つで しゅつじょう
+  async entryEvent(n) {
+    const have = State.save.badges.length;
+    if (flag("champion")) {
+      await ui.say(["うけつけ「ゆうしょうしゃの " + State.save.name + "さん！",
+                    "　また いつでも ちょうせんしに きてくださいね。"]);
+      return;
+    }
+    if (have < 7) {
+      await ui.say([
+        "うけつけ「ガオンバトル大会へ ようこそ！",
+        "　しゅつじょうには 7つの エンブレムが ひつようです。",
+        "　いまは " + have + "こですね。がんばって！",
+      ]);
+      return;
+    }
+    if (!hasItem("たいかいパス")) {
+      addItem("たいかいパス");
+      beep("levelup");
+      await ui.say([
+        "うけつけ「エンブレム 7つ、たしかに！",
+        "　「たいかいパス」を おわたしします。",
+        "　北の かいじょうで おまちしています！",
+      ]);
+      saveLocal();
+      return;
+    }
+    await ui.say(["うけつけ「かいじょうは 北です。", "　けんとうを いのります！"]);
+  },
+
+  // ガオンバトル大会
+  async tournamentEvent(n) {
+    if (flag("champion")) {
+      await ui.say(["しんこう「ゆうしょうしゃの おでましだ！",
+                    "　ことしも みごとな たたかいだった。"]);
+      return;
+    }
+    if (!hasItem("たいかいパス")) {
+      await ui.say([
+        "しんこう「ここは ガオンバトル大会の かいじょう。",
+        "　しゅつじょうには「たいかいパス」が ひつようだ。",
+      ]);
+      return;
+    }
+    const yes = await ui.ask([
+      "しんこう「" + State.save.name + "せんしゅ、じゅんびは いいか？",
+      "　まけたら そこで おわりだ。",
+    ], "たたかう", "まだ まつ");
+    if (!yes) return;
+
+    const rounds = [
+      { name: "1かいせん　ガオンつかい リク", look: "boy",
+        party: [["デカネズ", 44], ["ソラハネ", 45], ["ガンセキ", 45]], money: 3000,
+        talk: ["リク「1かいせん、いくぞ！"], win: ["リク「つよい…！"] },
+      { name: "2かいせん　ガオンつかい ミオ", look: "girl",
+        party: [["ミナモン", 46], ["キノガミ", 46], ["ラゲドン", 47]], money: 4000,
+        talk: ["ミオ「ここからは かんたんには いかないわ。"], win: ["ミオ「みごとね。"] },
+      { name: "じゅんけっしょう　ガオンつかい ゴウ", look: "hiker",
+        party: [["ガンゴレム", 47], ["ドリルモグ", 48], ["オオカブト", 48]], money: 5000,
+        talk: ["ゴウ「かたい ガオンで うけとめる！"], win: ["ゴウ「くずされたか…！"] },
+    ];
+
+    for (let i = 0; i < rounds.length; i++) {
+      const r = rounds[i];
+      await ui.say(["しんこう「" + r.name + "！"]);
+      await ui.say(r.talk);
+      const res = await startBattle({ trainer: { party: r.party, money: r.money, name: r.name, leader: null, champ: true } });
+      if (res === "lose") { await this.tournamentLose(); return; }
+      await ui.say(r.win);
+      await this.checkEvolution();
+      healParty();
+      await ui.say(["しんこう「かいふくの じかんだ。", "　ガオンたちが げんきに なった！"]);
+      saveLocal();
+    }
+
+    // けっしょう：フィロア
+    await ui.say([
+      "しんこう「けっしょうせん！",
+      "　あいては…うみから きた しょうねん フィロア！",
+    ]);
+    await ui.say([
+      "フィロア「やっぱり ここで あえたね、" + State.save.name + "！",
+      "　おれ、この 日の ために うみを わたってきたんだ。",
+      "　ぜんりょくで いくよ！",
+    ]);
+    const res = await startBattle({
+      trainer: {
+        name: "フィロア",
+        party: [["スイスイオ", 48], ["ライボルト", 48], ["オオハサミ", 50], ["リュウグウ", 52]],
+        money: 8000, champ: true,
+      },
+    });
+    if (res === "lose") { await this.tournamentLose(); return; }
+
+    setFlag("champion");
+    beep("levelup");
+    await ui.say([
+      "フィロア「…つよいなあ。おれの まけだ！",
+      "　でも つぎは ぜったい かつからな！",
+    ]);
+    await this.checkEvolution();
+    await this.ending();
+  },
+
+  async tournamentLose() {
+    await ui.say([
+      "しんこう「しょうぶ あり！",
+      "　" + State.save.name + "せんしゅ、ここで だいかいだ。",
+      "　また ちょうせんしに きてくれ。",
+    ]);
+    healParty();
+    this.enter("galaxy", 8, 4, "down");
+    saveLocal();
+  },
+
+  /* --- やせいの ガオン ---------------------------------------- */
   async wildBattle() {
     this.busy = true;
     const enc = this.map.enc;
@@ -377,18 +596,20 @@ export const world = {
     const lost = Math.floor(State.save.money / 2);
     State.save.money -= lost;
     healParty();
-    const c = State.save.lastCenter || { map: "town1", x: 5, y: 5 };
+    const c = State.save.lastCenter || { map: "village", x: 7, y: 6 };
     this.enter(c.map, c.x, c.y, "down");
-    await ui.say(["おかねを " + lost + "円 おとしてしまった…", "モンスターセンターで めを さました。"]);
+    await ui.say(["おかねを " + lost + "円 おとしてしまった…", "ガオン・ステーションで めを さました。"]);
     saveLocal();
   },
 
   async ending() {
     await ui.say([
       "…………",
-      State.save.name + "は チャンピオンに なった！",
+      State.save.name + "は ガオンバトル大会の ゆうしょうしゃに なった！",
+      "やまの むらの みんなも、きっと よろこんでいる。",
+      "やまの おくちの ぬし ラテットも、",
+      "どこかで 見ていたのかもしれない——",
       "ここまで あそんでくれて ありがとう！",
-      "ぼうけんは これからも つづく——",
     ]);
     saveLocal();
     if (cloud.signedIn) await saveCloud(true);

@@ -114,6 +114,7 @@ export const LOOKS = {
   clerk: { H: 3, K: 0, S: 0, P: 2 },
   sailor: { H: 3, K: 0, S: 0, P: 2 },
   hiker: { H: 2, K: 0, S: 2, P: 3 },
+  philoa: { H: 1, K: 0, S: 2, P: 3 },
   leader1: { H: 2, K: 0, S: 3, P: 2 },
   leader2: { H: 3, K: 0, S: 2, P: 3 },
 };

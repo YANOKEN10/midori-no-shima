@@ -1,15 +1,15 @@
 // ============================================================
-//  モンスターの ドットえを パーツから 組み立てる
-//   ・16x16／左右たいしょう
-//   ・0=ハイライト 1=からだ 2=かげ 3=ふち .=とうめい
-//
-//   からだ ごとに「かおの ばしょ」「つばさの つくところ」などの
-//   めじるし(anchor)を もっているので、パーツが きれいに つきます。
+//  ガオンの ドットえを パーツから 組み立てる（32x32）
+//   ・左右たいしょう。0=ハイライト 1=からだ 2=かげ 3=ふち .=とうめい
+//   ・からだ ごとに「目の ばしょ」「つばさの つくところ」などの
+//     めじるし(anchor)を もっているので パーツが きれいに つきます。
 //
 //   recipe の れい：
-//     { body:"quad", ear:"cat", crest:"flame", tail:"puff", eye:"round", mouth:"fang", pat:"belly" }
+//     { body:"quad", ear:"cat", crest:"flame", tail:"puff",
+//       eye:"round", mouth:"fang", pat:"belly" }
 // ============================================================
-const W = 16, H = 16;
+const W = 32, H = 32;
+const CX = 15;              // 左がわの まん中の れつ（右は 16）
 
 function blank() {
   const g = [];
@@ -18,14 +18,14 @@ function blank() {
 }
 function put(g, x, y, c) { if (x >= 0 && x < W && y >= 0 && y < H) g[y][x] = c; }
 function get(g, x, y) { return (x >= 0 && x < W && y >= 0 && y < H) ? g[y][x] : "."; }
-// dx = まんなかから いくつめ（0 が いちばん内がわ）
-function sym(g, dx, y, c) { put(g, 7 - dx, y, c); put(g, 8 + dx, y, c); }
+// dx = まん中から いくつめ（0 が いちばん内がわ）
+function sym(g, dx, y, c) { put(g, CX - dx, y, c); put(g, CX + 1 + dx, y, c); }
 function symIf(g, dx, y, c, only) {
-  if (get(g, 7 - dx, y) === only) put(g, 7 - dx, y, c);
-  if (get(g, 8 + dx, y) === only) put(g, 8 + dx, y, c);
+  if (get(g, CX - dx, y) === only) put(g, CX - dx, y, c);
+  if (get(g, CX + 1 + dx, y) === only) put(g, CX + 1 + dx, y, c);
 }
 function rowFill(g, y, w, c) { for (let dx = 0; dx < w; dx++) sym(g, dx, y, c); }
-function symBox(g, dx, y, w, h, c) {
+function box(g, dx, y, w, h, c) {
   for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) sym(g, dx + i, y + j, c);
 }
 function ellipseW(y, cy, ry, rx) {
@@ -33,17 +33,19 @@ function ellipseW(y, cy, ry, rx) {
   if (Math.abs(t) > 1) return 0;
   return Math.max(1, Math.round(rx * Math.sqrt(1 - t * t)));
 }
-function fillEllipse(g, cy, ry, rx, y0, y1, c) {
+function ell(g, cy, ry, rx, y0, y1, c) {
   for (let y = Math.max(0, y0); y <= Math.min(H - 1, y1); y++) {
     const w = ellipseW(y, cy, ry, rx);
-    if (w) rowFill(g, y, w, c);
+    if (w) rowFill(g, y, w, c || 1);
   }
 }
-// その行の からだの はば（ふちを ふくむ）
-function widthAt(g, y) {
-  let w = 0;
-  for (let dx = 0; dx < 8; dx++) if (get(g, 7 - dx, y) !== ".") w = dx + 1;
-  return w;
+// さんかく（つの・ひれ など）dir: -1=うえむき 1=したむき
+function tri(g, dx, y, w, h, dir, c) {
+  for (let j = 0; j < h; j++) {
+    const ww = Math.max(1, Math.round(w * (1 - j / h)));
+    const yy = dir < 0 ? y + j : y + h - 1 - j;
+    for (let i = 0; i < ww; i++) sym(g, dx + i, yy, c || 1);
+  }
 }
 
 /* ============================================================
@@ -53,331 +55,355 @@ function widthAt(g, y) {
 const BODIES = {
   // まるい（スライム風）
   blob(g) {
-    fillEllipse(g, 10, 5.6, 6.6, 4, 15, 1);
-    return { eyeY: 9, eyeDX: 3, topY: 4, botY: 15, sideY: 10, sideDX: 6, footY: 15 };
+    ell(g, 20, 11, 13, 8, 31);
+    return { eyeY: 17, eyeDX: 6, topY: 8, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
   },
 
   // たまご（たてなが）
   egg(g) {
-    fillEllipse(g, 9, 6.4, 5.0, 2, 15, 1);
-    return { eyeY: 6, eyeDX: 2, topY: 2, botY: 15, sideY: 9, sideDX: 5, footY: 15 };
+    ell(g, 18, 13, 10, 4, 31);
+    return { eyeY: 12, eyeDX: 5, topY: 4, botY: 31, sideY: 18, sideDX: 10, footY: 31 };
   },
 
   // 4つあし
   quad(g) {
-    fillEllipse(g, 10, 2.8, 6.2, 7, 12, 1);
-    fillEllipse(g, 5, 3.4, 4.0, 2, 8, 1);
-    for (const dx of [1, 4]) symBox(g, dx, 12, 2, 4, 1);
-    return { eyeY: 5, eyeDX: 2, topY: 2, botY: 15, sideY: 10, sideDX: 6, footY: 15 };
+    ell(g, 20, 6, 12, 14, 25);            // どうたい
+    ell(g, 11, 7, 8, 4, 17);              // あたま
+    for (const dx of [2, 8]) box(g, dx, 25, 4, 7, 1);
+    box(g, 2, 30, 5, 2, 1); box(g, 8, 30, 5, 2, 1);
+    return { eyeY: 10, eyeDX: 4, topY: 4, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
   },
 
-  // こいぬ（あたまが 大きい 4つあし）
+  // あたまの 大きい 4つあし（こいぬ）
   puppy(g) {
-    fillEllipse(g, 11, 2.6, 5.0, 9, 13, 1);
-    fillEllipse(g, 6, 4.0, 4.6, 2, 10, 1);
-    for (const dx of [1, 3]) symBox(g, dx, 13, 2, 3, 1);
-    return { eyeY: 6, eyeDX: 2, topY: 2, botY: 15, sideY: 11, sideDX: 5, footY: 15 };
+    ell(g, 22, 5, 10, 17, 27);
+    ell(g, 12, 8, 9, 3, 20);
+    for (const dx of [2, 7]) box(g, dx, 26, 4, 6, 1);
+    return { eyeY: 12, eyeDX: 4, topY: 3, botY: 31, sideY: 22, sideDX: 10, footY: 31 };
   },
 
   // 2ほんあし（けもの）
   beast(g) {
-    fillEllipse(g, 11, 4.2, 4.6, 7, 14, 1);
-    fillEllipse(g, 5, 3.6, 4.2, 1, 8, 1);
-    symBox(g, 4, 9, 2, 4, 1);
-    symBox(g, 1, 14, 3, 2, 1);
-    return { eyeY: 5, eyeDX: 2, topY: 1, botY: 15, sideY: 10, sideDX: 5, footY: 15 };
+    ell(g, 22, 9, 9, 14, 29);             // からだ
+    ell(g, 10, 7, 9, 2, 17);              // あたま
+    box(g, 8, 18, 4, 8, 1);               // うで
+    box(g, 2, 29, 6, 3, 1);               // あし
+    return { eyeY: 9, eyeDX: 4, topY: 2, botY: 31, sideY: 20, sideDX: 10, footY: 31 };
   },
 
   // とり
   bird(g) {
-    fillEllipse(g, 9, 4.0, 4.2, 5, 13, 1);
-    fillEllipse(g, 4, 3.0, 3.4, 1, 7, 1);
-    symBox(g, 4, 8, 2, 4, 1);
-    symBox(g, 1, 14, 1, 2, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 1, botY: 15, sideY: 9, sideDX: 5, footY: 15 };
+    ell(g, 19, 8, 8, 11, 27);
+    ell(g, 9, 6, 7, 2, 15);
+    box(g, 7, 16, 4, 9, 1);               // たたんだ つばさ
+    box(g, 2, 28, 2, 4, 1);
+    return { eyeY: 8, eyeDX: 3, topY: 2, botY: 31, sideY: 18, sideDX: 10, footY: 31 };
   },
 
-  // むし（ふしめ）
+  // むし（ふしめの ある からだ）
   bug(g) {
-    fillEllipse(g, 5, 3.2, 3.8, 2, 8, 1);
-    for (let y = 9; y <= 15; y++) rowFill(g, y, y % 2 === 0 ? 5 : 4, 1);
-    return { eyeY: 5, eyeDX: 2, topY: 2, botY: 15, sideY: 10, sideDX: 5, footY: 15 };
+    ell(g, 10, 6, 8, 3, 16);
+    for (let y = 17; y <= 31; y++) rowFill(g, y, (y % 4 < 2) ? 10 : 8, 1);
+    return { eyeY: 9, eyeDX: 4, topY: 3, botY: 31, sideY: 21, sideDX: 10, footY: 31 };
   },
 
-  // いもむし（たてに ながい）
+  // いもむし
   worm(g) {
-    fillEllipse(g, 4, 3.0, 3.6, 1, 6, 1);
-    for (let y = 7; y <= 15; y++) rowFill(g, y, (y % 3 === 0) ? 4 : 3, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 1, botY: 15, sideY: 9, sideDX: 4, footY: 15 };
+    ell(g, 8, 6, 7, 2, 13);
+    for (let y = 14; y <= 31; y++) rowFill(g, y, (y % 5 < 3) ? 7 : 6, 1);
+    return { eyeY: 8, eyeDX: 3, topY: 2, botY: 31, sideY: 20, sideDX: 7, footY: 31 };
   },
 
   // さかな
   fish(g) {
-    fillEllipse(g, 8, 5.0, 4.4, 3, 13, 1);
-    symBox(g, 4, 8, 3, 2, 1);
-    symBox(g, 0, 14, 2, 2, 1);
-    symBox(g, 2, 15, 2, 1, 1);
-    return { eyeY: 6, eyeDX: 2, topY: 3, botY: 15, sideY: 8, sideDX: 6, footY: 15 };
+    ell(g, 16, 10, 9, 6, 26);
+    tri(g, 8, 14, 6, 6, 1, 1);            // よこの ひれ
+    box(g, 0, 27, 3, 4, 1);
+    tri(g, 2, 28, 6, 4, -1, 1);           // おびれ
+    return { eyeY: 12, eyeDX: 4, topY: 6, botY: 31, sideY: 16, sideDX: 12, footY: 31 };
   },
 
   // へび（フードを ひろげた）
   snake(g) {
-    for (let y = 10; y <= 15; y++) rowFill(g, y, y >= 13 ? 3 : 2, 1);
-    fillEllipse(g, 6, 4.0, 6.4, 2, 10, 1);
-    fillEllipse(g, 5, 2.6, 3.0, 3, 7, 1);
-    return { eyeY: 5, eyeDX: 2, topY: 2, botY: 15, sideY: 6, sideDX: 6, footY: 15 };
+    for (let y = 20; y <= 31; y++) rowFill(g, y, y >= 26 ? 7 : 4, 1);
+    ell(g, 13, 9, 13, 4, 21);             // フード
+    ell(g, 10, 6, 6, 5, 15);              // あたま
+    return { eyeY: 10, eyeDX: 3, topY: 4, botY: 31, sideY: 13, sideDX: 12, footY: 31 };
   },
 
   // おばけ
   ghost(g) {
-    fillEllipse(g, 8, 5.6, 5.2, 2, 12, 1);
-    for (let dx = 0; dx < 5; dx++) {
-      const h = (dx % 2 === 0) ? 3 : 1;
-      for (let j = 0; j < h; j++) sym(g, dx, 12 + j, 1);
+    ell(g, 16, 12, 11, 4, 25);
+    for (let dx = 0; dx < 11; dx++) {
+      const h = (dx % 4 < 2) ? 6 : 2;
+      for (let j = 0; j < h; j++) sym(g, dx, 25 + j, 1);
     }
-    return { eyeY: 6, eyeDX: 2, topY: 2, botY: 14, sideY: 8, sideDX: 5, footY: 14 };
+    return { eyeY: 13, eyeDX: 4, topY: 4, botY: 29, sideY: 16, sideDX: 11, footY: 29 };
   },
 
   // いわ
   rock(g) {
-    for (let y = 4; y <= 14; y++) {
-      const w = y < 6 ? 4 + (y - 4) : y > 12 ? 7 - (y - 12) : 6;
-      rowFill(g, y, w, 1);
+    for (let y = 8; y <= 29; y++) {
+      const w = y < 13 ? 7 + (y - 8) : y > 25 ? 13 - (y - 25) * 2 : 12;
+      rowFill(g, y, Math.max(2, w), 1);
     }
-    return { eyeY: 8, eyeDX: 3, topY: 4, botY: 14, sideY: 9, sideDX: 6, footY: 14 };
+    return { eyeY: 17, eyeDX: 6, topY: 8, botY: 29, sideY: 19, sideDX: 12, footY: 29 };
   },
 
-  // けっしょう（とがった いし）
+  // けっしょう
   crystal(g) {
-    for (let y = 2; y <= 15; y++) {
-      const w = y < 8 ? 1 + Math.floor((y - 2) * 0.8) : 6 - Math.floor((y - 8) * 0.3);
+    for (let y = 3; y <= 31; y++) {
+      const w = y < 17 ? 1 + Math.floor((y - 3) * 0.8) : 12 - Math.floor((y - 17) * 0.3);
       rowFill(g, y, Math.max(1, w), 1);
     }
-    return { eyeY: 9, eyeDX: 2, topY: 2, botY: 15, sideY: 10, sideDX: 5, footY: 15 };
+    return { eyeY: 19, eyeDX: 4, topY: 3, botY: 31, sideY: 20, sideDX: 10, footY: 31 };
   },
 
   // くさ
   plant(g) {
-    fillEllipse(g, 12, 3.8, 5.6, 8, 15, 1);
-    fillEllipse(g, 6, 3.6, 3.8, 2, 10, 1);
-    return { eyeY: 6, eyeDX: 2, topY: 2, botY: 15, sideY: 7, sideDX: 4, footY: 15 };
+    ell(g, 24, 8, 11, 16, 31);
+    ell(g, 13, 7, 8, 5, 21);
+    return { eyeY: 12, eyeDX: 4, topY: 5, botY: 31, sideY: 15, sideDX: 8, footY: 31 };
   },
 
   // きのこ
   mush(g) {
-    fillEllipse(g, 6, 3.6, 7.0, 2, 9, 1);
-    for (let y = 10; y <= 15; y++) rowFill(g, y, 3, 1);
-    return { eyeY: 11, eyeDX: 1, topY: 2, botY: 15, sideY: 6, sideDX: 6, footY: 15 };
+    ell(g, 12, 8, 14, 3, 19);
+    for (let y = 20; y <= 31; y++) rowFill(g, y, 6, 1);
+    return { eyeY: 24, eyeDX: 3, topY: 3, botY: 31, sideY: 12, sideDX: 13, footY: 31 };
   },
 
   // ちいさな たま
   ball(g) {
-    fillEllipse(g, 9, 4.6, 4.6, 4, 14, 1);
-    return { eyeY: 8, eyeDX: 2, topY: 4, botY: 14, sideY: 9, sideDX: 5, footY: 14 };
+    ell(g, 19, 9, 9, 9, 28);
+    return { eyeY: 17, eyeDX: 4, topY: 9, botY: 28, sideY: 19, sideDX: 9, footY: 28 };
   },
 
-  // かに（はさみが うえ）
+  // かに
   crab(g) {
-    fillEllipse(g, 10, 3.0, 6.0, 7, 13, 1);
-    symBox(g, 4, 3, 3, 4, 1);
-    symBox(g, 6, 5, 2, 3, 1);
-    symBox(g, 1, 13, 2, 3, 1);
-    symBox(g, 4, 13, 2, 3, 1);
-    return { eyeY: 9, eyeDX: 3, topY: 3, botY: 15, sideY: 10, sideDX: 6, footY: 15 };
+    ell(g, 20, 6, 12, 13, 27);
+    box(g, 8, 6, 5, 8, 1);                // はさみ
+    box(g, 12, 10, 4, 6, 1);
+    box(g, 2, 27, 4, 5, 1); box(g, 8, 27, 4, 5, 1);
+    return { eyeY: 18, eyeDX: 6, topY: 6, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
   },
 
-  // くらげ（したに あし）
+  // くらげ
   jelly(g) {
-    fillEllipse(g, 7, 4.6, 5.4, 2, 9, 1);
-    for (const dx of [0, 2, 4]) symBox(g, dx, 10, 1, 5, 1);
-    return { eyeY: 6, eyeDX: 2, topY: 2, botY: 15, sideY: 7, sideDX: 5, footY: 15 };
+    ell(g, 14, 9, 11, 4, 19);
+    for (const dx of [0, 4, 8]) box(g, dx, 20, 2, 11, 1);
+    return { eyeY: 12, eyeDX: 4, topY: 4, botY: 31, sideY: 14, sideDX: 11, footY: 31 };
   },
 
   // こうもり
   bat(g) {
-    fillEllipse(g, 8, 3.4, 3.0, 5, 12, 1);
-    for (let dx = 3; dx <= 7; dx++) {
-      const top = 4 + (dx - 3), bot = 10 - Math.floor((dx - 3) / 2);
+    ell(g, 17, 7, 6, 10, 25);
+    for (let dx = 6; dx <= 15; dx++) {
+      const top = 8 + (dx - 6), bot = 21 - Math.floor((dx - 6) / 2);
       for (let y = top; y <= bot; y++) sym(g, dx, y, 1);
     }
-    return { eyeY: 7, eyeDX: 1, topY: 4, botY: 13, sideY: 6, sideDX: 7, footY: 13 };
+    return { eyeY: 15, eyeDX: 2, topY: 8, botY: 26, sideY: 13, sideDX: 15, footY: 26 };
   },
 
   // りゅう
   drake(g) {
-    fillEllipse(g, 11, 4.4, 4.4, 7, 15, 1);
-    fillEllipse(g, 4, 3.4, 4.2, 1, 8, 1);
-    symBox(g, 4, 9, 2, 3, 1);
-    symBox(g, 1, 14, 3, 2, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 1, botY: 15, sideY: 10, sideDX: 5, footY: 15 };
+    ell(g, 22, 9, 9, 14, 31);
+    ell(g, 9, 7, 9, 2, 17);
+    box(g, 8, 18, 4, 7, 1);
+    box(g, 2, 29, 6, 3, 1);
+    return { eyeY: 9, eyeDX: 4, topY: 2, botY: 31, sideY: 20, sideDX: 10, footY: 31 };
   },
 
-  // かめ（こうらと 手あし）
+  // かめ
   shell(g) {
-    fillEllipse(g, 9, 3.6, 6.4, 5, 13, 1);
-    fillEllipse(g, 9, 2.6, 4.0, 6, 12, 2);
-    symBox(g, 5, 12, 2, 3, 1);
-    symBox(g, 1, 13, 2, 3, 1);
-    for (let y = 12; y <= 15; y++) rowFill(g, y, 1, 1);
-    return { eyeY: 14, eyeDX: 0, topY: 5, botY: 15, sideY: 9, sideDX: 6, footY: 15 };
+    ell(g, 19, 8, 13, 11, 27);
+    ell(g, 19, 5, 8, 14, 25, 2);          // こうらの もよう
+    box(g, 10, 25, 4, 6, 1);
+    box(g, 2, 27, 4, 5, 1);
+    for (let y = 25; y <= 31; y++) rowFill(g, y, 3, 1);
+    return { eyeY: 28, eyeDX: 1, topY: 11, botY: 31, sideY: 19, sideDX: 13, footY: 31 };
   },
 
   // ひとがた
   imp(g) {
-    fillEllipse(g, 4, 3.4, 4.0, 1, 7, 1);
-    fillEllipse(g, 11, 3.6, 3.4, 8, 14, 1);
-    symBox(g, 3, 9, 2, 3, 1);
-    symBox(g, 0, 14, 2, 2, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 1, botY: 15, sideY: 10, sideDX: 4, footY: 15 };
+    ell(g, 9, 7, 8, 2, 16);
+    ell(g, 22, 8, 7, 15, 29);
+    box(g, 6, 18, 4, 7, 1);
+    box(g, 1, 29, 4, 3, 1);
+    return { eyeY: 9, eyeDX: 4, topY: 2, botY: 31, sideY: 21, sideDX: 8, footY: 31 };
   },
 
-  // おおきな ひとがた（ゴーレム）
+  // ゴーレム
   golem(g) {
-    fillEllipse(g, 4, 2.6, 3.4, 1, 6, 1);
-    for (let y = 7; y <= 13; y++) rowFill(g, y, 5, 1);
-    symBox(g, 5, 7, 2, 5, 1);
-    symBox(g, 1, 14, 3, 2, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 1, botY: 15, sideY: 9, sideDX: 6, footY: 15 };
+    ell(g, 8, 5, 7, 2, 13);
+    for (let y = 14; y <= 27; y++) rowFill(g, y, 10, 1);
+    box(g, 10, 14, 4, 10, 1);
+    box(g, 2, 28, 6, 4, 1);
+    return { eyeY: 8, eyeDX: 3, topY: 2, botY: 31, sideY: 18, sideDX: 12, footY: 31 };
   },
 
   // ふわふわ（くも）
   cloud(g) {
-    fillEllipse(g, 7, 3.4, 6.4, 4, 10, 1);
-    fillEllipse(g, 11, 2.6, 4.4, 9, 13, 1);
-    return { eyeY: 7, eyeDX: 3, topY: 4, botY: 13, sideY: 7, sideDX: 6, footY: 13 };
+    ell(g, 14, 7, 13, 8, 21);
+    ell(g, 23, 5, 9, 19, 27);
+    return { eyeY: 14, eyeDX: 6, topY: 8, botY: 27, sideY: 14, sideDX: 13, footY: 27 };
   },
 
   // ながい くび
   neck(g) {
-    fillEllipse(g, 12, 3.2, 5.6, 9, 15, 1);
-    for (let y = 5; y <= 10; y++) rowFill(g, y, 2, 1);
-    fillEllipse(g, 3, 2.8, 3.6, 1, 6, 1);
-    for (const dx of [1, 4]) symBox(g, dx, 14, 2, 2, 1);
-    return { eyeY: 3, eyeDX: 2, topY: 1, botY: 15, sideY: 12, sideDX: 5, footY: 15 };
+    ell(g, 25, 6, 11, 19, 31);
+    for (let y = 10; y <= 21; y++) rowFill(g, y, 4, 1);
+    ell(g, 7, 5, 7, 2, 12);
+    for (const dx of [2, 8]) box(g, dx, 29, 4, 3, 1);
+    return { eyeY: 6, eyeDX: 3, topY: 2, botY: 31, sideY: 25, sideDX: 11, footY: 31 };
   },
 
   // ほのおの かたまり
   fire(g) {
-    for (let y = 3; y <= 15; y++) {
-      const w = y < 6 ? 1 + (y - 3) : y < 9 ? 4 : 5;
+    for (let y = 6; y <= 31; y++) {
+      const w = y < 12 ? 2 + (y - 6) : y < 18 ? 8 : 10;
       rowFill(g, y, w, 1);
     }
-    symBox(g, 5, 8, 2, 4, 1);
-    return { eyeY: 9, eyeDX: 2, topY: 3, botY: 15, sideY: 10, sideDX: 5, footY: 15 };
+    box(g, 10, 17, 3, 8, 1);
+    return { eyeY: 19, eyeDX: 4, topY: 6, botY: 31, sideY: 21, sideDX: 10, footY: 31 };
   },
 
   // ほし
   star(g) {
-    symBox(g, 0, 1, 2, 4, 1);
-    for (let y = 5; y <= 9; y++) rowFill(g, y, 7 - Math.abs(7 - y), 1);
-    rowFill(g, 6, 7, 1); rowFill(g, 7, 7, 1);
-    symBox(g, 5, 10, 2, 4, 1);
-    symBox(g, 1, 10, 2, 5, 1);
-    return { eyeY: 7, eyeDX: 2, topY: 1, botY: 15, sideY: 7, sideDX: 6, footY: 15 };
+    tri(g, 0, 1, 4, 8, -1, 1);
+    for (let y = 9; y <= 19; y++) rowFill(g, y, 13 - Math.abs(14 - y), 1);
+    tri(g, 10, 20, 5, 9, 1, 1);
+    tri(g, 1, 20, 6, 11, 1, 1);
+    return { eyeY: 14, eyeDX: 4, topY: 1, botY: 31, sideY: 14, sideDX: 12, footY: 31 };
   },
 
-  // からくり（かくばった）
+  // からくり
   robot(g) {
-    for (let y = 2; y <= 7; y++) rowFill(g, y, 4, 1);
-    for (let y = 8; y <= 13; y++) rowFill(g, y, 6, 1);
-    symBox(g, 6, 8, 2, 4, 1);
-    symBox(g, 1, 14, 3, 2, 1);
-    return { eyeY: 4, eyeDX: 2, topY: 2, botY: 15, sideY: 10, sideDX: 6, footY: 15 };
+    for (let y = 4; y <= 15; y++) rowFill(g, y, 8, 1);
+    for (let y = 16; y <= 27; y++) rowFill(g, y, 12, 1);
+    box(g, 12, 16, 4, 8, 1);
+    box(g, 2, 28, 6, 4, 1);
+    return { eyeY: 9, eyeDX: 4, topY: 4, botY: 31, sideY: 20, sideDX: 12, footY: 31 };
   },
 };
 
 /* ============ かざり ============ */
 const EARS = {
   none() {},
-  cat(g, L) { for (let i = 0; i < 3; i++) symBox(g, L.eyeDX + 1 + i, L.eyeY - 2 - i, 1, 2 + i, 1); },
-  round(g, L) { symBox(g, L.eyeDX + 2, L.eyeY - 3, 2, 3, 1); },
-  long(g, L) { symBox(g, L.eyeDX, L.eyeY - 8, 2, 6, 1); },
-  fin(g, L) { symBox(g, L.eyeDX + 2, L.eyeY - 1, 3, 2, 1); },
-  side(g, L) { symBox(g, L.eyeDX + 2, L.eyeY - 2, 3, 1, 1); },
-  droop(g, L) { symBox(g, L.eyeDX + 2, L.eyeY - 2, 2, 4, 1); },
+  cat(g, L) { tri(g, L.eyeDX + 2, L.eyeY - 9, 4, 8, -1, 1); },
+  round(g, L) { ell(g, L.eyeY - 6, 4, 4, L.eyeY - 10, L.eyeY - 2, 1); box(g, L.eyeDX + 3, L.eyeY - 8, 4, 6, 1); },
+  long(g, L) { box(g, L.eyeDX, L.eyeY - 16, 4, 12, 1); },
+  fin(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 3, 6, 5, 1, 1); },
+  side(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 6, 3, 1); },
+  droop(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 4, 9, 1); },
+  horn(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 6, 3, 6, -1, 1); },
 };
 
 const CRESTS = {
   none() {},
-  spike(g, L) { symBox(g, 0, L.topY - 3, 1, 3, 1); symBox(g, 1, L.topY - 2, 1, 2, 1); },
-  leaf(g, L) { symBox(g, 0, L.topY - 4, 1, 4, 1); symBox(g, 1, L.topY - 4, 2, 2, 1); },
-  flame(g, L) { symBox(g, 0, L.topY - 4, 1, 4, 1); symBox(g, 1, L.topY - 3, 1, 2, 1); symBox(g, 2, L.topY - 1, 1, 1, 1); },
-  fan(g, L) { for (let dx = 0; dx < 4; dx++) symBox(g, dx, L.topY - 3 + dx, 1, 4 - dx, 1); },
-  ball(g, L) { symBox(g, 0, L.topY - 3, 1, 2, 1); symBox(g, 0, L.topY - 5, 2, 2, 1); },
-  horns(g, L) { symBox(g, 2, L.topY - 3, 1, 3, 1); symBox(g, 3, L.topY - 2, 1, 2, 1); },
-  antenna(g, L) { symBox(g, 1, L.topY - 5, 1, 5, 1); symBox(g, 1, L.topY - 6, 2, 1, 1); },
-  crown(g, L) { for (const dx of [0, 2, 4]) symBox(g, dx, L.topY - 3, 1, 3, 1); symBox(g, 0, L.topY - 1, 5, 1, 1); },
+  spike(g, L) { tri(g, 0, L.topY - 7, 3, 7, -1, 1); tri(g, 3, L.topY - 4, 2, 4, -1, 1); },
+  leaf(g, L) { box(g, 0, L.topY - 8, 2, 8, 1); ell(g, L.topY - 8, 3, 6, L.topY - 11, L.topY - 5, 1); },
+  flame(g, L) { tri(g, 0, L.topY - 9, 4, 9, -1, 1); tri(g, 4, L.topY - 5, 3, 5, -1, 1); },
+  fan(g, L) { for (let dx = 0; dx < 8; dx++) tri(g, dx, L.topY - 7 + dx, 1, 8 - dx, -1, 1); },
+  ball(g, L) { box(g, 0, L.topY - 5, 2, 5, 1); ell(g, L.topY - 7, 3, 4, L.topY - 10, L.topY - 4, 1); },
+  horns(g, L) { tri(g, 4, L.topY - 7, 3, 7, -1, 1); tri(g, 7, L.topY - 4, 2, 4, -1, 1); },
+  antenna(g, L) { box(g, 2, L.topY - 10, 2, 10, 1); ell(g, L.topY - 11, 2, 3, L.topY - 13, L.topY - 9, 1); },
+  crown(g, L) { for (const dx of [0, 4, 8]) tri(g, dx, L.topY - 7, 3, 7, -1, 1); box(g, 0, L.topY - 3, 11, 3, 1); },
 };
 
 const WINGS = {
   none() {},
-  small(g, L) { symBox(g, L.sideDX - 1, L.sideY - 1, 2, 3, 1); },
-  big(g, L) { for (let i = 0; i < 3; i++) symBox(g, L.sideDX - 1 + i, L.sideY - 2 + i, 1, 5 - i, 1); },
-  bug(g, L) { symBox(g, L.sideDX - 1, L.sideY - 3, 3, 5, 1); },
-  fin(g, L) { symBox(g, L.sideDX, L.sideY, 2, 3, 1); },
-  arm(g, L) { symBox(g, L.sideDX - 1, L.sideY, 2, 4, 1); },
+  small(g, L) { tri(g, L.sideDX - 1, L.sideY - 3, 5, 7, 1, 1); },
+  big(g, L) { for (let i = 0; i < 6; i++) box(g, L.sideDX - 1 + i, L.sideY - 5 + i, 1, 11 - i, 1); },
+  bug(g, L) { ell(g, L.sideY, 6, 5, L.sideY - 6, L.sideY + 6, 1); box(g, L.sideDX - 2, L.sideY - 6, 6, 12, 1); },
+  fin(g, L) { tri(g, L.sideDX, L.sideY, 4, 7, 1, 1); },
+  arm(g, L) { box(g, L.sideDX - 2, L.sideY, 4, 8, 1); },
 };
 
 const TAILS = {
   none() {},
-  puff(g, L) { symBox(g, 5, L.botY - 4, 2, 2, 1); },
-  spike(g, L) { symBox(g, 6, L.botY - 5, 2, 1, 1); },
-  long(g, L) { symBox(g, 6, L.botY - 6, 1, 5, 1); },
-  fan(g, L) { for (let dx = 5; dx < 8; dx++) symBox(g, dx, L.botY - 3 - (dx - 5), 1, 2, 1); },
+  puff(g, L) { ell(g, L.botY - 7, 4, 5, L.botY - 11, L.botY - 3, 1); box(g, 10, L.botY - 9, 5, 5, 1); },
+  spike(g, L) { tri(g, 11, L.botY - 11, 4, 6, -1, 1); },
+  long(g, L) { box(g, 12, L.botY - 13, 2, 10, 1); box(g, 12, L.botY - 15, 4, 3, 1); },
+  fan(g, L) { for (let dx = 10; dx < 15; dx++) box(g, dx, L.botY - 7 - (dx - 10), 1, 5, 1); },
 };
 
 /* ============ かお ============ */
-function eyeSpot(L) { return Math.max(1, L.eyeDX); }
+function eyeDX(L) { return Math.max(2, L.eyeDX); }
 
 const EYES = {
-  dot(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 3); },
-  round(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 3); sym(g, d, L.eyeY - 1, 0); },
-  big(g, L) {
-    const d = eyeSpot(L);
-    for (let j = 0; j < 2; j++) { sym(g, d, L.eyeY - 1 + j, 3); sym(g, d + 1, L.eyeY - 1 + j, 3); }
-    sym(g, d + 1, L.eyeY - 1, 0);
+  dot(g, L) { const d = eyeDX(L); box(g, d, L.eyeY, 2, 2, 3); },
+  round(g, L) {
+    const d = eyeDX(L);
+    box(g, d, L.eyeY - 1, 3, 4, 3);
+    box(g, d + 1, L.eyeY - 1, 1, 1, 0);
   },
-  angry(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 3); sym(g, d + 1, L.eyeY - 1, 3); },
-  closed(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 3); sym(g, d + 1, L.eyeY, 3); },
-  visor(g, L) { for (let dx = 0; dx <= L.eyeDX + 1; dx++) symIf(g, dx, L.eyeY, 3, "1"); sym(g, eyeSpot(L), L.eyeY, 0); },
-  glow(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 0); sym(g, d, L.eyeY - 1, 3); sym(g, d + 1, L.eyeY, 3); },
-  sleepy(g, L) { const d = eyeSpot(L); sym(g, d, L.eyeY, 3); sym(g, d + 1, L.eyeY + 1, 3); },
+  big(g, L) {
+    const d = eyeDX(L);
+    box(g, d, L.eyeY - 2, 4, 5, 3);
+    box(g, d + 1, L.eyeY - 2, 2, 2, 0);
+  },
+  angry(g, L) {
+    const d = eyeDX(L);
+    box(g, d, L.eyeY, 3, 3, 3);
+    for (let i = 0; i < 3; i++) box(g, d + i, L.eyeY - 2 - i, 1, 2, 3);
+  },
+  closed(g, L) { const d = eyeDX(L); box(g, d, L.eyeY, 4, 1, 3); box(g, d, L.eyeY + 1, 1, 1, 3); },
+  visor(g, L) {
+    for (let dx = 0; dx <= L.eyeDX + 3; dx++) symIf(g, dx, L.eyeY, "3", "1");
+    for (let dx = 0; dx <= L.eyeDX + 3; dx++) symIf(g, dx, L.eyeY + 1, "3", "1");
+    box(g, eyeDX(L), L.eyeY, 2, 1, 0);
+  },
+  glow(g, L) {
+    const d = eyeDX(L);
+    box(g, d - 1, L.eyeY - 1, 4, 4, 3);
+    box(g, d, L.eyeY, 2, 2, 0);
+  },
+  sleepy(g, L) { const d = eyeDX(L); box(g, d, L.eyeY, 4, 1, 3); box(g, d + 2, L.eyeY + 1, 2, 1, 3); },
 };
 
 const MOUTHS = {
   none() {},
-  fang(g, L) { sym(g, 0, L.eyeY + 2, 3); sym(g, 1, L.eyeY + 2, 3); sym(g, 1, L.eyeY + 3, 3); },
-  smile(g, L) { sym(g, 0, L.eyeY + 3, 3); sym(g, 1, L.eyeY + 2, 3); },
-  beak(g, L) { sym(g, 0, L.eyeY + 2, 0); sym(g, 1, L.eyeY + 3, 0); sym(g, 0, L.eyeY + 4, 3); },
-  line(g, L) { sym(g, 0, L.eyeY + 2, 3); sym(g, 1, L.eyeY + 2, 3); },
-  open(g, L) { symBox(g, 0, L.eyeY + 2, 2, 2, 3); },
+  fang(g, L) {
+    box(g, 0, L.eyeY + 5, 5, 1, 3);
+    box(g, 2, L.eyeY + 6, 1, 2, 3);
+  },
+  smile(g, L) { box(g, 0, L.eyeY + 6, 3, 1, 3); box(g, 3, L.eyeY + 5, 1, 1, 3); },
+  beak(g, L) { tri(g, 0, L.eyeY + 3, 4, 4, 1, 0); box(g, 0, L.eyeY + 6, 3, 1, 3); },
+  line(g, L) { box(g, 0, L.eyeY + 5, 4, 1, 3); },
+  open(g, L) { box(g, 0, L.eyeY + 4, 4, 4, 3); box(g, 0, L.eyeY + 5, 2, 2, 0); },
 };
 
 /* ============ もよう ============ */
 const PATTERNS = {
   none() {},
   belly(g, L) {
-    for (let y = L.botY - 5; y <= L.botY - 2; y++) for (let dx = 0; dx < 3; dx++) symIf(g, dx, y, "0", "1");
+    for (let y = L.botY - 11; y <= L.botY - 3; y++) for (let dx = 0; dx < 6; dx++) symIf(g, dx, y, "0", "1");
   },
   stripe(g, L) {
-    for (let y = L.topY + 3; y < L.botY - 1; y += 3) for (let dx = 0; dx < 7; dx++) symIf(g, dx, y, "2", "1");
-  },
-  spot(g, L) {
-    for (const [dx, dy] of [[2, 3], [4, 6], [1, 8]]) {
-      const y = L.topY + dy;
-      symIf(g, dx, y, "2", "1"); symIf(g, dx + 1, y, "2", "1"); symIf(g, dx, y + 1, "2", "1");
+    for (let y = L.topY + 5; y < L.botY - 2; y += 5) {
+      for (let dx = 0; dx < 14; dx++) { symIf(g, dx, y, "2", "1"); symIf(g, dx, y + 1, "2", "1"); }
     }
   },
-  back(g, L) { for (let dx = 0; dx < 5; dx++) symIf(g, dx, L.topY + 2, "2", "1"); },
+  spot(g, L) {
+    for (const [dx, dy] of [[4, 6], [9, 12], [2, 16]]) {
+      const y = L.topY + dy;
+      for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) symIf(g, dx + i, y + j, "2", "1");
+    }
+  },
+  back(g, L) { for (let dx = 0; dx < 9; dx++) { symIf(g, dx, L.topY + 4, "2", "1"); symIf(g, dx, L.topY + 5, "2", "1"); } },
   band(g, L) {
     const y = Math.round((L.topY + L.botY) / 2);
-    for (let dx = 0; dx < 8; dx++) symIf(g, dx, y, "2", "1");
+    for (let dx = 0; dx < 15; dx++) { symIf(g, dx, y, "2", "1"); symIf(g, dx, y + 1, "2", "1"); }
   },
   dots(g, L) {
-    for (const [dx, dy] of [[3, 4], [1, 6], [4, 9], [2, 11]]) symIf(g, dx, L.topY + dy, "0", "1");
+    for (const [dx, dy] of [[6, 7], [2, 12], [9, 17], [4, 21]]) {
+      symIf(g, dx, L.topY + dy, "0", "1"); symIf(g, dx + 1, L.topY + dy, "0", "1");
+      symIf(g, dx, L.topY + dy + 1, "0", "1"); symIf(g, dx + 1, L.topY + dy + 1, "0", "1");
+    }
   },
   plate(g, L) {
-    for (let y = L.botY - 6; y <= L.botY - 2; y++) for (let dx = 0; dx < 4; dx++) symIf(g, dx, y, "2", "1");
+    for (let y = L.botY - 13; y <= L.botY - 4; y++) for (let dx = 0; dx < 8; dx++) symIf(g, dx, y, "2", "1");
   },
 };
 
@@ -394,33 +420,25 @@ function outline(g) {
   }
   return out;
 }
+// かたちに そって 下がわに かげ、そとがわにも すこし かげ
 function shade(g, L) {
-  for (let y = L.botY - 2; y <= L.botY; y++) {
-    if (!g[y]) continue;
-    for (let x = 0; x < W; x++) if (g[y][x] === "1") g[y][x] = "2";
+  for (let x = 0; x < W; x++) {
+    let low = -1;
+    for (let y = H - 1; y >= 0; y--) if (g[y][x] === "1") { low = y; break; }
+    if (low < 0) continue;
+    for (let y = Math.max(0, low - 3); y <= low; y++) if (g[y][x] === "1") g[y][x] = "2";
+  }
+  for (let y = 0; y < H; y++) {
+    for (let dx = 0; dx < 16; dx++) {
+      if (get(g, CX - dx, y) !== "1") continue;
+      if (get(g, CX - dx - 1, y) === "3") { sym(g, dx, y, "2"); break; }
+    }
   }
 }
 function highlight(g, L) {
-  const y = L.topY + 1;
-  symIf(g, 1, y, "0", "1");
-  symIf(g, 2, y + 1, "0", "1");
-}
-
-// ちいさい モンスターは ひとまわり 小さく（左右たいしょうを たもったまま）
-function resize(rows, n) {
-  const off = Math.floor((W - n) / 2);
-  const g = blank();
-  const h = n / 2;
-  for (let y = 0; y < n; y++) {
-    const sy = Math.min(H - 1, Math.floor(y * H / n));
-    for (let dx = 0; dx < h; dx++) {
-      const sdx = Math.min(7, Math.floor(dx * 8 / h));
-      const ch = rows[sy][7 - sdx];
-      g[y + off][off + h - 1 - dx] = ch;
-      g[y + off][off + h + dx] = ch;
-    }
+  for (let j = 0; j < 3; j++) {
+    for (let dx = 1; dx < 5; dx++) symIf(g, dx, L.topY + 2 + j, "0", "1");
   }
-  return g.map((r) => r.join(""));
 }
 
 export function buildSprite(recipe) {
@@ -442,9 +460,26 @@ export function buildSprite(recipe) {
   (MOUTHS[r.mouth] || MOUTHS.none)(g, L);
 
   const rows = g.map((row) => row.join(""));
-  if (r.size === "s") return resize(rows, 12);
-  if (r.size === "m") return resize(rows, 14);
+  if (r.size === "s") return resize(rows, 24);
+  if (r.size === "m") return resize(rows, 28);
   return rows;
+}
+
+// ちいさい ガオンは ひとまわり 小さく（左右たいしょうの まま）
+function resize(rows, n) {
+  const off = Math.floor((W - n) / 2);
+  const g = blank();
+  const h = n / 2;
+  for (let y = 0; y < n; y++) {
+    const sy = Math.min(H - 1, Math.floor(y * H / n));
+    for (let dx = 0; dx < h; dx++) {
+      const sdx = Math.min(15, Math.floor(dx * 16 / h));
+      const ch = rows[sy][CX - sdx];
+      g[y + off][off + h - 1 - dx] = ch;
+      g[y + off][off + h + dx] = ch;
+    }
+  }
+  return g.map((r) => r.join(""));
 }
 
 export const PART_NAMES = {
@@ -452,3 +487,4 @@ export const PART_NAMES = {
   wing: Object.keys(WINGS), tail: Object.keys(TAILS), eye: Object.keys(EYES),
   mouth: Object.keys(MOUTHS), pat: Object.keys(PATTERNS),
 };
+export const SPRITE_SIZE = W;

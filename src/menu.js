@@ -19,7 +19,7 @@ import { showAuth, showForm } from "./gate.js";
 /* ============ メインメニュー ============ */
 export async function openMenu() {
   for (;;) {
-    const items = ["モンスター", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
+    const items = ["ガオン", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
     const i = await ui.choice(items, { x: 176, y: 8, w: 136, rows: 7 });
     if (i < 0 || i === 6) return;
     if (i === 0) await partyMenu();
@@ -42,7 +42,7 @@ function partyLabels() {
 export async function partyMenu(forItem) {
   for (;;) {
     const p = State.save.party;
-    if (!p.length) { await ui.say(["モンスターを もっていない。"]); return -1; }
+    if (!p.length) { await ui.say(["ガオンを もっていない。"]); return -1; }
     const i = await ui.choice(partyLabels(), { x: 8, y: 8, w: 304, rows: 6 });
     if (i < 0) return -1;
     if (forItem) return i;
@@ -74,7 +74,7 @@ export async function showStatus(m) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 156);
-    const img = G.makeMonArt(MONART[m.sp], 4, "m" + m.sp, palOf(sp));
+    const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp));
     G.draw(img, 16, 26);
     G.text("No." + String(sp.no).padStart(3, "0"), 100, 16, 3, 14);
     const lv = "Lv" + m.lv;
@@ -86,7 +86,7 @@ export async function showStatus(m) {
     G.text("こうげき " + statOf(m, "atk"), 20, 110, 3, 14);
     G.text("ぼうぎょ " + statOf(m, "def"), 170, 110, 3, 14);
     G.text("すばやさ " + statOf(m, "spd"), 20, 132, 3, 14);
-    G.text("とくしゅ " + statOf(m, "spc"), 170, 132, 3, 14);
+    G.text("まほう " + statOf(m, "spc"), 170, 132, 3, 14);
 
     G.window9(4, 166, 312, 114);
     m.moves.forEach((mv, i) => {
@@ -145,7 +145,7 @@ async function useOutside(name) {
       useItem(name); m.status = ""; beep("heal");
       await ui.say([monName(m) + "は げんきに なった！"]);
     } else {
-      if (!fainted(m)) { await ui.say(["その モンスターは げんきだ。"]); return; }
+      if (!fainted(m)) { await ui.say(["その ガオンは げんきだ。"]); return; }
       useItem(name);
       m.hp = Math.max(1, Math.floor(maxHp(m) * d.ratio));
       m.status = "";
@@ -183,7 +183,7 @@ async function dexEntry(n) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 160);
-    G.draw(G.makeMonArt(MONART[n], 5, "d" + n, palOf(sp)), 20, 24);
+    G.draw(G.makeMonArt(MONART[n], 3, "d" + n, palOf(sp)), 20, 24);
     G.text("No." + String(sp.no).padStart(3, "0"), 130, 24, 3, 14);
     G.textFit(n, 130, 46, 170, 3, 16);
     G.textFit("タイプ/" + sp.types.join("・"), 130, 72, 170, 3, 14);
@@ -204,11 +204,11 @@ async function trainerCard() {
     G.use("ui");
     G.window9(8, 8, 304, 264);
     const W = 264;   // わくの 内がわの はば
-    G.text("トレーナーカード", 24, 24, 3, 16);
+    G.text("ガオンつかいカード", 24, 24, 3, 16);
     G.textFit("なまえ　" + s.name, 24, 60, W, 3, 16);
     G.textFit("おかね　" + s.money + "円", 24, 88, W, 3, 16);
     G.textFit("ずかん　みた " + c.seen + " / つかまえた " + c.own, 24, 116, W, 3, 16);
-    G.text("バッジ　" + s.badges.length + "こ", 24, 144, 3, 16);
+    G.text("エンブレム　" + s.badges.length + " / 7", 24, 144, 3, 16);
     s.badges.slice(0, 3).forEach((b, i) => G.textFit("・" + b, 40, 170 + i * 22, W - 16, 3, 14));
     G.textFit(cloud.signedIn ? "☁ " + cloud.who + " で ログイン中" : "この たんまつだけで あそんでいます", 24, 240, W, 3, 13);
   });
