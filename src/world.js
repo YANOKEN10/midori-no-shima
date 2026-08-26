@@ -6,6 +6,7 @@ import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { tileFor, solid } from "./tiles.js";
+import { findHouses, houseImage } from "./props.js";
 import { MAPS } from "./data/maps.js";
 import { personFrames, personFramesRaw, LOOKS } from "./data/charart.js";
 import { playerColors } from "./data/looks.js";
@@ -664,8 +665,16 @@ export const world = {
         if (group(edgeTile(map, tx + 1, ty)) === gg) mask |= 2;
         if (group(edgeTile(map, tx, ty + 1)) === gg) mask |= 4;
         if (group(edgeTile(map, tx - 1, ty)) === gg) mask |= 8;
-        G.draw(tileFor(ch, frame, map.sets, mask), tx * T - camX, ty * T - camY);
+        const vr = ((tx * 7 + ty * 13 + tx * ty) >>> 0) % 16;
+        G.draw(tileFor(ch, frame, map.sets, mask, vr), tx * T - camX, ty * T - camY);
       }
+    }
+
+    // たてもの（何マスかに またがる 1まいの え）
+    for (const hs of findHouses(map)) {
+      const sx = hs.x * T - camX, sy = hs.y * T - camY;
+      if (sx > G.W || sy > G.H || sx + hs.w * T < 0 || sy + hs.h * T < 0) continue;
+      G.draw(houseImage(hs), sx, sy);
     }
 
     // おちている どうぐ

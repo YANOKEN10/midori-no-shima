@@ -121,8 +121,11 @@ export function setPalette(name) {
   PAL = resolve(curSet);
   tileCache.clear();
   spriteCache.clear();
+  if (houseCacheHook) houseCacheHook();
   document.body.style.background = mode === "color" ? "#141a26" : shade(MONO[mode][3], -0.35);
 }
+let houseCacheHook = null;
+export function onPaletteChange(fn) { houseCacheHook = fn; }
 export function paletteName() { return mode; }
 export function isColor() { return mode === "color"; }
 
@@ -306,7 +309,9 @@ export function tileCanvas(name, painter, setName) {
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
   const prev = setName ? use(setName) : null;
-  painter(new Pixel(c));
+  const px = new Pixel(c);
+  px.name = setName || curSet;
+  painter(px);
   if (prev) use(prev);
   tileCache.set(k, cv);
   return cv;

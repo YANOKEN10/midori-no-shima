@@ -15,12 +15,20 @@ const N = 1, E = 2, S = 4, Wl = 8;
 const PAINT = {
   /* ---------------- じめん ---------------- */
   // くさ（ふつう）
-  ",": (p) => {
+  ",": (p, mask, v0) => {
+    const v = v0 | 0;
     p.ffill(1);
-    p.fnoise(11, 90, 0, 0, 0, 32, 32);
-    p.fnoise(23, 40, 2, 0, 0, 32, 32);
+    p.fnoise(11 + v * 37, 90, 0, 0, 0, 32, 32);
+    p.fnoise(23 + v * 91, 40, 2, 0, 0, 32, 32);
     const tuft = (x, y) => { p.fbox(x, y + 1, 1, 2, 2); p.f(x - 1, y + 2, 2); p.f(x + 1, y + 2, 2); p.f(x, y, 2); };
-    tuft(6, 7); tuft(19, 4); tuft(25, 18); tuft(11, 23); tuft(28, 27);
+    const sets = [[[6, 7], [19, 4], [25, 18], [11, 23]],
+                  [[3, 14], [17, 9], [28, 22], [9, 27]],
+                  [[12, 5], [24, 12], [5, 21], [20, 26]],
+                  [[8, 3], [22, 17], [14, 28], [30, 8]]];
+    for (const [x, y] of sets[v % 4]) tuft(x, y);
+    if ((v === 5 || v === 12) && p.name === "grass") { p.set("flower"); p.f(26, 6, 2); p.f(25, 7, 2); p.f(27, 7, 2); p.f(26, 8, 2); p.f(26, 7, 1); p.set(null); }
+    if (v === 9) { p.fbox(4, 18, 3, 2, 2); p.fbox(5, 17, 1, 1, 2); }
+    if (v === 2 && p.name === "grass") { p.set("tree"); p.fbox(20, 20, 2, 3, 2); p.fbox(19, 19, 4, 2, 1); p.set(null); }
   },
 
   // たかい くさ（ガオンが でる）
@@ -42,10 +50,12 @@ const PAINT = {
   },
 
   // つち・みち（まわりが みちで なければ ふちを ぼかす）
-  ".": (p, mask) => {
+  ".": (p, mask, v) => {
     p.ffill(0);
-    p.fnoise(7, 60, 1, 0, 0, 32, 32);
-    p.fnoise(31, 18, 2, 0, 0, 32, 32);
+    p.fnoise(7 + (v | 0) * 53, 60, 1, 0, 0, 32, 32);
+    p.fnoise(31 + (v | 0) * 17, 18, 2, 0, 0, 32, 32);
+    if ((v | 0) % 8 === 3) { p.fbox(20, 12, 3, 2, 2); p.fbox(21, 11, 1, 1, 2); }
+    if ((v | 0) % 8 === 6) { p.fbox(7, 22, 2, 2, 2); }
     p.set("grass");
     if (!(mask & N)) { p.fbox(0, 0, 32, 2, 1); p.fdither(0, 2, 32, 3, 1, false); }
     if (!(mask & S)) { p.fbox(0, 30, 32, 2, 1); p.fdither(0, 27, 32, 3, 1, true); }
@@ -55,10 +65,12 @@ const PAINT = {
   },
 
   // すな
-  "~": (p, mask) => {
+  "~": (p, mask, v) => {
     p.ffill(0);
-    p.fnoise(5, 70, 1, 0, 0, 32, 32);
-    p.fnoise(19, 24, 2, 0, 0, 32, 32);
+    p.fnoise(5 + (v | 0) * 29, 70, 1, 0, 0, 32, 32);
+    p.fnoise(19 + (v | 0) * 61, 24, 2, 0, 0, 32, 32);
+    if ((v | 0) % 8 === 2) { p.fbox(12, 18, 5, 1, 2); p.fbox(13, 19, 3, 1, 2); }
+    if ((v | 0) % 8 === 5) { p.fbox(22, 8, 4, 1, 2); }
     p.set("grass");
     if (!(mask & N)) p.fdither(0, 0, 32, 4, 1, false);
     if (!(mask & S)) p.fdither(0, 28, 32, 4, 1, true);
@@ -104,9 +116,10 @@ const PAINT = {
 
   /* ---------------- き と いわ ---------------- */
   // となりの きと つながって もりに 見える
-  T: (p, mask) => {
+  T: (p, mask, v0) => {
+    const v = v0 | 0;
     p.set("grass");
-    p.ffill(1); p.fnoise(3, 60, 0, 0, 0, 32, 32);
+    p.ffill(1); p.fnoise(3 + (v | 0) * 41, 60, 0, 0, 0, 32, 32);
     p.set("tree");
     p.fdither(5, 27, 22, 4, 3, false);              // かげ
     p.set("wood");
@@ -118,8 +131,9 @@ const PAINT = {
     const r = (mask & 2) ? 32 : 30;
     // はっぱの かたまり
     p.fbox(l, t, r - l, b - t, 1);
-    p.fcorner(10, t + 8, 7, 0);
-    p.fcorner(21, t + 13, 6, 0);
+    const vv = (v | 0) % 3;
+    p.fcorner(9 + vv * 3, t + 7 + vv, 7, 0);
+    p.fcorner(22 - vv * 2, t + 13 - vv, 6, 0);
     p.fdither(l + 1, t + 10, r - l - 2, 10, 2, true);
     p.fdither(l + 1, b - 6, r - l - 2, 6, 2, false);
     // ふち（となりに きが ないところ だけ）
@@ -130,20 +144,33 @@ const PAINT = {
     p.set(null);
   },
 
-  R: (p, mask) => {
+  // いわ＝がけ。うえに いわが あれば かべ、なければ てっぺん
+  R: (p, mask, v0) => {
+    const v = v0 | 0;
+    const N = 1, E = 2, S = 4, Wl = 8;
     p.set("grass");
-    p.ffill(1); p.fnoise(9, 50, 0, 0, 0, 32, 32);
+    p.ffill(1); p.fnoise(9 + (v | 0) * 23, 50, 0, 0, 0, 32, 32);
     p.set("rock");
-    p.fdither(6, 25, 22, 4, 3, false);           // かげ
-    p.fcorner(16, 16, 13, 1);
-    p.fcorner(11, 11, 7, 0);
-    p.fdither(6, 18, 21, 10, 2, true);
-    p.fbox(9, 21, 5, 1, 2); p.fbox(18, 14, 6, 1, 2);
-    // ふちを かこむ
-    for (let y = 0; y < 32; y++) for (let x = 0; x < 32; x++) {
-      const dx = x - 16, dy = y - 17, d = dx * dx + dy * dy;
-      if (d <= 144 && d > 121) p.f(x, y, 3);
+    const top = !(mask & N);
+    const bot = !(mask & S);
+    const y0 = top ? 6 : 0;
+    p.fbox(0, y0, 32, 32 - y0, 1);
+    if (top) {
+      // てっぺんの まるみと ひかり
+      p.fbox(0, y0, 32, 3, 0);
+      p.fdither(0, y0 + 3, 32, 3, 0, false);
+      p.fbox(0, y0 - 1, 32, 1, 3);
     }
+    // たての すじ（いわはだ）
+    for (let x = 3; x < 32; x += 7) {
+      const h = 10 + ((x + (v | 0) * 5) % 3) * 4;
+      p.fbox(x, y0 + 5, 1, h, 2);
+      p.f(x + 1, y0 + 6, 2);
+    }
+    p.fdither(0, 24, 32, 8, 2, true);
+    if (bot) { p.fbox(0, 29, 32, 3, 3); }
+    if (!(mask & Wl)) p.fbox(0, y0, 1, 32 - y0, 3);
+    if (!(mask & E)) p.fbox(31, y0, 1, 32 - y0, 3);
     p.set(null);
   },
 
@@ -381,12 +408,13 @@ const TILE_SET = {
 };
 
 // override は マップごとの いろちがい（やねの 色など）
-export function tileFor(ch, frame, override, mask) {
+export function tileFor(ch, frame, override, mask, variant) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
   const m = mask == null ? 15 : mask;
+  const v = variant | 0;
   const name = (ch === "W" && frame) ? "W2" : ch;
   const f = (ch === "W" && frame) ? PAINT.W2 : (PAINT[ch] || PAINT["."]);
-  return tileCanvas(name + "#" + m, (p) => f(p, m), set);
+  return tileCanvas(name + "#" + m + "v" + v, (p) => f(p, m, v), set);
 }
 
 export function tileSet(ch) { return TILE_SET[ch] || "path"; }
