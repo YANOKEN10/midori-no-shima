@@ -83,6 +83,20 @@ function step(rows, side) {
   return out;
 }
 
+// もじ（H=かみ K=はだ S=うわぎ P=ズボン 3=ふち）の ままで かえす
+export function personFramesRaw() {
+  const front = mirror(FRONT);
+  const back = mirror(BACK);
+  const right = SIDE.slice();
+  const left = flipRows(right);
+  return {
+    down: [front, step(front, 0), front, step(front, 1)],
+    up: [back, step(back, 0), back, step(back, 1)],
+    right: [right, step(right, 0), right, step(right, 1)],
+    left: [left, step(left, 1), left, step(left, 0)],
+  };
+}
+
 export function personFrames(colors) {
   const c = {
     H: String(colors.H == null ? 3 : colors.H),

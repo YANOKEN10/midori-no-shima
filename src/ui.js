@@ -52,7 +52,7 @@ export const ui = {
         i: Math.min(o.start || 0, Math.max(0, items.length - 1)), top: 0,
         cancel: o.cancel !== false,
         rows: o.rows || Math.min(items.length, 4),
-        x: o.x, y: o.y, w: o.w,
+        x: o.x, y: o.y, w: o.w, extra: o.extra,
         resolve: resolve,
       });
     });
@@ -232,6 +232,8 @@ function drawChoice(w) {
     if (i === w.i) G.text("▶", b.x + 8, y, 3, TEXT_SIZE);
     G.textFit(w.items[i], b.x + CH_PAD_L, y, maxW, 3, TEXT_SIZE);
   }
+  if (w.extra) w.extra(b, w.i);
+  G.use("ui");
   if (w.top > 0) G.text("▲", b.x + b.w - 18, b.y + 2, 3, 12);
   if (w.top + b.rows < w.items.length) G.text("▼", b.x + b.w - 18, b.y + b.h - 14, 3, 12);
 }

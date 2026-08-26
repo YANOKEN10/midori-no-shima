@@ -391,6 +391,103 @@ export const MAPS = {
     objects: [{ x: 8, y: 1, text: ["ぼうけんの きろくを つける たんまつだ。"], pc: true }],
   },
 
+
+  // ハーバー・タウンの ふくや
+  clothes1: {
+    name: "ふくや ウミカゼ",
+    kind: "in",
+    sets: { g: "carpet" },
+    rows: [
+      "##########",
+      "#ccccffff#",
+      "#ffffffff#",
+      "#ffggggff#",
+      "#ffggggff#",
+      "#ffffffff#",
+      "#ffVffVff#",
+      "#fffxxfff#",
+      "##########",
+    ],
+    warps: [{ x: 4, y: 7, to: "harbor", tx: 3, ty: 11 }, { x: 5, y: 7, to: "harbor", tx: 3, ty: 11 }],
+    npcs: [
+      {
+        x: 2, y: 2, dir: "down", look: "girl", name: "ふくやの おねえさん",
+        clothes: "basic",
+        talk: ["いらっしゃい！ ウミカゼ ふくてんよ。",
+               "うわぎと ズボン、5色ずつ あるわ。"],
+      },
+      {
+        x: 7, y: 5, dir: "left", look: "boy", name: "おきゃく",
+        talk: ["4つめの まちには もっと おしゃれな",
+               "ふくやが あるって うわさだよ。"],
+      },
+    ],
+  },
+
+  // サンド・タウンの びよういん
+  salon: {
+    name: "びよういん スナカゼ",
+    kind: "in",
+    sets: { g: "carpet" },
+    rows: [
+      "##########",
+      "#ccccffff#",
+      "#ffffffff#",
+      "#ffggggff#",
+      "#ffggggff#",
+      "#ffffffff#",
+      "#ffVffVff#",
+      "#fffxxfff#",
+      "##########",
+    ],
+    warps: [{ x: 4, y: 7, to: "sand", tx: 3, ty: 10 }, { x: 5, y: 7, to: "sand", tx: 3, ty: 10 }],
+    npcs: [
+      {
+        x: 2, y: 2, dir: "down", look: "nurse", name: "びようしさん",
+        salon: true,
+        talk: ["ようこそ スナカゼへ。",
+               "かみの 色、5色から えらべますよ。"],
+      },
+      {
+        x: 7, y: 5, dir: "left", look: "girl", name: "おきゃく",
+        talk: ["きんいろに してもらったの。",
+               "すなの まちに にあうでしょ？"],
+      },
+    ],
+  },
+
+  // ストーン・タウンの おしゃれな ふくや
+  clothes2: {
+    name: "ブティック イシヅカ",
+    kind: "in",
+    sets: { g: "carpet" },
+    rows: [
+      "##########",
+      "#ccccffff#",
+      "#ffffffff#",
+      "#ffggggff#",
+      "#ffggggff#",
+      "#ffggggff#",
+      "#ffVffVff#",
+      "#fffxxfff#",
+      "##########",
+    ],
+    warps: [{ x: 4, y: 7, to: "stone", tx: 3, ty: 10 }, { x: 5, y: 7, to: "stone", tx: 3, ty: 10 }],
+    npcs: [
+      {
+        x: 2, y: 2, dir: "down", look: "leader1", name: "デザイナー イシヅカ",
+        clothes: "fancy",
+        talk: ["ようこそ ブティック イシヅカへ。",
+               "ここでしか 手に入らない 10色を そろえている。",
+               "…すこし たかいけどね。"],
+      },
+      {
+        x: 7, y: 5, dir: "left", look: "boy", name: "おきゃく",
+        talk: ["ここの ふくは 大会でも めだつんだ。"],
+      },
+    ],
+  },
+
   shop: {
     name: "ラグ・ショップ",
     kind: "in",
@@ -437,8 +534,8 @@ const TOWN_DEFS = [
       "T,s,,,,.,,,,,WWW",
       "T,,,,,,.....dWWW",
       "T,,,,,,.,,,dddWW",
-      "T,,,,,,,,,,,dWWW",
-      "T,,,,,,,,,~~~WWW",
+      "T,rrr,,,,,,,dWWW",
+      "T,#D#,,,,,~~~WWW",
       "T,,,,,,,,~~~~WWW",
       "T,,,,,,,,~~~~~WW",
       "TTTTTT,,TTTTTTTT",
@@ -450,11 +547,12 @@ const TOWN_DEFS = [
       { x: 7, y: 0, to: "route1", tx: 7, ty: 15, edge: 1 },
       { x: 6, y: 13, to: "gate", tx: 7, ty: 7, edge: 1 },
       { x: 7, y: 13, to: "gate", tx: 7, ty: 7, edge: 1 },
+      { x: 3, y: 10, to: "clothes1", tx: 4, ty: 6 },
     ],
     signXY: [2, 6],
     signText: ["ハーバー・タウン",
                "ちいさな 港町。ふねが 一そう つながれている",
-               "◀ ステーション　ショップ ▶"],
+               "◀ ステーション　ショップ ▶　ふくや も あるよ"],
     champXY: [5, 10],
     north: "route1", northXY: [7, 15], south: "gate", southXY: [7, 7],
     emblem: "みなとエンブレム",
@@ -474,7 +572,9 @@ const TOWN_DEFS = [
   },
   {
     id: "sand", name: "サンド・タウン", sets: { r: "roof", ",": "sand" },
-    patch: [[3, 9, "~"], [4, 9, "~"], [5, 9, "~"], [10, 7, "~"], [11, 7, "~"], [12, 9, "~"]],
+    patch: [[10, 7, "~"], [11, 7, "~"], [12, 9, "~"], [12, 10, "~"],
+            [2, 8, "r"], [3, 8, "r"], [4, 8, "r"], [2, 9, "#"], [3, 9, "D"], [4, 9, "#"]],
+    extraWarps: [{ x: 3, y: 9, to: "salon", tx: 4, ty: 6 }],
     north: "route2", northXY: [7, 15], south: "route1", southXY: [7, 1],
     emblem: "すなエンブレム",
     champ: { name: "タウン・チャンピオン ダイ", look: "hiker",
@@ -482,7 +582,7 @@ const TOWN_DEFS = [
     champTalk: ["すなの まちの ダイだ。", "すなあらしにも たえられるか！"],
     champWin: ["やるな！ 「すなエンブレム」を もっていけ。"],
     people: [
-      { x: 4, y: 11, look: "girl", name: "むすめ",
+      { x: 6, y: 11, look: "girl", name: "むすめ",
         talk: ["すなの 下には むかしの ガオンが", "ねむっているって いわれてるの。"] },
     ],
   },
@@ -503,7 +603,9 @@ const TOWN_DEFS = [
   },
   {
     id: "stone", name: "ストーン・タウン", sets: { r: "roofBlue" },
-    patch: [[3, 8, "R"], [4, 8, "R"], [11, 8, "R"], [12, 8, "R"], [3, 11, "R"], [12, 11, "R"]],
+    patch: [[11, 8, "R"], [12, 8, "R"], [12, 11, "R"], [11, 11, "R"],
+            [2, 8, "r"], [3, 8, "r"], [4, 8, "r"], [2, 9, "#"], [3, 9, "D"], [4, 9, "#"]],
+    extraWarps: [{ x: 3, y: 9, to: "clothes2", tx: 4, ty: 6 }],
     north: "route4", northXY: [7, 15], south: "route3", southXY: [7, 1],
     emblem: "いしエンブレム",
     champ: { name: "タウン・チャンピオン ゴウ", look: "hiker",
@@ -512,7 +614,7 @@ const TOWN_DEFS = [
                 "かたい ガオンを くずせるかな？"],
     champWin: ["いい うでだ。「いしエンブレム」を やろう。"],
     people: [
-      { x: 5, y: 11, look: "oldman", name: "いしきり",
+      { x: 6, y: 11, look: "oldman", name: "いしきり",
         talk: ["きたの みずうみには「メロロン」という",
                "おおきな ガオンが すんでいるらしい。"] },
     ],
@@ -696,7 +798,7 @@ for (const t of TOWN_DEFS) {
     kind: "out",
     sets: t.sets,
     rows: t.rows || build(TOWN, t.patch),
-    warps: t.warps || townWarps(t.id, t.north, t.south, t.northXY, t.southXY),
+    warps: (t.warps || townWarps(t.id, t.north, t.south, t.northXY, t.southXY)).concat(t.extraWarps || []),
     signs: [{ x: (t.signXY || [2, 6])[0], y: (t.signXY || [2, 6])[1],
               text: t.signText || [t.name, "◀ ステーション　ショップ ▶", "チャンピオンに かとう！"] }],
     npcs: npcs,

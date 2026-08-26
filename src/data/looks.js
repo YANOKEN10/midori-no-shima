@@ -1,0 +1,78 @@
+// ============================================================
+//  レオの みため（ふくと かみの 色）
+//   ・ハーバー・タウン（1つめの まち）… きほんの 5色ずつ
+//   ・ストーン・タウン（4つめの まち）… おしゃれな 10色ずつ
+//   ・サンド・タウン（2つめの まち）… びよういんで かみを 5色
+// ============================================================
+
+export const SKIN = "#ffd9ae";
+export const OUTLINE = "#231a14";
+
+/* --- 1つめの まちの ふくや（きほん 5色） --- */
+export const SHIRT_BASIC = [
+  { name: "あかい うわぎ", color: "#d94b3a" },
+  { name: "あおい うわぎ", color: "#2f6fd0" },
+  { name: "みどりの うわぎ", color: "#37a05a" },
+  { name: "きいろい うわぎ", color: "#e8bf2e" },
+  { name: "しろい うわぎ", color: "#f2f2f2" },
+];
+export const PANTS_BASIC = [
+  { name: "こんの ズボン", color: "#2b3f6b" },
+  { name: "ちゃいろの ズボン", color: "#7a5230" },
+  { name: "はいいろの ズボン", color: "#808a99" },
+  { name: "みどりの ズボン", color: "#3c6b45" },
+  { name: "くろい ズボン", color: "#24262b" },
+];
+
+/* --- 4つめの まちの おしゃれな ふくや（10色） --- */
+export const SHIRT_FANCY = [
+  { name: "むらさきの うわぎ", color: "#8a4fd0" },
+  { name: "ももいろの うわぎ", color: "#f07ab0" },
+  { name: "みずいろの うわぎ", color: "#46c8e0" },
+  { name: "オレンジの うわぎ", color: "#f08a2e" },
+  { name: "ミントの うわぎ", color: "#63d9a8" },
+  { name: "ワインの うわぎ", color: "#8f2440" },
+  { name: "クリームの うわぎ", color: "#f5e3b3" },
+  { name: "ふかみどりの うわぎ", color: "#1f7a4f" },
+  { name: "こんじょうの うわぎ", color: "#23306b" },
+  { name: "ぎんいろの うわぎ", color: "#c9d2dd" },
+];
+export const PANTS_FANCY = [
+  { name: "むらさきの ズボン", color: "#6d3aa8" },
+  { name: "ももいろの ズボン", color: "#d95f96" },
+  { name: "みずいろの ズボン", color: "#3aa8c0" },
+  { name: "オレンジの ズボン", color: "#c96f20" },
+  { name: "ミントの ズボン", color: "#3fae82" },
+  { name: "ワインの ズボン", color: "#701a30" },
+  { name: "クリームの ズボン", color: "#ddc48a" },
+  { name: "ふかみどりの ズボン", color: "#175c3b" },
+  { name: "こんじょうの ズボン", color: "#1a2450" },
+  { name: "ぎんいろの ズボン", color: "#9aa6b5" },
+];
+
+/* --- 2つめの まちの びよういん（かみ 5色） --- */
+export const HAIR_COLORS = [
+  { name: "くろかみ", color: "#241d1a" },
+  { name: "ちゃいろの かみ", color: "#6b4a2b" },
+  { name: "きんいろの かみ", color: "#e0c05a" },
+  { name: "あかい かみ", color: "#b8452e" },
+  { name: "ぎんいろの かみ", color: "#cfd6dd" },
+];
+
+export const DEFAULT_LOOK = {
+  shirt: "#2f4fa8",     // はじめは あおい うわぎ
+  pants: "#231a14",
+  hair: "#241d1a",
+};
+
+// レオを えがくときの もじ→いろ
+export function playerColors(look) {
+  const L = look || DEFAULT_LOOK;
+  return {
+    K: SKIN,
+    S: L.shirt || DEFAULT_LOOK.shirt,
+    P: L.pants || DEFAULT_LOOK.pants,
+    H: L.hair || DEFAULT_LOOK.hair,
+    "3": OUTLINE,
+  };
+}

@@ -7,14 +7,15 @@ import { ui } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { tileFor, solid } from "./tiles.js";
 import { MAPS } from "./data/maps.js";
-import { personFrames, LOOKS } from "./data/charart.js";
+import { personFrames, personFramesRaw, LOOKS } from "./data/charart.js";
+import { playerColors } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
 import {
   G as State, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
 import { startBattle, popEvolution, wait } from "./battle.js";
-import { openMenu, shopMenu, showStatus, reportMenu } from "./menu.js";
+import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 
@@ -22,6 +23,11 @@ const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
 
 const charCache = new Map();
+let rawFrames = null;
+function playerFrames() {
+  if (!rawFrames) rawFrames = personFramesRaw();
+  return rawFrames;
+}
 function framesFor(look) {
   if (!charCache.has(look)) charCache.set(look, personFrames(LOOKS[look] || LOOKS.boy));
   return charCache.get(look);
@@ -284,6 +290,18 @@ export const world = {
     if (n.shop) {
       await ui.say(n.talk);
       await shopMenu();
+      return;
+    }
+
+    if (n.clothes) {
+      await ui.say(n.talk);
+      await clothesShop(n.clothes === "fancy");
+      return;
+    }
+
+    if (n.salon) {
+      await ui.say(n.talk);
+      await hairSalon();
       return;
     }
 
@@ -656,9 +674,17 @@ export const world = {
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
       if (p.me) {
-        const f = framesFor("player")[this.dir][this.moving ? this.walkFrame : 0];
+        const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
-        G.draw(G.makeArt(f, 2, "p" + this.dir + (this.moving ? this.walkFrame : 0), "player"), px - camX, py - camY - 8 + hopY);
+        let img;
+        if (G.isColor()) {
+          const f = playerFrames()[this.dir][fi];
+          img = G.makeColorArt(f, 2, "pc" + this.dir + fi, playerColors(State.save.look));
+        } else {
+          const f = framesFor("player")[this.dir][fi];
+          img = G.makeArt(f, 2, "p" + this.dir + fi, "player");
+        }
+        G.draw(img, px - camX, py - camY - 8 + hopY);
       } else {
         const n = p.n;
         const f = framesFor(n.look)[n.dir || "down"][0];

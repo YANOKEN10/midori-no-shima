@@ -91,6 +91,7 @@ export function newGame(playerName) {
     playTime: 0,
     where: { map: START.map, x: START.x, y: START.y, dir: START.dir },
     lastCenter: null,
+    look: { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" },
     starter: "",
     rivalStarter: "",
   };
@@ -104,6 +105,7 @@ export function loadInto(data) {
   G.save.bag = G.save.bag || {};
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
+  G.save.look = G.save.look || { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" };
 }
 
 /* --- もちもの ------------------------------------------------- */

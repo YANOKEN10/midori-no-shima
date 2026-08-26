@@ -273,6 +273,30 @@ export function makeMonArt(rows, scale, key, setName) {
   return makeArt(shifted, scale, (key || "") + "#mono", setName);
 }
 
+// もじごとに いろを していして えがく（主人公の ふくの 色がえ用）
+export function makeColorArt(rows, scale, key, colors) {
+  const sig = Object.keys(colors).sort().map((k) => k + colors[k]).join("");
+  const k = key ? key + "@" + scale + "@" + sig : null;
+  if (k && spriteCache.has(k)) return spriteCache.get(k);
+  const s = scale || 1;
+  const h = rows.length, w = rows[0].length;
+  const cv = document.createElement("canvas");
+  cv.width = w * s; cv.height = h * s;
+  const c = cv.getContext("2d");
+  c.imageSmoothingEnabled = false;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const ch = rows[y][x];
+      const col = colors[ch];
+      if (!col) continue;
+      c.fillStyle = col;
+      c.fillRect(x * s, y * s, s, s);
+    }
+  }
+  if (k) spriteCache.set(k, cv);
+  return cv;
+}
+
 // マスの え（32x32）を いちど つくって おぼえておく
 export function tileCanvas(name, painter, setName) {
   const k = name + "@" + mode + "@" + (setName || curSet);
