@@ -173,6 +173,24 @@ const PAINT = {
     p.box(4, 4, 3, 2, 1);
   },
 
+  // さんばし（き の いた）
+  d: (p) => {
+    p.fill(1);
+    for (let y = 1; y < 16; y += 4) p.line(0, y, 15, y, 3);
+    for (let y = 2; y < 16; y += 4) p.line(0, y, 15, y, 0);
+    p.p(2, 0, 3); p.p(13, 4, 3); p.p(5, 8, 3); p.p(10, 12, 3);
+  },
+
+  // 石だたみ
+  m: (p) => {
+    p.fill(1);
+    for (let y = 0; y < 16; y += 5) p.line(0, y, 15, y, 2);
+    for (let y = 0; y < 16; y += 5) {
+      for (let x = (y % 10 === 0 ? 4 : 9); x < 16; x += 10) p.box(x, y, 1, 5, 2);
+    }
+    p.p(2, 2, 0); p.p(11, 7, 0); p.p(6, 12, 0);
+  },
+
   // かいだん
   u: (p) => {
     p.fill(1);
@@ -251,7 +269,7 @@ const TILE_SET = {
   ".": "path", ",": "grass", '"': "tallgrass", F: "grass", "~": "sand",
   T: "tree", R: "rock", W: "water", L: "ledge", "=": "fence",
   "#": "wall", r: "roof", w: "wall", D: "door", S: "sign", s: "sign",
-  C: "cave", X: "cave", u: "wood",
+  C: "cave", X: "cave", u: "wood", d: "wood", m: "rock",
   f: "floor", g: "carpet", x: "carpet", c: "wood", b: "wood", t: "wood",
   B: "floor", K: "machine", P: "machine", V: "plant",
 };
