@@ -153,37 +153,71 @@ const PAINT = {
     p.set("rock");
     const top = !(mask & N);
     const bot = !(mask & S);
-    const y0 = top ? 6 : 0;
-    p.fbox(0, y0, 32, 32 - y0, 1);
+    const y0 = top ? 8 : 0;
     if (top) {
-      // てっぺんの まるみと ひかり
-      p.fbox(0, y0, 32, 3, 0);
-      p.fdither(0, y0 + 3, 32, 3, 0, false);
-      p.fbox(0, y0 - 1, 32, 1, 3);
+      p.set("grass");
+      p.fbox(0, 6, 32, 1, 3);               // くさの きわ（かべに おちる かげ）
+      p.set("rock");
     }
-    // たての すじ（いわはだ）
-    for (let x = 3; x < 32; x += 7) {
-      const h = 10 + ((x + (v | 0) * 5) % 3) * 4;
-      p.fbox(x, y0 + 5, 1, h, 2);
-      p.f(x + 1, y0 + 6, 2);
+    p.fbox(0, y0, 32, 32 - y0, 2);          // いわの かべ
+    if (top) { p.fbox(0, y0 - 1, 32, 4, 1); p.fdither(0, y0 + 3, 32, 3, 1, false); }
+    // いわの つみめ（よこの すじ）と ひび
+    for (let y = y0 + 5; y < 30; y += 7) {
+      p.fbox(0, y, 32, 1, 3);
+      p.fdither(0, y + 1, 32, 2, 1, false);
+      const off = ((y + v * 3) % 5) * 3;
+      for (let x = off; x < 32; x += 13) p.fbox(x, y - 4, 1, 4, 3);
     }
-    p.fdither(0, 24, 32, 8, 2, true);
-    if (bot) { p.fbox(0, 29, 32, 3, 3); }
-    if (!(mask & Wl)) p.fbox(0, y0, 1, 32 - y0, 3);
-    if (!(mask & E)) p.fbox(31, y0, 1, 32 - y0, 3);
+    if (bot) {                              // ねもとほど くらく
+      p.fdither(0, 20, 32, 6, 3, false);
+      p.fbox(0, 26, 32, 6, 3);
+    }
+    if (!(mask & Wl)) { p.fbox(0, y0, 2, 32 - y0, 3); p.fbox(2, y0, 1, 32 - y0, 1); }
+    if (!(mask & E)) { p.fbox(30, y0, 2, 32 - y0, 3); p.fbox(29, y0, 1, 32 - y0, 1); }
     p.set(null);
   },
 
-  // がけ（下に とびおりられる）
-  L: (p) => {
+  // ひくい だんさ（下へ とびおりられる）
+  L: (p, mask, v0) => {
+    const v = v0 | 0;
     p.set("grass");
-    p.ffill(1); p.fnoise(13, 50, 0, 0, 0, 32, 32);
+    p.ffill(1); p.fnoise(13 + v * 31, 50, 0, 0, 0, 32, 32);   // 上の だんの くさ
+    p.fbox(0, 6, 32, 1, 3);               // くさの きわ（かべに おちる かげ）
     p.set("ledge");
-    p.fbox(0, 16, 32, 14, 1);
-    p.fbox(0, 16, 32, 2, 0);
-    p.fdither(0, 18, 32, 4, 2, false);
-    p.fbox(0, 28, 32, 4, 3);
-    for (let x = 2; x < 32; x += 6) p.fbox(x, 20, 2, 8, 2);
+    p.fbox(0, 7, 32, 18, 2);              // つちの かべ
+    p.fbox(0, 7, 32, 3, 1);               // 日の あたる ところ
+    p.fdither(0, 10, 32, 3, 1, false);
+    // つちの そうと ひび
+    for (let x = (v * 5) % 7; x < 32; x += 9) { p.fbox(x, 11, 1, 6, 3); p.fbox(x + 4, 17, 1, 5, 3); }
+    p.fdither(0, 18, 32, 4, 3, false);
+    p.fbox(0, 22, 32, 3, 3);              // ねもと（いちばん くらい）
+    p.set("grass");
+    p.fbox(0, 27, 32, 2, 3);              // 下の だんに おちる かげ
+    p.fdither(0, 29, 32, 3, 3, false);
+    p.set(null);
+  },
+
+  // かいだん（のぼりおり できる）
+  H: (p, mask) => {
+    const E = 2, Wl = 8;
+    p.set("grass");
+    p.ffill(1); p.fnoise(21, 50, 0, 0, 0, 32, 32);
+    p.set("rock");
+    const wl = !(mask & Wl), wr = !(mask & E);
+    const x0 = wl ? 3 : 0, x1 = wr ? 29 : 32;
+    p.fbox(x0, 4, x1 - x0, 23, 1);        // いしの きざはし
+    for (let i = 0; i < 4; i++) {         // 4だん
+      const y = 4 + i * 6;
+      p.fbox(x0, y, x1 - x0, 2, 0);       // ふみめんの かど（日が あたる）
+      p.fbox(x0, y + 4, x1 - x0, 2, 2);   // けあげの かげ
+    }
+    p.fbox(x0, 3, x1 - x0, 1, 3);         // 上の ふち
+    p.fbox(x0, 25, x1 - x0, 2, 3);        // 下の ふち
+    if (wl) p.fbox(0, 3, 3, 24, 3);
+    if (wr) p.fbox(29, 3, 3, 24, 3);
+    p.set("grass");
+    p.fbox(0, 27, 32, 1, 3);              // 下の じめんに おちる かげ
+    p.fdither(0, 28, 32, 2, 3, false);
     p.set(null);
   },
 
@@ -400,7 +434,7 @@ const PAINT = {
 /* --- どの いろセットで ぬるか --------------------------------- */
 const TILE_SET = {
   ".": "path", ",": "grass", '"': "tallgrass", F: "grass", "~": "sand",
-  T: "tree", R: "rock", W: "water", L: "ledge", "=": "fence",
+  T: "tree", R: "rock", W: "water", L: "ledge", H: "rock", "=": "fence",
   "#": "wall", r: "roof", w: "wall", D: "door", S: "sign", s: "sign",
   C: "cave", X: "cave", u: "wood", d: "wood", m: "rock",
   f: "floor", g: "carpet", x: "carpet", c: "wood", b: "wood", t: "wood",
@@ -408,13 +442,18 @@ const TILE_SET = {
 };
 
 // override は マップごとの いろちがい（やねの 色など）
-export function tileFor(ch, frame, override, mask, variant) {
+export function tileFor(ch, frame, override, mask, variant, shade) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
   const m = mask == null ? 15 : mask;
   const v = variant | 0;
+  const sh = shade ? 1 : 0;
   const name = (ch === "W" && frame) ? "W2" : ch;
-  const f = (ch === "W" && frame) ? PAINT.W2 : (PAINT[ch] || PAINT["."]);
-  return tileCanvas(name + "#" + m + "v" + v, (p) => f(p, m, v), set);
+  const f0 = (ch === "W" && frame) ? PAINT.W2 : (PAINT[ch] || PAINT["."]);
+  // がけの 下の マスには、がけが おとす かげを うわがきする
+  const f = sh
+    ? (p) => { f0(p, m, v); p.fbox(0, 0, 32, 4, 3); p.fdither(0, 4, 32, 4, 3, false); }
+    : (p) => f0(p, m, v);
+  return tileCanvas(name + "#" + m + "v" + v + (sh ? "s" : ""), f, set);
 }
 
 export function tileSet(ch) { return TILE_SET[ch] || "path"; }

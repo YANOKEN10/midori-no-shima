@@ -666,7 +666,9 @@ export const world = {
         if (group(edgeTile(map, tx, ty + 1)) === gg) mask |= 4;
         if (group(edgeTile(map, tx - 1, ty)) === gg) mask |= 8;
         const vr = ((tx * 7 + ty * 13 + tx * ty) >>> 0) % 16;
-        G.draw(tileFor(ch, frame, map.sets, mask, vr), tx * T - camX, ty * T - camY);
+        // がけの 下の じめんには かげが おちる
+        const sh = edgeTile(map, tx, ty - 1) === "R" && GROUND.has(ch) ? 1 : 0;
+        G.draw(tileFor(ch, frame, map.sets, mask, vr, sh), tx * T - camX, ty * T - camY);
       }
     }
 
@@ -743,6 +745,9 @@ export function tileAt(map, x, y) {
 }
 
 // つなげて えがく ときの「なかま」わけ
+// がけの かげが おちる じめん
+const GROUND = new Set([",", ".", '"', "~", "F", "m", "d", "W", "H", "S", "s"]);
+
 const GROUP = {
   ",": "g", '"': "g", F: "g", S: "g", "=": "g",
   ".": "p", s: "p", m: "p",
