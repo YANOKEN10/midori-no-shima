@@ -126,7 +126,7 @@ export const world = {
     // やせいの モンスター
     const ch = tileAt(this.map, this.x, this.y);
     const enc = this.map.enc;
-    if (enc && (ch === '"' || (this.map.kind === "cave" && ch === "C"))) {
+    if (enc && (ch === '"' || enc.encAll || (this.map.kind === "cave" && ch === "C"))) {
       if (chance(enc.rate / 100)) await this.wildBattle();
     }
   },

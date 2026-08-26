@@ -3,6 +3,9 @@
 //   16x16 の 左はんぶん（8もじ）だけ かいて、左右に うつして つかいます。
 //   0=あかるい 1=ふつう 2=くらい 3=いちばん くらい .=とうめい
 // ============================================================
+import { MORE } from "./species_more.js";
+import { buildSprite } from "./monsprite.js";
+
 export function mirror(rows8) {
   return rows8.map((r) => r + r.split("").reverse().join(""));
 }
@@ -449,4 +452,11 @@ for (const k of Object.keys(A)) {
   const rows = A[k].map((r) => (r + "........").slice(0, 8));
   ART[k] = mirror(rows);
 }
+// パーツから 組み立てる モンスターたち
+for (const e of MORE) {
+  const name = e[0], recipe = e[7], stage = e[4];
+  const size = stage === 1 ? "s" : stage === 2 ? "m" : "l";
+  if (!ART[name]) ART[name] = buildSprite(Object.assign({ size: size }, recipe));
+}
+
 export const MONART = ART;

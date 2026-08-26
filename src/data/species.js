@@ -155,8 +155,105 @@ export const SPECIES = {
   },
 };
 
+
+/* ============================================================
+   あたらしい モンスターたち（species_more.js）を くみこむ
+   ・のうりょくは「やくわり」と「しんかの だんかい」から けいさん
+   ・わざは タイプごとの ひょうから じどうで くみたてる
+============================================================ */
+import { MORE } from "./species_more.js";
+
+const ROLE_MIX = {
+  atk: { hp: 0.17, atk: 0.29, def: 0.18, spd: 0.20, spc: 0.16 },
+  spc: { hp: 0.17, atk: 0.15, def: 0.18, spd: 0.20, spc: 0.30 },
+  def: { hp: 0.20, atk: 0.18, def: 0.31, spd: 0.11, spc: 0.20 },
+  spd: { hp: 0.16, atk: 0.22, def: 0.14, spd: 0.31, spc: 0.17 },
+  bal: { hp: 0.20, atk: 0.20, def: 0.20, spd: 0.20, spc: 0.20 },
+  hp:  { hp: 0.31, atk: 0.20, def: 0.20, spd: 0.11, spc: 0.18 },
+};
+
+// なまえから きまる ちいさな ばらつき（まいかい おなじ けっか）
+function seed(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function statsFor(name, role, stage, isFinal) {
+  const total = stage === 1 ? 305 : stage === 2 ? (isFinal ? 455 : 400)
+              : stage === 3 ? 500 : stage === 9 ? 560 : 420;
+  const mix = ROLE_MIX[role] || ROLE_MIX.bal;
+  const h = seed(name);
+  const keys = ["hp", "atk", "def", "spd", "spc"];
+  const out = {};
+  keys.forEach((k, i) => {
+    const wobble = (((h >> (i * 3)) & 7) - 3.5) * 0.02;
+    out[k] = Math.max(20, Math.round(total * mix[k] * (1 + wobble)));
+  });
+  return out;
+}
+
+const POOL = {
+  "ノーマル": { weak: "たいあたり", mid: "かみつく", strong: "すてみタックル", status: "なきごえ", extra: "みだれづき" },
+  "くさ":     { weak: "つるのムチ", mid: "はっぱカッター", strong: "ソーラーリーフ", status: "やどりぎ", extra: "こうごうせい" },
+  "ほのお":   { weak: "ひのこ", mid: "ひばしら", strong: "かえんほうしゃ", status: "にらみつける", extra: "もえるつばさ" },
+  "みず":     { weak: "みずでっぽう", mid: "バブルこうせん", strong: "ハイドロなみ", status: "かたくなる", extra: "うずしお" },
+  "でんき":   { weak: "でんきショック", mid: "スパークボール", strong: "１０まんボルト", status: "でんじは", extra: "でんこうせっか" },
+  "じめん":   { weak: "すなかけ", mid: "じならし", strong: "じしん", status: "かたくなる", extra: "いわおとし" },
+  "むし":     { weak: "むしくい", mid: "どくばり", strong: "シザーカット", status: "いとをはく", extra: "かたくなる" },
+  "やみ":     { weak: "かげぬい", mid: "よるのつめ", strong: "ゆめくい", status: "さいみんじゅつ", extra: "くろいきり" },
+};
+const ROLE_MOVE = { atk: "みだれづき", spc: "なきごえ", def: "かたくなる", spd: "でんこうせっか", bal: "かみつく", hp: "ねむる" };
+
+function learnFor(type, role, stage) {
+  const P = POOL[type] || POOL["ノーマル"];
+  const s = stage === 1 ? 0 : stage === 2 ? 2 : stage === 3 ? 5 : 1;
+  const list = [
+    [1, "たいあたり"],
+    [1, P.weak],
+    [7 + s, P.status],
+    [13 + s, ROLE_MOVE[role] || "かみつく"],
+    [19 + s, P.mid],
+    [27 + s, P.extra],
+    [34 + s, P.strong],
+  ];
+  if (stage === 3 || stage === 9) list.push([44 + s, "すてみタックル"]);
+  return list;
+}
+
+let nextNo = 24;
+const famCount = {};
+const famPal = {};
+for (const e of MORE) {
+  const name = e[0], t1 = e[1], t2 = e[2], role = e[3], stage = e[4];
+  const evoTo = e[5], evoLv = e[6], art = e[7], dex = e[8];
+  const isFinal = !evoTo;
+  // かぞく（しんかの ライン）ごとに いろちがいを わりあてる
+  if (stage <= 1) {
+    famCount[t1] = (famCount[t1] || 0) + 1;
+    famPal[t1] = ["", "2", "3"][(famCount[t1] - 1) % 3];
+  }
+  const pal = t1 + (famPal[t1] || "");
+  SPECIES[name] = {
+    pal: pal,
+    no: nextNo++,
+    types: t2 ? [t1, t2] : [t1],
+    base: statsFor(name, role, stage, isFinal),
+    catch: stage === 1 ? 190 : stage === 2 ? (isFinal ? 80 : 105) : stage === 3 ? 45 : stage === 9 ? 12 : 125,
+    exp: stage === 1 ? 62 : stage === 2 ? (isFinal ? 160 : 145) : stage === 3 ? 212 : stage === 9 ? 240 : 132,
+    evo: evoTo ? { lv: evoLv, to: evoTo } : undefined,
+    learn: learnFor(t1, role, stage),
+    dex: dex,
+    art: art,
+    role: role,
+    stage: stage,
+  };
+}
+
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
+// その モンスターを ぬる いろセット
+export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ノーマル"; }
 export function nameByNo(no) { return DEX_ORDER.find((n) => SPECIES[n].no === no) || ""; }

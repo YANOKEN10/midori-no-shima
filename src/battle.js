@@ -10,7 +10,7 @@ import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
-  G as State, species, makeMon, maxHp, statOf, monName, fainted, gainExp,
+  G as State, species, palOf, makeMon, maxHp, statOf, monName, fainted, gainExp,
   healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove,
 } from "./state.js";
 
@@ -596,8 +596,8 @@ function drawBattle() {
 
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = MONART[B.you.mon.sp];
-  const foeSet = species(B.foe.mon.sp).types[0];
-  const youSet = species(B.you.mon.sp).types[0];
+  const foeSet = palOf(species(B.foe.mon.sp));
+  const youSet = palOf(species(B.you.mon.sp));
 
   if (!B.foe.hidden && foeArt) {
     const img = G.makeMonArt(foeArt, 4, "m" + B.foe.mon.sp, foeSet);

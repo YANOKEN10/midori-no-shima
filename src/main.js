@@ -6,7 +6,7 @@ import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART } from "./data/monart.js";
-import { SPECIES } from "./data/species.js";
+import { SPECIES, palOf } from "./data/species.js";
 import { G as State, loadInto, newGame } from "./state.js";
 import { world, bgmFor } from "./world.js";
 import { battle } from "./battle.js";
@@ -93,7 +93,7 @@ const title = {
     const names = ["リーフィン", "ヒノコマ", "アワミィ"];
     names.forEach((n, i) => {
       const bob = Math.sin(t / 400 + i) * 3;
-      const set = SPECIES[n].types[0];
+      const set = palOf(SPECIES[n]);
       G.use("grass");
       G.ctx.globalAlpha = 0.35;
       G.rect(44 + i * 88, 214 + bob * 0.4, 40, 6, 3);
