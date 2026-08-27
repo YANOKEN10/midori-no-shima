@@ -16,7 +16,7 @@ import { saveLocal, saveCloud, loadCloud, applySave, describeSave } from "./save
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { personFramesRaw } from "./data/charart.js";
-import { playerColors, SHIRT_BASIC, PANTS_BASIC, SHIRT_FANCY, PANTS_FANCY, HAIR_COLORS , HAIR_STYLES, SKIRT_BASIC, SKIRT_FANCY, HAT_STYLES } from "./data/looks.js";
+import { playerColors, SHIRT_BASIC, PANTS_BASIC, SHIRT_FANCY, PANTS_FANCY, HAIR_COLORS , HAIR_STYLES, BANGS_STYLES, SKIRT_BASIC, SKIRT_FANCY, HAT_STYLES } from "./data/looks.js";
 
 /* ============ メインメニュー ============ */
 export async function openMenu() {
@@ -414,9 +414,10 @@ export { hasProgress };
 function drawLookPreview(look, x, y) {
   G.use("ui");
   G.window9(x, y, 84, 108);
-  const st = { hair: look.hat || look.style || "short", skirt: Boolean(look.skirt) };
+  const st = { hair: look.hat || look.style || "short", bangs: look.bangs == null ? "seven" : look.bangs,
+               skirt: Boolean(look.skirt), face: look.skirt ? "girl" : "boy" };
   const f = personFramesRaw(st).down[0];
-  G.draw(G.makeColorArt(f, 2, "look" + st.hair + (st.skirt ? "s" : ""), playerColors(look)), x + 10, y + 14);
+  G.draw(G.makeColorArt(f, 2, "look" + st.hair + st.bangs + (st.skirt ? "s" : ""), playerColors(look)), x + 10, y + 14);
 }
 
 export async function clothesShop(fancy) {
@@ -482,9 +483,11 @@ async function hatShop(price) {
 export async function hairSalon() {
   const price = 300;
   for (;;) {
-    const which = await ui.choice(["かみの 色を かえる", "かみがたを かえる", "やめる"], { x: 152, y: 140, w: 160 });
-    if (which < 0 || which === 2) { await ui.say(["また どうぞ！"]); return; }
+    const which = await ui.choice(["かみの 色を かえる", "かみがたを かえる", "まえがみを かえる", "やめる"],
+      { x: 144, y: 128, w: 168, rows: 4 });
+    if (which < 0 || which === 3) { await ui.say(["また どうぞ！"]); return; }
     if (which === 1) { await hairStyleMenu(price); continue; }
+    if (which === 2) { await bangsMenu(price); continue; }
     const labels = HAIR_COLORS.map((x) => x.name + "  " + price + "円");
     labels.push("やめる");
     const j = await ui.choice(labels, {
@@ -503,6 +506,31 @@ export async function hairSalon() {
     State.save.look = Object.assign({}, State.save.look, { hair: HAIR_COLORS[j].color });
     beep("buy");
     await ui.say(["できあがり！ " + HAIR_COLORS[j].name + "に なった。"]);
+    saveLocal();
+  }
+}
+
+/* --- まえがみを えらぶ --- */
+async function bangsMenu(price) {
+  for (;;) {
+    const labels = BANGS_STYLES.map((x) => x.name + "  " + price + "円");
+    labels.push("やめる");
+    const j = await ui.choice(labels, {
+      x: 8, y: 8, w: 216, rows: 6,
+      extra: (b, idx) => {
+        const look = Object.assign({}, State.save.look);
+        if (BANGS_STYLES[idx]) look.bangs = BANGS_STYLES[idx].style;
+        drawLookPreview(look, 228, 8);
+      },
+    });
+    if (j < 0 || j >= BANGS_STYLES.length) return;
+    if (State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
+    const yes = await ui.ask([BANGS_STYLES[j].name + "　" + price + "円", "これに しますか？"]);
+    if (!yes) continue;
+    State.save.money -= price;
+    State.save.look = Object.assign({}, State.save.look, { bangs: BANGS_STYLES[j].style });
+    beep("buy");
+    await ui.say(["できあがり！ " + BANGS_STYLES[j].name + "に なった。"]);
     saveLocal();
   }
 }

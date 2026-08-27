@@ -63,12 +63,29 @@ export const HAIR_COLORS = [
 /* --- びよういんで えらべる かみがた --- */
 export const HAIR_STYLES = [
   { name: "みじかい かみ", style: "short" },
-  { name: "ながい かみ", style: "long" },
-  { name: "ふたつむすび", style: "twin" },
-  { name: "ポニーテール", style: "pony" },
-  { name: "おだんご", style: "bun" },
-  { name: "ぱっつん", style: "bob" },
+  { name: "マッシュ", style: "mush" },
+  { name: "センターパート", style: "center" },
+  { name: "ツーブロック", style: "twoblock" },
+  { name: "ツイスパ", style: "twinspike" },
+  { name: "モヒカン", style: "mohican" },
   { name: "とがった かみ", style: "spiky" },
+  { name: "ながい かみ", style: "long" },
+  { name: "ポニーテール", style: "pony" },
+  { name: "ツインテール", style: "twintail" },
+  { name: "ふたつむすび", style: "twin" },
+  { name: "おだんご", style: "bun" },
+  { name: "ボブショート", style: "bobshort" },
+  { name: "テクノカット", style: "techno" },
+  { name: "ぱっつん ボブ", style: "bob" },
+];
+
+/* --- まえがみ --- */
+export const BANGS_STYLES = [
+  { name: "まえがみ なし", style: "" },
+  { name: "七三", style: "seven" },
+  { name: "パッツン", style: "blunt" },
+  { name: "マッシュ", style: "mush" },
+  { name: "センター分け", style: "center" },
 ];
 
 /* --- ふくやの スカート（下に はくもの） --- */
@@ -105,6 +122,7 @@ export const DEFAULT_LOOK = {
   pants: "#231a14",
   hair: "#241d1a",
   style: "short",       // かみがた
+  bangs: "seven",       // まえがみ
   hat: "",              // ぼうし（からなら かぶらない）
   skirt: false,         // スカートか ズボンか
 };
@@ -123,7 +141,7 @@ export function playerColors(look) {
   const K = SKIN, S = L.shirt || DEFAULT_LOOK.shirt;
   const P = L.pants || DEFAULT_LOOK.pants, H = L.hair || DEFAULT_LOOK.hair;
   return {
-    K: K, S: S, P: P, H: H, "3": OUTLINE, w: "#ffffff", T: STRAW,
-    k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32), t: darker(STRAW),
+    K: K, S: S, P: P, H: H, "3": OUTLINE, w: "#ffffff", T: STRAW, C: "#f4f6f8",
+    k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32), t: darker(STRAW), c: "#ccd3da",
   };
 }

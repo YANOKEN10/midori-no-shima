@@ -28,7 +28,8 @@ const charCache = new Map();
 let rawFrames = null;
 function playerStyle() {
   const L = State.save.look || {};
-  return { hair: L.hat || L.style || "short", skirt: Boolean(L.skirt) };
+  return { hair: L.hat || L.style || "short", bangs: L.bangs == null ? "seven" : L.bangs,
+           skirt: Boolean(L.skirt), face: L.skirt ? "girl" : "boy" };
 }
 function playerFrames() { return personFramesRaw(playerStyle()); }
 function framesFor(look) {
@@ -38,9 +39,14 @@ function framesFor(look) {
 // NPC ごとの かみがた（地図で していが あれば それを つかう）
 function npcStyle(n) {
   const base = styleOf(n.look);
-  return { hair: n.hair || base.hair, skirt: n.skirt == null ? base.skirt : Boolean(n.skirt) };
+  return {
+    hair: n.hair || base.hair,
+    bangs: n.bangs == null ? base.bangs : n.bangs,
+    skirt: n.skirt == null ? base.skirt : Boolean(n.skirt),
+    coat: base.coat, face: base.face,
+  };
 }
-function npcKey(n) { const s = npcStyle(n); return s.hair + (s.skirt ? "s" : ""); }
+function npcKey(n) { const s = npcStyle(n); return s.hair + s.bangs + (s.skirt ? "s" : ""); }
 
 // ひとの いろ（かげの 色も 作る）
 const lookColorCache = new Map();
@@ -49,8 +55,8 @@ function colorsFor(look) {
   const pal = G.resolve(look) || G.resolve("boy");
   const L = LOOKS[look] || LOOKS.boy;
   const c = {
-    K: pal[L.K], S: pal[L.S], P: pal[L.P], H: pal[L.H], "3": pal[3], w: "#ffffff", T: "#e3c281",
-    k: darker(pal[L.K], 0.18), s: darker(pal[L.S]), p: darker(pal[L.P]), h: darker(pal[L.H], 0.32), t: darker("#e3c281"),
+    K: pal[L.K], S: pal[L.S], P: pal[L.P], H: pal[L.H], "3": pal[3], w: "#ffffff", T: "#e3c281", C: "#f4f6f8",
+    k: darker(pal[L.K], 0.18), s: darker(pal[L.S]), p: darker(pal[L.P]), h: darker(pal[L.H], 0.32), t: darker("#e3c281"), c: "#ccd3da",
   };
   lookColorCache.set(look, c);
   return c;

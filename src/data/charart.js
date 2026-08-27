@@ -73,7 +73,7 @@ function drawLegs(g, step, skirt, side) {
 }
 
 /* --- どうたい --- */
-function drawBody(g, step, skirt, side) {
+function drawBody(g, step, skirt, side, coat) {
   drawLegs(g, step, skirt, side);
   if (side) {
     rect(g, 11, NECK, 11, HIP - NECK, "S");
@@ -82,6 +82,7 @@ function drawBody(g, step, skirt, side) {
     else disc(g, 16, HIP - 1.5, 5.5, 2, "S");
     rect(g, 17, NECK + 1, 3, 5, "S"); rect(g, 17, NECK + 5, 3, 3, "K");
     rect(g, 14, NECK - 2, 4, 2, "K");
+    if (coat) { rect(g, 11, NECK, 5, HIP - NECK + 3, "C"); rect(g, 19, NECK, 3, HIP - NECK + 3, "C"); }
     return;
   }
   rect(g, 9, NECK, 14, HIP - NECK, "S");
@@ -96,6 +97,21 @@ function drawBody(g, step, skirt, side) {
   rect(g, 6, NECK + 1, 3, 5, "S"); rect(g, 23, NECK + 1, 3, 5, "S");
   rect(g, 6, NECK + 5, 3, 3, "K"); rect(g, 23, NECK + 5, 3, 3, "K");
   rect(g, 14, NECK - 2, 4, 2, "K");
+  if (coat) {
+    // はくい（まえが ひらいた 白い うわぎ）
+    rect(g, 8, NECK, 5, HIP - NECK + 3, "C"); rect(g, 19, NECK, 5, HIP - NECK + 3, "C");
+    rect(g, 5, NECK + 1, 4, 7, "C"); rect(g, 23, NECK + 1, 4, 7, "C");
+    rect(g, 8, NECK, 16, 2, "C");
+    rect(g, 12, NECK, 2, 4, "3"); rect(g, 18, NECK, 2, 4, "3");   // えり
+  }
+}
+
+/* --- みみ（かみの 下に かくれる ことも ある） --- */
+function drawEars(g, view) {
+  if (view === "back") return;
+  if (view === "side") { rect(g, 12, 16, 3, 4, "K"); put(g, 13, 17, "3"); return; }
+  rect(g, 4, 16, 3, 4, "K"); rect(g, 25, 16, 3, 4, "K");
+  put(g, 5, 17, "3"); put(g, 26, 17, "3");
 }
 
 /* --- かみがた --- */
@@ -118,10 +134,11 @@ function hairCap(g, style, view) {
     }
   }
 }
-function drawHair(g, style, view) {
-  hairCap(g, style, view);
+function drawHair(g, style, view, bangs) {
+  const bare = (style === "mohican" || style === "twoblock");
+  if (!bare) hairCap(g, style, view);
+
   if (style === "long") {
-    // ながい かみ（りょうがわに たらす）
     if (view === "side") { disc(g, 11, 22, 5, 8, "H"); }
     else {
       disc(g, 7, 21, 3.5, 8, "H"); disc(g, 25, 21, 3.5, 8, "H");
@@ -130,34 +147,83 @@ function drawHair(g, style, view) {
   } else if (style === "twin") {
     if (view === "side") disc(g, 9, 17, 4, 4, "H");
     else { disc(g, 5, 18, 4, 4.5, "H"); disc(g, 27, 18, 4, 4.5, "H"); }
+  } else if (style === "twintail") {
+    // ツインテール（ながく たらす 2本）
+    if (view === "side") { disc(g, 9, 16, 3.5, 3.5, "H"); disc(g, 8, 24, 3, 6, "H"); }
+    else {
+      disc(g, 4, 16, 3, 3, "H"); disc(g, 28, 16, 3, 3, "H");
+      disc(g, 3, 24, 2.5, 6, "H"); disc(g, 29, 24, 2.5, 6, "H");
+    }
   } else if (style === "spiky") {
     for (const [x, w, h] of [[6, 4, 5], [11, 4, 6], [17, 4, 6], [22, 4, 5]]) tri(g, x, HEAD_TOP - 5, w, h, false, "H");
+  } else if (style === "twinspike") {
+    // ツイスパ（左右に はねた 2つの とがり）
+    tri(g, 2, HEAD_TOP - 4, 6, 7, false, "H");
+    tri(g, 24, HEAD_TOP - 4, 6, 7, false, "H");
+    rect(g, 8, HEAD_TOP - 2, 16, 4, "H");
+  } else if (style === "mohican") {
+    // モヒカン（まん中だけ 立てる）
+    rect(g, 12, HEAD_TOP - 6, 8, 12, "H");
+    tri(g, 12, HEAD_TOP - 8, 8, 4, false, "H");
+    if (view !== "back") { rect(g, 6, 12, 5, 8, "H"); rect(g, 21, 12, 5, 8, "H"); }   // よこは みじかく
+  } else if (style === "twoblock") {
+    // ツーブロック（よこは かりあげ、上は のこす）
+    for (let y = HEAD_TOP - 2; y <= 13; y++) for (let x = 5; x <= 26; x++) {
+      const dx = (x - 16) / 10.5, dy = (y - 12.5) / 10;
+      if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
+    }
+    rect(g, 6, 13, 4, 3, "H"); rect(g, 22, 13, 4, 3, "H");
+    rect(g, 5, 13, 22, 1, "3");
   } else if (style === "pony") {
-    // ポニーテール（うしろで ひとつに むすぶ）
     if (view === "side") { disc(g, 8, 20, 3.5, 7, "H"); rect(g, 7, 13, 4, 4, "H"); }
     else if (view === "back") { disc(g, 16, 24, 4, 8, "H"); rect(g, 13, 12, 7, 6, "H"); }
     else { disc(g, 4, 19, 2.5, 5, "H"); disc(g, 28, 19, 2.5, 5, "H"); }
   } else if (style === "bun") {
-    // おだんご（あたまの 上に ふたつ）
     disc(g, 9, HEAD_TOP - 2, 4, 3.5, "H");
     disc(g, 23, HEAD_TOP - 2, 4, 3.5, "H");
   } else if (style === "bob") {
-    // ぱっつん（まっすぐ そろえた みじかめ）
     rect(g, 5, 18, 5, 5, "H"); rect(g, 22, 18, 5, 5, "H");
-    if (view !== "back") rect(g, 7, 9, 18, 3, "H");
+  } else if (style === "bobshort") {
+    // ボブショート（あごの 上で そろえる）
+    rect(g, 5, 17, 5, 4, "H"); rect(g, 22, 17, 5, 4, "H");
+    rect(g, 5, 20, 22, 1, "3");
+  } else if (style === "techno") {
+    // テクノカット（よこは みじかく そろえ、まっすぐ）
+    rect(g, 5, 12, 4, 7, "H"); rect(g, 23, 12, 4, 7, "H");
+    rect(g, 5, 18, 22, 1, "3");
+  } else if (style === "center") {
+    // センターパート（まん中で わけて 両がわに ながす）
+    if (view !== "back") { rect(g, 15, HEAD_TOP - 1, 2, 8, "K"); }
+    rect(g, 6, 10, 6, 8, "H"); rect(g, 20, 10, 6, 8, "H");
+  } else if (style === "mush") {
+    // マッシュ（まるく そろえた きのこ あたま）
+    for (let y = HEAD_TOP - 3; y <= 15; y++) for (let x = 4; x <= 27; x++) {
+      const dx = (x - 16) / 11.5, dy = (y - 11) / 10.5;
+      if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
+    }
+    rect(g, 4, 15, 24, 1, "3");
   } else if (style === "straw") {
-    // むぎわらぼうし（ひろい つば）
     for (let y = HEAD_TOP - 4; y <= 11; y++) {
       for (let x = 1; x <= 30; x++) {
         const dx = (x - 16) / 12, dy = (y - 11) / 9;
         if (dx * dx + dy * dy <= 1.03) put(g, x, y, "T");
       }
     }
-    rect(g, 1, 11, 30, 3, "T");                                  // つば
+    rect(g, 1, 11, 30, 3, "T");
     rect(g, 1, 14, 30, 1, "3");
-    for (let x = 6; x <= 25; x += 4) rect(g, x, 8, 2, 1, "3");    // あみめ
+    for (let x = 6; x <= 25; x += 4) rect(g, x, 8, 2, 1, "3");
+  } else if (style === "profhat") {
+    // はかせの ハット（つばの ある ぼうし）
+    for (let y = HEAD_TOP - 5; y <= 10; y++) {
+      for (let x = 6; x <= 25; x++) {
+        const dx = (x - 16) / 9, dy = (y - 10) / 8;
+        if (dx * dx + dy * dy <= 1.03) put(g, x, y, "T");
+      }
+    }
+    rect(g, 2, 10, 28, 3, "T");                                   // ひろい つば
+    rect(g, 2, 13, 28, 1, "3");
+    rect(g, 7, 7, 18, 2, "3");                                    // リボン
   } else if (style === "beanie") {
-    // ニットぼう
     for (let y = HEAD_TOP - 3; y <= 13; y++) {
       for (let x = 4; x <= 27; x++) {
         const dx = (x - 16) / 11, dy = (y - 12.5) / 10.5;
@@ -165,46 +231,97 @@ function drawHair(g, style, view) {
       }
     }
     rect(g, 5, 12, 22, 3, "S"); rect(g, 5, 14, 22, 1, "3");
-    disc(g, 16, HEAD_TOP - 4, 3, 2.5, "S");                      // てっぺんの たま
+    disc(g, 16, HEAD_TOP - 4, 3, 2.5, "S");
   } else if (style === "cap") {
-    // ぼうし（ふくと おなじ 色）
     for (let y = HEAD_TOP - 3; y <= 12; y++) {
       for (let x = 4; x <= 27; x++) {
         const dx = (x - 16) / 11, dy = (y - 12.5) / 10.5;
         if (dx * dx + dy * dy <= 1.03) put(g, x, y, "S");
       }
     }
-    if (view !== "back") rect(g, 6, 12, 20, 2, "S");            // つば
+    if (view !== "back") rect(g, 6, 12, 20, 2, "S");
     rect(g, 4, 11, 24, 1, "3");
+  }
+
+  /* --- まえがみ（目の 上まで おろす） --- */
+  if (view === "back" || !bangs) return;
+  const hatStyle = (style === "cap" || style === "straw" || style === "beanie" || style === "profhat");
+  if (hatStyle) return;
+  const x0 = view === "side" ? 12 : 7, x1 = view === "side" ? 25 : 24;
+  if (bangs === "blunt") {                       // パッツン
+    rect(g, x0, 8, x1 - x0 + 1, 5, "H");
+    rect(g, x0, 12, x1 - x0 + 1, 1, "h");
+  } else if (bangs === "seven") {                // 七三
+    for (let i = 0; i <= x1 - x0; i++) {
+      const h = 6 - Math.round(i * 4 / (x1 - x0));
+      rect(g, x0 + i, 8, 1, Math.max(2, h), "H");
+    }
+    rect(g, x0, 8, 4, 7, "H");
+  } else if (bangs === "mush") {                 // マッシュ（まるく）
+    for (let i = 0; i <= x1 - x0; i++) {
+      const t = (i / (x1 - x0)) * 2 - 1;
+      const h = Math.round(7 - t * t * 3);
+      rect(g, x0 + i, 8, 1, h, "H");
+    }
+  } else if (bangs === "center") {               // センター分け
+    for (let i = 0; i <= x1 - x0; i++) {
+      const t = Math.abs((i / (x1 - x0)) * 2 - 1);
+      const h = Math.round(2 + t * 5);
+      rect(g, x0 + i, 8, 1, h, "H");
+    }
   }
 }
 
 /* --- かお --- */
-function drawFace(g, view) {
+// はだの ところにだけ のせる（まえがみの 上には かかない）
+function onSkin(g, x, y, c) {
+  const cur = g[y] && g[y][x];
+  if (cur === "K" || cur === "k") put(g, x, y, c);
+}
+function drawFace(g, view, boy) {
   if (view === "back") return;
   if (view === "side") {
-    rect(g, 19, 15, 3, 3, "3"); put(g, 19, 15, "w"); put(g, 21, 17, "3");
-    put(g, 23, 19, "3"); put(g, 22, 20, "3");
+    for (let j = 0; j < 3; j++) for (let i = 0; i < 2; i++) onSkin(g, 19 + i, 16 + j, "3");
+    onSkin(g, 19, 16, "w");
+    for (let i = 0; i < 4; i++) onSkin(g, 18 + i, 14, "3");      // まゆげ
+    if (boy) { for (let i = 0; i < 3; i++) onSkin(g, 21 + i, 21, "3"); }
+    else { onSkin(g, 22, 21, "3"); onSkin(g, 23, 20, "3"); }
     return;
   }
-  rect(g, 11, 15, 3, 3, "3"); rect(g, 18, 15, 3, 3, "3");
-  put(g, 11, 15, "w"); put(g, 18, 15, "w");
-  put(g, 13, 17, "3"); put(g, 20, 17, "3");
-  put(g, 15, 20, "3"); put(g, 16, 20, "3"); put(g, 14, 19, "3"); put(g, 17, 19, "3");
+  // め（たて長・しろい ひかり入り）
+  for (let j = 0; j < 3; j++) for (let i = 0; i < 2; i++) {
+    onSkin(g, 11 + i, 16 + j, "3"); onSkin(g, 19 + i, 16 + j, "3");
+  }
+  onSkin(g, 11, 16, "w"); onSkin(g, 19, 16, "w");
+  // まゆげ（男の子は ふとく きりっと、女の子は ほそく やわらかく）
+  if (boy) {
+    for (let i = 0; i < 4; i++) { onSkin(g, 10 + i, 14, "3"); onSkin(g, 18 + i, 14, "3"); }
+    onSkin(g, 10, 13, "3"); onSkin(g, 21, 13, "3");
+  } else {
+    for (let i = 0; i < 3; i++) { onSkin(g, 11 + i, 14, "3"); onSkin(g, 19 + i, 14, "3"); }
+  }
+  // くち
+  if (boy) {
+    for (let i = 0; i < 4; i++) onSkin(g, 14 + i, 21, "3");
+  } else {
+    onSkin(g, 15, 21, "3"); onSkin(g, 16, 21, "3");
+    onSkin(g, 14, 20, "3"); onSkin(g, 17, 20, "3");
+  }
 }
 
 function frame(view, step, style) {
+  const st = style || {};
   const g = grid();
-  const skirt = Boolean(style && style.skirt);
-  drawBody(g, step, skirt, view === "side");
-  disc(g, view === "side" ? 16 : 16, 13, view === "side" ? 9.5 : 10, 9.5, "K");   // あたま
-  drawHair(g, (style && style.hair) || "short", view);
-  drawFace(g, view);
+  drawBody(g, step, Boolean(st.skirt), view === "side", Boolean(st.coat));
+  disc(g, 16, 13, view === "side" ? 9.5 : 10, 9.5, "K");         // あたま
+  drawHair(g, st.hair || "short", view, st.bangs || "");
+  drawEars(g, view);                                             // みみ（かみの そと がわ）
+  drawFace(g, view, st.face !== "girl" && !st.skirt);
   return outline(g);
 }
 
 /* --- 右下がわに かげを つける（ひかりは 左上から） --- */
-const SHADE = { H: "h", K: "k", S: "s", P: "p", T: "t" };
+const SHADE = { H: "h", K: "k", S: "s", P: "p", T: "t", C: "c" };
 function shadeRows(rows) {
   const h = rows.length, w = rows.reduce((m, r) => Math.max(m, r.length), 0);
   const pad = rows.map((r) => (r + " ".repeat(w)).slice(0, w).replace(/ /g, "."));
@@ -231,7 +348,7 @@ function flipRows(rows) {
 const rawCache = new Map();
 export function personFramesRaw(style) {
   const st = style || {};
-  const key = (st.hair || "short") + (st.skirt ? "+skirt" : "");
+  const key = (st.hair || "short") + "/" + (st.bangs || "-") + (st.skirt ? "+skirt" : "") + (st.coat ? "+coat" : "") + (st.face || "");
   if (rawCache.has(key)) return rawCache.get(key);
   const mk = (view, step) => shadeRows(lines(frame(view, step, st)));
   const side = [mk("side", 0), mk("side", 1), mk("side", 0), mk("side", 3)];
@@ -255,7 +372,7 @@ export function personFrames(colors, style) {
   };
   const map = (r) => r
     .replace(/[Hh]/g, c.H).replace(/[Kk]/g, c.K)
-    .replace(/[Ss]/g, c.S).replace(/[Pp]/g, c.P).replace(/[Tt]/g, c.S)
+    .replace(/[Ss]/g, c.S).replace(/[Pp]/g, c.P).replace(/[Tt]/g, c.S).replace(/[Cc]/g, "0")
     .replace(/w/g, "0");
   const raw = personFramesRaw(style);
   const out = {};
@@ -265,23 +382,24 @@ export function personFrames(colors, style) {
 
 // よく つかう みため（いろの ばんごうと、かみがた・スカート）
 export const LOOKS = {
-  player: { H: 3, K: 0, S: 2, P: 3, hair: "short" },
-  rival: { H: 2, K: 0, S: 3, P: 2, hair: "spiky" },
-  prof: { H: 0, K: 0, S: 0, P: 3, hair: "bald" },
-  boy: { H: 3, K: 0, S: 2, P: 3, hair: "short" },
-  girl: { H: 2, K: 0, S: 3, P: 2, hair: "long", skirt: true },
+  player: { H: 3, K: 0, S: 2, P: 3, hair: "short", bangs: "seven" },
+  rival: { H: 2, K: 0, S: 3, P: 2, hair: "twinspike", bangs: "center" },
+  prof: { H: 0, K: 0, S: 0, P: 3, hair: "profhat", coat: true },
+  boy: { H: 3, K: 0, S: 2, P: 3, hair: "mush", bangs: "mush" },
+  girl: { H: 2, K: 0, S: 3, P: 2, hair: "twintail", bangs: "blunt", skirt: true },
   oldman: { H: 0, K: 0, S: 1, P: 2, hair: "bald" },
-  nurse: { H: 2, K: 0, S: 1, P: 2, hair: "twin", skirt: true },
+  nurse: { H: 2, K: 0, S: 1, P: 2, hair: "bobshort", bangs: "blunt", skirt: true },
   clerk: { H: 3, K: 0, S: 1, P: 2, hair: "cap" },
   sailor: { H: 3, K: 0, S: 1, P: 2, hair: "cap" },
-  hiker: { H: 3, K: 0, S: 1, P: 2, hair: "cap" },
-  leader1: { H: 1, K: 0, S: 1, P: 2, hair: "long", skirt: true },
-  leader2: { H: 3, K: 0, S: 1, P: 2, hair: "spiky" },
-  philoa: { H: 1, K: 0, S: 2, P: 3, hair: "spiky" },
+  hiker: { H: 3, K: 0, S: 1, P: 2, hair: "beanie" },
+  leader1: { H: 1, K: 0, S: 1, P: 2, hair: "bun", bangs: "center", skirt: true },
+  leader2: { H: 3, K: 0, S: 1, P: 2, hair: "twoblock", bangs: "seven" },
+  philoa: { H: 1, K: 0, S: 2, P: 3, hair: "twinspike", bangs: "center" },
 };
 
 // みための なまえから かみがた・スカートを とりだす
 export function styleOf(look) {
   const L = LOOKS[look] || LOOKS.boy;
-  return { hair: L.hair || "short", skirt: Boolean(L.skirt) };
+  return { hair: L.hair || "short", bangs: L.bangs || "", skirt: Boolean(L.skirt),
+           coat: Boolean(L.coat), face: L.face || (L.skirt ? "girl" : "boy") };
 }
