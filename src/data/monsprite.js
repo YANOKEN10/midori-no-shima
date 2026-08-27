@@ -748,17 +748,17 @@ function scale2x(src) {
   return out;
 }
 
-// て書きの めを えがく（しろめ・くろめ・ひかり）
+// て書きの め：おおきくて まるい ひとみに、大小 2つの ひかり
 function handEye(g, x, y) {
-  for (let j = -2; j <= 3; j++) {
-    for (let i = -2; i <= 2; i++) {
-      if ((Math.abs(i) === 2) && (j === -2 || j === 3)) continue;
-      const edge = Math.abs(i) === 2 || j === -2 || j === 3;
-      put(g, x + i, y + j, edge ? "3" : "0");
+  for (let j = -4; j <= 4; j++) {
+    for (let i = -3; i <= 3; i++) {
+      const dx = i / 3.4, dy = j / 4.4;
+      if (dx * dx + dy * dy > 1) continue;
+      put(g, x + i, y + j, "3");
     }
   }
-  for (let j = 0; j <= 2; j++) for (let i = -1; i <= 1; i++) put(g, x + i, y + j, "3");
-  put(g, x - 1, y, "0");
+  for (let j = -3; j <= -1; j++) for (let i = -2; i <= 0; i++) put(g, x + i, y + j, "0");  // 大きい ひかり
+  put(g, x + 1, y + 2, "0"); put(g, x + 2, y + 2, "0"); put(g, x + 1, y + 3, "0");         // 小さい ひかり
 }
 
 export function buildHandSprite(rows32) {
