@@ -12,6 +12,70 @@ export const ENCOUNTER = new Set(['"', "C"]);
 // mask のビット： 1=上 2=右 4=下 8=左 に「おなじ なかま」が いる
 const N = 1, E = 2, S = 4, Wl = 8;
 
+/* --- ひろい 色むら（マスを またいで つながる やわらかい ノイズ） ---
+   マスの ばしょ（p.tx,p.ty）から せかい ぜんたいの ざひょうを 作って
+   ノイズを 見るので、となりの マスと つながって 見えます。 */
+function hash2(x, y, seed) {
+  let h = (x * 374761393 + y * 668265263 + seed * 1442695040) | 0;
+  h = (h ^ (h >> 13)) * 1274126177;
+  return ((h ^ (h >> 16)) >>> 0) / 4294967295;
+}
+function vnoise(x, y, seed) {
+  const xi = Math.floor(x), yi = Math.floor(y);
+  const fx = x - xi, fy = y - yi;
+  const sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+  const a = hash2(xi, yi, seed), b = hash2(xi + 1, yi, seed);
+  const c = hash2(xi, yi + 1, seed), d = hash2(xi + 1, yi + 1, seed);
+  return (a + (b - a) * sx) + ((c + (d - c) * sx) - (a + (b - a) * sx)) * sy;
+}
+// しきい値より こい ところを いろ 2 で ぬる（さかいめは あみかけ）
+function patch(p, seed, size, thresh) {
+  const ox = (p.tx || 0) * 32, oy = (p.ty || 0) * 32;
+  for (let y = 0; y < 32; y++) {
+    for (let x = 0; x < 32; x++) {
+      const n = vnoise((ox + x) / size, (oy + y) / size, seed);
+      if (n > thresh + 0.05) p.f(x, y, 2);
+      else if (n > thresh && ((x + y) % 2 === 0)) p.f(x, y, 2);
+    }
+  }
+}
+
+/* --- じめんの きわを まるくする ---
+   まわり 8マスを 見て、
+     ・となりが 2つとも ちがう → そとがわの かど（まるく けずる）
+     ・となりが 2つとも おなじで ななめだけ ちがう → 内がわの かど（すみを うめる）
+   けずる ところは まわりの じめんの 色（いま えらんでいる セット）で ぬります。 */
+function roundEdges(p, mask, r) {
+  const N = 1, E = 2, S = 4, Wl = 8, NE = 16, SE = 32, SW = 64, NW = 128;
+  const R = r || 9;
+  const cut = (cx, cy, sx, sy) => {              // そとがわの かど
+    for (let j = 0; j < R; j++) {
+      for (let i = 0; i < R; i++) {
+        const dx = i + 0.5, dy = j + 0.5;
+        const d = Math.sqrt((R - dx) * (R - dx) + (R - dy) * (R - dy));
+        const x = cx + sx * i, y = cy + sy * j;
+        if (d > R) p.f(x, y, 1);
+        else if (d > R - 1.6 && ((x + y) % 2 === 0)) p.f(x, y, 1);
+      }
+    }
+  };
+  const fill = (cx, cy, sx, sy) => {             // 内がわの かど
+    for (let j = 0; j < 4; j++) for (let i = 0; i < 4 - j; i++) {
+      const x = cx + sx * i, y = cy + sy * j;
+      if (i + j < 3) p.f(x, y, 1);
+      else if ((x + y) % 2 === 0) p.f(x, y, 1);
+    }
+  };
+  if (!(mask & N) && !(mask & Wl)) cut(0, 0, 1, 1);
+  else if ((mask & N) && (mask & Wl) && !(mask & NW)) fill(0, 0, 1, 1);
+  if (!(mask & N) && !(mask & E)) cut(31, 0, -1, 1);
+  else if ((mask & N) && (mask & E) && !(mask & NE)) fill(31, 0, -1, 1);
+  if (!(mask & S) && !(mask & Wl)) cut(0, 31, 1, -1);
+  else if ((mask & S) && (mask & Wl) && !(mask & SW)) fill(0, 31, 1, -1);
+  if (!(mask & S) && !(mask & E)) cut(31, 31, -1, -1);
+  else if ((mask & S) && (mask & E) && !(mask & SE)) fill(31, 31, -1, -1);
+}
+
 const PAINT = {
   /* ---------------- じめん ---------------- */
   // くさ（ふつう）
@@ -20,6 +84,9 @@ const PAINT = {
     p.ffill(1);
     p.fnoise(11 + v * 37, 90, 0, 0, 0, 32, 32);
     p.fnoise(23 + v * 91, 40, 2, 0, 0, 32, 32);
+    // ひろい 色むら（マスを またいで つながる）— つぶつぶの あとに かける
+    patch(p, 0, 46, 0.60);
+    patch(p, 97, 27, 0.68);
     const tuft = (x, y) => { p.fbox(x, y + 1, 1, 2, 2); p.f(x - 1, y + 2, 2); p.f(x + 1, y + 2, 2); p.f(x, y, 2); };
     const sets = [[[6, 7], [19, 4], [25, 18], [11, 23]],
                   [[3, 14], [17, 9], [28, 22], [9, 27]],
@@ -62,11 +129,12 @@ const PAINT = {
     p.fnoise(31 + (v | 0) * 17, 18, 2, 0, 0, 32, 32);
     if ((v | 0) % 8 === 3) { p.fbox(20, 12, 3, 2, 2); p.fbox(21, 11, 1, 1, 2); }
     if ((v | 0) % 8 === 6) { p.fbox(7, 22, 2, 2, 2); }
-    p.set("grass");
+    p.set(p.ground || "grass");
     if (!(mask & N)) { p.fbox(0, 0, 32, 2, 1); p.fdither(0, 2, 32, 3, 1, false); }
     if (!(mask & S)) { p.fbox(0, 30, 32, 2, 1); p.fdither(0, 27, 32, 3, 1, true); }
     if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 1); p.fdither(2, 0, 3, 32, 1, false); }
     if (!(mask & E)) { p.fbox(30, 0, 2, 32, 1); p.fdither(27, 0, 3, 32, 1, true); }
+    roundEdges(p, mask, 10);
     p.set(null);
   },
 
@@ -77,11 +145,12 @@ const PAINT = {
     p.fnoise(19 + (v | 0) * 61, 24, 2, 0, 0, 32, 32);
     if ((v | 0) % 8 === 2) { p.fbox(12, 18, 5, 1, 2); p.fbox(13, 19, 3, 1, 2); }
     if ((v | 0) % 8 === 5) { p.fbox(22, 8, 4, 1, 2); }
-    p.set("grass");
-    if (!(mask & N)) p.fdither(0, 0, 32, 4, 1, false);
-    if (!(mask & S)) p.fdither(0, 28, 32, 4, 1, true);
-    if (!(mask & Wl)) p.fdither(0, 0, 4, 32, 1, false);
-    if (!(mask & E)) p.fdither(28, 0, 4, 32, 1, true);
+    p.set(p.ground || "grass");
+    if (!(mask & N)) { p.fbox(0, 0, 32, 1, 1); p.fdither(0, 1, 32, 4, 1, false); }
+    if (!(mask & S)) { p.fbox(0, 31, 32, 1, 1); p.fdither(0, 27, 32, 4, 1, true); }
+    if (!(mask & Wl)) { p.fbox(0, 0, 1, 32, 1); p.fdither(1, 0, 4, 32, 1, false); }
+    if (!(mask & E)) { p.fbox(31, 0, 1, 32, 1); p.fdither(27, 0, 4, 32, 1, true); }
+    roundEdges(p, mask, 11);
     p.set(null);
   },
 
@@ -448,18 +517,24 @@ const TILE_SET = {
 };
 
 // override は マップごとの いろちがい（やねの 色など）
-export function tileFor(ch, frame, override, mask, variant, shade) {
+export function tileFor(ch, frame, override, mask, variant, shade, tx, ty) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
-  const m = mask == null ? 15 : mask;
+  const m = mask == null ? 255 : mask;
   const v = variant | 0;
   const sh = shade ? 1 : 0;
   const name = (ch === "W" && frame) ? "W2" : ch;
   const f0 = (ch === "W" && frame) ? PAINT.W2 : (PAINT[ch] || PAINT["."]);
-  // がけの 下の マスには、がけが おとす かげを うわがきする
-  const f = sh
-    ? (p) => { f0(p, m, v); p.fbox(0, 0, 32, 4, 3); p.fdither(0, 4, 32, 4, 3, false); }
-    : (p) => f0(p, m, v);
-  return tileCanvas(name + "#" + m + "v" + v + (sh ? "s" : ""), f, set);
+  // くさは ばしょで 色むらが かわるので、ばしょも 名まえに いれる
+  const pos = (ch === "," || ch === "F") ? "@" + (tx | 0) + "," + (ty | 0) : "";
+  // きわを ぼかす とき、まわりの じめん（まちでは すな など）の 色を つかう
+  const ground = (override && override[","]) || "grass";
+  const f = (p) => {
+    p.tx = tx | 0; p.ty = ty | 0;
+    p.ground = ground;
+    f0(p, m, v);
+    if (sh) { p.fbox(0, 0, 32, 4, 3); p.fdither(0, 4, 32, 4, 3, false); }   // がけの かげ
+  };
+  return tileCanvas(name + "#" + m + "v" + v + (sh ? "s" : "") + pos + "~" + ground, f, set);
 }
 
 export function tileSet(ch) { return TILE_SET[ch] || "path"; }

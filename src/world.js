@@ -661,17 +661,22 @@ export const world = {
         const ch = edgeTile(map, tx, ty);
         if (ch === null) continue;
         const gg = group(ch);
+        // まわり 8マスを 見る（ななめも 見て、かどを まるく できるように）
         let mask = 0;
         if (group(edgeTile(map, tx, ty - 1)) === gg) mask |= 1;
         if (group(edgeTile(map, tx + 1, ty)) === gg) mask |= 2;
         if (group(edgeTile(map, tx, ty + 1)) === gg) mask |= 4;
         if (group(edgeTile(map, tx - 1, ty)) === gg) mask |= 8;
+        if (group(edgeTile(map, tx + 1, ty - 1)) === gg) mask |= 16;
+        if (group(edgeTile(map, tx + 1, ty + 1)) === gg) mask |= 32;
+        if (group(edgeTile(map, tx - 1, ty + 1)) === gg) mask |= 64;
+        if (group(edgeTile(map, tx - 1, ty - 1)) === gg) mask |= 128;
         const vr = ((tx * 7 + ty * 13 + tx * ty) >>> 0) % 16;
         // がけの 下の じめんには かげが おちる
         const sh = edgeTile(map, tx, ty - 1) === "R" && GROUND.has(ch) ? 1 : 0;
         // き の ところは まず じめんだけ えがく（木は あとで かさねる）
         const draw = (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
-        G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 15, vr, sh), tx * T - camX, ty * T - camY);
+        G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tx * T - camX, ty * T - camY);
       }
     }
 

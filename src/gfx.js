@@ -452,6 +452,8 @@ export function tileCanvas(name, painter, setName) {
   px.name = setName || curSet;
   painter(px);
   if (prev) use(prev);
+  // ためこみすぎない（ばしょごとの くさが たまるため）
+  if (tileCache.size > 1400) tileCache.clear();
   tileCache.set(k, cv);
   return cv;
 }
