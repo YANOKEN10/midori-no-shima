@@ -41,7 +41,7 @@ function colorsFor(look) {
   const pal = G.resolve(look) || G.resolve("boy");
   const L = LOOKS[look] || LOOKS.boy;
   const c = {
-    K: pal[L.K], S: pal[L.S], P: pal[L.P], H: pal[L.H], "3": pal[3],
+    K: pal[L.K], S: pal[L.S], P: pal[L.P], H: pal[L.H], "3": pal[3], w: "#ffffff",
     k: darker(pal[L.K], 0.18), s: darker(pal[L.S]), p: darker(pal[L.P]), h: darker(pal[L.H], 0.32),
   };
   lookColorCache.set(look, c);
@@ -733,14 +733,14 @@ export const world = {
         } else {
           img = G.makeArt(framesFor("player")[this.dir][fi], 1, "p" + this.dir + fi, "player");
         }
-        G.draw(img, px - camX, py - camY - 24 + hopY);
+        G.draw(img, px - camX, py - camY - 12 + hopY);
       } else {
         const n = p.n;
         const dirn = n.dir || "down";
         const img2 = G.isColor()
           ? G.makeColorArt(playerFrames()[dirn][0], 1, "nc" + n.look + dirn, colorsFor(n.look))
           : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look);
-        G.draw(img2, n.x * T - camX, n.y * T - camY - 24);
+        G.draw(img2, n.x * T - camX, n.y * T - camY - 12);
         if (n.alert) {
           G.use("ui");
           G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);

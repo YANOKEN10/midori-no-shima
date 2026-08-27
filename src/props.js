@@ -79,6 +79,9 @@ function roofStyle(map, x, y, w, rows, set) {
   return STYLES[k];
 }
 
+// やねの てっぺん（かげを どこから 出すか）
+function roofTop(h) { return Math.max(0, h.roofRows * T - 10); }
+
 /* --- たてものの え --- */
 export function houseImage(h) {
   const key = [h.w, h.h, h.roofRows, h.set, h.style, G.paletteName(),
@@ -86,11 +89,12 @@ export function houseImage(h) {
   if (cache.has(key)) return cache.get(key);
 
   const W = h.w * T, H = h.h * T;
+  const K = G.AS;                            // ほんとうの ドット
+  const PAD = 6;                             // じめんに おちる かげの ぶん
   const cv = document.createElement("canvas");
-  cv.width = W * G.AS; cv.height = H * G.AS;
+  cv.width = (W + PAD) * K; cv.height = (H + PAD) * K;
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
-  c.setTransform(G.AS, 0, 0, G.AS, 0, 0);   // 中は これまでの ざひょうの まま
 
   const roof = G.resolve(h.set);
   const wall = G.resolve("wall");
@@ -98,51 +102,85 @@ export function houseImage(h) {
   const glass = G.resolve("water");
   const wood = G.resolve("wood");
 
-  const fill = (x, y, w, hh, col) => { c.fillStyle = col; c.fillRect(x, y, w, hh); };
+  const fill = (x, y, w, hh, col) => {
+    c.fillStyle = col;
+    c.fillRect(Math.round(x * K), Math.round(y * K), Math.round(w * K), Math.round(hh * K));
+  };
   const dither = (x, y, w, hh, col, odd) => {
     c.fillStyle = col;
-    for (let j = 0; j < hh; j++) for (let i = 0; i < w; i++) {
-      if (((x + i) + (y + j)) % 2 === (odd ? 1 : 0)) c.fillRect(x + i, y + j, 1, 1);
+    const X = Math.round(x * K), Y = Math.round(y * K), Wd = Math.round(w * K), Hd = Math.round(hh * K);
+    for (let j = 0; j < Hd; j++) for (let i = 0; i < Wd; i++) {
+      if (((X + i) + (Y + j)) % 2 === (odd ? 1 : 0)) c.fillRect(X + i, Y + j, 1, 1);
     }
   };
+  // ほんとうの 1ドットで えがく（こまかい ところ用）
+  const d = (x, y, w, hh, col) => { c.fillStyle = col; c.fillRect(x | 0, y | 0, (w || 1) | 0, (hh || 1) | 0); };
+
+  /* ---- じめんに おちる かげ（立体に 見せる いちばんの コツ） ---- */
+  {
+    const sh = "rgba(0,0,0,0.28)";
+    c.fillStyle = sh;
+    c.fillRect(PAD * K, (H - 2) * K, W * K, (PAD + 2) * K);          // 下がわ
+    c.fillRect((W) * K, (roofTop(h) + 2) * K, PAD * K, (H - roofTop(h)) * K); // 右がわ
+    c.globalAlpha = 0.5;
+    c.fillRect((W) * K, (roofTop(h)) * K, PAD * K, 2 * K);
+    c.globalAlpha = 1;
+  }
 
   const roofH = h.roofRows * T;
   const wallY = roofH;
 
   /* ---- かべ ---- */
   fill(0, wallY, W, H - wallY, wall[1]);
-  // よこの いた
-  for (let y = wallY + 4; y < H; y += 6) fill(0, y, W, 1, wall[2]);
-  // かどの はしら
-  fill(0, wallY, 3, H - wallY, wall[2]);
+  // よこの いた（1まいずつ すじと かげ）
+  for (let y = wallY + 3; y < H; y += 5) {
+    fill(0, y, W, 0.5, wall[2]);
+    dither(0, y + 0.5, W, 0.5, wall[2], false);
+  }
+  // かどの はしら（左は 日なた、右は かげ）
+  fill(0, wallY, 3, H - wallY, wall[0]);
+  fill(2.5, wallY, 0.5, H - wallY, wall[2]);
   fill(W - 3, wallY, 3, H - wallY, wall[2]);
-  // ひかり
-  dither(3, wallY, W - 6, 6, wall[0], false);
-  // 下の かげ
+  fill(W - 3.5, wallY, 0.5, H - wallY, wall[3]);
+  // 上の ひかりと 下の かげ
+  dither(3, wallY, W - 6, 5, wall[0], false);
   fill(0, H - 3, W, 3, wall[3]);
+  dither(3, H - 6, W - 6, 3, wall[3], false);
 
   /* ---- まど ---- */
   for (const [cx, cy] of h.windows) {
     const x = cx * T + 5, y = cy * T + 7;
-    fill(x - 2, y - 2, 26, 22, wood[2]);
+    fill(x - 3, y - 3, 28, 24, wood[3]);      // わくの かげ
+    fill(x - 2, y - 2, 26, 22, wood[1]);      // わく
+    fill(x - 2, y - 2, 26, 1, wood[0]);       // わくの 上（日なた）
     fill(x, y, 22, 18, glass[2]);
     fill(x + 1, y + 1, 20, 16, glass[1]);
-    dither(x + 1, y + 1, 9, 7, glass[0], false);
+    dither(x + 1, y + 1, 20, 5, glass[0], false);
+    // ガラスに うつる ひかり（ななめの すじ）
+    for (let i = 0; i < 14; i++) { fill(x + 3 + i, y + 13 - i, 2, 1, glass[0]); }
     fill(x + 10, y + 1, 2, 16, wood[2]);
     fill(x + 1, y + 8, 20, 2, wood[2]);
-    fill(x - 3, y + 20, 28, 3, wood[3]);      // まどの さん
+    fill(x - 3, y + 20, 28, 3, wood[2]);      // まどの さん
+    fill(x - 3, y + 23, 28, 1, wood[3]);
+    dither(x - 3, y + 24, 28, 2, wall[3], false);   // さんの かげ
   }
 
   /* ---- ドア ---- */
   for (const [cx, cy] of h.doors) {
     const x = cx * T + 4, y = cy * T + 2;
-    fill(x - 1, y - 1, 26, 32, door[3]);
-    fill(x, y, 24, 30, door[1]);
-    fill(x + 3, y + 4, 18, 24, door[2]);
+    fill(x - 2, y - 2, 28, 33, wood[3]);      // わく
+    fill(x - 1, y - 1, 26, 31, wood[1]);
+    fill(x - 1, y - 1, 26, 1, wood[0]);
+    fill(x, y, 24, 30, door[2]);              // おくまった とびら
+    fill(x + 1, y + 1, 22, 28, door[1]);
+    dither(x + 1, y + 1, 22, 4, door[0], false);
     fill(x + 3, y + 4, 18, 1, door[3]);
     fill(x + 3, y + 15, 18, 1, door[3]);
+    fill(x, y, 2, 30, door[3]);               // 中の かげ
     fill(x + 17, y + 17, 3, 3, roof[0]);      // ノブ
-    fill(x - 3, y + 29, 30, 3, wall[2]);      // だんさ
+    fill(x + 17, y + 18, 3, 1, roof[2]);
+    fill(x - 3, y + 29, 30, 3, wall[0]);      // だんさ
+    fill(x - 3, y + 32, 30, 1, wall[3]);
   }
 
   /* ---- やね ---- */

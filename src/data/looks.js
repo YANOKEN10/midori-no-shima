@@ -79,7 +79,7 @@ export function playerColors(look) {
   const K = SKIN, S = L.shirt || DEFAULT_LOOK.shirt;
   const P = L.pants || DEFAULT_LOOK.pants, H = L.hair || DEFAULT_LOOK.hair;
   return {
-    K: K, S: S, P: P, H: H, "3": OUTLINE,
+    K: K, S: S, P: P, H: H, "3": OUTLINE, w: "#ffffff",
     k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32),
   };
 }
