@@ -167,12 +167,12 @@ export const MAPS = {
                "ネットなしで 出るのは むぼうじゃ。"],
       },
       {
-        x: 12, y: 6, dir: "left", look: "girl", name: "むらの こ",
+        x: 12, y: 6, dir: "left", look: "girl", name: "むらの こ", hair: "bun",
         talk: ["この 谷川の 水は つめたくて おいしいよ。",
                "はしの 石を わたって むこうに いけるの。"],
       },
       {
-        x: 11, y: 13, dir: "down", look: "hiker", name: "やまの りょうし",
+        x: 11, y: 13, dir: "down", look: "hiker", name: "やまの りょうし", hair: "straw",
         talk: ["ぞくちょうさまに みとめられないと",
                "この やまからは 出られん。",
                "…おれも わかい ころは そうだった。"],
@@ -411,7 +411,7 @@ export const MAPS = {
     warps: [{ x: 4, y: 7, to: "harbor", tx: 3, ty: 11 }, { x: 5, y: 7, to: "harbor", tx: 3, ty: 11 }],
     npcs: [
       {
-        x: 2, y: 2, dir: "down", look: "girl", name: "ふくやの おねえさん",
+        x: 2, y: 2, dir: "down", look: "girl", name: "ふくやの おねえさん", hair: "pony", skirt: true,
         clothes: "basic",
         talk: ["いらっしゃい！ ウミカゼ ふくてんよ。",
                "うわぎと ズボン、5色ずつ あるわ。"],
@@ -443,7 +443,7 @@ export const MAPS = {
     warps: [{ x: 4, y: 7, to: "sand", tx: 3, ty: 10 }, { x: 5, y: 7, to: "sand", tx: 3, ty: 10 }],
     npcs: [
       {
-        x: 2, y: 2, dir: "down", look: "nurse", name: "びようしさん",
+        x: 2, y: 2, dir: "down", look: "nurse", name: "びようしさん", hair: "bob", skirt: true,
         salon: true,
         talk: ["ようこそ スナカゼへ。",
                "かみの 色、5色から えらべますよ。"],
@@ -475,7 +475,7 @@ export const MAPS = {
     warps: [{ x: 4, y: 7, to: "stone", tx: 3, ty: 10 }, { x: 5, y: 7, to: "stone", tx: 3, ty: 10 }],
     npcs: [
       {
-        x: 2, y: 2, dir: "down", look: "leader1", name: "デザイナー イシヅカ",
+        x: 2, y: 2, dir: "down", look: "leader1", name: "デザイナー イシヅカ", hair: "bun", skirt: true,
         clothes: "fancy",
         talk: ["ようこそ ブティック イシヅカへ。",
                "ここでしか 手に入らない 10色を そろえている。",
@@ -582,7 +582,7 @@ const TOWN_DEFS = [
     champTalk: ["すなの まちの ダイだ。", "すなあらしにも たえられるか！"],
     champWin: ["やるな！ 「すなエンブレム」を もっていけ。"],
     people: [
-      { x: 6, y: 11, look: "girl", name: "むすめ",
+      { x: 6, y: 11, look: "girl", name: "むすめ", hair: "pony", skirt: true,
         talk: ["すなの 下には むかしの ガオンが", "ねむっているって いわれてるの。"] },
     ],
   },
@@ -614,7 +614,7 @@ const TOWN_DEFS = [
                 "かたい ガオンを くずせるかな？"],
     champWin: ["いい うでだ。「いしエンブレム」を やろう。"],
     people: [
-      { x: 6, y: 11, look: "oldman", name: "いしきり",
+      { x: 6, y: 11, look: "oldman", name: "いしきり", hair: "straw",
         talk: ["きたの みずうみには「メロロン」という",
                "おおきな ガオンが すんでいるらしい。"] },
     ],
@@ -687,7 +687,7 @@ const ROUTE_DEFS = [
            ["サカナビ", 9, 12, 10], ["クモッコ", 9, 12, 8], ["ヨルドリ", 9, 12, 6], ["アワミィ", 8, 11, 8], ["コイヌン", 8, 11, 10],
            ["ムシコロ", 8, 11, 10], ["シャチマル", 10, 13, 3]],
     trainers: [
-      { x: 4, y: 9, dir: "right", look: "boy", name: "つりびと ハル",
+      { x: 4, y: 9, dir: "right", look: "boy", name: "つりびと ハル", hair: "beanie",
         party: [["サカナビ", 10], ["カニポン", 11]], money: 400,
         talk: ["うみの ガオンは にげあしが はやいぜ！"], win: ["やられた！"],
         after: ["みずの ガオンには でんきが きくよ。"] },
@@ -699,7 +699,7 @@ const ROUTE_DEFS = [
            ["ヒバナリ", 15, 18, 10], ["モグポン", 15, 18, 12], ["ツチノコ", 14, 17, 12], ["イシゴロ", 15, 18, 10],
            ["ビリタマ", 14, 17, 12], ["ドロヌマ", 16, 19, 6], ["タヌポン", 15, 18, 10]],
     trainers: [
-      { x: 11, y: 5, dir: "left", look: "hiker", name: "たびの ひと ソウ",
+      { x: 11, y: 5, dir: "left", look: "hiker", name: "たびの ひと ソウ", hair: "straw",
         party: [["ツチマル", 16], ["スナムシ", 17]], money: 700,
         talk: ["さばくを こえるなら ようじんしな。"], win: ["みごとだ。"],
         after: ["すなの ガオンは くさが にがて。"] },
@@ -715,7 +715,7 @@ const ROUTE_DEFS = [
            ["ウリボン", 21, 24, 12], ["タネコロ", 20, 23, 10], ["ヨルネコ", 21, 24, 8], ["リーフィン", 20, 23, 8], ["ハナビィ", 20, 23, 10],
            ["ネムノハ", 22, 25, 6], ["パンダン", 22, 25, 6], ["オバケシ", 21, 24, 8]],
     trainers: [
-      { x: 4, y: 12, dir: "up", look: "girl", name: "むしとり シオリ",
+      { x: 4, y: 12, dir: "up", look: "girl", name: "むしとり シオリ", hair: "twin", skirt: true,
         party: [["カブトン", 22], ["チョウマユ", 22]], money: 900,
         talk: ["もりの むしガオンは かわいいでしょ？"], win: ["まだまだ！"],
         after: ["むしは ほのおが にがて。"] },
@@ -727,7 +727,7 @@ const ROUTE_DEFS = [
            ["クロネズ", 26, 29, 12], ["カゲポン", 26, 29, 12], ["プラグン", 27, 30, 10], ["ドクロン", 27, 30, 8], ["スミビン", 28, 31, 6],
            ["デンチュウ", 28, 31, 6], ["ジシンヌシ", 29, 32, 4]],
     trainers: [
-      { x: 11, y: 9, dir: "left", look: "hiker", name: "いしきり タツ",
+      { x: 11, y: 9, dir: "left", look: "hiker", name: "いしきり タツ", hair: "beanie",
         party: [["イワッコ", 28], ["ガンセキ", 29]], money: 1200,
         talk: ["いわの ガオンは そう かんたんに くずれん！"], win: ["くずれたか…"],
         after: ["いわには みずと くさが きく。"] },
@@ -739,7 +739,7 @@ const ROUTE_DEFS = [
            ["ハネデン", 31, 34, 12], ["ヒツジン", 31, 34, 12], ["タツノコ", 33, 36, 8], ["カバリン", 32, 35, 8], ["ヌシガエル", 34, 37, 4],
            ["ウズシオヌシ", 34, 37, 4]],
     trainers: [
-      { x: 4, y: 5, dir: "right", look: "sailor", name: "みずうみの ヨシ",
+      { x: 4, y: 5, dir: "right", look: "sailor", name: "みずうみの ヨシ", hair: "cap",
         party: [["クラゲミ", 33], ["ミナモン", 34]], money: 1500,
         talk: ["みずうみの ガオンは しずかで つよい。"], win: ["おみごと。"],
         after: ["きたの スカイ・タウンは 空に ちかい まちだ。"] },
@@ -756,7 +756,7 @@ const ROUTE_DEFS = [
            ["ネコデン", 36, 39, 12], ["ヒノコマ", 36, 39, 8], ["タキビィ", 36, 39, 8],
            ["ボヤッコ", 36, 39, 8]],
     trainers: [
-      { x: 11, y: 12, dir: "up", look: "boy", name: "そらの こ カイ",
+      { x: 11, y: 12, dir: "up", look: "boy", name: "そらの こ カイ", hair: "spiky",
         party: [["ハネデン", 38], ["ソラデン", 39]], money: 1800,
         talk: ["そらの ガオンは はやいぞ！"], win: ["つかまえられた…！"],
         after: ["でんきには じめんが きく。"] },
@@ -769,7 +769,7 @@ const ROUTE_DEFS = [
            ["スズメバチン", 42, 45, 8], ["デカネズ", 41, 44, 10], ["ヨルグモ", 42, 45, 8], ["ヤミノヌシ", 44, 47, 3],
            ["フェニクス", 44, 47, 3], ["ヨウガンヌシ", 44, 47, 3]],
     trainers: [
-      { x: 4, y: 3, dir: "right", look: "leader2", name: "たいかいの せんぱい",
+      { x: 4, y: 3, dir: "right", look: "leader2", name: "たいかいの せんぱい", hair: "beanie",
         party: [["メラボヤ", 43], ["シャドネコ", 44], ["ガンセキ", 44]], money: 2500,
         talk: ["大会の 出場者だ。ここで ならしておこう。"], win: ["いい しあいだった！"],
         after: ["ギャラクシー・タウンは すぐ そこだ。"] },
@@ -788,7 +788,7 @@ for (const t of TOWN_DEFS) {
     after: ["つぎの まちで まってるぞ！"],
   });
   for (const p of t.people || []) {
-    npcs.push({ x: p.x, y: p.y, dir: "down", look: p.look, name: p.name, talk: p.talk });
+    npcs.push({ x: p.x, y: p.y, dir: "down", look: p.look, name: p.name, talk: p.talk, hair: p.hair, skirt: p.skirt });
   }
   if (t.legend) {
     npcs.push({
@@ -822,7 +822,7 @@ for (const r of ROUTE_DEFS) {
   }
   for (const t of r.trainers || []) {
     npcs.push({
-      x: t.x, y: t.y, dir: t.dir, look: t.look, name: t.name,
+      x: t.x, y: t.y, dir: t.dir, look: t.look, name: t.name, hair: t.hair, skirt: t.skirt,
       trainer: { party: t.party, money: t.money },
       talk: t.talk, win: t.win, after: t.after,
     });

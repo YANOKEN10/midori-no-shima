@@ -1,6 +1,6 @@
 // ============================================================
 //  ひとの ドットえ（32よこ × 40たて・2とうしん）
-//   もじ： 3 ふち / H かみ / K はだ / S ふく / P ズボン(スカート)
+//   もじ： 3 ふち / H かみ / K はだ / S ふく / P ズボン(スカート) / T ぼうし
 //          w しろ（めの ひかり）
 //   h k s p は それぞれの かげ（右下がわ）で、あとから じどうで つけます。
 //
@@ -132,6 +132,40 @@ function drawHair(g, style, view) {
     else { disc(g, 5, 18, 4, 4.5, "H"); disc(g, 27, 18, 4, 4.5, "H"); }
   } else if (style === "spiky") {
     for (const [x, w, h] of [[6, 4, 5], [11, 4, 6], [17, 4, 6], [22, 4, 5]]) tri(g, x, HEAD_TOP - 5, w, h, false, "H");
+  } else if (style === "pony") {
+    // ポニーテール（うしろで ひとつに むすぶ）
+    if (view === "side") { disc(g, 8, 20, 3.5, 7, "H"); rect(g, 7, 13, 4, 4, "H"); }
+    else if (view === "back") { disc(g, 16, 24, 4, 8, "H"); rect(g, 13, 12, 7, 6, "H"); }
+    else { disc(g, 4, 19, 2.5, 5, "H"); disc(g, 28, 19, 2.5, 5, "H"); }
+  } else if (style === "bun") {
+    // おだんご（あたまの 上に ふたつ）
+    disc(g, 9, HEAD_TOP - 2, 4, 3.5, "H");
+    disc(g, 23, HEAD_TOP - 2, 4, 3.5, "H");
+  } else if (style === "bob") {
+    // ぱっつん（まっすぐ そろえた みじかめ）
+    rect(g, 5, 18, 5, 5, "H"); rect(g, 22, 18, 5, 5, "H");
+    if (view !== "back") rect(g, 7, 9, 18, 3, "H");
+  } else if (style === "straw") {
+    // むぎわらぼうし（ひろい つば）
+    for (let y = HEAD_TOP - 4; y <= 11; y++) {
+      for (let x = 1; x <= 30; x++) {
+        const dx = (x - 16) / 12, dy = (y - 11) / 9;
+        if (dx * dx + dy * dy <= 1.03) put(g, x, y, "T");
+      }
+    }
+    rect(g, 1, 11, 30, 3, "T");                                  // つば
+    rect(g, 1, 14, 30, 1, "3");
+    for (let x = 6; x <= 25; x += 4) rect(g, x, 8, 2, 1, "3");    // あみめ
+  } else if (style === "beanie") {
+    // ニットぼう
+    for (let y = HEAD_TOP - 3; y <= 13; y++) {
+      for (let x = 4; x <= 27; x++) {
+        const dx = (x - 16) / 11, dy = (y - 12.5) / 10.5;
+        if (dx * dx + dy * dy <= 1.03) put(g, x, y, "S");
+      }
+    }
+    rect(g, 5, 12, 22, 3, "S"); rect(g, 5, 14, 22, 1, "3");
+    disc(g, 16, HEAD_TOP - 4, 3, 2.5, "S");                      // てっぺんの たま
   } else if (style === "cap") {
     // ぼうし（ふくと おなじ 色）
     for (let y = HEAD_TOP - 3; y <= 12; y++) {
@@ -170,7 +204,7 @@ function frame(view, step, style) {
 }
 
 /* --- 右下がわに かげを つける（ひかりは 左上から） --- */
-const SHADE = { H: "h", K: "k", S: "s", P: "p" };
+const SHADE = { H: "h", K: "k", S: "s", P: "p", T: "t" };
 function shadeRows(rows) {
   const h = rows.length, w = rows.reduce((m, r) => Math.max(m, r.length), 0);
   const pad = rows.map((r) => (r + " ".repeat(w)).slice(0, w).replace(/ /g, "."));
@@ -221,7 +255,7 @@ export function personFrames(colors, style) {
   };
   const map = (r) => r
     .replace(/[Hh]/g, c.H).replace(/[Kk]/g, c.K)
-    .replace(/[Ss]/g, c.S).replace(/[Pp]/g, c.P)
+    .replace(/[Ss]/g, c.S).replace(/[Pp]/g, c.P).replace(/[Tt]/g, c.S)
     .replace(/w/g, "0");
   const raw = personFramesRaw(style);
   const out = {};

@@ -6,6 +6,7 @@
 // ============================================================
 
 export const SKIN = "#ffd9ae";
+export const STRAW = "#e3c281";   // むぎわらぼうしの 色
 export const OUTLINE = "#231a14";
 
 /* --- 1つめの まちの ふくや（きほん 5色） --- */
@@ -59,10 +60,53 @@ export const HAIR_COLORS = [
   { name: "ぎんいろの かみ", color: "#cfd6dd" },
 ];
 
+/* --- びよういんで えらべる かみがた --- */
+export const HAIR_STYLES = [
+  { name: "みじかい かみ", style: "short" },
+  { name: "ながい かみ", style: "long" },
+  { name: "ふたつむすび", style: "twin" },
+  { name: "ポニーテール", style: "pony" },
+  { name: "おだんご", style: "bun" },
+  { name: "ぱっつん", style: "bob" },
+  { name: "とがった かみ", style: "spiky" },
+];
+
+/* --- ふくやの スカート（下に はくもの） --- */
+export const SKIRT_BASIC = [
+  { name: "あかい スカート", color: "#d94b3a" },
+  { name: "こんの スカート", color: "#2b3f6b" },
+  { name: "みどりの スカート", color: "#3c6b45" },
+  { name: "きいろい スカート", color: "#e0b83a" },
+  { name: "くろい スカート", color: "#24262b" },
+];
+export const SKIRT_FANCY = [
+  { name: "むらさきの スカート", color: "#6d3aa8" },
+  { name: "ももいろの スカート", color: "#d95f96" },
+  { name: "みずいろの スカート", color: "#3aa8c0" },
+  { name: "オレンジの スカート", color: "#c96f20" },
+  { name: "ミントの スカート", color: "#3fae82" },
+  { name: "ワインの スカート", color: "#701a30" },
+  { name: "クリームの スカート", color: "#ddc48a" },
+  { name: "ふかみどりの スカート", color: "#175c3b" },
+  { name: "こんじょうの スカート", color: "#1a2450" },
+  { name: "ぎんいろの スカート", color: "#9aa6b5" },
+];
+
+/* --- ぼうし（ふくやで 買える） --- */
+export const HAT_STYLES = [
+  { name: "ぼうしを ぬぐ", style: "" },
+  { name: "キャップ", style: "cap" },
+  { name: "むぎわらぼうし", style: "straw" },
+  { name: "ニットぼう", style: "beanie" },
+];
+
 export const DEFAULT_LOOK = {
   shirt: "#2f4fa8",     // はじめは あおい うわぎ
   pants: "#231a14",
   hair: "#241d1a",
+  style: "short",       // かみがた
+  hat: "",              // ぼうし（からなら かぶらない）
+  skirt: false,         // スカートか ズボンか
 };
 
 // レオを えがくときの もじ→いろ
@@ -79,7 +123,7 @@ export function playerColors(look) {
   const K = SKIN, S = L.shirt || DEFAULT_LOOK.shirt;
   const P = L.pants || DEFAULT_LOOK.pants, H = L.hair || DEFAULT_LOOK.hair;
   return {
-    K: K, S: S, P: P, H: H, "3": OUTLINE, w: "#ffffff",
-    k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32),
+    K: K, S: S, P: P, H: H, "3": OUTLINE, w: "#ffffff", T: STRAW,
+    k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32), t: darker(STRAW),
   };
 }
