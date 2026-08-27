@@ -1,7 +1,7 @@
 // ============================================================
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
 // ============================================================
-import { SPECIES, species, palOf } from "./data/species.js";
+import { SPECIES, species, palOf, accentOf } from "./data/species.js";
 import { newMove, move } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
@@ -156,4 +156,4 @@ export function healParty() { for (const m of G.save.party) healFull(m); }
 export function flag(k) { return Boolean(G.save.flags[k]); }
 export function setFlag(k, v) { G.save.flags[k] = v == null ? 1 : v; }
 
-export { SPECIES, species, palOf, move, item };
+export { SPECIES, species, palOf, accentOf, move, item };

@@ -265,5 +265,19 @@ for (const [n, b] of Object.entries(LEGEND)) {
 
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
 // その モンスターを ぬる いろセット
+
+// そえいろ：からだの 本いろ とは べつに、つの・はね・しっぽ に つかう いろ。
+// 2つめの タイプが あれば その いろ、なければ タイプごとの きまった あいて。
+const ACCENT_OF = {
+  "ノーマル": "ほのお", "くさ": "ほのお", "ほのお": "でんき", "みず": "でんき",
+  "でんき": "みず", "じめん": "くさ", "むし": "でんき", "やみ": "でんき",
+};
+export function accentOf(spc) {
+  if (!spc) return "ほのお";
+  const t = spc.types || [];
+  if (t[1]) return t[1];
+  return ACCENT_OF[t[0]] || "ほのお";
+}
+
 export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ノーマル"; }
 export function nameByNo(no) { return DEX_ORDER.find((n) => SPECIES[n].no === no) || ""; }

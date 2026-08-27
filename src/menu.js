@@ -9,7 +9,7 @@ import { SPECIES, DEX_ORDER } from "./data/species.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData, SHOP_LIST } from "./data/items.js";
 import {
-  G as State, species, palOf, maxHp, statOf, monName, fainted, healFull,
+  G as State, species, palOf, accentOf, maxHp, statOf, monName, fainted, healFull,
   bagList, useItem, addItem, dexCount, hasItem,
 } from "./state.js";
 import { saveLocal, saveCloud, loadCloud, applySave, describeSave } from "./save.js";
@@ -76,7 +76,7 @@ export async function showStatus(m) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 156);
-    const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp));
+    const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp), accentOf(sp));
     G.draw(img, 4, 22);
     G.text("No." + String(sp.no).padStart(3, "0"), 140, 14, 3, 14);
     const lv = "Lv" + m.lv;
@@ -185,7 +185,7 @@ async function dexEntry(n) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 160);
-    G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp)), 4, 24);
+    G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp), accentOf(sp)), 4, 24);
     G.text("No." + String(sp.no).padStart(3, "0"), 140, 26, 3, 14);
     G.textFit(n, 140, 48, 162, 3, 16);
     G.textFit("タイプ/" + sp.types.join("・"), 140, 74, 162, 3, 14);

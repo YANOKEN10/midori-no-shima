@@ -299,12 +299,88 @@ export function makeArt(rows, scale, key, setName) {
   return cv;
 }
 
-// モンスターの え（白黒モードでは はいけいと まぎれないように こさを ずらす）
-const MONO_SHIFT = { "0": "0", "1": "1", "2": "2", "3": "2", "4": "3", "5": "3" };
-export function makeMonArt(rows, scale, key, setName) {
-  if (mode === "color") return makeArt(rows, scale, key, setName);
-  const shifted = rows.map((r) => r.replace(/[0-5]/g, (c) => MONO_SHIFT[c]));
-  return makeArt(shifted, scale, (key || "") + "#mono", setName);
+/* --- ガオンの え（からだ／そえいろ／クリーム の 3つの いろで ぬる） ---
+   もじの いみ：
+     0〜5 からだ   a〜f そえいろ（つの・はね・しっぽ）
+     g〜l クリーム（おなか・くちもと）   w しろ（めの ひかり）
+------------------------------------------------------------ */
+const CREAM = ["#fffaf0", "#ffeccd", "#f2d7a8", "#cfae7c", "#9c7a4c", "#42301c"];
+const MONO_MON = {
+  "0": 0, "1": 1, "2": 1, "3": 2, "4": 2, "5": 3,
+  a: 0, b: 1, c: 1, d: 2, e: 2, f: 3,
+  g: 0, h: 0, i: 1, j: 2, k: 2, l: 3, w: 0,
+};
+
+
+// いろが ちかすぎる ときは、いろあいを まわして はっきり わける
+function toHsl(h) {
+  const r = parseInt(h.slice(1, 3), 16) / 255, g = parseInt(h.slice(3, 5), 16) / 255, b = parseInt(h.slice(5, 7), 16) / 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  let hh = 0;
+  if (d) {
+    if (mx === r) hh = ((g - b) / d) % 6;
+    else if (mx === g) hh = (b - r) / d + 2;
+    else hh = (r - g) / d + 4;
+  }
+  return [hh * 60, mx ? d / mx : 0, mx];
+}
+function fromHsl(hh, ss, vv) {
+  const c = vv * ss, x = c * (1 - Math.abs(((hh / 60) % 2) - 1)), m = vv - c;
+  let r = 0, g = 0, b = 0;
+  const k = Math.floor(((hh % 360) + 360) % 360 / 60);
+  if (k === 0) { r = c; g = x; } else if (k === 1) { r = x; g = c; }
+  else if (k === 2) { g = c; b = x; } else if (k === 3) { g = x; b = c; }
+  else if (k === 4) { r = x; b = c; } else { r = c; b = x; }
+  return "#" + [r + m, g + m, b + m].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
+}
+function hueRotate(pal, deg) {
+  return pal.map((h) => { const [a, b, c] = toHsl(h); return fromHsl(a + deg, Math.min(1, b * 1.05), c); });
+}
+function tooClose(a, b) {
+  const A = toHsl(a), B = toHsl(b);
+  let d = Math.abs(A[0] - B[0]); if (d > 180) d = 360 - d;
+  return d < 24 && Math.abs(A[1] - B[1]) < 0.55;
+}
+
+export function makeMonArt(rows, scale, key, setName, accentName) {
+  const s = scale || 1;
+  const k = key ? key + "@" + s + "@" + mode + "@" + (setName || "") + "@" + (accentName || "") : null;
+  if (k && spriteCache.has(k)) return spriteCache.get(k);
+
+  const body = resolve(setName);
+  let acc = resolve(accentName || setName);
+  // からだと そえいろが ちかいと 1色に 見えるので、いろあいを まわす
+  if (mode === "color" && (!accentName || tooClose(body[2], acc[2]))) acc = hueRotate(body, 150);
+  const cream = (mode === "color") ? CREAM : (MONO[mode] || MONO.green);
+  const mono = mode !== "color";
+  const colOf = (ch) => {
+    if (mono) { const i = MONO_MON[ch]; return i == null ? body[3] : body[i]; }
+    if (ch === "w") return "#ffffff";
+    const n = "0123456789".indexOf(ch);
+    if (n >= 0) return body[n] || body[body.length - 1];
+    const a = "abcdef".indexOf(ch);
+    if (a >= 0) return acc[a] || acc[acc.length - 1];
+    const c = "ghijkl".indexOf(ch);
+    if (c >= 0) return cream[c] || cream[cream.length - 1];
+    return body[body.length - 1];
+  };
+
+  const h = rows.length, w = rows[0].length;
+  const cv = document.createElement("canvas");
+  cv.width = w * s; cv.height = h * s;
+  const c = cv.getContext("2d");
+  c.imageSmoothingEnabled = false;
+  for (let y = 0; y < h; y++) {
+    const row = rows[y];
+    for (let x = 0; x < w; x++) {
+      const ch = row[x];
+      if (ch === "." || ch === " ") continue;
+      c.fillStyle = colOf(ch);
+      c.fillRect(x * s, y * s, s, s);
+    }
+  }
+  if (k) spriteCache.set(k, cv);
+  return cv;
 }
 
 // もじごとに いろを していして えがく（主人公の ふくの 色がえ用）

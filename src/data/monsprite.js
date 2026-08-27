@@ -34,7 +34,7 @@ function sym(g, dx, y, c) {
   }
 }
 // only が "1" の ときは「からだの ぬり ぜんぶ」を さす
-const BODYCH = "1bdABCDE";
+const BODYCH = "1bdncABCDEFGHIJKLMNO";   // ぬられた ところ ぜんぶ
 function isOnly(ch, only) { return only === "1" ? BODYCH.indexOf(ch) >= 0 : ch === only; }
 function symIf(g, dx, y, c, only) {
   const x0 = U(dx), y0 = U(y);
@@ -376,42 +376,42 @@ const BODIES = {
 /* ============ かざり ============ */
 const EARS = {
   none() {},
-  cat(g, L) { tri(g, L.eyeDX + 2, L.eyeY - 9, 4, 8, -1, 1); },
-  round(g, L) { ell(g, L.eyeY - 6, 4, 4, L.eyeY - 10, L.eyeY - 2, 1); box(g, L.eyeDX + 3, L.eyeY - 8, 4, 6, 1); },
-  long(g, L) { box(g, L.eyeDX, L.eyeY - 16, 4, 12, 1); },
-  fin(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 3, 6, 5, 1, 1); },
-  side(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 6, 3, 1); },
-  droop(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 4, 9, 1); },
-  horn(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 6, 3, 6, -1, 1); },
+  cat(g, L) { tri(g, L.eyeDX + 2, L.eyeY - 9, 4, 8, -1, "n"); },
+  round(g, L) { ell(g, L.eyeY - 6, 4, 4, L.eyeY - 10, L.eyeY - 2, "n"); box(g, L.eyeDX + 3, L.eyeY - 8, 4, 6, "n"); },
+  long(g, L) { box(g, L.eyeDX, L.eyeY - 16, 4, 12, "n"); },
+  fin(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 3, 6, 5, 1, "n"); },
+  side(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 6, 3, "n"); },
+  droop(g, L) { box(g, L.eyeDX + 3, L.eyeY - 4, 4, 9, "n"); },
+  horn(g, L) { tri(g, L.eyeDX + 3, L.eyeY - 6, 3, 6, -1, "n"); },
 };
 
 const CRESTS = {
   none() {},
-  spike(g, L) { tri(g, 0, L.topY - 7, 3, 7, -1, 1); tri(g, 3, L.topY - 4, 2, 4, -1, 1); },
-  leaf(g, L) { box(g, 0, L.topY - 8, 2, 8, 1); ell(g, L.topY - 8, 3, 6, L.topY - 11, L.topY - 5, 1); },
-  flame(g, L) { tri(g, 0, L.topY - 9, 4, 9, -1, 1); tri(g, 4, L.topY - 5, 3, 5, -1, 1); },
-  fan(g, L) { for (let dx = 0; dx < 8; dx++) tri(g, dx, L.topY - 7 + dx, 1, 8 - dx, -1, 1); },
-  ball(g, L) { box(g, 0, L.topY - 5, 2, 5, 1); ell(g, L.topY - 7, 3, 4, L.topY - 10, L.topY - 4, 1); },
-  horns(g, L) { tri(g, 4, L.topY - 7, 3, 7, -1, 1); tri(g, 7, L.topY - 4, 2, 4, -1, 1); },
-  antenna(g, L) { box(g, 2, L.topY - 10, 2, 10, 1); ell(g, L.topY - 11, 2, 3, L.topY - 13, L.topY - 9, 1); },
-  crown(g, L) { for (const dx of [0, 4, 8]) tri(g, dx, L.topY - 7, 3, 7, -1, 1); box(g, 0, L.topY - 3, 11, 3, 1); },
+  spike(g, L) { tri(g, 0, L.topY - 7, 3, 7, -1, "n"); tri(g, 3, L.topY - 4, 2, 4, -1, "n"); },
+  leaf(g, L) { box(g, 0, L.topY - 8, 2, 8, "n"); ell(g, L.topY - 8, 3, 6, L.topY - 11, L.topY - 5, "n"); },
+  flame(g, L) { tri(g, 0, L.topY - 9, 4, 9, -1, "n"); tri(g, 4, L.topY - 5, 3, 5, -1, "n"); },
+  fan(g, L) { for (let dx = 0; dx < 8; dx++) tri(g, dx, L.topY - 7 + dx, 1, 8 - dx, -1, "n"); },
+  ball(g, L) { box(g, 0, L.topY - 5, 2, 5, "n"); ell(g, L.topY - 7, 3, 4, L.topY - 10, L.topY - 4, "n"); },
+  horns(g, L) { tri(g, 4, L.topY - 7, 3, 7, -1, "n"); tri(g, 7, L.topY - 4, 2, 4, -1, "n"); },
+  antenna(g, L) { box(g, 2, L.topY - 10, 2, 10, "n"); ell(g, L.topY - 11, 2, 3, L.topY - 13, L.topY - 9, "n"); },
+  crown(g, L) { for (const dx of [0, 4, 8]) tri(g, dx, L.topY - 7, 3, 7, -1, "n"); box(g, 0, L.topY - 3, 11, 3, "n"); },
 };
 
 const WINGS = {
   none() {},
-  small(g, L) { tri(g, L.sideDX - 1, L.sideY - 3, 5, 7, 1, 1); },
-  big(g, L) { for (let i = 0; i < 6; i++) box(g, L.sideDX - 1 + i, L.sideY - 5 + i, 1, 11 - i, 1); },
-  bug(g, L) { ell(g, L.sideY, 6, 5, L.sideY - 6, L.sideY + 6, 1); box(g, L.sideDX - 2, L.sideY - 6, 6, 12, 1); },
-  fin(g, L) { tri(g, L.sideDX, L.sideY, 4, 7, 1, 1); },
-  arm(g, L) { box(g, L.sideDX - 2, L.sideY, 4, 8, 1); },
+  small(g, L) { tri(g, L.sideDX - 1, L.sideY - 3, 5, 7, 1, "n"); },
+  big(g, L) { for (let i = 0; i < 6; i++) box(g, L.sideDX - 1 + i, L.sideY - 5 + i, 1, 11 - i, "n"); },
+  bug(g, L) { ell(g, L.sideY, 6, 5, L.sideY - 6, L.sideY + 6, "n"); box(g, L.sideDX - 2, L.sideY - 6, 6, 12, "n"); },
+  fin(g, L) { tri(g, L.sideDX, L.sideY, 4, 7, 1, "n"); },
+  arm(g, L) { box(g, L.sideDX - 2, L.sideY, 4, 8, "n"); },
 };
 
 const TAILS = {
   none() {},
-  puff(g, L) { ell(g, L.botY - 7, 4, 5, L.botY - 11, L.botY - 3, 1); box(g, 10, L.botY - 9, 5, 5, 1); },
-  spike(g, L) { tri(g, 11, L.botY - 11, 4, 6, -1, 1); },
-  long(g, L) { box(g, 12, L.botY - 13, 2, 10, 1); box(g, 12, L.botY - 15, 4, 3, 1); },
-  fan(g, L) { for (let dx = 10; dx < 15; dx++) box(g, dx, L.botY - 7 - (dx - 10), 1, 5, 1); },
+  puff(g, L) { ell(g, L.botY - 7, 4, 5, L.botY - 11, L.botY - 3, "n"); box(g, 10, L.botY - 9, 5, 5, "n"); },
+  spike(g, L) { tri(g, 11, L.botY - 11, 4, 6, -1, "n"); },
+  long(g, L) { box(g, 12, L.botY - 13, 2, 10, "n"); box(g, 12, L.botY - 15, 4, 3, "n"); },
+  fan(g, L) { for (let dx = 10; dx < 15; dx++) box(g, dx, L.botY - 7 - (dx - 10), 1, 5, "n"); },
 };
 
 /* ============ かお ============ */
@@ -489,7 +489,7 @@ const MOUTHS = {
 const PATTERNS = {
   none() {},
   belly(g, L) {
-    for (let y = L.botY - 11; y <= L.botY - 3; y++) for (let dx = 0; dx < 6; dx++) symIf(g, dx, y, "b", "1");
+    for (let y = L.botY - 11; y <= L.botY - 3; y++) for (let dx = 0; dx < 6; dx++) symIf(g, dx, y, "c", "1");
   },
   stripe(g, L) {
     for (let y = L.topY + 5; y < L.botY - 2; y += 5) {
@@ -509,8 +509,8 @@ const PATTERNS = {
   },
   dots(g, L) {
     for (const [dx, dy] of [[6, 7], [2, 12], [9, 17], [4, 21]]) {
-      symIf(g, dx, L.topY + dy, "b", "1"); symIf(g, dx + 1, L.topY + dy, "b", "1");
-      symIf(g, dx, L.topY + dy + 1, "b", "1"); symIf(g, dx + 1, L.topY + dy + 1, "b", "1");
+      symIf(g, dx, L.topY + dy, "c", "1"); symIf(g, dx + 1, L.topY + dy, "c", "1");
+      symIf(g, dx, L.topY + dy + 1, "c", "1"); symIf(g, dx + 1, L.topY + dy + 1, "c", "1");
     }
   },
   plate(g, L) {
@@ -614,7 +614,7 @@ function outline(g) {
       if (g[y][x] === ".") continue;
       if (get(g, x - 1, y) === "." || get(g, x + 1, y) === "." ||
           get(g, x, y - 1) === "." || get(g, x, y + 1) === "." ||
-          y === 0 || y === H - 1 || x === 0 || x === W - 1) out[y][x] = "O";
+          y === 0 || y === H - 1 || x === 0 || x === W - 1) out[y][x] = "X";
     }
   }
   return out;
@@ -627,10 +627,15 @@ function outline(g) {
    まるい ところは まるく、ほそい ところは ほそいなりに かげが つきます。
    b（あかるい もよう）と d（くらい もよう）は かいちょうを ずらして つかいます。
 ------------------------------------------------------------ */
+// ざいしつごとの あかるさの たば
+//   1 からだ / b からだ（あかるめ）/ d からだ（くらめ）
+//   n そえいろ（つの・はね・しっぽ など）/ c クリーム（おなか・くちもと）
 const RAMP = {
-  "1": ["0", "1", "2", "3", "4"],
-  b:   ["0", "0", "1", "2", "3"],
-  d:   ["1", "2", "3", "4", "4"],
+  "1": ["A", "B", "C", "D", "E"],
+  b:   ["A", "A", "B", "C", "D"],
+  d:   ["B", "C", "D", "E", "E"],
+  n:   ["F", "G", "H", "I", "J"],
+  c:   ["K", "L", "M", "N", "O"],
 };
 function volume(g) {
   const isBody = (x, y) => BODYCH.indexOf(get(g, x, y)) >= 0;
@@ -646,7 +651,7 @@ function volume(g) {
       const t = (a + b) === 0 ? 0 : a / (a + b);
       const i = Math.max(0, Math.min(4, Math.floor(t * 5)));
       const ramp = RAMP[mat] || RAMP["1"];
-      out[y][x] = "ABCDE"[+ramp[i]];
+      out[y][x] = ramp[i];
     }
   }
   return out;
@@ -656,14 +661,22 @@ function volume(g) {
 function groundLine(g) {
   for (let x = 0; x < W; x++) {
     for (let y = H - 1; y >= 1; y--) {
-      if (g[y][x] === "O" && g[y - 1][x] !== "." && g[y - 1][x] !== "O") { g[y - 1][x] = "O"; break; }
+      if (g[y][x] === "X" && g[y - 1][x] !== "." && g[y - 1][x] !== "X") { g[y - 1][x] = "O"; break; }
     }
   }
 }
 
 // くみたて用の もじを、えがく ときの 0〜5 に なおす
-const FINAL = { A: "0", B: "1", C: "2", D: "3", E: "4", O: "5",
-                "0": "0", "1": "2", "2": "4", "3": "5", b: "1", d: "3" };
+// くみたて用の もじ → えがく ときの いろ もじ
+//   0〜5 からだ / a〜f そえいろ / g〜l クリーム / w しろ（めの ひかり）
+const FINAL = {
+  A: "0", B: "1", C: "2", D: "3", E: "4",
+  F: "a", G: "b", H: "c", I: "d", J: "e",
+  K: "g", L: "h", M: "i", N: "j", O: "k",
+  X: "5",
+  "0": "w", "1": "2", "2": "4", "3": "5",
+  b: "1", d: "3", n: "b", c: "i",
+};
 function toTones(g) {
   return g.map((row) => row.map((c) => (c === "." ? "." : (FINAL[c] || "2"))).join(""));
 }
@@ -772,7 +785,7 @@ export function buildHandSprite(rows32) {
     for (let x = 0; x < Math.min(W, big[y].length); x++) {
       const c = big[y][x];
       if (c === ".") continue;
-      if (c === "o") { g[y][x] = "O"; continue; }   // 中の りんかく（ふちの いろ）
+      if (c === "o") { g[y][x] = "X"; continue; }   // 中の りんかく（ふちの いろ）
       if (c === "e") { eyes.push([x, y]); g[y][x] = "1"; continue; }
       if (c === "m") { mouths.push([x, y]); g[y][x] = "1"; continue; }
       g[y][x] = c === "#" ? "1" : c;

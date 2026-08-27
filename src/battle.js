@@ -10,7 +10,7 @@ import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
-  G as State, species, palOf, makeMon, maxHp, statOf, monName, fainted, gainExp,
+  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp,
   healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove,
 } from "./state.js";
 
@@ -616,10 +616,12 @@ function drawBattle() {
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
   const foeSet = palOf(species(B.foe.mon.sp));
+  const foeAcc = accentOf(species(B.foe.mon.sp));
   const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ノーマル";
+  const youAcc = B.you ? accentOf(species(B.you.mon.sp)) : "ほのお";
 
   if (!B.foe.hidden && foeArt) {
-    const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet);
+    const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet, foeAcc);
     G.draw(img, 184 + (B.foe.shakeX | 0), 4);
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
@@ -627,7 +629,7 @@ function drawBattle() {
     }
   }
   if (B.you && !B.you.hidden && youArt) {
-    const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet);
+    const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet, youAcc);
     G.draw(img, 8 + (B.you.shakeX | 0), 60);
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
