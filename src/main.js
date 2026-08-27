@@ -5,7 +5,7 @@ import * as G from "./gfx.js";
 import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
-import { MONART } from "./data/monart.js";
+import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame } from "./state.js";
 import { world, bgmFor } from "./world.js";
@@ -99,7 +99,7 @@ const title = {
       G.ctx.globalAlpha = 0.35;
       G.rect(46 + i * 88, 224 + bob * 0.4, 44, 6, 3);
       G.ctx.globalAlpha = 1;
-      G.draw(G.makeMonArt(MONART[n], 1, "t" + n, set, acc), 44 + i * 88, 176 + bob);
+      G.draw(G.makeMonArt(MONART[n], 1, "t" + n, set, acc, MONPAL[n]), 44 + i * 88, 176 + bob);
     });
 
     G.use("ui");

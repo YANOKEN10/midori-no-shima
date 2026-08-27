@@ -5,6 +5,7 @@
 import { MORE } from "./species_more.js";
 import { buildSprite, buildHandSprite } from "./monsprite.js";
 import { HAND } from "./monhand.js";
+import { PIX } from "./monpix.js";
 
 // はじめから いた 23ひきの レシピ
 const BASE = {
@@ -58,6 +59,15 @@ for (const e of MORE) {
 
 // 手で うった ドットえが ある ガオンは そちらを つかう
 for (const name of Object.keys(HAND)) ART[name] = buildHandSprite(HAND[name]);
+
+// 絵から おこした ドットえ（その えの いろを そのまま つかう）
+const PAL = {};
+for (const name of Object.keys(PIX)) {
+  const p = PIX[name];
+  ART[name] = p.rows;
+  PAL[name] = p.pal;
+}
+export const MONPAL = PAL;
 
 export const MONART = ART;
 export function mirror(rows8) {

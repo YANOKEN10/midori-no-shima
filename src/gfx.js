@@ -299,6 +299,37 @@ export function makeArt(rows, scale, key, setName) {
   return cv;
 }
 
+/* --- 絵から おこした ドットえ（その えの いろを そのまま つかう） --- */
+const OWNCH = "0123456789abcdefghijklmnopqrstuv";
+function makeOwnArt(rows, scale, key, pal) {
+  const s = scale || 1;
+  const k = key ? key + "@own@" + s + "@" + mode : null;
+  if (k && spriteCache.has(k)) return spriteCache.get(k);
+  // 白黒モードでは あかるさで 4だんかいに おとす
+  const gb = MONO[mode] || MONO.green;
+  const use = pal.map((h) => {
+    if (mode === "color") return h;
+    const l = (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) * 2 + parseInt(h.slice(5, 7), 16)) / 4;
+    return gb[l > 200 ? 0 : l > 140 ? 1 : l > 70 ? 2 : 3];
+  });
+  const h = rows.length, w = rows.reduce((m, r) => Math.max(m, r.length), 0);
+  const cv = document.createElement("canvas");
+  cv.width = w * s; cv.height = h * s;
+  const c = cv.getContext("2d");
+  c.imageSmoothingEnabled = false;
+  for (let y = 0; y < h; y++) {
+    const row = rows[y];
+    for (let x = 0; x < row.length; x++) {
+      const i = OWNCH.indexOf(row[x]);
+      if (i < 0 || !use[i]) continue;
+      c.fillStyle = use[i];
+      c.fillRect(x * s, y * s, s, s);
+    }
+  }
+  if (k) spriteCache.set(k, cv);
+  return cv;
+}
+
 /* --- ガオンの え（からだ／そえいろ／クリーム の 3つの いろで ぬる） ---
    もじの いみ：
      0〜5 からだ   a〜f そえいろ（つの・はね・しっぽ）
@@ -342,7 +373,8 @@ function tooClose(a, b) {
   return d < 24 && Math.abs(A[1] - B[1]) < 0.55;
 }
 
-export function makeMonArt(rows, scale, key, setName, accentName) {
+export function makeMonArt(rows, scale, key, setName, accentName, ownPal) {
+  if (ownPal) return makeOwnArt(rows, scale, key, ownPal);
   const s = scale || 1;
   const k = key ? key + "@" + s + "@" + mode + "@" + (setName || "") + "@" + (accentName || "") : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
