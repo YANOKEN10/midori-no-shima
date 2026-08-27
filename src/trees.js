@@ -20,29 +20,44 @@ export function treeImage(kind, foot) {
   if (cache.has(key)) return cache.get(key);
 
   const cv = document.createElement("canvas");
-  cv.width = TREE_W; cv.height = TREE_H;
+  cv.width = TREE_W * G.AS; cv.height = TREE_H * G.AS;
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
+  const K = G.AS;                            // ほんとうの ドットで えがく
 
   const leaf = G.resolve("tree");
   const wood = G.resolve("wood");
   const grass = G.resolve("grass");
 
-  const px = (x, y, col) => { c.fillStyle = col; c.fillRect(x, y, 1, 1); };
-  const box = (x, y, w, h, col) => { c.fillStyle = col; c.fillRect(x, y, w, h); };
+  const px = (x, y, col) => { c.fillStyle = col; c.fillRect(Math.round(x * K), Math.round(y * K), 1, 1); };
+  const box = (x, y, w, h, col) => { c.fillStyle = col; c.fillRect(Math.round(x * K), Math.round(y * K), Math.round(w * K), Math.round(h * K)); };
   const disc = (cx, cy, rx, ry, col) => {
     c.fillStyle = col;
-    for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) {
-      const t = (y - cy) / ry;
+    const CY = cy * K, RY = ry * K, RX = rx * K, CX2 = cx * K;
+    for (let y = Math.floor(CY - RY); y <= Math.ceil(CY + RY); y++) {
+      const t = (y - CY) / RY;
       if (Math.abs(t) > 1) continue;
-      const w = Math.round(rx * Math.sqrt(1 - t * t));
-      c.fillRect(Math.round(cx - w), y, w * 2, 1);
+      const w = Math.round(RX * Math.sqrt(1 - t * t));
+      c.fillRect(Math.round(CX2 - w), y, w * 2, 1);
     }
   };
   const dither = (x, y, w, h, col, odd) => {
     c.fillStyle = col;
-    for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
-      if (((x + i) + (y + j)) % 2 === (odd ? 1 : 0)) c.fillRect(x + i, y + j, 1, 1);
+    const X = Math.round(x * K), Y = Math.round(y * K), Wd = Math.round(w * K), Hd = Math.round(h * K);
+    for (let j = 0; j < Hd; j++) for (let i = 0; i < Wd; i++) {
+      if (((X + i) + (Y + j)) % 2 === (odd ? 1 : 0)) c.fillRect(X + i, Y + j, 1, 1);
+    }
+  };
+  // はっぱの こまかい つぶ（ほんとうの 1ドット）
+  const speck = (cx, cy, rx, ry, col, seed, n) => {
+    c.fillStyle = col;
+    let sd = seed >>> 0;
+    for (let i = 0; i < n; i++) {
+      sd = (sd * 1664525 + 1013904223) >>> 0;
+      const a = (sd >>> 8) / 16777215 * Math.PI * 2;
+      sd = (sd * 1664525 + 1013904223) >>> 0;
+      const r = Math.sqrt((sd >>> 8) / 16777215);
+      c.fillRect(Math.round((cx + Math.cos(a) * rx * r) * K), Math.round((cy + Math.sin(a) * ry * r) * K), 1, 1);
     }
   };
 
@@ -84,6 +99,14 @@ export function treeImage(kind, foot) {
   const [mx, my, mrx, mry] = sh[0];
   disc(CX + mx - Math.round(mrx * 0.3), top + my - Math.round(mry * 0.32), Math.round(mrx * 0.55), Math.round(mry * 0.5), leaf[0]);
   dither(CX + mx - mrx, top + my - mry, mrx, mry, leaf[0], false);
+
+  // はっぱの こまかい きめ（1ドットの つぶ）
+  let sd = 7 + kind * 13;
+  for (const [dx, dy, rx, ry] of sh) {
+    speck(CX + dx, top + dy - ry * 0.25, rx * 0.85, ry * 0.7, leaf[0], sd += 97, Math.round(rx * ry * 0.5));
+    speck(CX + dx, top + dy + ry * 0.35, rx * 0.85, ry * 0.6, leaf[2], sd += 131, Math.round(rx * ry * 0.45));
+    speck(CX + dx, top + dy + ry * 0.6, rx * 0.7, ry * 0.4, leaf[3], sd += 71, Math.round(rx * ry * 0.18));
+  }
 
   // はっぱの もよう（ぎざぎざの すじ）
   c.fillStyle = leaf[3];

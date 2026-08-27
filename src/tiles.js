@@ -11,6 +11,7 @@ export const ENCOUNTER = new Set(['"', "C"]);
 
 // mask のビット： 1=上 2=右 4=下 8=左 に「おなじ なかま」が いる
 const N = 1, E = 2, S = 4, Wl = 8;
+const N1 = 1, E1 = 2, S1 = 4, W1 = 8;
 
 /* --- ひろい 色むら（マスを またいで つながる やわらかい ノイズ） ---
    マスの ばしょ（p.tx,p.ty）から せかい ぜんたいの ざひょうを 作って
@@ -30,12 +31,12 @@ function vnoise(x, y, seed) {
 }
 // しきい値より こい ところを いろ 2 で ぬる（さかいめは あみかけ）
 function patch(p, seed, size, thresh) {
-  const ox = (p.tx || 0) * 32, oy = (p.ty || 0) * 32;
-  for (let y = 0; y < 32; y++) {
-    for (let x = 0; x < 32; x++) {
-      const n = vnoise((ox + x) / size, (oy + y) / size, seed);
-      if (n > thresh + 0.05) p.f(x, y, 2);
-      else if (n > thresh && ((x + y) % 2 === 0)) p.f(x, y, 2);
+  const N = p.N, ox = (p.tx || 0) * N, oy = (p.ty || 0) * N;
+  for (let y = 0; y < N; y += 2) {
+    for (let x = 0; x < N; x += 2) {
+      const n = vnoise((ox + x) / (size * 2), (oy + y) / (size * 2), seed);
+      if (n > thresh + 0.05) p.dbox(x, y, 2, 2, 2);
+      else if (n > thresh && ((x + y) % 4 === 0)) p.dbox(x, y, 2, 2, 2);
     }
   }
 }
@@ -47,109 +48,124 @@ function patch(p, seed, size, thresh) {
    けずる ところは まわりの じめんの 色（いま えらんでいる セット）で ぬります。 */
 function roundEdges(p, mask, r) {
   const N = 1, E = 2, S = 4, Wl = 8, NE = 16, SE = 32, SW = 64, NW = 128;
-  const R = r || 9;
+  const R = (r || 9) * 2;
+  const M = p.N - 1;
   const cut = (cx, cy, sx, sy) => {              // そとがわの かど
     for (let j = 0; j < R; j++) {
       for (let i = 0; i < R; i++) {
         const dx = i + 0.5, dy = j + 0.5;
         const d = Math.sqrt((R - dx) * (R - dx) + (R - dy) * (R - dy));
         const x = cx + sx * i, y = cy + sy * j;
-        if (d > R) p.f(x, y, 1);
-        else if (d > R - 1.6 && ((x + y) % 2 === 0)) p.f(x, y, 1);
+        if (d > R) p.d(x, y, 1);
+        else if (d > R - 2.6 && ((x + y) % 2 === 0)) p.d(x, y, 1);
       }
     }
   };
   const fill = (cx, cy, sx, sy) => {             // 内がわの かど
-    for (let j = 0; j < 4; j++) for (let i = 0; i < 4 - j; i++) {
+    for (let j = 0; j < 8; j++) for (let i = 0; i < 8 - j; i++) {
       const x = cx + sx * i, y = cy + sy * j;
-      if (i + j < 3) p.f(x, y, 1);
-      else if ((x + y) % 2 === 0) p.f(x, y, 1);
+      if (i + j < 6) p.d(x, y, 1);
+      else if ((x + y) % 2 === 0) p.d(x, y, 1);
     }
   };
   if (!(mask & N) && !(mask & Wl)) cut(0, 0, 1, 1);
   else if ((mask & N) && (mask & Wl) && !(mask & NW)) fill(0, 0, 1, 1);
-  if (!(mask & N) && !(mask & E)) cut(31, 0, -1, 1);
-  else if ((mask & N) && (mask & E) && !(mask & NE)) fill(31, 0, -1, 1);
-  if (!(mask & S) && !(mask & Wl)) cut(0, 31, 1, -1);
-  else if ((mask & S) && (mask & Wl) && !(mask & SW)) fill(0, 31, 1, -1);
-  if (!(mask & S) && !(mask & E)) cut(31, 31, -1, -1);
-  else if ((mask & S) && (mask & E) && !(mask & SE)) fill(31, 31, -1, -1);
+  if (!(mask & N) && !(mask & E)) cut(M, 0, -1, 1);
+  else if ((mask & N) && (mask & E) && !(mask & NE)) fill(M, 0, -1, 1);
+  if (!(mask & S) && !(mask & Wl)) cut(0, M, 1, -1);
+  else if ((mask & S) && (mask & Wl) && !(mask & SW)) fill(0, M, 1, -1);
+  if (!(mask & S) && !(mask & E)) cut(M, M, -1, -1);
+  else if ((mask & S) && (mask & E) && !(mask & SE)) fill(M, M, -1, -1);
 }
 
 const PAINT = {
   /* ---------------- じめん ---------------- */
   // くさ（ふつう）
   ",": (p, mask, v0) => {
-    const v = v0 | 0;
+    const v = v0 | 0, N = p.N;
     p.ffill(1);
-    p.fnoise(11 + v * 37, 90, 0, 0, 0, 32, 32);
-    p.fnoise(23 + v * 91, 40, 2, 0, 0, 32, 32);
-    // ひろい 色むら（マスを またいで つながる）— つぶつぶの あとに かける
+    p.dnoise(11 + v * 37, 320, 0, 0, 0, N, N);     // こまかい くさの きらめき
+    p.dnoise(23 + v * 91, 150, 2, 0, 0, N, N);
+    // 小さな くさの ふさ（3まいば）
+    const tuft = (x, y) => {
+      p.dbox(x, y + 1, 1, 4, 2); p.d(x, y, 2);
+      p.dbox(x - 2, y + 3, 1, 3, 2); p.dbox(x + 2, y + 3, 1, 3, 2);
+      p.d(x - 3, y + 4, 2); p.d(x + 3, y + 4, 2);
+    };
+    const sets = [[[12, 14], [38, 8], [50, 36], [22, 46]],
+                  [[6, 28], [34, 18], [56, 44], [18, 54]],
+                  [[24, 10], [48, 24], [10, 42], [40, 52]],
+                  [[16, 6], [44, 34], [28, 56], [58, 16]]];
+    for (const [x, y] of sets[v % 4]) tuft(x, y);
+    if ((v === 5 || v === 12) && p.name === "grass") {
+      p.set("flower");
+      for (const [fx, fy] of [[52, 12], [46, 18]]) {
+        p.d(fx, fy - 2, 2); p.d(fx - 2, fy, 2); p.d(fx + 2, fy, 2); p.d(fx, fy + 2, 2);
+        p.d(fx - 1, fy - 1, 2); p.d(fx + 1, fy - 1, 2); p.d(fx - 1, fy + 1, 2); p.d(fx + 1, fy + 1, 2);
+        p.d(fx, fy, 1);
+      }
+      p.set(null);
+    }
+    if (v === 9) { p.dbox(8, 36, 6, 4, 2); p.dbox(10, 34, 2, 2, 2); }
+    if (v === 2 && p.name === "grass") { p.set("tree"); p.dbox(40, 40, 4, 6, 2); p.dbox(38, 38, 8, 4, 1); p.set(null); }
+    // ひろい 色むら（マスを またいで つながる）
     patch(p, 0, 46, 0.60);
     patch(p, 97, 27, 0.68);
-    const tuft = (x, y) => { p.fbox(x, y + 1, 1, 2, 2); p.f(x - 1, y + 2, 2); p.f(x + 1, y + 2, 2); p.f(x, y, 2); };
-    const sets = [[[6, 7], [19, 4], [25, 18], [11, 23]],
-                  [[3, 14], [17, 9], [28, 22], [9, 27]],
-                  [[12, 5], [24, 12], [5, 21], [20, 26]],
-                  [[8, 3], [22, 17], [14, 28], [30, 8]]];
-    for (const [x, y] of sets[v % 4]) tuft(x, y);
-    if ((v === 5 || v === 12) && p.name === "grass") { p.set("flower"); p.f(26, 6, 2); p.f(25, 7, 2); p.f(27, 7, 2); p.f(26, 8, 2); p.f(26, 7, 1); p.set(null); }
-    if (v === 9) { p.fbox(4, 18, 3, 2, 2); p.fbox(5, 17, 1, 1, 2); }
-    if (v === 2 && p.name === "grass") { p.set("tree"); p.fbox(20, 20, 2, 3, 2); p.fbox(19, 19, 4, 2, 1); p.set(null); }
   },
 
   // たかい くさ（ガオンが でる）：こい くさむらに ふさが たくさん
   '"': (p, mask, v0) => {
-    const v = v0 | 0;
+    const v = v0 | 0, N = p.N;
     p.set("tallgrass");
     p.ffill(1);
-    p.fnoise(11 + v * 29, 70, 2, 0, 0, 32, 32);
-    p.fdither(0, 22, 32, 10, 2, false);          // 下ほど こく
-    // くさの ふさ（3まいばの かたまり）
+    p.dnoise(11 + v * 29, 240, 2, 0, 0, N, N);
+    p.ddither(0, 44, N, 20, 2, false);
     const tuft = (x, y) => {
-      p.fbox(x - 2, y + 3, 1, 4, 3); p.fbox(x + 2, y + 3, 1, 4, 3);   // かげ
-      p.fbox(x, y, 2, 8, 0);                     // まん中の は
-      p.fbox(x - 3, y + 2, 2, 6, 0);             // ひだりの は
-      p.fbox(x + 3, y + 2, 2, 6, 0);             // みぎの は
-      p.f(x, y - 1, 0); p.f(x - 3, y + 1, 0); p.f(x + 4, y + 1, 0);
-      p.fbox(x - 3, y + 8, 8, 1, 3);             // ねもと
+      p.dbox(x - 4, y + 6, 2, 8, 3); p.dbox(x + 4, y + 6, 2, 8, 3);
+      p.dbox(x, y, 3, 16, 0);
+      p.dbox(x - 6, y + 4, 3, 12, 0);
+      p.dbox(x + 6, y + 4, 3, 12, 0);
+      p.d(x + 1, y - 2, 0); p.d(x - 5, y + 2, 0); p.d(x + 7, y + 2, 0);
+      p.dbox(x - 6, y + 16, 15, 2, 3);
     };
-    const sets = [[[6, 5], [20, 8], [12, 18], [26, 20]],
-                  [[9, 7], [23, 4], [5, 19], [18, 21]],
-                  [[15, 3], [27, 11], [7, 16], [21, 23]],
-                  [[4, 9], [17, 6], [28, 17], [10, 22]]];
+    const sets = [[[12, 10], [40, 16], [24, 36], [52, 40]],
+                  [[18, 14], [46, 8], [10, 38], [36, 42]],
+                  [[30, 6], [54, 22], [14, 32], [42, 46]],
+                  [[8, 18], [34, 12], [56, 34], [20, 44]]];
     for (const [x, y] of sets[v % 4]) tuft(x, y);
     p.set(null);
   },
 
   // つち・みち（まわりが みちで なければ ふちを ぼかす）
-  ".": (p, mask, v) => {
+  ".": (p, mask, v0) => {
+    const v = v0 | 0, N = p.N;
     p.ffill(0);
-    p.fnoise(7 + (v | 0) * 53, 60, 1, 0, 0, 32, 32);
-    p.fnoise(31 + (v | 0) * 17, 18, 2, 0, 0, 32, 32);
-    if ((v | 0) % 8 === 3) { p.fbox(20, 12, 3, 2, 2); p.fbox(21, 11, 1, 1, 2); }
-    if ((v | 0) % 8 === 6) { p.fbox(7, 22, 2, 2, 2); }
+    p.dnoise(7 + v * 53, 240, 1, 0, 0, N, N);
+    p.dnoise(31 + v * 17, 80, 2, 0, 0, N, N);
+    if (v % 8 === 3) { p.dbox(40, 24, 6, 4, 2); p.dbox(42, 22, 2, 2, 2); }
+    if (v % 8 === 6) { p.dbox(14, 44, 4, 4, 2); }
     p.set(p.ground || "grass");
-    if (!(mask & N)) { p.fbox(0, 0, 32, 2, 1); p.fdither(0, 2, 32, 3, 1, false); }
-    if (!(mask & S)) { p.fbox(0, 30, 32, 2, 1); p.fdither(0, 27, 32, 3, 1, true); }
-    if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 1); p.fdither(2, 0, 3, 32, 1, false); }
-    if (!(mask & E)) { p.fbox(30, 0, 2, 32, 1); p.fdither(27, 0, 3, 32, 1, true); }
+    if (!(mask & N1)) { p.dbox(0, 0, N, 3, 1); p.ddither(0, 3, N, 6, 1, false); }
+    if (!(mask & S1)) { p.dbox(0, N - 3, N, 3, 1); p.ddither(0, N - 9, N, 6, 1, true); }
+    if (!(mask & W1)) { p.dbox(0, 0, 3, N, 1); p.ddither(3, 0, 6, N, 1, false); }
+    if (!(mask & E1)) { p.dbox(N - 3, 0, 3, N, 1); p.ddither(N - 9, 0, 6, N, 1, true); }
     roundEdges(p, mask, 10);
     p.set(null);
   },
 
   // すな
-  "~": (p, mask, v) => {
+  "~": (p, mask, v0) => {
+    const v = v0 | 0, N = p.N;
     p.ffill(0);
-    p.fnoise(5 + (v | 0) * 29, 70, 1, 0, 0, 32, 32);
-    p.fnoise(19 + (v | 0) * 61, 24, 2, 0, 0, 32, 32);
-    if ((v | 0) % 8 === 2) { p.fbox(12, 18, 5, 1, 2); p.fbox(13, 19, 3, 1, 2); }
-    if ((v | 0) % 8 === 5) { p.fbox(22, 8, 4, 1, 2); }
+    p.dnoise(5 + v * 29, 280, 1, 0, 0, N, N);
+    p.dnoise(19 + v * 61, 100, 2, 0, 0, N, N);
+    if (v % 8 === 2) { p.dbox(24, 36, 10, 2, 2); p.dbox(26, 38, 6, 2, 2); }
+    if (v % 8 === 5) { p.dbox(44, 16, 8, 2, 2); }
     p.set(p.ground || "grass");
-    if (!(mask & N)) { p.fbox(0, 0, 32, 1, 1); p.fdither(0, 1, 32, 4, 1, false); }
-    if (!(mask & S)) { p.fbox(0, 31, 32, 1, 1); p.fdither(0, 27, 32, 4, 1, true); }
-    if (!(mask & Wl)) { p.fbox(0, 0, 1, 32, 1); p.fdither(1, 0, 4, 32, 1, false); }
-    if (!(mask & E)) { p.fbox(31, 0, 1, 32, 1); p.fdither(27, 0, 4, 32, 1, true); }
+    if (!(mask & N1)) { p.dbox(0, 0, N, 2, 1); p.ddither(0, 2, N, 8, 1, false); }
+    if (!(mask & S1)) { p.dbox(0, N - 2, N, 2, 1); p.ddither(0, N - 10, N, 8, 1, true); }
+    if (!(mask & W1)) { p.dbox(0, 0, 2, N, 1); p.ddither(2, 0, 8, N, 1, false); }
+    if (!(mask & E1)) { p.dbox(N - 2, 0, 2, N, 1); p.ddither(N - 10, 0, 8, N, 1, true); }
     roundEdges(p, mask, 11);
     p.set(null);
   },

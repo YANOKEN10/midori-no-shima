@@ -10,7 +10,7 @@ import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
 import { MAPS } from "./data/maps.js";
 import { personFrames, personFramesRaw, LOOKS } from "./data/charart.js";
-import { playerColors } from "./data/looks.js";
+import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
 import {
   G as State, makeMon, species, monName, maxHp, healFull, healParty,
@@ -34,6 +34,20 @@ function framesFor(look) {
   if (!charCache.has(look)) charCache.set(look, personFrames(LOOKS[look] || LOOKS.boy));
   return charCache.get(look);
 }
+// ひとの いろ（かげの 色も 作る）
+const lookColorCache = new Map();
+function colorsFor(look) {
+  if (lookColorCache.has(look)) return lookColorCache.get(look);
+  const pal = G.resolve(look) || G.resolve("boy");
+  const L = LOOKS[look] || LOOKS.boy;
+  const c = {
+    K: pal[L.K], S: pal[L.S], P: pal[L.P], H: pal[L.H], "3": pal[3],
+    k: darker(pal[L.K], 0.18), s: darker(pal[L.S]), p: darker(pal[L.P]), h: darker(pal[L.H], 0.32),
+  };
+  lookColorCache.set(look, c);
+  return c;
+}
+G.onPaletteChange(() => lookColorCache.clear());
 
 export const world = {
   mapId: "", map: null,
@@ -713,18 +727,20 @@ export const world = {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
         let img;
+        const f = playerFrames()[this.dir][fi];
         if (G.isColor()) {
-          const f = playerFrames()[this.dir][fi];
-          img = G.makeColorArt(f, 2, "pc" + this.dir + fi, playerColors(State.save.look));
+          img = G.makeColorArt(f, 1, "pc" + this.dir + fi, playerColors(State.save.look));
         } else {
-          const f = framesFor("player")[this.dir][fi];
-          img = G.makeArt(f, 2, "p" + this.dir + fi, "player");
+          img = G.makeArt(framesFor("player")[this.dir][fi], 1, "p" + this.dir + fi, "player");
         }
-        G.draw(img, px - camX, py - camY - 8 + hopY);
+        G.draw(img, px - camX, py - camY - 24 + hopY);
       } else {
         const n = p.n;
-        const f = framesFor(n.look)[n.dir || "down"][0];
-        G.draw(G.makeArt(f, 2, "n" + n.look + (n.dir || "down"), n.look), n.x * T - camX, n.y * T - camY - 8);
+        const dirn = n.dir || "down";
+        const img2 = G.isColor()
+          ? G.makeColorArt(playerFrames()[dirn][0], 1, "nc" + n.look + dirn, colorsFor(n.look))
+          : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look);
+        G.draw(img2, n.x * T - camX, n.y * T - camY - 24);
         if (n.alert) {
           G.use("ui");
           G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);

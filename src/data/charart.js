@@ -1,5 +1,5 @@
 // ============================================================
-//  ひとの ドットえ（16x16）
+//  ひとの ドットえ（16x16で かたちを きめ、32x32に ひきあげる）
 //   H=かみ K=はだ S=ふく P=ズボン の 4かしょを 色で さしかえます。
 // ============================================================
 import { mirror } from "./monart.js";
@@ -64,6 +64,58 @@ const SIDE = [
   "....333.........",
 ];
 
+
+/* ============================================================
+   16x16の えを 32x32に ひきあげる
+    ・ななめの ギザギザを なめらかに する（EPX）
+    ・ふくと ズボンと はだに、右下がわの かげ（h k s p）を つける
+   もじ： H かみ  K はだ  S ふく  P ズボン  3 ふち
+         h k s p は それぞれの かげ
+============================================================ */
+function epx(rows) {
+  const h = rows.length, w = rows[0].length;
+  const at = (x, y) => (x >= 0 && x < w && y >= 0 && y < h ? rows[y][x] : ".");
+  const out = [];
+  for (let y = 0; y < h; y++) {
+    let r0 = "", r1 = "";
+    for (let x = 0; x < w; x++) {
+      const P = at(x, y), A = at(x, y - 1), B = at(x + 1, y), C = at(x - 1, y), D = at(x, y + 1);
+      let e0 = P, e1 = P, e2 = P, e3 = P;
+      if (C === A && C !== D && A !== B) e0 = A;
+      if (A === B && A !== C && B !== D) e1 = B;
+      if (D === C && D !== B && C !== A) e2 = C;
+      if (B === D && B !== A && D !== C) e3 = D;
+      r0 += e0 + e1; r1 += e2 + e3;
+    }
+    out.push(r0, r1);
+  }
+  return out;
+}
+
+// 右下がわに かげを つける（ひかりは 左上から）
+const SHADE = { H: "h", K: "k", S: "s", P: "p" };
+function shadeRows(rows) {
+  const h = rows.length, w = rows[0].length;
+  const g = rows.map((r) => r.split(""));
+  const at = (x, y) => (x >= 0 && x < w && y >= 0 && y < h ? rows[y][x] : ".");
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = rows[y][x];
+      const sh = SHADE[c];
+      if (!sh) continue;
+      // 右か 下が「そとがわ か ふち」なら かげに する
+      const r = at(x + 1, y), d = at(x, y + 1);
+      const edge = (r === "." || r === "3" || d === "." || d === "3");
+      if (edge) g[y][x] = sh;
+      // ふくは 下の ほうも すこし くらく
+      else if ((c === "S" || c === "P") && y > h * 0.72 && (x + y) % 2 === 0) g[y][x] = sh;
+    }
+  }
+  return g.map((r) => r.join(""));
+}
+
+function upscale(rows) { return shadeRows(epx(rows)); }
+
 function paint(rows, c) {
   return rows.map((r) => r.replace(/H/g, c.H).replace(/K/g, c.K).replace(/S/g, c.S).replace(/P/g, c.P));
 }
@@ -89,11 +141,12 @@ export function personFramesRaw() {
   const back = mirror(BACK);
   const right = SIDE.slice();
   const left = flipRows(right);
+  const f = (rows) => upscale(rows);
   return {
-    down: [front, step(front, 0), front, step(front, 1)],
-    up: [back, step(back, 0), back, step(back, 1)],
-    right: [right, step(right, 0), right, step(right, 1)],
-    left: [left, step(left, 1), left, step(left, 0)],
+    down: [f(front), f(step(front, 0)), f(front), f(step(front, 1))],
+    up: [f(back), f(step(back, 0)), f(back), f(step(back, 1))],
+    right: [f(right), f(step(right, 0)), f(right), f(step(right, 1))],
+    left: [f(left), f(step(left, 1)), f(left), f(step(left, 0))],
   };
 }
 

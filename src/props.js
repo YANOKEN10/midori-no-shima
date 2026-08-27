@@ -87,9 +87,10 @@ export function houseImage(h) {
 
   const W = h.w * T, H = h.h * T;
   const cv = document.createElement("canvas");
-  cv.width = W; cv.height = H;
+  cv.width = W * G.AS; cv.height = H * G.AS;
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
+  c.setTransform(G.AS, 0, 0, G.AS, 0, 0);   // 中は これまでの ざひょうの まま
 
   const roof = G.resolve(h.set);
   const wall = G.resolve("wall");

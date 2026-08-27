@@ -6,9 +6,10 @@
 //      「どの いろセットで ぬるか」を ものごとに 切りかえます。
 //   ・G.use("water") のように セットを えらんでから えがきます。
 // ============================================================
-export const W = 320, H = 288;
-export const TILE = 32;          // マス1つの 大きさ（画面のドット）
-export const ART = 16;           // え1マスの ドット数（2ばいに ひきのばす）
+export const W = 320, H = 288;   // ならべる ときの めやす（これまでどおり）
+export const AS = 2;             // 中みは この ばいすうで こまかく えがく
+export const TILE = 32;          // マス1つの 大きさ（めやす）
+export const ART = 16;           // え1マスの ドット数
 
 /* --- いろセット（4色ずつ） ------------------------------------- */
 export const SETS = {
@@ -167,8 +168,10 @@ function shade(hex, amt) {
 }
 
 export const canvas = document.getElementById("screen");
+canvas.width = W * AS; canvas.height = H * AS;
 export const ctx = canvas.getContext("2d", { alpha: false });
 ctx.imageSmoothingEnabled = false;
+ctx.setTransform(AS, 0, 0, AS, 0, 0);   // これで これまでの ざひょうの まま こまかく えがける
 
 /* --- 画面の 大きさを ととのえる --------------------------------- */
 export function fitScreen() {
@@ -280,7 +283,7 @@ export function makeArt(rows, scale, key, setName) {
   const pal = setName ? resolve(setName) : PAL;
   const k = key ? key + "@" + scale + "@" + mode + "@" + (setName || curSet) : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
-  const s = scale || 1;
+  const s = (scale || 1) * AS;
   const h = rows.length, w = rows[0].length;
   const cv = document.createElement("canvas");
   cv.width = w * s; cv.height = h * s;
@@ -302,7 +305,7 @@ export function makeArt(rows, scale, key, setName) {
 /* --- 絵から おこした ドットえ（その えの いろを そのまま つかう） --- */
 const OWNCH = "0123456789abcdefghijklmnopqrstuv";
 function makeOwnArt(rows, scale, key, pal) {
-  const s = scale || 1;
+  const s = (scale || 1) * AS;
   const k = key ? key + "@own@" + s + "@" + mode : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
   // 白黒モードでは あかるさで 4だんかいに おとす
@@ -375,7 +378,7 @@ function tooClose(a, b) {
 
 export function makeMonArt(rows, scale, key, setName, accentName, ownPal) {
   if (ownPal) return makeOwnArt(rows, scale, key, ownPal);
-  const s = scale || 1;
+  const s = (scale || 1) * AS;
   const k = key ? key + "@" + s + "@" + mode + "@" + (setName || "") + "@" + (accentName || "") : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
 
@@ -420,7 +423,7 @@ export function makeColorArt(rows, scale, key, colors) {
   const sig = Object.keys(colors).sort().map((k) => k + colors[k]).join("");
   const k = key ? key + "@" + scale + "@" + sig : null;
   if (k && spriteCache.has(k)) return spriteCache.get(k);
-  const s = scale || 1;
+  const s = (scale || 1) * AS;
   const h = rows.length, w = rows[0].length;
   const cv = document.createElement("canvas");
   cv.width = w * s; cv.height = h * s;
@@ -444,7 +447,7 @@ export function tileCanvas(name, painter, setName) {
   const k = name + "@" + mode + "@" + (setName || curSet);
   if (tileCache.has(k)) return tileCache.get(k);
   const cv = document.createElement("canvas");
-  cv.width = TILE; cv.height = TILE;
+  cv.width = TILE * AS; cv.height = TILE * AS;
   const c = cv.getContext("2d");
   c.imageSmoothingEnabled = false;
   const prev = setName ? use(setName) : null;
@@ -453,29 +456,51 @@ export function tileCanvas(name, painter, setName) {
   painter(px);
   if (prev) use(prev);
   // ためこみすぎない（ばしょごとの くさが たまるため）
-  if (tileCache.size > 1400) tileCache.clear();
+  if (tileCache.size > 800) tileCache.clear();
   tileCache.set(k, cv);
   return cv;
 }
 
 // 16x16 の ドットで かくための ちいさな どうぐ（じっさいは 2x2 の 四角）
 export class Pixel {
-  constructor(c) { this.c = c; this.pal = null; }
+  constructor(c) { this.c = c; this.pal = null; this.k = AS; }
   // とちゅうで べつの いろセットに きりかえる（き の みきを 茶色に する など）
   set(name) { this.pal = name ? resolve(name) : null; return this; }
   col(i) { return (this.pal || PAL)[i]; }
-  fill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE, TILE); return this; }
-  p(x, y, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x * 2, y * 2, 2, 2); return this; }
-  box(x, y, w, h, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x * 2, y * 2, w * 2, h * 2); return this; }
+  fill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE * this.k, TILE * this.k); return this; }
+  p(x, y, i) { const k = this.k * 2; this.c.fillStyle = this.col(i); this.c.fillRect(x * k, y * k, k, k); return this; }
+  box(x, y, w, h, i) { const k = this.k * 2; this.c.fillStyle = this.col(i); this.c.fillRect(x * k, y * k, w * k, h * k); return this; }
   line(x0, y0, x1, y1, i) {
     if (y0 === y1) return this.box(Math.min(x0, x1), y0, Math.abs(x1 - x0) + 1, 1, i);
     if (x0 === x1) return this.box(x0, Math.min(y0, y1), 1, Math.abs(y1 - y0) + 1, i);
     return this;
   }
   /* --- こまかい えがきかた（32x32 の 1ドットずつ） --- */
-  f(x, y, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x, y, 1, 1); return this; }
-  fbox(x, y, w, h, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x, y, w, h); return this; }
-  ffill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE, TILE); return this; }
+  // 32マスの ざひょうで えがく（これまでの え。中では ばいすうを かける）
+  f(x, y, i) { const k = this.k; this.c.fillStyle = this.col(i); this.c.fillRect(x * k, y * k, k, k); return this; }
+  fbox(x, y, w, h, i) { const k = this.k; this.c.fillStyle = this.col(i); this.c.fillRect(x * k, y * k, w * k, h * k); return this; }
+  ffill(i) { this.c.fillStyle = this.col(i); this.c.fillRect(0, 0, TILE * this.k, TILE * this.k); return this; }
+  // ここから したは「ほんとうの 1ドット」で えがく（こまかい え 用）
+  get N() { return TILE * this.k; }                       // ほんとうの 1辺の ドットすう
+  d(x, y, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x | 0, y | 0, 1, 1); return this; }
+  dbox(x, y, w, h, i) { this.c.fillStyle = this.col(i); this.c.fillRect(x | 0, y | 0, w | 0, h | 0); return this; }
+  ddither(x, y, w, h, i, odd) {
+    for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) {
+      if (((x + xx) + (y + yy)) % 2 === (odd ? 1 : 0)) this.d(x + xx, y + yy, i);
+    }
+    return this;
+  }
+  dnoise(seed, n, i, x0, y0, w, h) {
+    let s = seed >>> 0;
+    for (let q = 0; q < n; q++) {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      const x = x0 + (s >>> 16) % w;
+      s = (s * 1664525 + 1013904223) >>> 0;
+      const y = y0 + (s >>> 16) % h;
+      this.d(x, y, i);
+    }
+    return this;
+  }
   fdither(x, y, w, h, i, odd) {
     for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) {
       if (((x + xx) + (y + yy)) % 2 === (odd ? 1 : 0)) this.f(x + xx, y + yy, i);
@@ -525,5 +550,5 @@ export class Pixel {
   }
 }
 
-export function draw(img, x, y) { ctx.drawImage(img, x | 0, y | 0); }
+export function draw(img, x, y) { ctx.drawImage(img, x | 0, y | 0, img.width / AS, img.height / AS); }
 export function drawScaled(img, x, y, w, h) { ctx.drawImage(img, x | 0, y | 0, w | 0, h | 0); }

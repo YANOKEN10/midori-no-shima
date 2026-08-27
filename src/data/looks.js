@@ -66,13 +66,20 @@ export const DEFAULT_LOOK = {
 };
 
 // レオを えがくときの もじ→いろ
+// いろを くらくする（かげ用）
+export function darker(hex, amt) {
+  const n = parseInt(String(hex).slice(1), 16);
+  const f = (v) => Math.max(0, Math.round(v * (1 - (amt == null ? 0.28 : amt))));
+  return "#" + [f((n >> 16) & 255), f((n >> 8) & 255), f(n & 255)]
+    .map((v) => v.toString(16).padStart(2, "0")).join("");
+}
+
 export function playerColors(look) {
   const L = look || DEFAULT_LOOK;
+  const K = SKIN, S = L.shirt || DEFAULT_LOOK.shirt;
+  const P = L.pants || DEFAULT_LOOK.pants, H = L.hair || DEFAULT_LOOK.hair;
   return {
-    K: SKIN,
-    S: L.shirt || DEFAULT_LOOK.shirt,
-    P: L.pants || DEFAULT_LOOK.pants,
-    H: L.hair || DEFAULT_LOOK.hair,
-    "3": OUTLINE,
+    K: K, S: S, P: P, H: H, "3": OUTLINE,
+    k: darker(K, 0.18), s: darker(S), p: darker(P), h: darker(H, 0.32),
   };
 }
