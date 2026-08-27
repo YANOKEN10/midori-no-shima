@@ -368,9 +368,9 @@ const PAINT = {
     p.set(null);
   },
 
-  S: (p) => {
-    p.set("grass");
-    PAINT[","](p, 15);
+  S: (p, mask, v) => {
+    p.set(p.ground || "grass");
+    PAINT[","](p, 15, v);
     p.set("wood");
     p.fbox(14, 20, 4, 12, 2); p.fbox(15, 20, 1, 12, 3);
     p.fbox(3, 4, 26, 18, 3);
