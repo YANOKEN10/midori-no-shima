@@ -87,7 +87,7 @@ http.createServer(async (req, res) => {
   }
 
   let rel = decodeURIComponent(url);
-  if (rel === "/") rel = "/index.html";
+  if (rel.endsWith("/")) rel += "index.html";
   let clean = path.normalize(rel);
   while (clean.length && (clean[0] === "/" || clean.charCodeAt(0) === 92)) clean = clean.slice(1);
   const file = path.join(ROOT, clean);

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>やまの むら（立体の ためし）— VORAZ MONSTERS</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e1a12; overflow: hidden;
+    font-family: system-ui, "Hiragino Sans", "Yu Gothic", sans-serif; color: #fff; }
+  #view { display: block; width: 100vw; height: 100vh; }
+  .bar { position: fixed; left: 0; right: 0; top: 0; padding: 10px 14px;
+    display: flex; gap: 12px; align-items: center; justify-content: space-between;
+    background: linear-gradient(#000a, #0000); pointer-events: none; font-size: 14px; }
+  .bar a { pointer-events: auto; color: #fff; background: #0008; border: 1px solid #fff4;
+    border-radius: 8px; padding: 6px 12px; text-decoration: none; }
+  #pad { position: fixed; left: 18px; bottom: 24px; width: 168px; height: 168px;
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 6px; }
+  #pad button { background: #ffffff22; border: 1px solid #ffffff44; border-radius: 12px;
+    color: #fff; font-size: 20px; touch-action: none; }
+  #pad button:active { background: #ffffff55; }
+  #pad .sp { visibility: hidden; }
+  @media (min-width: 900px) { #pad { opacity: .35; } }
+</style>
+</head>
+<body>
+<canvas id="view"></canvas>
+<!-- 2Dの えを 作る しくみが つかう かくれた がめん -->
+<canvas id="screen" width="320" height="288" style="display:none"></canvas>
+<div class="bar">
+  <span>やまの むら（立体の ためし）</span>
+  <a href="../">2Dに もどる</a>
+</div>
+<div id="pad">
+  <button class="sp"></button><button data-dir="up">▲</button><button class="sp"></button>
+  <button data-dir="left">◀</button><button class="sp"></button><button data-dir="right">▶</button>
+  <button class="sp"></button><button data-dir="down">▼</button><button class="sp"></button>
+</div>
+<script type="module" src="./village3d.js"></script>
+</body>
+</html>
