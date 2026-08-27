@@ -91,6 +91,37 @@ export const SETS = {
   battleBg:["#e8f6c8", "#bfe38a", "#7fb25a", "#2f5a2a"],
 };
 
+
+/* ============================================================
+   ガオンの いろは 6かいちょう
+    もとの 4しょくから、あいだの いろを 作って
+    0=いちばん あかるい 1=あかるい 2=き本 3=すこし くらい
+    4=くらい 5=ふち の 6つに ひろげます。
+============================================================ */
+function hex2rgb(h) {
+  return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+}
+function rgb2hex(c) {
+  return "#" + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+}
+function mix(a, b, t) {
+  const A = hex2rgb(a), B = hex2rgb(b);
+  return rgb2hex([0, 1, 2].map((i) => A[i] + (B[i] - A[i]) * t));
+}
+function lighten(a, t) { return mix(a, "#ffffff", t); }
+function ramp6(p4) {
+  return [lighten(p4[0], 0.45), p4[0], p4[1], mix(p4[1], p4[2], 0.55), p4[2], p4[3]];
+}
+
+// タイプの いろ（と そのいろちがい）だけ 6かいちょうに する
+const MON_SETS = ["ノーマル", "くさ", "ほのお", "みず", "でんき", "じめん", "むし", "やみ"];
+for (const base of MON_SETS) {
+  for (const suffix of ["", "2", "3"]) {
+    const k = base + suffix;
+    if (SETS[k]) SETS[k] = ramp6(SETS[k]);
+  }
+}
+
 // ゲームボーイ（1色）で あそびたい人むけ
 const MONO = {
   green: ["#9bbc0f", "#8bac0f", "#306230", "#0f380f"],
@@ -269,10 +300,10 @@ export function makeArt(rows, scale, key, setName) {
 }
 
 // モンスターの え（白黒モードでは はいけいと まぎれないように こさを ずらす）
-const MONO_SHIFT = { "0": "0", "1": "2", "2": "3", "3": "3" };
+const MONO_SHIFT = { "0": "0", "1": "1", "2": "2", "3": "2", "4": "3", "5": "3" };
 export function makeMonArt(rows, scale, key, setName) {
   if (mode === "color") return makeArt(rows, scale, key, setName);
-  const shifted = rows.map((r) => r.replace(/[0-3]/g, (c) => MONO_SHIFT[c]));
+  const shifted = rows.map((r) => r.replace(/[0-5]/g, (c) => MONO_SHIFT[c]));
   return makeArt(shifted, scale, (key || "") + "#mono", setName);
 }
 

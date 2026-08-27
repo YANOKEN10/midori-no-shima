@@ -77,18 +77,18 @@ export async function showStatus(m) {
     G.use("ui");
     G.window9(4, 4, 312, 156);
     const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp));
-    G.draw(img, 10, 22);
-    G.text("No." + String(sp.no).padStart(3, "0"), 116, 16, 3, 14);
+    G.draw(img, 4, 22);
+    G.text("No." + String(sp.no).padStart(3, "0"), 140, 14, 3, 14);
     const lv = "Lv" + m.lv;
-    G.textFit(monName(m), 116, 36, 178 - G.textW(lv, 16), 3, 16);
-    G.textRight(lv, 300, 36, 3, 16);
-    G.textFit("タイプ/" + sp.types.join("・"), 116, 60, 184, 3, 14);
-    G.text("HP " + m.hp + "/" + maxHp(m), 116, 82, 3, 14);
-    if (m.status) G.textRight(m.status, 300, 82, 3, 14);
-    G.text("こうげき " + statOf(m, "atk"), 20, 110, 3, 14);
-    G.text("ぼうぎょ " + statOf(m, "def"), 170, 110, 3, 14);
-    G.text("すばやさ " + statOf(m, "spd"), 20, 132, 3, 14);
-    G.text("まほう " + statOf(m, "spc"), 170, 132, 3, 14);
+    G.textFit(monName(m), 140, 34, 154 - G.textW(lv, 16), 3, 16);
+    G.textRight(lv, 302, 34, 3, 16);
+    G.textFit("タイプ/" + sp.types.join("・"), 140, 58, 162, 3, 14);
+    G.text("HP " + m.hp + "/" + maxHp(m), 140, 80, 3, 14);
+    if (m.status) G.textRight(m.status, 302, 80, 3, 14);
+    G.text("こうげき " + statOf(m, "atk"), 140, 104, 3, 14);
+    G.text("ぼうぎょ " + statOf(m, "def"), 226, 104, 3, 14);
+    G.text("すばやさ " + statOf(m, "spd"), 140, 128, 3, 14);
+    G.text("まほう " + statOf(m, "spc"), 226, 128, 3, 14);
 
     G.window9(4, 166, 312, 114);
     m.moves.forEach((mv, i) => {
@@ -185,11 +185,11 @@ async function dexEntry(n) {
     G.clear(1);
     G.use("ui");
     G.window9(4, 4, 312, 160);
-    G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp)), 16, 24);
-    G.text("No." + String(sp.no).padStart(3, "0"), 130, 24, 3, 14);
-    G.textFit(n, 130, 46, 170, 3, 16);
-    G.textFit("タイプ/" + sp.types.join("・"), 130, 72, 170, 3, 14);
-    G.text(State.save.dexOwn[n] ? "つかまえた" : "みつけた", 130, 94, 3, 14);
+    G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp)), 4, 24);
+    G.text("No." + String(sp.no).padStart(3, "0"), 140, 26, 3, 14);
+    G.textFit(n, 140, 48, 162, 3, 16);
+    G.textFit("タイプ/" + sp.types.join("・"), 140, 74, 162, 3, 14);
+    G.text(State.save.dexOwn[n] ? "つかまえた" : "みつけた", 140, 96, 3, 14);
     G.window9(4, 170, 312, 110);
     const lines = G.wrap(sp.dex, 276, 16).slice(0, 4);
     lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
