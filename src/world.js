@@ -7,6 +7,7 @@ import { ui } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { tileFor, solid } from "./tiles.js";
 import { findHouses, houseImage } from "./props.js";
+import { treeImage, TREE_W, TREE_UP } from "./trees.js";
 import { MAPS } from "./data/maps.js";
 import { personFrames, personFramesRaw, LOOKS } from "./data/charart.js";
 import { playerColors } from "./data/looks.js";
@@ -668,7 +669,20 @@ export const world = {
         const vr = ((tx * 7 + ty * 13 + tx * ty) >>> 0) % 16;
         // がけの 下の じめんには かげが おちる
         const sh = edgeTile(map, tx, ty - 1) === "R" && GROUND.has(ch) ? 1 : 0;
-        G.draw(tileFor(ch, frame, map.sets, mask, vr, sh), tx * T - camX, ty * T - camY);
+        // き の ところは まず じめんだけ えがく（木は あとで かさねる）
+        const draw = (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
+        G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 15, vr, sh), tx * T - camX, ty * T - camY);
+      }
+    }
+
+    // き（1本ずつ かさねて もりに 見せる）
+    for (let ty = y0 - 1; ty <= y0 + Math.ceil(G.H / T) + 1; ty++) {
+      for (let tx = x0; tx <= x0 + Math.ceil(G.W / T); tx++) {
+        if (edgeTile(map, tx, ty) !== "T") continue;
+        const kind = ((tx * 5 + ty * 11 + tx * ty) >>> 0) % 4;
+        const foot = edgeTile(map, tx, ty + 1) !== "T";     // 下に 木が なければ みきを 出す
+        G.draw(treeImage(kind, foot),
+               tx * T - camX - (TREE_W - T) / 2, ty * T - camY - TREE_UP);
       }
     }
 
