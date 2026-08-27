@@ -718,3 +718,76 @@ export const PART_NAMES = {
   mouth: Object.keys(MOUTHS), pat: Object.keys(PATTERNS),
 };
 export const SPRITE_SIZE = W;
+
+/* ============================================================
+   手で うった ドットえ を 64ドットに おこす
+    32x32 の もじ絵を うけとって、
+      . = すきとおる  # = からだ  b = あかるい ところ
+      d = くらい ところ  e = め  m = くち
+    2ばいに ひろげて（ななめを なめらかに）、ふち・立体の かげを つけます。
+============================================================ */
+// ななめの ギザギザを なめらかに する ひろげかた（EPX）
+function scale2x(src) {
+  const h = src.length, w = src[0].length;
+  const at = (x, y) => (x >= 0 && x < w && y >= 0 && y < h ? src[y][x] : ".");
+  const out = [];
+  for (let y = 0; y < h; y++) {
+    let r0 = "", r1 = "";
+    for (let x = 0; x < w; x++) {
+      const P = at(x, y), A = at(x, y - 1), B = at(x + 1, y), C = at(x - 1, y), D = at(x, y + 1);
+      let e0 = P, e1 = P, e2 = P, e3 = P;
+      if (C === A && C !== D && A !== B) e0 = A;
+      if (A === B && A !== C && B !== D) e1 = B;
+      if (D === C && D !== B && C !== A) e2 = C;
+      if (B === D && B !== A && D !== C) e3 = D;
+      r0 += e0 + e1;
+      r1 += e2 + e3;
+    }
+    out.push(r0, r1);
+  }
+  return out;
+}
+
+// て書きの めを えがく（しろめ・くろめ・ひかり）
+function handEye(g, x, y) {
+  for (let j = -2; j <= 3; j++) {
+    for (let i = -2; i <= 2; i++) {
+      if ((Math.abs(i) === 2) && (j === -2 || j === 3)) continue;
+      const edge = Math.abs(i) === 2 || j === -2 || j === 3;
+      put(g, x + i, y + j, edge ? "3" : "0");
+    }
+  }
+  for (let j = 0; j <= 2; j++) for (let i = -1; i <= 1; i++) put(g, x + i, y + j, "3");
+  put(g, x - 1, y, "0");
+}
+
+export function buildHandSprite(rows32) {
+  // どの ぎょうも 32もじに そろえる（みじかい ぎょうは すきとおるで うめる）
+  const src = [];
+  for (let y = 0; y < 32; y++) src.push(((rows32[y] || "") + "................................").slice(0, 32));
+  const big = scale2x(src);
+  const g = blank();
+  const eyes = [], mouths = [];
+  for (let y = 0; y < Math.min(H, big.length); y++) {
+    for (let x = 0; x < Math.min(W, big[y].length); x++) {
+      const c = big[y][x];
+      if (c === ".") continue;
+      if (c === "o") { g[y][x] = "O"; continue; }   // 中の りんかく（ふちの いろ）
+      if (c === "e") { eyes.push([x, y]); g[y][x] = "1"; continue; }
+      if (c === "m") { mouths.push([x, y]); g[y][x] = "1"; continue; }
+      g[y][x] = c === "#" ? "1" : c;
+    }
+  }
+  let out = outline(g);
+  out = volume(out);
+  groundLine(out);
+  // め と くち（かげを つけた あとに のせる）
+  const done = [];
+  for (const [x, y] of eyes) {
+    if (done.some((p) => Math.abs(p[0] - x) < 4 && Math.abs(p[1] - y) < 4)) continue;
+    done.push([x, y]);
+    handEye(out, x, y);
+  }
+  for (const [x, y] of mouths) put(out, x, y, "3");
+  return toTones(out);
+}

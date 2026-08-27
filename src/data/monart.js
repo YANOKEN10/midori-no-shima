@@ -3,7 +3,8 @@
 //   ぜんぶ monsprite.js の パーツから 組み立てています。
 // ============================================================
 import { MORE } from "./species_more.js";
-import { buildSprite } from "./monsprite.js";
+import { buildSprite, buildHandSprite } from "./monsprite.js";
+import { HAND } from "./monhand.js";
 
 // はじめから いた 23ひきの レシピ
 const BASE = {
@@ -54,6 +55,9 @@ for (const e of MORE) {
   const size = stage === 1 ? "s" : stage === 2 ? "m" : "l";
   if (!ART[name]) ART[name] = buildSprite(Object.assign({ size: size }, recipe));
 }
+
+// 手で うった ドットえが ある ガオンは そちらを つかう
+for (const name of Object.keys(HAND)) ART[name] = buildHandSprite(HAND[name]);
 
 export const MONART = ART;
 export function mirror(rows8) {
