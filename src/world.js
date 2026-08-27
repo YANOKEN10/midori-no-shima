@@ -9,7 +9,7 @@ import { tileFor, solid } from "./tiles.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
 import { MAPS } from "./data/maps.js";
-import { personFrames, personFramesRaw, LOOKS } from "./data/charart.js";
+import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
 import {
@@ -31,7 +31,7 @@ function playerFrames() {
   return rawFrames;
 }
 function framesFor(look) {
-  if (!charCache.has(look)) charCache.set(look, personFrames(LOOKS[look] || LOOKS.boy));
+  if (!charCache.has(look)) charCache.set(look, personFrames(LOOKS[look] || LOOKS.boy, styleOf(look)));
   return charCache.get(look);
 }
 // ひとの いろ（かげの 色も 作る）
@@ -738,7 +738,7 @@ export const world = {
         const n = p.n;
         const dirn = n.dir || "down";
         const img2 = G.isColor()
-          ? G.makeColorArt(playerFrames()[dirn][0], 1, "nc" + n.look + dirn, colorsFor(n.look))
+          ? G.makeColorArt(personFramesRaw(styleOf(n.look))[dirn][0], 1, "nc" + n.look + dirn, colorsFor(n.look))
           : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look);
         G.draw(img2, n.x * T - camX, n.y * T - camY - 12);
         if (n.alert) {
