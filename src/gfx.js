@@ -21,6 +21,7 @@ export const SETS = {
   tallgrass:["#8ad066", "#4ba33e", "#26702a", "#0f3414"],
   rock:    ["#d2ccbb", "#9d9484", "#6a6154", "#332d26"],
   water:   ["#9fdcf7", "#4aa8e8", "#1f5fb0", "#0b2a55"],
+  stone:   ["#ffffff", "#e4e8ec", "#a8b2bc", "#59616b"],   // みずべの 石わく
   ledge:   ["#e6d3a2", "#b99a63", "#8a6a3c", "#432f18"],
   fence:   ["#e0d2b0", "#b09068", "#7a5c38", "#33240f"],
 

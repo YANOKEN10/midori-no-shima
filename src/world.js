@@ -701,7 +701,8 @@ export const world = {
         if (group(edgeTile(map, tx - 1, ty - 1)) === gg) mask |= 128;
         const vr = ((tx * 7 + ty * 13 + tx * ty) >>> 0) % 16;
         // がけの 下の じめんには かげが おちる
-        const sh = edgeTile(map, tx, ty - 1) === "R" && GROUND.has(ch) ? 1 : 0;
+        const up = edgeTile(map, tx, ty - 1);
+        const sh = up === "M" && GROUND.has(ch) ? 1 : 0;   // がけ だけ かげを おとす
         // き の ところは まず じめんだけ えがく（木は あとで かさねる）
         const draw = (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
         G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tx * T - camX, ty * T - camY);
@@ -800,7 +801,7 @@ const GROUND = new Set([",", ".", '"', "~", "F", "m", "d", "W", "H", "S", "s"]);
 const GROUP = {
   ",": "g", '"': "g", F: "g", S: "g", "=": "g",
   ".": "p", s: "p", m: "p",
-  "~": "n", W: "w", T: "t", R: "r", X: "x", C: "c", d: "d",
+  "~": "n", W: "w", T: "t", R: "r", M: "cliff", X: "x", C: "c", d: "d",
   r: "roof", "#": "wall", w: "wall", D: "wall",
 };
 function group(ch) { return ch == null ? "" : (GROUP[ch] || ch); }

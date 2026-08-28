@@ -6,7 +6,7 @@
 import { tileCanvas } from "./gfx.js";
 
 // とおれるか / しらべられるか
-export const SOLID = new Set(["T", "R", "W", "#", "r", "w", "S", "X", "=", "c", "b", "t", "K", "V", "P", "s"]);
+export const SOLID = new Set(["T", "R", "M", "W", "#", "r", "w", "S", "X", "=", "c", "b", "t", "K", "V", "P", "s"]);
 export const ENCOUNTER = new Set(['"', "C"]);
 
 // mask のビット： 1=上 2=右 4=下 8=左 に「おなじ なかま」が いる
@@ -127,8 +127,18 @@ const PAINT = {
   ",": (p, mask, v0) => {
     const v = v0 | 0, N = p.N;
     p.ffill(1);
-    p.dnoise(11 + v * 37, 320, 0, 0, 0, N, N);     // こまかい くさの きらめき
-    p.dnoise(23 + v * 91, 150, 2, 0, 0, N, N);
+    p.dnoise(11 + v * 37, 200, 0, 0, 0, N, N);     // こまかい くさの きらめき
+    p.dnoise(23 + v * 91, 90, 2, 0, 0, N, N);
+    // ひしがたの もよう（地はだの きめ）
+    for (let gy = 0; gy < N; gy += 16) {
+      for (let gx = 0; gx < N; gx += 16) {
+        const ox = gx + ((gy / 16) % 2 ? 8 : 0), oy = gy + 8;
+        for (let k = 0; k < 4; k++) {
+          p.d(ox + 4 - k, oy - k, 2); p.d(ox + 4 + k, oy - k, 2);
+          p.d(ox + 4 - k, oy + k, 2); p.d(ox + 4 + k, oy + k, 2);
+        }
+      }
+    }
     // 小さな くさの ふさ（3まいば）
     const tuft = (x, y) => {
       p.dbox(x, y + 1, 1, 4, 2); p.d(x, y, 2);
@@ -229,27 +239,64 @@ const PAINT = {
 
   /* ---------------- みず ---------------- */
   W: (p, mask) => {
-    const N = p.N;
+    const N = p.N, B = 9, R = 18;
+    // 石の わく（みずの まわりを かこむ）
+    p.set("stone");
     p.ffill(1);
-    p.fdither(0, 0, 32, 32, 2, false);
-    p.fbox(4, 7, 9, 1, 0); p.fbox(18, 15, 10, 1, 0); p.fbox(8, 23, 8, 1, 0);
-    p.f(14, 8, 0); p.f(28, 16, 0); p.f(17, 24, 0);
-    // きしべ（まわりが みずで ないところ）
-    if (!(mask & N)) { p.fbox(0, 0, 32, 2, 0); p.fdither(0, 2, 32, 2, 0, false); }
-    if (!(mask & S)) { p.fbox(0, 30, 32, 2, 0); p.fdither(0, 28, 32, 2, 0, true); }
-    if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 0); p.fdither(2, 0, 2, 32, 0, false); }
-    if (!(mask & E)) { p.fbox(30, 0, 2, 32, 0); p.fdither(28, 0, 2, 32, 0, true); }
-    roundCut(p, mask, 20, p.ground || "grass", 0);      // きしべを まるく
+    p.dnoise(17, 120, 0, 0, 0, N, N);
+    // 石の めじ
+    for (let i = 0; i < N; i += 16) { p.dbox(i, 0, 1, N, 3); p.dbox(0, i, N, 1, 3); }
+    // 中の みず
+    const x0 = (mask & Wl) ? 0 : B, x1 = (mask & E) ? N : N - B;
+    const y0 = (mask & N) ? 0 : B, y1 = (mask & S) ? N : N - B;
+    p.set("water");
+    p.dbox(x0, y0, x1 - x0, y1 - y0, 1);
+    p.ddither(x0, y0, x1 - x0, y1 - y0, 2, false);
+    // なみ
+    p.dbox(x0 + 4, y0 + 10, 18, 2, 0); p.dbox(x0 + 24, y0 + 26, 20, 2, 0); p.dbox(x0 + 10, y0 + 42, 16, 2, 0);
+    // みずの きわを 石の 内がわに そって くらく（石わくの ある がわ だけ）
+    if (!(mask & N)) p.dbox(x0, y0, x1 - x0, 2, 2);
+    if (!(mask & S)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
+    if (!(mask & Wl)) p.dbox(x0, y0, 2, y1 - y0, 2);
+    if (!(mask & E)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
+    // 石の わくの ふち（うちがわ）
+    p.set("stone");
+    if (!(mask & N)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
+    if (!(mask & S)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
+    if (!(mask & Wl)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & E)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
+    roundCut(p, mask, R, p.ground || "grass", null);
+    p.set(null);
   },
   W2: (p, mask) => {
+    const N = p.N, B = 9, R = 18;
+    // 石の わく（みずの まわりを かこむ）
+    p.set("stone");
     p.ffill(1);
-    p.fdither(0, 0, 32, 32, 2, true);
-    p.fbox(8, 6, 9, 1, 0); p.fbox(14, 16, 10, 1, 0); p.fbox(4, 24, 8, 1, 0);
-    if (!(mask & N)) { p.fbox(0, 0, 32, 2, 0); p.fdither(0, 2, 32, 2, 0, true); }
-    if (!(mask & S)) { p.fbox(0, 30, 32, 2, 0); p.fdither(0, 28, 32, 2, 0, false); }
-    if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 0); p.fdither(2, 0, 2, 32, 0, true); }
-    if (!(mask & E)) { p.fbox(30, 0, 2, 32, 0); p.fdither(28, 0, 2, 32, 0, false); }
-    roundCut(p, mask, 20, p.ground || "grass", 0);
+    p.dnoise(41, 120, 0, 0, 0, N, N);
+    // 石の めじ
+    for (let i = 0; i < N; i += 16) { p.dbox(i, 0, 1, N, 3); p.dbox(0, i, N, 1, 3); }
+    // 中の みず
+    const x0 = (mask & Wl) ? 0 : B, x1 = (mask & E) ? N : N - B;
+    const y0 = (mask & N) ? 0 : B, y1 = (mask & S) ? N : N - B;
+    p.set("water");
+    p.dbox(x0, y0, x1 - x0, y1 - y0, 1);
+    p.ddither(x0, y0, x1 - x0, y1 - y0, 2, true);
+    // なみ
+    p.dbox(x0 + 8, y0 + 6, 18, 2, 0); p.dbox(x0 + 20, y0 + 22, 20, 2, 0); p.dbox(x0 + 4, y0 + 38, 16, 2, 0);
+    // みずの きわを 石の 内がわに そって くらく（石わくの ある がわ だけ）
+    if (!(mask & N)) p.dbox(x0, y0, x1 - x0, 2, 2);
+    if (!(mask & S)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
+    if (!(mask & Wl)) p.dbox(x0, y0, 2, y1 - y0, 2);
+    if (!(mask & E)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
+    // 石の わくの ふち（うちがわ）
+    p.set("stone");
+    if (!(mask & N)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
+    if (!(mask & S)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
+    if (!(mask & Wl)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & E)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
+    roundCut(p, mask, R, p.ground || "grass", null);
+    p.set(null);
   },
 
   /* ---------------- き と いわ ---------------- */
@@ -282,8 +329,46 @@ const PAINT = {
     p.set(null);
   },
 
-  // いわ＝がけ。うえに いわが あれば かべ、なければ てっぺん
+  // いわ（R）：まるい いわ。となりあうと かたまりに 見える
   R: (p, mask, v0) => {
+    const v = v0 | 0, N = p.N;
+    p.set(p.ground || "grass");
+    p.ffill(1);
+    p.dnoise(9 + v * 23, 140, 0, 0, 0, N, N);
+    // じめんに おちる かげ
+    p.set("rock");
+    const cx = N / 2 + ((v % 3) - 1), cy = N / 2 + 3;
+    const rx = N / 2 - 1, ry = N / 2 - 3;
+    const ell = (ox, oy, rrx, rry, col) => {
+      for (let y = Math.floor(oy - rry); y <= Math.ceil(oy + rry); y++) {
+        const t = (y - oy) / rry;
+        if (Math.abs(t) > 1) continue;
+        const w = Math.round(rrx * Math.sqrt(1 - t * t));
+        p.dbox(Math.round(ox - w), y, w * 2, 1, col);
+      }
+    };
+    p.set(p.ground || "grass");
+    // じめんに おちる かげ（ちいさく、あみかけで やわらかく）
+    p.ddither(Math.round(cx - rx * 0.7) + 2, Math.round(cy + ry - 6), Math.round(rx * 1.4), 7, 2, false);
+    ell(cx + 2, cy + ry - 3, rx * 0.7, 2.5, 2);
+    p.set("rock");
+    ell(cx, cy, rx, ry, 3);                            // ふち
+    ell(cx, cy - 1, rx - 2, ry - 2, 1);                // 本体
+    ell(cx - rx * 0.3, cy - ry * 0.5, rx * 0.5, ry * 0.42, 0);   // 日なた
+    p.ddither(Math.round(cx - rx * 0.8), Math.round(cy - ry * 0.9), Math.round(rx * 1.1), Math.round(ry * 0.6), 0, false);
+    // 下がわの かげ
+    p.ddither(Math.round(cx - rx * 0.7), Math.round(cy + ry * 0.1), Math.round(rx * 1.4), Math.round(ry * 0.7), 2, true);
+    ell(cx, cy + 2, rx - 3, ry - 4, 2);
+    ell(cx, cy - 1, rx - 2, ry - 2, 1);
+    ell(cx - rx * 0.28, cy - ry * 0.45, rx * 0.42, ry * 0.36, 0);
+    // ひび
+    p.dbox(Math.round(cx + rx * 0.2), Math.round(cy - ry * 0.1), 1, Math.round(ry * 0.5), 2);
+    p.dbox(Math.round(cx + rx * 0.2) + 1, Math.round(cy + ry * 0.2), Math.round(rx * 0.3), 1, 2);
+    p.set(null);
+  },
+
+  // がけ（M）：うえに がけが あれば かべ、なければ てっぺん
+  M: (p, mask, v0) => {
     const v = v0 | 0;
     const N = 1, E = 2, S = 4, Wl = 8;
     p.set(p.ground || "grass");
@@ -310,9 +395,11 @@ const PAINT = {
       p.fdither(0, 20, 32, 6, 3, false);
       p.fbox(0, 26, 32, 6, 3);
     }
-    if (!(mask & Wl)) { p.fbox(0, y0, 2, 32 - y0, 3); p.fbox(2, y0, 1, 32 - y0, 1); }
-    if (!(mask & E)) { p.fbox(30, y0, 2, 32 - y0, 3); p.fbox(29, y0, 1, 32 - y0, 1); }
-    roundCut(p, mask, 18, p.ground || "grass", 3);      // かどを まるく
+    const RN = p.N, RR = 18;
+    const ry0 = Math.max(y0 * 2, (mask & N) ? 0 : RR), ry1 = (mask & S) ? RN : RN - RR;
+    if (!(mask & Wl)) { p.dbox(0, ry0, 4, ry1 - ry0, 3); p.dbox(4, ry0, 2, ry1 - ry0, 1); }
+    if (!(mask & E)) { p.dbox(RN - 4, ry0, 4, ry1 - ry0, 3); p.dbox(RN - 6, ry0, 2, ry1 - ry0, 1); }
+    roundCut(p, mask, RR, p.ground || "grass", 3);      // かどを まるく
     p.set(null);
   },
 
@@ -360,13 +447,22 @@ const PAINT = {
     p.set(null);
   },
 
-  "=": (p) => {
-    p.set("grass");
-    PAINT[","](p, 15);
+  "=": (p, mask) => {
+    const N = p.N;
+    p.set(p.ground || "grass");
+    PAINT[","](p, 15, 3);
     p.set("fence");
-    p.fbox(0, 12, 32, 3, 1); p.fbox(0, 20, 32, 3, 1);
-    p.fbox(6, 8, 4, 20, 2); p.fbox(22, 8, 4, 20, 2);
-    p.fbox(6, 8, 4, 2, 3); p.fbox(22, 8, 4, 2, 3);
+    // よこ木 2本
+    p.dbox(0, 24, N, 5, 1); p.dbox(0, 24, N, 1, 0); p.dbox(0, 28, N, 1, 3);
+    p.dbox(0, 38, N, 5, 1); p.dbox(0, 38, N, 1, 0); p.dbox(0, 42, N, 1, 3);
+    // くい（左右の はしと まん中）
+    for (const x of [4, 28, 52]) {
+      p.dbox(x, 16, 7, 32, 1);
+      p.dbox(x, 16, 2, 32, 0);
+      p.dbox(x + 5, 16, 2, 32, 3);
+      p.dbox(x, 16, 7, 2, 0);
+      p.dbox(x - 1, 46, 9, 2, 3);
+    }
     p.set(null);
   },
 
@@ -573,7 +669,7 @@ const PAINT = {
 /* --- どの いろセットで ぬるか --------------------------------- */
 const TILE_SET = {
   ".": "path", ",": "grass", '"': "tallgrass", F: "grass", "~": "sand",
-  T: "tree", R: "rock", W: "water", L: "ledge", H: "rock", "=": "fence",
+  T: "tree", R: "rock", M: "rock", W: "water", L: "ledge", H: "rock", "=": "fence",
   "#": "wall", r: "roof", w: "wall", D: "door", S: "sign", s: "sign",
   C: "cave", X: "cave", u: "wood", d: "wood", m: "rock",
   f: "floor", g: "carpet", x: "carpet", c: "wood", b: "wood", t: "wood",
