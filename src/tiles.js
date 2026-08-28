@@ -423,27 +423,35 @@ const PAINT = {
     p.set(null);
   },
 
-  // かいだん（のぼりおり できる）
+  // かいだん（のぼりおり できる）：上は 上の じめんに つながる
   H: (p, mask) => {
-    const E = 2, Wl = 8;
-    p.set("grass");
-    p.ffill(1); p.fnoise(21, 50, 0, 0, 0, 32, 32);
-    p.set("rock");
+    const E = 2, Wl = 8, N = p.N;
     const wl = !(mask & Wl), wr = !(mask & E);
-    const x0 = wl ? 3 : 0, x1 = wr ? 29 : 32;
-    p.fbox(x0, 4, x1 - x0, 23, 1);        // いしの きざはし
-    for (let i = 0; i < 4; i++) {         // 4だん
-      const y = 4 + i * 6;
-      p.fbox(x0, y, x1 - x0, 2, 0);       // ふみめんの かど（日が あたる）
-      p.fbox(x0, y + 4, x1 - x0, 2, 2);   // けあげの かげ
+    const x0 = wl ? 5 : 0, x1 = wr ? N - 5 : N;
+    // 上がわは 上の だんの じめん（つながって 見えるように）
+    p.set(p.ground || "grass");
+    p.ffill(1);
+    p.dnoise(21, 160, 0, 0, 0, N, N);
+    p.set("rock");
+    // きざはし（上の だんから 下の だんへ 4だん）
+    const top = 14, bottom = 50;   // となりの だんさ（L）と 高さを あわせる
+    p.dbox(x0, top, x1 - x0, bottom - top, 1);
+    for (let i = 0; i < 4; i++) {
+      const y = top + Math.round(i * (bottom - top) / 4);
+      const h = Math.round((bottom - top) / 4);
+      p.dbox(x0, y, x1 - x0, 2, 0);                      // ふみめんの かど（日なた）
+      p.ddither(x0, y + 2, x1 - x0, 2, 0, false);
+      p.dbox(x0, y + h - 3, x1 - x0, 3, 2);              // けあげの かげ
+      p.dbox(x0, y + h - 1, x1 - x0, 1, 3);
     }
-    p.fbox(x0, 3, x1 - x0, 1, 3);         // 上の ふち
-    p.fbox(x0, 25, x1 - x0, 2, 3);        // 下の ふち
-    if (wl) p.fbox(0, 3, 3, 24, 3);
-    if (wr) p.fbox(29, 3, 3, 24, 3);
-    p.set("grass");
-    p.fbox(0, 27, 32, 1, 3);              // 下の じめんに おちる かげ
-    p.fdither(0, 28, 32, 2, 3, false);
+    p.dbox(x0, top - 2, x1 - x0, 2, 3);                  // 上の きわ
+    p.dbox(x0, bottom - 2, x1 - x0, 2, 3);               // 下の きわ
+    if (wl) { p.dbox(0, top - 2, 5, bottom - top + 4, 2); p.dbox(0, top - 2, 2, bottom - top + 4, 3); }
+    if (wr) { p.dbox(N - 5, top - 2, 5, bottom - top + 4, 2); p.dbox(N - 2, top - 2, 2, bottom - top + 4, 3); }
+    // 下の じめんに おちる かげ
+    p.set(p.ground || "grass");
+    p.dbox(0, bottom, N, 2, 3);
+    p.ddither(0, bottom + 2, N, 3, 3, false);
     p.set(null);
   },
 
