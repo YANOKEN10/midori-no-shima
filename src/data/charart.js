@@ -50,24 +50,34 @@ function lines(g) { return g.map((r) => r.join("").replace(/\.+$/, "")); }
 /* --- あし と こし（ズボン か スカート） --- */
 function drawLegs(g, step, skirt, side) {
   if (side) {
-    const f = step === 1 ? 2 : 0, b = step === 3 ? 2 : 0;
+    // よこむき：まえの あしが 前へ、うしろの あしが 後ろへ
+    const f = step === 1 ? 3 : step === 3 ? 0 : 1;       // まえ足の 出かた
+    const b = step === 1 ? 0 : step === 3 ? 3 : 1;       // うしろ足の 引きかた
     if (skirt) {
-      rect(g, 16 + f, HIP + 1, 4, 3, "K"); rect(g, 15 + f, FOOT, 6, 2, "3");
-      rect(g, 13 - b, HIP + 1, 3, 2, "K"); rect(g, 12 - b, FOOT - 1, 5, 2, "3");
+      rect(g, 15 + f, HIP + 1, 4, 3, "K"); rect(g, 14 + f, FOOT, 6, 2, "3");
+      rect(g, 14 - b, HIP + 1, 3, 2, "K"); rect(g, 13 - b, FOOT - 1, 5, 2, "3");
     } else {
-      rect(g, 15 + f, HIP - 1, 5, 5, "P"); rect(g, 14 + f, FOOT, 7, 2, "3");
-      rect(g, 13 - b, HIP - 1, 4, 4, "P"); rect(g, 12 - b, FOOT - 1, 6, 2, "3");
+      rect(g, 14 - b, HIP - 1, 4, 4, "P"); rect(g, 13 - b, FOOT - 1, 6, 2, "3");   // おくの あし
+      rect(g, 15 + f, HIP - 1, 5, 5, "P"); rect(g, 14 + f, FOOT, 7, 2, "3");       // てまえの あし
     }
     return;
   }
-  const legs = [[11, step === 1 ? 1 : 0], [17, step === 3 ? 1 : 0]];
-  for (const [x, dy] of legs) {
+  // step 0 = 立つ / 1 = ひだり足を まえに / 3 = みぎ足を まえに
+  const fwd = step === 1 ? 0 : step === 3 ? 1 : -1;
+  const xs = [11, 17];
+  for (let i = 0; i < 2; i++) {
+    const x = xs[i];
+    const isFwd = (fwd === i), isBack = (fwd >= 0 && fwd !== i);
+    const out = isFwd ? (i === 0 ? -1 : 1) : 0;          // まえの あしは そとに ひらく
+    const top = HIP - 1 + (isBack ? 1 : 0);
+    const len = isFwd ? 6 : isBack ? 4 : 5;
     if (skirt) {
-      rect(g, x + 1, HIP + 1, 3, 3 - dy, "K");     // すらりとした あし
-      rect(g, x, FOOT - dy, 5, 2, "3");
+      rect(g, x + 1 + out, HIP + 1 + (isBack ? 1 : 0), 3, isFwd ? 4 : isBack ? 2 : 3, "K");
+      rect(g, x + out, FOOT + (isFwd ? 1 : isBack ? -1 : 0), 5, 2, "3");
     } else {
-      rect(g, x, HIP - 1, 4, 5 - dy, "P");
-      rect(g, x - 1, FOOT - dy, 6, 2, "3");
+      rect(g, x + out, top, 4, len, "P");
+      rect(g, x - 1 + out, top + len, 6, 2, "3");         // くつ
+      rect(g, x - 1 + out, top + len + 1, 6, 1, "3");
     }
   }
 }
@@ -161,10 +171,22 @@ function drawHair(g, style, view, bangs) {
     tri(g, 24, HEAD_TOP - 4, 6, 7, false, "H");
     rect(g, 8, HEAD_TOP - 2, 16, 4, "H");
   } else if (style === "mohican") {
-    // モヒカン（まん中だけ 立てる）
-    rect(g, 12, HEAD_TOP - 6, 8, 12, "H");
-    tri(g, 12, HEAD_TOP - 8, 8, 4, false, "H");
-    if (view !== "back") { rect(g, 6, 12, 5, 8, "H"); rect(g, 21, 12, 5, 8, "H"); }   // よこは みじかく
+    // モヒカン（まん中の すじ だけ 立てる。よこは そりあげ）
+    const w = view === "side" ? 12 : 6;
+    const x0 = view === "side" ? 10 : 13;
+    // まん中の すじ（ひたいまで つづく）
+    for (let y = HEAD_TOP - 4; y <= 14; y++) {
+      const nx = (y > 11) ? w - 2 : w;
+      rect(g, x0 + (w - nx) / 2, y, nx, 1, "H");
+    }
+    for (let i = 0; i < w; i += 2) rect(g, x0 + i, HEAD_TOP - 7, 1, 4, "H");   // とがり
+    // そりあげた ところは かみの かげ色で うっすら
+    for (let y = 8; y <= 13; y++) for (let x = 6; x <= 25; x++) {
+      const dx = (x - 16) / 10.5, dy = (y - 12.5) / 10;
+      if (dx * dx + dy * dy > 1.03) continue;
+      if (x >= x0 - 1 && x < x0 + w + 1) continue;
+      if ((x + y) % 2 === 0) put(g, x, y, "h");
+    }
   } else if (style === "twoblock") {
     // ツーブロック（よこは かりあげ、上は のこす）
     for (let y = HEAD_TOP - 2; y <= 13; y++) for (let x = 5; x <= 26; x++) {
@@ -310,6 +332,13 @@ function drawFace(g, view, boy) {
   }
 }
 
+function bob(rows, up) {
+  if (!up) return rows;
+  const out = rows.slice(1);
+  out.push(".".repeat(rows[0].length));
+  return out;
+}
+
 function frame(view, step, style) {
   const st = style || {};
   const g = grid();
@@ -350,7 +379,7 @@ export function personFramesRaw(style) {
   const st = style || {};
   const key = (st.hair || "short") + "/" + (st.bangs || "-") + (st.skirt ? "+skirt" : "") + (st.coat ? "+coat" : "") + (st.face || "");
   if (rawCache.has(key)) return rawCache.get(key);
-  const mk = (view, step) => shadeRows(lines(frame(view, step, st)));
+  const mk = (view, step) => shadeRows(bob(lines(frame(view, step, st)), step === 1 || step === 3));
   const side = [mk("side", 0), mk("side", 1), mk("side", 0), mk("side", 3)];
   const out = {
     down: [mk("front", 0), mk("front", 1), mk("front", 0), mk("front", 3)],
