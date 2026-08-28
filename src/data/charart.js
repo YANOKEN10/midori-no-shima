@@ -106,14 +106,6 @@ function drawBody(g, step, skirt, side, coat) {
   }
 }
 
-/* --- みみ（かみの 下に かくれる ことも ある） --- */
-function drawEars(g, view) {
-  if (view === "back") return;
-  if (view === "side") { rect(g, 12, 16, 3, 4, "K"); put(g, 13, 17, "3"); return; }
-  rect(g, 4, 16, 3, 4, "K"); rect(g, 25, 16, 3, 4, "K");
-  put(g, 5, 17, "3"); put(g, 26, 17, "3");
-}
-
 /* --- かみがた --- */
 // かおの ところを のこして あたまを かみで おおう
 function hairCap(g, style, view) {
@@ -132,6 +124,13 @@ function hairCap(g, style, view) {
       if (style === "bald" && y < 13) continue;                 // うすい かみ
       put(g, x, y, "H");
     }
+  }
+}
+// かみの ある ところ だけに 線を 引く（かおに かからない ように）
+function hairLine(g, x0, y, w) {
+  for (let x = x0; x < x0 + w; x++) {
+    const cur = g[y] && g[y][x];
+    if (cur === "H" || cur === "h") put(g, x, y, "3");
   }
 }
 function drawHair(g, style, view, bangs) {
@@ -173,7 +172,7 @@ function drawHair(g, style, view, bangs) {
       if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
     }
     rect(g, 6, 13, 4, 3, "H"); rect(g, 22, 13, 4, 3, "H");
-    rect(g, 5, 13, 22, 1, "3");
+    hairLine(g, 5, 13, 22);
   } else if (style === "pony") {
     if (view === "side") { disc(g, 8, 20, 3.5, 7, "H"); rect(g, 7, 13, 4, 4, "H"); }
     else if (view === "back") { disc(g, 16, 24, 4, 8, "H"); rect(g, 13, 12, 7, 6, "H"); }
@@ -186,22 +185,24 @@ function drawHair(g, style, view, bangs) {
   } else if (style === "bobshort") {
     // ボブショート（あごの 上で そろえる）
     rect(g, 5, 17, 5, 4, "H"); rect(g, 22, 17, 5, 4, "H");
-    rect(g, 5, 20, 22, 1, "3");
+    hairLine(g, 5, 20, 22);
   } else if (style === "techno") {
     // テクノカット（よこは みじかく そろえ、まっすぐ）
     rect(g, 5, 12, 4, 7, "H"); rect(g, 23, 12, 4, 7, "H");
-    rect(g, 5, 18, 22, 1, "3");
+    hairLine(g, 5, 18, 22);
   } else if (style === "center") {
     // センターパート（まん中で わけて 両がわに ながす）
-    if (view !== "back") { rect(g, 15, HEAD_TOP - 1, 2, 8, "K"); }
+    // わけめは はだを 出さず、かみの かげ色で すじを 入れる
+    if (view !== "back") rect(g, 15, HEAD_TOP - 1, 2, 7, "h");
     rect(g, 6, 10, 6, 8, "H"); rect(g, 20, 10, 6, 8, "H");
+    rect(g, 12, HEAD_TOP - 1, 3, 5, "H"); rect(g, 17, HEAD_TOP - 1, 3, 5, "H");
   } else if (style === "mush") {
     // マッシュ（まるく そろえた きのこ あたま）
     for (let y = HEAD_TOP - 3; y <= 15; y++) for (let x = 4; x <= 27; x++) {
       const dx = (x - 16) / 11.5, dy = (y - 11) / 10.5;
       if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
     }
-    rect(g, 4, 15, 24, 1, "3");
+    hairLine(g, 4, 15, 24);
   } else if (style === "straw") {
     for (let y = HEAD_TOP - 4; y <= 11; y++) {
       for (let x = 1; x <= 30; x++) {
@@ -240,7 +241,7 @@ function drawHair(g, style, view, bangs) {
       }
     }
     if (view !== "back") rect(g, 6, 12, 20, 2, "S");
-    rect(g, 4, 11, 24, 1, "3");
+    hairLine(g, 4, 11, 24);
   }
 
   /* --- まえがみ（目の 上まで おろす） --- */
@@ -315,7 +316,6 @@ function frame(view, step, style) {
   drawBody(g, step, Boolean(st.skirt), view === "side", Boolean(st.coat));
   disc(g, 16, 13, view === "side" ? 9.5 : 10, 9.5, "K");         // あたま
   drawHair(g, st.hair || "short", view, st.bangs || "");
-  drawEars(g, view);                                             // みみ（かみの そと がわ）
   drawFace(g, view, st.face !== "girl" && !st.skirt);
   return outline(g);
 }
