@@ -78,6 +78,49 @@ function roundEdges(p, mask, r) {
   else if ((mask & S) && (mask & E) && !(mask & SE)) fill(M, M, -1, -1);
 }
 
+/* --- マスの かどを まるく けずる ---
+   まわり 8マスを 見て、そとがわの かどは まるく けずり、
+   けずった ふちには 色を のせます。いわ・みずが 四角く 見えない ように。 */
+function roundCut(p, mask, R, ground, edgeIdx) {
+  const N = 1, E = 2, S = 4, Wl = 8, NE = 16, SE = 32, SW = 64, NW = 128;
+  const M = p.N - 1;
+  const corner = (cx, cy, sx, sy, on) => {
+    if (!on) return;
+    p.set(ground);
+    for (let j = 0; j < R; j++) {
+      for (let i = 0; i < R; i++) {
+        const dx = R - (i + 0.5), dy = R - (j + 0.5);
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d > R) p.d(cx + sx * i, cy + sy * j, 1);
+        else if (d > R - 1.4 && ((cx + sx * i + cy + sy * j) % 2 === 0)) p.d(cx + sx * i, cy + sy * j, 1);
+      }
+    }
+    p.set(null);
+    if (edgeIdx == null) return;
+    for (let j = 0; j < R; j++) {
+      for (let i = 0; i < R; i++) {
+        const dx = R - (i + 0.5), dy = R - (j + 0.5);
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d <= R - 1 && d > R - 3.5) p.d(cx + sx * i, cy + sy * j, edgeIdx);
+      }
+    }
+  };
+  const notch = (cx, cy, sx, sy, on) => {          // 内がわの かど（ななめだけ ちがう）
+    if (!on) return;
+    p.set(ground);
+    for (let j = 0; j < 8; j++) for (let i = 0; i < 8 - j; i++) if (i + j < 6) p.d(cx + sx * i, cy + sy * j, 1);
+    p.set(null);
+  };
+  corner(0, 0, 1, 1, !(mask & N) && !(mask & Wl));
+  corner(M, 0, -1, 1, !(mask & N) && !(mask & E));
+  corner(0, M, 1, -1, !(mask & S) && !(mask & Wl));
+  corner(M, M, -1, -1, !(mask & S) && !(mask & E));
+  notch(0, 0, 1, 1, (mask & N) && (mask & Wl) && !(mask & NW));
+  notch(M, 0, -1, 1, (mask & N) && (mask & E) && !(mask & NE));
+  notch(0, M, 1, -1, (mask & S) && (mask & Wl) && !(mask & SW));
+  notch(M, M, -1, -1, (mask & S) && (mask & E) && !(mask & SE));
+}
+
 const PAINT = {
   /* ---------------- じめん ---------------- */
   // くさ（ふつう）
@@ -133,6 +176,7 @@ const PAINT = {
                   [[30, 6], [54, 22], [14, 32], [42, 46]],
                   [[8, 18], [34, 12], [56, 34], [20, 44]]];
     for (const [x, y] of sets[v % 4]) tuft(x, y);
+    roundCut(p, mask, 16, p.ground || "grass", null);   // くさむらの かどを まるく
     p.set(null);
   },
 
@@ -185,6 +229,7 @@ const PAINT = {
 
   /* ---------------- みず ---------------- */
   W: (p, mask) => {
+    const N = p.N;
     p.ffill(1);
     p.fdither(0, 0, 32, 32, 2, false);
     p.fbox(4, 7, 9, 1, 0); p.fbox(18, 15, 10, 1, 0); p.fbox(8, 23, 8, 1, 0);
@@ -194,6 +239,7 @@ const PAINT = {
     if (!(mask & S)) { p.fbox(0, 30, 32, 2, 0); p.fdither(0, 28, 32, 2, 0, true); }
     if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 0); p.fdither(2, 0, 2, 32, 0, false); }
     if (!(mask & E)) { p.fbox(30, 0, 2, 32, 0); p.fdither(28, 0, 2, 32, 0, true); }
+    roundCut(p, mask, 20, p.ground || "grass", 0);      // きしべを まるく
   },
   W2: (p, mask) => {
     p.ffill(1);
@@ -203,6 +249,7 @@ const PAINT = {
     if (!(mask & S)) { p.fbox(0, 30, 32, 2, 0); p.fdither(0, 28, 32, 2, 0, false); }
     if (!(mask & Wl)) { p.fbox(0, 0, 2, 32, 0); p.fdither(2, 0, 2, 32, 0, true); }
     if (!(mask & E)) { p.fbox(30, 0, 2, 32, 0); p.fdither(28, 0, 2, 32, 0, false); }
+    roundCut(p, mask, 20, p.ground || "grass", 0);
   },
 
   /* ---------------- き と いわ ---------------- */
@@ -239,15 +286,15 @@ const PAINT = {
   R: (p, mask, v0) => {
     const v = v0 | 0;
     const N = 1, E = 2, S = 4, Wl = 8;
-    p.set("grass");
+    p.set(p.ground || "grass");
     p.ffill(1); p.fnoise(9 + (v | 0) * 23, 50, 0, 0, 0, 32, 32);
     p.set("rock");
     const top = !(mask & N);
     const bot = !(mask & S);
     const y0 = top ? 8 : 0;
     if (top) {
-      p.set("grass");
-      p.fbox(0, 6, 32, 1, 3);               // くさの きわ（かべに おちる かげ）
+      p.set(p.ground || "grass");
+      p.fbox(0, 6, 32, 1, 3);               // じめんの きわ（かべに おちる かげ）
       p.set("rock");
     }
     p.fbox(0, y0, 32, 32 - y0, 2);          // いわの かべ
@@ -265,6 +312,7 @@ const PAINT = {
     }
     if (!(mask & Wl)) { p.fbox(0, y0, 2, 32 - y0, 3); p.fbox(2, y0, 1, 32 - y0, 1); }
     if (!(mask & E)) { p.fbox(30, y0, 2, 32 - y0, 3); p.fbox(29, y0, 1, 32 - y0, 1); }
+    roundCut(p, mask, 18, p.ground || "grass", 3);      // かどを まるく
     p.set(null);
   },
 
