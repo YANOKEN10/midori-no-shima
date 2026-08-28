@@ -164,28 +164,49 @@ function drawHair(g, style, view, bangs) {
       disc(g, 3, 24, 2.5, 6, "H"); disc(g, 29, 24, 2.5, 6, "H");
     }
   } else if (style === "spiky") {
-    for (const [x, w, h] of [[6, 4, 5], [11, 4, 6], [17, 4, 6], [22, 4, 5]]) tri(g, x, HEAD_TOP - 5, w, h, false, "H");
+    // つんつん（あたまの まわりを とがらせる）
+    const tips = view === "side"
+      ? [[7, 4, 6], [12, 4, 7], [17, 4, 6], [22, 3, 5]]
+      : [[4, 4, 5], [9, 4, 7], [14, 4, 8], [19, 4, 7], [24, 4, 5]];
+    for (const [x, w, h] of tips) tri(g, x, HEAD_TOP - h, w, h + 2, false, "H");
+    rect(g, 5, HEAD_TOP - 1, 22, 3, "H");
   } else if (style === "twinspike") {
     // ツイスパ（左右に はねた 2つの とがり）
     tri(g, 2, HEAD_TOP - 4, 6, 7, false, "H");
     tri(g, 24, HEAD_TOP - 4, 6, 7, false, "H");
     rect(g, 8, HEAD_TOP - 2, 16, 4, "H");
   } else if (style === "mohican") {
-    // モヒカン（まん中の すじ だけ 立てる。よこは そりあげ）
-    const w = view === "side" ? 12 : 6;
-    const x0 = view === "side" ? 10 : 13;
-    // まん中の すじ（ひたいまで つづく）
-    for (let y = HEAD_TOP - 4; y <= 14; y++) {
-      const nx = (y > 11) ? w - 2 : w;
-      rect(g, x0 + (w - nx) / 2, y, nx, 1, "H");
+    // フェード（よこは みじかく かりこんだ かみ、上は ボリューム）
+    // よこ：はだを 出さず、かみの かげ色で みじかい かみを びっしり
+    for (let y = HEAD_TOP - 1; y <= 15; y++) {
+      for (let x = 4; x <= 27; x++) {
+        const dx = (x - 16) / 10.5, dy = (y - 12.5) / 10;
+        if (dx * dx + dy * dy > 1.03) continue;
+        if (view !== "back") {
+          const fx = (x - (view === "side" ? 19 : 16)) / (view === "side" ? 6 : 8);
+          const fy = (y - 15.5) / 7;
+          if (fx * fx + fy * fy <= 1.0) continue;              // かおは のこす
+        }
+        put(g, x, y, "h");                                     // みじかく かりこんだ ところ
+      }
     }
-    for (let i = 0; i < w; i += 2) rect(g, x0 + i, HEAD_TOP - 7, 1, 4, "H");   // とがり
-    // そりあげた ところは かみの かげ色で うっすら
-    for (let y = 8; y <= 13; y++) for (let x = 6; x <= 25; x++) {
-      const dx = (x - 16) / 10.5, dy = (y - 12.5) / 10;
-      if (dx * dx + dy * dy > 1.03) continue;
-      if (x >= x0 - 1 && x < x0 + w + 1) continue;
-      if ((x + y) % 2 === 0) put(g, x, y, "h");
+    // 上：しかくく もりあげる（フェードの トップ）
+    const cx = view === "side" ? 15 : 16;
+    for (let y = HEAD_TOP - 8; y <= 12; y++) {
+      const t = Math.max(0, (y - (HEAD_TOP - 8)) / 13);
+      const half = y < HEAD_TOP ? 7 : Math.round(7 + t * 2);
+      const slide = view === "side" ? Math.round((1 - t) * 2) : 0;
+      rect(g, cx - half + slide, y, half * 2, 1, "H");
+    }
+    rect(g, cx - 7, HEAD_TOP - 9, 14, 1, "H");                  // てっぺんは たいら
+    for (let i = -6; i <= 6; i += 3) put(g, cx + i, HEAD_TOP - 8, "H");   // てっぺんの ながれ
+    // かりこんだ ところとの さかいめ（はっきりした 線）
+    for (let y = 9; y <= 12; y++) {
+      for (let x = 4; x <= 27; x++) {
+        if (g[y][x] !== "h") continue;
+        if (g[y - 1] && g[y - 1][x] === "H") put(g, x, y, "3");
+        if (g[y][x - 1] === "H" || g[y][x + 1] === "H") put(g, x, y, "3");
+      }
     }
   } else if (style === "twoblock") {
     // ツーブロック（よこは かりあげ、上は のこす）
@@ -225,6 +246,40 @@ function drawHair(g, style, view, bangs) {
       if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
     }
     hairLine(g, 4, 15, 24);
+  } else if (style === "wolf") {
+    // ウルフ（上は とがり、うしろは ながい）
+    for (const [x, w, h] of [[6, 4, 5], [11, 4, 7], [16, 4, 7], [21, 4, 5]]) tri(g, x, HEAD_TOP - h, w, h + 2, false, "H");
+    if (view === "side") disc(g, 10, 21, 4, 7, "H");
+    else { disc(g, 6, 20, 3, 6, "H"); disc(g, 26, 20, 3, 6, "H"); if (view === "back") rect(g, 8, 14, 16, 10, "H"); }
+  } else if (style === "upbang") {
+    // アップバング（まえがみを 立ちあげる）
+    rect(g, 9, HEAD_TOP - 4, 14, 6, "H");
+    for (let i = 0; i < 5; i++) tri(g, 9 + i * 3, HEAD_TOP - 6, 3, 4, false, "H");
+    for (let x = 8; x <= 24; x += 4) rect(g, x, HEAD_TOP - 5, 2, 3, "h");   // ながれの すじ
+  } else if (style === "allback") {
+    // オールバック（うしろへ ながす）
+    for (let y = HEAD_TOP - 3; y <= 11; y++) {
+      for (let x = 5; x <= 26; x++) {
+        const dx = (x - 16) / 11, dy = (y - 12) / 10.5;
+        if (dx * dx + dy * dy <= 1.03) put(g, x, y, "H");
+      }
+    }
+    for (let x = 6; x <= 25; x += 3) rect(g, x, HEAD_TOP - 4, 2, 4, "h");   // ながれの すじ
+  } else if (style === "softmoh") {
+    // ソフトモヒカン（よこは みじかく、まん中を ゆるく 立てる）
+    for (let y = HEAD_TOP - 1; y <= 14; y++) {
+      for (let x = 5; x <= 26; x++) {
+        const dx = (x - 16) / 10.5, dy = (y - 12.5) / 10;
+        if (dx * dx + dy * dy > 1.03) continue;
+        if (view !== "back") {
+          const fx = (x - (view === "side" ? 19 : 16)) / (view === "side" ? 6 : 8), fy = (y - 15.5) / 7;
+          if (fx * fx + fy * fy <= 1.0) continue;
+        }
+        put(g, x, y, "h");
+      }
+    }
+    for (let i = 0; i < 4; i++) tri(g, 11 + i * 3, HEAD_TOP - 5, 3, 6, false, "H");
+    rect(g, 11, HEAD_TOP - 1, 11, 5, "H");
   } else if (style === "straw") {
     for (let y = HEAD_TOP - 4; y <= 11; y++) {
       for (let x = 1; x <= 30; x++) {
