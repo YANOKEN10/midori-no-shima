@@ -640,12 +640,11 @@ function drawBattle() {
   // 下の わく（メニューが うかんで 見えないように）
   G.use("ui");
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
-  // メッセージが 出ていない ときは、いま だしている ガオンを のせる
+  // メッセージが 出ていない ときは、なにを するか きく
   if (!isSaying() && B.you) {
     const m = B.you.mon;
-    G.textFit(monName(m), BOX.x + 18, BOX.y + 18, 130, 3, 16);
-    G.text("Lv" + m.lv, BOX.x + 18, BOX.y + 46, 3, 14);
-    G.text(Math.round(B.you.showHp == null ? m.hp : B.you.showHp) + "/" + maxHp(m), BOX.x + 66, BOX.y + 46, 3, 14);
+    G.textFit(monName(m) + "は", BOX.x + 18, BOX.y + 18, 150, 3, 16);
+    G.text("どうする？", BOX.x + 18, BOX.y + 46, 3, 16);
   }
 
   // じょうほうの わくは、メニューと かさなるときは かくす
