@@ -146,6 +146,14 @@ export function houseImage(h) {
   dither(3, wallY, W - 6, 5, wall[0], false);
   fill(0, H - 3, W, 3, wall[3]);
   dither(3, H - 6, W - 6, 3, wall[3], false);
+  // 柱と 腰板。1マスごとに 細い柱を立て、下は石積みの基礎にする。
+  for (let x = T; x < W; x += T) {
+    fill(x - 1, wallY + 3, 2, H - wallY - 8, wall[2]);
+    fill(x - 1, wallY + 3, 1, H - wallY - 8, wall[0]);
+  }
+  fill(2, H - 9, W - 4, 6, wall[2]);
+  fill(2, H - 9, W - 4, 1, wall[0]);
+  for (let x = 3; x < W - 3; x += 12) fill(x, H - 7, 1, 4, wall[3]);
 
   /* ---- まど ---- */
   for (const [cx, cy] of h.windows) {
@@ -163,6 +171,11 @@ export function houseImage(h) {
     fill(x - 3, y + 20, 28, 3, wood[2]);      // まどの さん
     fill(x - 3, y + 23, 28, 1, wood[3]);
     dither(x - 3, y + 24, 28, 2, wall[3], false);   // さんの かげ
+    // 小さな ひさしと 飾り金具
+    fill(x - 5, y - 5, 32, 2, roof[3]);
+    fill(x - 4, y - 7, 30, 3, roof[1]);
+    fill(x - 3, y - 7, 28, 1, roof[0]);
+    fill(x - 2, y + 24, 2, 3, wood[3]); fill(x + 22, y + 24, 2, 3, wood[3]);
   }
 
   /* ---- ドア ---- */
@@ -274,6 +287,7 @@ function drawRoof(c, W, H, style, roof, wood) {
         if ((y - ridgeY + 300) % 6 === 3) set(x, y, zone === FRONT ? 2 : 3);
         const row = Math.floor((y - ridgeY + 300) / 6);
         if ((x + (row % 2 ? 8 : 0)) % 16 === 0) set(x, y, zone === FRONT ? 2 : 3);
+        if ((y - ridgeY + 300) % 6 === 4 && (x + row * 3) % 11 < 3) set(x, y, 0);
       } else {
         if (x % 6 === 3) set(x, y, 3);
         const cl = Math.floor(x / 6);
@@ -298,6 +312,7 @@ function drawRoof(c, W, H, style, roof, wood) {
       for (let y = ridgeY - 3; y <= ridgeY; y++) set(x, y, 0);
       set(x, ridgeY - 4, 3);
       set(x, ridgeY + 1, 3);
+      if ((x - g.x0) % 9 < 2) { set(x, ridgeY - 3, 2); set(x, ridgeY, 3); }
     }
   }
   if (st === "pyramid") {                       // ほうぎょう：てっぺんの かざり

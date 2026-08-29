@@ -93,6 +93,8 @@ function drawBody(g, step, skirt, side, coat) {
     rect(g, 17, NECK + 1, 3, 5, "S"); rect(g, 17, NECK + 5, 3, 3, "K");
     rect(g, 14, NECK - 2, 4, 2, "K");
     if (coat) { rect(g, 11, NECK, 5, HIP - NECK + 3, "C"); rect(g, 19, NECK, 3, HIP - NECK + 3, "C"); }
+    put(g, 17, NECK + 2, "s"); put(g, 18, NECK + 3, "3");
+    rect(g, 13, HIP - 2, 8, 1, "3");
     return;
   }
   rect(g, 9, NECK, 14, HIP - NECK, "S");
@@ -114,6 +116,12 @@ function drawBody(g, step, skirt, side, coat) {
     rect(g, 8, NECK, 16, 2, "C");
     rect(g, 12, NECK, 2, 4, "3"); rect(g, 18, NECK, 2, 4, "3");   // えり
   }
+  // えり・前立て・袖口。小さな服でも正面が読み取れるようにする。
+  put(g, 13, NECK + 1, coat ? "C" : "s"); put(g, 18, NECK + 1, coat ? "C" : "s");
+  put(g, 14, NECK + 2, "3"); put(g, 17, NECK + 2, "3");
+  rect(g, 15, NECK + 2, 2, HIP - NECK - 1, coat ? "c" : "s");
+  put(g, 15, NECK + 4, "3"); put(g, 16, NECK + 7, "3");
+  rect(g, 6, NECK + 5, 3, 1, "3"); rect(g, 23, NECK + 5, 3, 1, "3");
 }
 
 /* --- かみがた --- */
@@ -356,6 +364,20 @@ function onSkin(g, x, y, c) {
   const cur = g[y] && g[y][x];
   if (cur === "K" || cur === "k") put(g, x, y, c);
 }
+function hairDetail(g, view) {
+  const strokes = view === "back"
+    ? [[10, 7, 5], [16, 5, 7], [22, 8, 5], [8, 14, 4], [20, 15, 5]]
+    : view === "side"
+      ? [[10, 6, 5], [15, 4, 7], [21, 8, 4], [8, 14, 4]]
+      : [[9, 6, 5], [15, 4, 6], [21, 7, 5], [7, 13, 4], [22, 14, 3]];
+  for (const [x0, y0, len] of strokes) {
+    for (let i = 0; i < len; i++) {
+      const x = x0 + i, y = y0 + Math.floor(i / 3);
+      const cur = g[y] && g[y][x];
+      if (cur === "H") put(g, x, y, "h");
+    }
+  }
+}
 function drawFace(g, view, boy) {
   if (view === "back") return;
   if (view === "side") {
@@ -371,6 +393,8 @@ function drawFace(g, view, boy) {
     onSkin(g, 11 + i, 16 + j, "3"); onSkin(g, 19 + i, 16 + j, "3");
   }
   onSkin(g, 11, 16, "w"); onSkin(g, 19, 16, "w");
+  onSkin(g, 16, 19, "k");                         // はなの かげ
+  onSkin(g, 8, 18, "k"); onSkin(g, 23, 18, "k"); // みみ
   // まゆげ（男の子は ふとく きりっと、女の子は ほそく やわらかく）
   if (boy) {
     for (let i = 0; i < 4; i++) { onSkin(g, 10 + i, 14, "3"); onSkin(g, 18 + i, 14, "3"); }
@@ -400,6 +424,7 @@ function frame(view, step, style) {
   drawBody(g, step, Boolean(st.skirt), view === "side", Boolean(st.coat));
   disc(g, 16, 13, view === "side" ? 9.5 : 10, 9.5, "K");         // あたま
   drawHair(g, st.hair || "short", view, st.bangs || "");
+  hairDetail(g, view);
   drawFace(g, view, st.face !== "girl" && !st.skirt);
   return outline(g);
 }

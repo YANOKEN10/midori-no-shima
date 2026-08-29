@@ -17,9 +17,11 @@ export const SETS = {
   grass:   ["#b8e070", "#7cc04c", "#3f8a34", "#1c4420"],
   path:    ["#f0dfae", "#d9bd82", "#a8834c", "#5a4325"],
   sand:    ["#f7e9b8", "#e0cd8a", "#b49a5c", "#6a5730"],
+  lava:    ["#f6b05c", "#df6a32", "#9b2d22", "#43151a"],
   tree:    ["#8fd45f", "#3f9e46", "#1f6b31", "#0e3418"],
   tallgrass:["#8ad066", "#4ba33e", "#26702a", "#0f3414"],
   rock:    ["#d2ccbb", "#9d9484", "#6a6154", "#332d26"],
+  lavaRock:["#bc6250", "#7f342f", "#431d25", "#170e17"],
   water:   ["#9fdcf7", "#4aa8e8", "#1f5fb0", "#0b2a55"],
   stone:   ["#ffffff", "#e4e8ec", "#a8b2bc", "#59616b"],   // みずべの 石わく
   ledge:   ["#e6d3a2", "#b99a63", "#8a6a3c", "#432f18"],
@@ -553,3 +555,9 @@ export class Pixel {
 
 export function draw(img, x, y) { ctx.drawImage(img, x | 0, y | 0, img.width / AS, img.height / AS); }
 export function drawScaled(img, x, y, w, h) { ctx.drawImage(img, x | 0, y | 0, w | 0, h | 0); }
+export function drawSmooth(img, x, y, w, h) {
+  const old = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(img, x | 0, y | 0, w | 0, h | 0);
+  ctx.imageSmoothingEnabled = old;
+}

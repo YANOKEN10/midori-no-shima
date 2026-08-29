@@ -1198,7 +1198,7 @@ MAPS.cloud = {
 MAPS.volcano = {
   name: "ひのやまの ふもと",
   kind: "out",
-  sets: {",": "path"},
+  sets: {",": "lava", R: "lavaRock"},
   rows: [
     "TTTTTTTTRRRT\"\"\"T",
     "T,T,,,T,R,,T\"\"\"\"",

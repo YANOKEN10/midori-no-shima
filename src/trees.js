@@ -73,6 +73,8 @@ export function treeImage(kind, foot) {
     box(CX - 4, baseY - 12, 8, 12, wood[2]);
     box(CX - 4, baseY - 12, 3, 12, wood[1]);
     box(CX + 2, baseY - 12, 2, 12, wood[3]);
+    box(CX - 1, baseY - 11, 1, 8, wood[0]);
+    box(CX + 1, baseY - 8, 1, 2, wood[3]);
     box(CX - 5, baseY - 2, 10, 2, wood[3]);
   }
 
@@ -91,21 +93,22 @@ export function treeImage(kind, foot) {
   for (const [dx, dy, rx, ry] of sh) disc(CX + dx, top + dy, rx + 1, ry + 1, leaf[3]);
   // はっぱ 本体
   for (const [dx, dy, rx, ry] of sh) disc(CX + dx, top + dy, rx, ry, leaf[1]);
-  // 下がわの かげ
+  // 下がわの かげ。かたまりごとに段差をつけ、葉の層を読めるようにする。
   for (const [dx, dy, rx, ry] of sh) {
     disc(CX + dx, top + dy + Math.round(ry * 0.45), rx - 1, Math.max(1, Math.round(ry * 0.5)), leaf[2]);
+    box(CX + dx - Math.round(rx * 0.65), top + dy + Math.round(ry * 0.58), Math.round(rx * 1.3), 1, leaf[3]);
   }
   // 上がわの 日なた
   const [mx, my, mrx, mry] = sh[0];
   disc(CX + mx - Math.round(mrx * 0.3), top + my - Math.round(mry * 0.32), Math.round(mrx * 0.55), Math.round(mry * 0.5), leaf[0]);
-  dither(CX + mx - mrx, top + my - mry, mrx, mry, leaf[0], false);
+  dither(CX + mx - mrx, top + my - mry, Math.round(mrx * 0.75), Math.round(mry * 0.55), leaf[0], false);
 
   // はっぱの こまかい きめ（1ドットの つぶ）
   let sd = 7 + kind * 13;
   for (const [dx, dy, rx, ry] of sh) {
-    speck(CX + dx, top + dy - ry * 0.25, rx * 0.85, ry * 0.7, leaf[0], sd += 97, Math.round(rx * ry * 0.5));
-    speck(CX + dx, top + dy + ry * 0.35, rx * 0.85, ry * 0.6, leaf[2], sd += 131, Math.round(rx * ry * 0.45));
-    speck(CX + dx, top + dy + ry * 0.6, rx * 0.7, ry * 0.4, leaf[3], sd += 71, Math.round(rx * ry * 0.18));
+    speck(CX + dx, top + dy - ry * 0.25, rx * 0.8, ry * 0.6, leaf[0], sd += 97, Math.round(rx * ry * 0.18));
+    speck(CX + dx, top + dy + ry * 0.35, rx * 0.8, ry * 0.5, leaf[2], sd += 131, Math.round(rx * ry * 0.16));
+    speck(CX + dx, top + dy + ry * 0.58, rx * 0.65, ry * 0.32, leaf[3], sd += 71, Math.round(rx * ry * 0.08));
   }
 
   // はっぱの もよう（ぎざぎざの すじ）
@@ -114,7 +117,10 @@ export function treeImage(kind, foot) {
     for (let i = -2; i <= 2; i++) {
       const x = CX + dx + i * Math.round(rx / 2.5);
       const y = top + dy + Math.round(ry * 0.1);
-      if (i % 2) { px(x, y, leaf[3]); px(x + 1, y + 1, leaf[3]); px(x - 1, y + 1, leaf[3]); }
+      if (i % 2) {
+        px(x, y, leaf[3]); px(x + 1, y + 1, leaf[3]); px(x - 1, y + 1, leaf[3]);
+        px(x, y - 2, leaf[0]); px(x + (i < 0 ? -1 : 1), y - 3, leaf[0]);
+      }
     }
   }
 

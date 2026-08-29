@@ -6,6 +6,7 @@ import * as In from "./input.js";
 import { ui, BOX, topRect, overlaps, isSaying } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
+import { battleArt } from "./data/battleart.js";
 import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
@@ -621,16 +622,24 @@ function drawBattle() {
   const youAcc = B.you ? accentOf(species(B.you.mon.sp)) : "ほのお";
 
   if (!B.foe.hidden && foeArt) {
-    const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet, foeAcc, MONPAL[B.foe.mon.sp]);
-    G.draw(img, 184 + (B.foe.shakeX | 0), 4);
+    const generated = battleArt(B.foe.mon.sp);
+    if (generated) G.drawScaled(generated, 184 + (B.foe.shakeX | 0), 4, 128, 128);
+    else {
+      const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet, foeAcc, MONPAL[B.foe.mon.sp]);
+      G.draw(img, 184 + (B.foe.shakeX | 0), 4);
+    }
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(184, 4, 128, 128, 0); G.ctx.globalAlpha = 1;
     }
   }
   if (B.you && !B.you.hidden && youArt) {
-    const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet, youAcc, MONPAL[B.you.mon.sp]);
-    G.draw(img, 8 + (B.you.shakeX | 0), 60);
+    const generated = battleArt(B.you.mon.sp);
+    if (generated) G.drawScaled(generated, 8 + (B.you.shakeX | 0), 60, 128, 128);
+    else {
+      const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet, youAcc, MONPAL[B.you.mon.sp]);
+      G.draw(img, 8 + (B.you.shakeX | 0), 60);
+    }
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(8, 60, 128, 128, 0); G.ctx.globalAlpha = 1;

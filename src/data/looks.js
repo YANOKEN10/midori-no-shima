@@ -125,7 +125,7 @@ export const DEFAULT_LOOK = {
   shirt: "#2f4fa8",     // はじめは あおい うわぎ
   pants: "#231a14",
   hair: "#241d1a",
-  style: "short",       // かみがた
+  style: "upbang",      // はじめは 立体感のある アップバング
   bangs: "seven",       // まえがみ
   hat: "",              // ぼうし（からなら かぶらない）
   skirt: false,         // スカートか ズボンか
