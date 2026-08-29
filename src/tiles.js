@@ -239,62 +239,62 @@ const PAINT = {
 
   /* ---------------- みず ---------------- */
   W: (p, mask) => {
-    const N = p.N, B = 9, R = 18;
+    const NP = p.N, B = 9, R = 18;
     // 石の わく（みずの まわりを かこむ）
     p.set("stone");
     p.ffill(1);
-    p.dnoise(17, 120, 0, 0, 0, N, N);
+    p.dnoise(17, 120, 0, 0, 0, NP, NP);
     // 石の めじ
-    for (let i = 0; i < N; i += 16) { p.dbox(i, 0, 1, N, 3); p.dbox(0, i, N, 1, 3); }
+    for (let i = 0; i < NP; i += 16) { p.dbox(i, 0, 1, NP, 3); p.dbox(0, i, NP, 1, 3); }
     // 中の みず
-    const x0 = (mask & Wl) ? 0 : B, x1 = (mask & E) ? N : N - B;
-    const y0 = (mask & N) ? 0 : B, y1 = (mask & S) ? N : N - B;
+    const x0 = (mask & W1) ? 0 : B, x1 = (mask & E1) ? NP : NP - B;
+    const y0 = (mask & N1) ? 0 : B, y1 = (mask & S1) ? NP : NP - B;
     p.set("water");
     p.dbox(x0, y0, x1 - x0, y1 - y0, 1);
     p.ddither(x0, y0, x1 - x0, y1 - y0, 2, false);
     // なみ
     p.dbox(x0 + 4, y0 + 10, 18, 2, 0); p.dbox(x0 + 24, y0 + 26, 20, 2, 0); p.dbox(x0 + 10, y0 + 42, 16, 2, 0);
     // みずの きわを 石の 内がわに そって くらく（石わくの ある がわ だけ）
-    if (!(mask & N)) p.dbox(x0, y0, x1 - x0, 2, 2);
-    if (!(mask & S)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
-    if (!(mask & Wl)) p.dbox(x0, y0, 2, y1 - y0, 2);
-    if (!(mask & E)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
+    if (!(mask & N1)) p.dbox(x0, y0, x1 - x0, 2, 2);
+    if (!(mask & S1)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
+    if (!(mask & W1)) p.dbox(x0, y0, 2, y1 - y0, 2);
+    if (!(mask & E1)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
     // 石の わくの ふち（うちがわ）
     p.set("stone");
-    if (!(mask & N)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
-    if (!(mask & S)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
-    if (!(mask & Wl)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
-    if (!(mask & E)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & N1)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
+    if (!(mask & S1)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
+    if (!(mask & W1)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & E1)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
     roundCut(p, mask, R, p.ground || "grass", null);
     p.set(null);
   },
   W2: (p, mask) => {
-    const N = p.N, B = 9, R = 18;
+    const NP = p.N, B = 9, R = 18;
     // 石の わく（みずの まわりを かこむ）
     p.set("stone");
     p.ffill(1);
-    p.dnoise(41, 120, 0, 0, 0, N, N);
+    p.dnoise(41, 120, 0, 0, 0, NP, NP);
     // 石の めじ
-    for (let i = 0; i < N; i += 16) { p.dbox(i, 0, 1, N, 3); p.dbox(0, i, N, 1, 3); }
+    for (let i = 0; i < NP; i += 16) { p.dbox(i, 0, 1, NP, 3); p.dbox(0, i, NP, 1, 3); }
     // 中の みず
-    const x0 = (mask & Wl) ? 0 : B, x1 = (mask & E) ? N : N - B;
-    const y0 = (mask & N) ? 0 : B, y1 = (mask & S) ? N : N - B;
+    const x0 = (mask & W1) ? 0 : B, x1 = (mask & E1) ? NP : NP - B;
+    const y0 = (mask & N1) ? 0 : B, y1 = (mask & S1) ? NP : NP - B;
     p.set("water");
     p.dbox(x0, y0, x1 - x0, y1 - y0, 1);
     p.ddither(x0, y0, x1 - x0, y1 - y0, 2, true);
     // なみ
     p.dbox(x0 + 8, y0 + 6, 18, 2, 0); p.dbox(x0 + 20, y0 + 22, 20, 2, 0); p.dbox(x0 + 4, y0 + 38, 16, 2, 0);
     // みずの きわを 石の 内がわに そって くらく（石わくの ある がわ だけ）
-    if (!(mask & N)) p.dbox(x0, y0, x1 - x0, 2, 2);
-    if (!(mask & S)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
-    if (!(mask & Wl)) p.dbox(x0, y0, 2, y1 - y0, 2);
-    if (!(mask & E)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
+    if (!(mask & N1)) p.dbox(x0, y0, x1 - x0, 2, 2);
+    if (!(mask & S1)) p.dbox(x0, y1 - 2, x1 - x0, 2, 2);
+    if (!(mask & W1)) p.dbox(x0, y0, 2, y1 - y0, 2);
+    if (!(mask & E1)) p.dbox(x1 - 2, y0, 2, y1 - y0, 2);
     // 石の わくの ふち（うちがわ）
     p.set("stone");
-    if (!(mask & N)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
-    if (!(mask & S)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
-    if (!(mask & Wl)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
-    if (!(mask & E)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & N1)) p.dbox(x0 - 2, y0 - 2, (x1 - x0) + 4, 2, 3);
+    if (!(mask & S1)) p.dbox(x0 - 2, y1, (x1 - x0) + 4, 2, 3);
+    if (!(mask & W1)) p.dbox(x0 - 2, y0 - 2, 2, (y1 - y0) + 4, 3);
+    if (!(mask & E1)) p.dbox(x1, y0 - 2, 2, (y1 - y0) + 4, 3);
     roundCut(p, mask, R, p.ground || "grass", null);
     p.set(null);
   },
