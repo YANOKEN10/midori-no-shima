@@ -76,6 +76,19 @@ export const world = {
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
     this.mapId = mapId;
     this.map = MAPS[mapId];
+    // ばんのため：とおれない マスに 出ないよう、ちかくの あるける マスへ
+    if (solid(tileAt(this.map, x, y)) || tileAt(this.map, x, y) === null) {
+      let found = null;
+      for (let r = 1; r <= 4 && !found; r++) {
+        for (let dy = -r; dy <= r && !found; dy++) {
+          for (let dx = -r; dx <= r && !found; dx++) {
+            const c = tileAt(this.map, x + dx, y + dy);
+            if (c !== null && !solid(c) && c !== "L") found = [x + dx, y + dy];
+          }
+        }
+      }
+      if (found) { x = found[0]; y = found[1]; }
+    }
     this.x = x; this.y = y;
     if (dir) this.dir = dir;
     this.ox = this.oy = 0;

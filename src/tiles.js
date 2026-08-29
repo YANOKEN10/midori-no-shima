@@ -395,11 +395,26 @@ const PAINT = {
       p.fdither(0, 20, 32, 6, 3, false);
       p.fbox(0, 26, 32, 6, 3);
     }
-    const RN = p.N, RR = 18;
-    const ry0 = Math.max(y0 * 2, (mask & N) ? 0 : RR), ry1 = (mask & S) ? RN : RN - RR;
-    if (!(mask & Wl)) { p.dbox(0, ry0, 4, ry1 - ry0, 3); p.dbox(4, ry0, 2, ry1 - ry0, 1); }
-    if (!(mask & E)) { p.dbox(RN - 4, ry0, 4, ry1 - ry0, 3); p.dbox(RN - 6, ry0, 2, ry1 - ry0, 1); }
-    roundCut(p, mask, RR, p.ground || "grass", 3);      // かどを まるく
+    // よこの ふち（かべの ぶん だけ）
+    const RN = p.N, wallTop = y0 * 2;
+    if (!(mask & Wl)) { p.dbox(0, wallTop, 4, RN - wallTop, 3); p.dbox(4, wallTop, 2, RN - wallTop, 1); }
+    if (!(mask & E)) { p.dbox(RN - 4, wallTop, 4, RN - wallTop, 3); p.dbox(RN - 6, wallTop, 2, RN - wallTop, 1); }
+    // かべの 下がわの かどだけ まるく（上は じめんなので さわらない）
+    if (!(mask & S)) {
+      const R = 14;
+      const round = (cx, sx) => {
+        p.set(p.ground || "grass");
+        for (let j = 0; j < R; j++) {
+          for (let i = 0; i < R; i++) {
+            const dx = R - (i + 0.5), dy = R - (j + 0.5);
+            if (Math.sqrt(dx * dx + dy * dy) > R) p.d(cx + sx * i, RN - 1 - j, 1);
+          }
+        }
+        p.set("rock");
+      };
+      if (!(mask & Wl)) round(0, 1);
+      if (!(mask & E)) round(RN - 1, -1);
+    }
     p.set(null);
   },
 
