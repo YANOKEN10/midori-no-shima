@@ -1,7 +1,7 @@
 {
   "name": "ガオン・ワールド",
   "short_name": "ガオン・ワールド",
-  "description": "ゲームボーイ風のモンスター収集RPG。ログインすればPCでもスマホでも同じ続きから遊べます。",
+  "description": "アルプスの七つの谷を巡り、153種のガオンと出会う高密度ドットRPG。",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
