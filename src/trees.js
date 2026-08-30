@@ -16,8 +16,8 @@ export const TREE_UP = 18; // 上に はみ出す ぶん
 const cache = new Map();
 
 /* --- 木 1本の え --- */
-export function treeImage(kind, foot) {
-  const generatedTree = G.isColor() && environmentTile("tree");
+export function treeImage(kind, foot, winter) {
+  const generatedTree = G.isColor() && environmentTile(winter ? "treeWinter" : "tree");
   if (generatedTree) return generatedTree;
   const key = kind + (foot ? "f" : "") + "@" + G.paletteName();
   if (cache.has(key)) return cache.get(key);

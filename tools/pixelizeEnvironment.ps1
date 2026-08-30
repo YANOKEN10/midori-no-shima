@@ -6,6 +6,7 @@ param(
   [switch]$RemoveEdgeBackdrop,
   [switch]$PreserveAspect,
   [switch]$ChromaMagenta,
+  [int]$CropInsetPercent = 0,
   [int]$EdgeTolerance = 54
 )
 
@@ -18,12 +19,14 @@ $g.Clear([Drawing.Color]::Transparent)
 $g.CompositingMode = [Drawing.Drawing2D.CompositingMode]::SourceCopy
 $g.InterpolationMode = [Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $g.PixelOffsetMode = [Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+$insetX=[Math]::Floor($src.Width*$CropInsetPercent/100); $insetY=[Math]::Floor($src.Height*$CropInsetPercent/100)
+$sourceRect=[Drawing.Rectangle]::new($insetX,$insetY,$src.Width-2*$insetX,$src.Height-2*$insetY)
 if ($PreserveAspect) {
   $scale=[Math]::Min($Width/$src.Width,$Height/$src.Height)
   $dw=[Math]::Max(1,[Math]::Round($src.Width*$scale)); $dh=[Math]::Max(1,[Math]::Round($src.Height*$scale))
   $dx=[Math]::Floor(($Width-$dw)/2); $dy=$Height-$dh
-  $g.DrawImage($src,$dx,$dy,$dw,$dh)
-} else { $g.DrawImage($src, 0, 0, $Width, $Height) }
+  $g.DrawImage($src,[Drawing.Rectangle]::new($dx,$dy,$dw,$dh),$sourceRect,[Drawing.GraphicsUnit]::Pixel)
+} else { $g.DrawImage($src,[Drawing.Rectangle]::new(0,0,$Width,$Height),$sourceRect,[Drawing.GraphicsUnit]::Pixel) }
 $g.Dispose()
 
 if ($RemoveEdgeBackdrop) {

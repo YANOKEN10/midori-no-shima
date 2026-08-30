@@ -730,7 +730,8 @@ export const world = {
         if (edgeTile(map, tx, ty) !== "T") continue;
         const kind = ((tx * 5 + ty * 11 + tx * ty) >>> 0) % 4;
         const foot = edgeTile(map, tx, ty + 1) !== "T";     // 下に 木が なければ みきを 出す
-        G.draw(treeImage(kind, foot),
+        const winterTree = map.sets && map.sets[","] === "snow";
+        G.draw(treeImage(kind, foot, winterTree),
                tx * T - camX - (TREE_W - T) / 2, ty * T - camY - TREE_UP);
       }
     }

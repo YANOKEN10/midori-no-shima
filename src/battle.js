@@ -602,8 +602,9 @@ function drawBattle() {
   G.clear(0);
   if (!B) return;
 
-  const battleBackground = G.isColor() && environmentTile("battleBackground");
-  const battlePlatform = G.isColor() && environmentTile("battlePlatform");
+  const winterField = /^(sky|route6|cloud|mount2)$/.test((State.save.where && State.save.where.map) || "");
+  const battleBackground = G.isColor() && environmentTile(winterField ? "battleBackgroundWinter" : "battleBackground");
+  const battlePlatform = G.isColor() && environmentTile(winterField ? "battlePlatformWinter" : "battlePlatform");
   if (battleBackground) G.draw(battleBackground, 0, 0);
   else {
     G.use("sky"); G.rect(0, 0, G.W, 90, 0); G.rect(0, 78, G.W, 12, 1);

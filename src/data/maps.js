@@ -642,7 +642,7 @@ const TOWN_DEFS = [
     people: [],
   },
   {
-    id: "sky", name: "スカイ・タウン", sets: { r: "roof" },
+    id: "sky", name: "スカイ・タウン", sets: { r: "roof", ",": "snow" },
     // まちの きたがわは 高台。かいだん(x5,6)で のぼる
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [1, 7, "M"], [2, 7, "M"], [3, 7, "L"], [4, 7, "L"], [5, 7, "H"],
             [6, 7, "H"], [7, 7, "L"], [8, 7, "M"],
@@ -963,6 +963,7 @@ for (const r of ROUTE_DEFS) {
   MAPS[r.id] = {
     name: r.name,
     kind: "out",
+    sets: r.id === "route6" ? { ",": "snow" } : undefined,
     rows: r.rows || ROUTE.slice(),
     warps: routeWarps(r.south, r.southXY, r.north, r.northXY),
     signs: [{ x: 3, y: 10, text: [r.name, "でる ガオン　Lv" + r.lv[0] + "〜" + r.lv[1]] }],

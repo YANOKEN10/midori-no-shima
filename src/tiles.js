@@ -722,6 +722,10 @@ const TILE_SET = {
 // override は マップごとの いろちがい（やねの 色など）
 export function tileFor(ch, frame, override, mask, variant, shade, tx, ty) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
+  if (!shade && set === "snow") {
+    const snowArt = environmentTile("snow");
+    if (snowArt) return snowArt;
+  }
   if (!shade && (!override || !override[ch])) {
     const objectArt = ch === '"' ? environmentTile("tallgrass")
       : ch === "R" ? environmentTile("rock")
