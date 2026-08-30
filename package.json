@@ -2,7 +2,7 @@
   "name": "voraz-monsters",
   "version": "0.1.0",
   "private": true,
-  "description": "ゲームボーイ風モンスター収集RPG。ブラウザだけで遊べます。",
+  "description": "ガオン・ワールド — ゲームボーイ風モンスター収集RPG。ブラウザだけで遊べます。",
   "scripts": {
     "start": "node serve.js"
   },

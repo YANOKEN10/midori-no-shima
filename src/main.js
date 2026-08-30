@@ -84,8 +84,8 @@ const title = {
     G.rect(20, 30, G.W - 40, 80, 3);
     G.rect(24, 34, G.W - 48, 72, 2);
     G.rect(24, 34, G.W - 48, 8, 1);
-    outlined("VORAZ", G.W / 2, 42, 32);
-    outlined("MONSTERS", G.W / 2, 76, 24);
+    outlined("ガオン", G.W / 2, 42, 32);
+    outlined("ワールド", G.W / 2, 76, 24);
     G.use("title");
     const sub = "〜ガオンと ギャラクシー・タウン〜";
     const sw = G.textW(sub, 14) + 24;
