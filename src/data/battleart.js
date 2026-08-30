@@ -167,6 +167,11 @@ for (const name of Object.keys(FILES)) {
 // プレイヤー側専用の背面絵。完成した種類から順に追加する。
 const BACK_FILES = {
   リーフィン: "../../assets/monsters/battle-back/001-leafin-back.png",
+  リーフォード: "../../assets/monsters/battle-back/002-leaford-back.png",
+  フォレスタ: "../../assets/monsters/battle-back/003-foresta-back.png",
+  ヒノコマ: "../../assets/monsters/battle-back/004-hinokoma-back.png",
+  ボウエン: "../../assets/monsters/battle-back/005-bowen-back.png",
+  エンブレイズ: "../../assets/monsters/battle-back/006-emblaze-back.png",
 };
 const backCache = new Map();
 for (const name of Object.keys(BACK_FILES)) {
