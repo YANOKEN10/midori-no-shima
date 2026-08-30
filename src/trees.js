@@ -6,6 +6,7 @@
 //   ・あたりはんていは これまでどおり タイル（T）の ままです
 // ============================================================
 import * as G from "./gfx.js";
+import { environmentTile } from "./environmentArt.js";
 
 const T = G.TILE;          // 32
 export const TREE_W = 40;  // 木の えの よこはば
@@ -16,6 +17,8 @@ const cache = new Map();
 
 /* --- 木 1本の え --- */
 export function treeImage(kind, foot) {
+  const generatedTree = G.isColor() && environmentTile("tree");
+  if (generatedTree) return generatedTree;
   const key = kind + (foot ? "f" : "") + "@" + G.paletteName();
   if (cache.has(key)) return cache.get(key);
 

@@ -4,6 +4,7 @@
 //   p.set("wood") のように とちゅうで べつの セットにも できます。
 // ============================================================
 import { tileCanvas } from "./gfx.js";
+import { environmentTile } from "./environmentArt.js";
 
 // とおれるか / しらべられるか
 export const SOLID = new Set(["T", "R", "M", "W", "#", "r", "w", "S", "X", "=", "c", "b", "t", "K", "V", "P", "s"]);
@@ -721,6 +722,13 @@ const TILE_SET = {
 // override は マップごとの いろちがい（やねの 色など）
 export function tileFor(ch, frame, override, mask, variant, shade, tx, ty) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
+  // マップ構造・当たり判定はそのままに、基礎地面だけ高密度画像へ置換する。
+  // 特殊な縁取り・影・別パレットが必要なタイルは従来描画へ戻す。
+  if (!shade && (mask == null || mask === 255) && (!override || !override[ch])) {
+    const artName = (ch === "," || ch === "F") ? "grass" : ch === "." ? "path" : ch === "W" ? "water" : null;
+    const art = artName && environmentTile(artName);
+    if (art) return art;
+  }
   const m = mask == null ? 255 : mask;
   const v = variant | 0;
   const sh = shade ? 1 : 0;
