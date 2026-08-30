@@ -7,9 +7,9 @@ import { ui } from "./ui.js";
 import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
-import { G as State, loadInto, newGame } from "./state.js";
+import { G as State, loadInto, newGame, makeMon } from "./state.js";
 import { world, bgmFor } from "./world.js";
-import { battle } from "./battle.js";
+import { battle, startBattle } from "./battle.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
@@ -43,6 +43,9 @@ if (/^(localhost|127.0.0.1)$/.test(location.hostname)) {
     get scene() { return scene; },
     setWorld() { scene = world; },
     setTitle() { scene = title; },
+    newGame: newGame,
+    makeMon: makeMon,
+    startBattle: startBattle,
     world: world, battle: battle, ui: ui, State: State, cloud: cloud,
   };
 }
