@@ -86,6 +86,16 @@ const FILES = {
   ジリジリ: "../../assets/monsters/battle/083-jirijiri.png",
   バチバチ: "../../assets/monsters/battle/084-bachibachi.png",
   イナヅマル: "../../assets/monsters/battle/085-inazumaru.png",
+  デンチュウ: "../../assets/monsters/battle/086-denchuu.png",
+  ライメイ: "../../assets/monsters/battle/087-raimei.png",
+  ツチマル: "../../assets/monsters/battle/088-tsuchimaru.png",
+  ドロゴン: "../../assets/monsters/battle/089-dorogon.png",
+  ダイチオウ: "../../assets/monsters/battle/090-daichiou.png",
+  イワッコ: "../../assets/monsters/battle/091-iwakko.png",
+  ガンセキ: "../../assets/monsters/battle/092-ganseki.png",
+  ガンゴレム: "../../assets/monsters/battle/093-gangolem.png",
+  スナムシ: "../../assets/monsters/battle/094-sunamushi.png",
+  サバクムシ: "../../assets/monsters/battle/095-sabakamushi.png",
 };
 
 const cache = new Map();
