@@ -10,13 +10,14 @@ import { move as moveData } from "./data/moves.js";
 import { item as itemData, SHOP_LIST } from "./data/items.js";
 import {
   G as State, species, palOf, accentOf, maxHp, statOf, monName, fainted, healFull,
-  bagList, useItem, addItem, dexCount, hasItem,
+  bagList, useItem, addItem, dexCount, hasItem, lagNetMultiplier,
 } from "./state.js";
-import { saveLocal, saveCloud, loadCloud, applySave, describeSave } from "./save.js";
+import { saveLocal, saveCloud, loadCloud, applySave, describeSave, compatible } from "./save.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { personFramesRaw } from "./data/charart.js";
 import { playerColors, SHIRT_BASIC, PANTS_BASIC, SHIRT_FANCY, PANTS_FANCY, HAIR_COLORS , HAIR_STYLES, BANGS_STYLES, SKIRT_BASIC, SKIRT_FANCY, HAT_STYLES } from "./data/looks.js";
+import { compassEnabled, compassSummary, nextObjective, setCompassEnabled } from "./compass.js";
 
 /* ============ メインメニュー ============ */
 export async function openMenu() {
@@ -116,7 +117,14 @@ export async function bagMenu() {
     const it = all[i];
     if (!it) return;
     const d = itemData(it.name);
-    await ui.say([d.desc]);
+    const desc = it.name === "ラグ・ネット"
+      ? [d.desc, "エンブレム " + State.save.badges.length + "こ／捕獲力 " + lagNetMultiplier().toFixed(2) + "倍"]
+      : [d.desc];
+    await ui.say(desc);
+    if (it.name === "リーフ・コンパス") {
+      await leafCompassMenu();
+      continue;
+    }
     if (d.kind === "key") continue;
 
     const what = await ui.choice(["つかう", "すてる", "もどる"], { x: 176, y: 150, w: 136 });
@@ -126,6 +134,25 @@ export async function bagMenu() {
       if (yes) { useItem(it.name); await ui.say([it.name + "を すてた。"]); }
     }
   }
+}
+
+async function leafCompassMenu() {
+  const objective = nextObjective();
+  await ui.say(compassSummary());
+  if (!objective || objective.done) {
+    setCompassEnabled(false);
+    saveLocal();
+    return;
+  }
+  const on = compassEnabled();
+  const i = await ui.choice([on ? "やじるしを OFFにする" : "やじるしを ONにする", "もどる"], {
+    x: 88, y: 148, w: 224, rows: 2,
+  });
+  if (i !== 0) return;
+  setCompassEnabled(!on);
+  beep("ok");
+  saveLocal();
+  await ui.say([!on ? "コンパスの やじるしを 表示した。" : "コンパスの やじるしを 消した。"]);
 }
 
 async function useOutside(name) {
@@ -325,7 +352,7 @@ export async function accountMenu() {
       await reportMenu();
     } else if (i === 4) {
       const data = await loadCloud();
-      if (!data) { await ui.say(["クラウドに きろくが ありません。"]); continue; }
+      if (!data || !compatible(data)) { await ui.say(["クラウドに きろくが ありません。"]); continue; }
       const yes = await ui.ask(["クラウドの きろく：", describeSave(data), "これを よみこみますか？"]);
       if (yes) { applySave(data); saveLocal(); await ui.say(["よみこみました。"]); return "reload"; }
     } else if (i === 5) {
@@ -343,7 +370,7 @@ function hasProgress(d) {
 async function afterLogin() {
   await ui.say(["ようこそ、" + cloud.who + " さん！", "これで どの きかいでも", "おなじ つづきが あそべます。"]);
   const data = await loadCloud();
-  if (hasProgress(data)) {
+  if (compatible(data) && hasProgress(data)) {
     const yes = await ui.ask(["クラウドに きろくが あります。", describeSave(data), "よみこみますか？"]);
     if (yes) { applySave(data); saveLocal(); return "reload"; }
     return;

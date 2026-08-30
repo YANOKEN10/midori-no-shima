@@ -22,6 +22,7 @@ import { startBattle, popEvolution, wait } from "./battle.js";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
+import { compassEnabled, compassWaypoint } from "./compass.js";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -369,39 +370,39 @@ export const world = {
      ものがたり
   ============================================================ */
 
-  // ぞくちょう：ラグ・ネットを もらう → リーフ・コンパスを とってくる
+  // 谷守：山の異変をしらべるため、ラグ・ネットをたくす
   async elderEvent(n) {
     if (!flag("gotNet")) {
       await ui.say([
-        "ぞくちょう「よく きた、" + State.save.name + "。",
-        "　おまえも もう この やまを 出る としだ。",
-        "　やまの そとには「ガオン」と よばれる",
-        "　とくいせいぶつが あふれておる。",
+        "オルド「よく きた、" + State.save.name + "。",
+        "　今朝、谷をぬける風から 音が消えた。",
+        "　ガオンたちも 雪峰のほうを 見つめている。",
+        "　山の奥で なにかが 目をさましたのだ。",
       ]);
       addItem("ラグ・ネット", 8);
       addItem("ガオンずかん");
       setFlag("gotNet");
       beep("levelup");
       await ui.say([
-        State.save.name + "は「ラグ・ネット」を てにいれた！",
-        "のびちぢみする あみ。よわった ガオンを つかまえられる。",
+        State.save.name + "は「ラグ・ネット」を うけとった！",
+        "谷のつる草で 編まれた網。ガオンを 傷つけずに 保護できる。",
       ]);
       await ui.say([
-        "ぞくちょう「そして「ガオンずかん」だ。",
-        "　であった ガオンが きろくされる。",
-        "　やまを 出る まえに ひとつ しごとが ある。",
-        "　やまの おくちに ある",
-        "　「リーフ・コンパス」を とってくるのだ。",
+        "オルド「これは 谷の生き物を記す 観察帳だ。",
+        "　戦うためだけでなく、声を聞くために 使ってほしい。",
+        "　雲を生む森をぬけ、山の奥へ 行ってくれ。",
+        "　古い伝承が本当なら、リーフ・コンパスが",
+        "　異変の源へ おまえを 導くだろう。",
       ]);
       saveLocal();
       return;
     }
     if (!flag("gotCompass")) {
       await ui.say([
-        "ぞくちょう「やまの おくちだ。",
-        "　きたの やまみちを ぬけた さきに ある。",
-        "　たかい くさでは ガオンを つかまえて",
-        "　なかまに してゆくと よい。",
+        "オルド「北の モミ林を ぬけ、雪どけの泉へ。",
+        "　ガオンが 近づいてきたら、まず ようすを見ろ。",
+        "　心を通わせた 仲間なら、山の気配を",
+        "　おまえより 早く感じてくれる。",
       ]);
       return;
     }
@@ -409,23 +410,23 @@ export const world = {
       setFlag("elderOK");
       beep("levelup");
       await ui.say([
-        "ぞくちょう「おお…！ その コンパス。",
-        "　みごとだ、" + State.save.name + "。",
-        "　おまえを ひとりの ガオンつかいと みとめよう。",
+        "オルド「その葉脈の光… コンパスが おまえを選んだか。",
+        "　ラテットは 山を守る者を 見きわめたのだろう。",
+        "　谷の外でも、土地ごとの声を 聞いてきてほしい。",
       ]);
       await ui.say([
-        "ぞくちょう「みなみの でぐちから やまを 出ろ。",
-        "　せかいの ちゅうしん「ギャラクシー・タウン」で",
-        "　ガオンバトル大会が ひらかれる。",
-        "　8つの タウンを めぐり、7つの エンブレムを あつめよ。",
+        "オルド「山々には 七つの谷があり、それぞれに",
+        "　人とガオンの暮らしを守る『谷守』がいる。",
+        "　七つの エンブレムは、土地の声を聞いた証。",
+        "　集めれば 星環の都で、山脈会議への道が開くだろう。",
       ]);
       saveLocal();
       if (cloud.signedIn) saveCloud(true);
       return;
     }
     await ui.say([
-      "ぞくちょう「よい たびを。",
-      "　ガオンたちと ともに ゆけ。",
+      "オルド「よい風が おまえの背を押すように。",
+      "　ガオンたちと、まだ名のない道を ゆけ。",
     ]);
   },
 
@@ -462,7 +463,8 @@ export const world = {
     await ui.say([
       "ラテットが いた ばしょに、",
       "「リーフ・コンパス」が おちていた！",
-      "むらへ もどって ぞくちょうに 見せよう。",
+      "STARTの「どうぐ」から 見ると、つぎの土地が わかる。",
+      "風鳴り谷へ もどって オルドに 見せよう。",
     ]);
     saveLocal();
     if (cloud.signedIn) saveCloud(true);
@@ -519,9 +521,9 @@ export const world = {
     }
     if (have < 7) {
       await ui.say([
-        "うけつけ「ガオンバトル大会へ ようこそ！",
-        "　しゅつじょうには 7つの エンブレムが ひつようです。",
-        "　いまは " + have + "こですね。がんばって！",
+        "案内人「七つの谷が集う 山脈祭へ ようこそ。",
+        "　中央のバトル会議へは 7つの証が ひつようです。",
+        "　いまは " + have + "こ。まだ声を聞いていない谷があります。",
       ]);
       return;
     }
@@ -529,14 +531,14 @@ export const world = {
       addItem("たいかいパス");
       beep("levelup");
       await ui.say([
-        "うけつけ「エンブレム 7つ、たしかに！",
-        "　「たいかいパス」を おわたしします。",
-        "　北の かいじょうで おまちしています！",
+        "案内人「七つの谷の証、たしかに。",
+        "　山脈会議の「たいかいパス」を おわたしします。",
+        "　北の木造ホールで、谷の代表たちが待っています。",
       ]);
       saveLocal();
       return;
     }
-    await ui.say(["うけつけ「かいじょうは 北です。", "　けんとうを いのります！"]);
+    await ui.say(["案内人「木造ホールは 北です。", "　あなたの旅の答えを 見せてください。"]);
   },
 
   // ガオンバトル大会
@@ -548,14 +550,14 @@ export const world = {
     }
     if (!hasItem("たいかいパス")) {
       await ui.say([
-        "しんこう「ここは ガオンバトル大会の かいじょう。",
-        "　しゅつじょうには「たいかいパス」が ひつようだ。",
+        "進行役「ここは 七つの谷の バトル会議場。",
+        "　参加には 山脈祭の「たいかいパス」が ひつようだ。",
       ]);
       return;
     }
     const yes = await ui.ask([
-      "しんこう「" + State.save.name + "せんしゅ、じゅんびは いいか？",
-      "　まけたら そこで おわりだ。",
+      "進行役「" + State.save.name + "、旅の答えを 見せる準備はいいか？",
+      "　七つの谷の代表と、つづけて 声を重ねてもらう。",
     ], "たたかう", "まだ まつ");
     if (!yes) return;
 
@@ -586,13 +588,13 @@ export const world = {
 
     // けっしょう：フィロア
     await ui.say([
-      "しんこう「けっしょうせん！",
-      "　あいては…うみから きた しょうねん フィロア！",
+      "進行役「最後に 地図を閉じる一戦！",
+      "　相手は…湖のむこうから来た 測量士フィロア！",
     ]);
     await ui.say([
-      "フィロア「やっぱり ここで あえたね、" + State.save.name + "！",
-      "　おれ、この 日の ために うみを わたってきたんだ。",
-      "　ぜんりょくで いくよ！",
+      "フィロア「やっぱり 最後の線は きみと引くんだね、" + State.save.name + "！",
+      "　おれの地図には、道だけじゃなく 出会った声も描いてある。",
+      "　七つの谷を歩いた全部で、しょうぶだ！",
     ]);
     const res = await startBattle({
       trainer: {
@@ -668,10 +670,10 @@ export const world = {
   async ending() {
     await ui.say([
       "…………",
-      State.save.name + "は ガオンバトル大会の ゆうしょうしゃに なった！",
-      "やまの むらの みんなも、きっと よろこんでいる。",
-      "やまの おくちの ぬし ラテットも、",
-      "どこかで 見ていたのかもしれない——",
+      State.save.name + "の旅が、七つの谷をつなぐ 新しい道として認められた！",
+      "風鳴り谷の人々も、きっと 風の音で知っただろう。",
+      "山の奥地の ラテットも、",
+      "葉脈の光を どこかで見ていたのかもしれない——",
       "ここまで あそんでくれて ありがとう！",
     ]);
     saveLocal();
@@ -719,7 +721,8 @@ export const world = {
         const up = edgeTile(map, tx, ty - 1);
         const sh = up === "M" && GROUND.has(ch) ? 1 : 0;   // がけ だけ かげを おとす
         // き の ところは まず じめんだけ えがく（木は あとで かさねる）
-        const draw = (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
+        const hiddenBuilding = map.hideTileHouses && (ch === "r" || ch === "#" || ch === "w" || ch === "D");
+        const draw = hiddenBuilding ? "," : (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
         G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tx * T - camX, ty * T - camY);
       }
     }
@@ -737,10 +740,20 @@ export const world = {
     }
 
     // たてもの（何マスかに またがる 1まいの え）
-    for (const hs of findHouses(map)) {
+    for (const hs of map.hideTileHouses ? [] : findHouses(map)) {
       const sx = hs.x * T - camX, sy = hs.y * T - camY;
       if (sx > G.W || sy > G.H || sx + hs.w * T < 0 || sy + hs.h * T < 0) continue;
       G.draw(houseImage(hs), sx, sy);
+    }
+
+    // 山岳世界の大型建築・橋・崖。複数マスをまたぐ高密度画像で奥行きを出す。
+    for (const lm of map.landmarks || []) {
+      const img = environmentTile(lm.art);
+      if (!img) continue;
+      const sx = lm.x * T - camX, sy = lm.y * T - camY;
+      const w = (lm.w || 4) * T, h = (lm.h || 4) * T;
+      if (sx > G.W || sy > G.H || sx + w < 0 || sy + h < 0) continue;
+      G.drawScaled(img, sx, sy, w, h);
     }
 
     // おちている どうぐ
@@ -798,9 +811,52 @@ export const world = {
       G.window9(8, 8, wdt, 38);
       G.text(map.name, 24, 19, 3, 16);
     }
+    if (compassEnabled()) drawCompassArrow(this.mapId, this.x, this.y, camX, camY, this.tick);
     ui.draw();
   },
 };
+
+function drawCompassArrow(mapId, x, y, camX, camY, tick) {
+  const wp = compassWaypoint(mapId);
+  if (!wp || wp.done || wp.x == null) return;
+  const targetX = wp.x * T + T / 2 - camX;
+  const targetY = wp.y * T + T / 2 - camY;
+  const playerX = x * T + T / 2 - camX;
+  const playerY = y * T + T / 2 - camY;
+  const angle = Math.atan2(targetY - playerY, targetX - playerX);
+  const c = G.ctx;
+
+  // 画面右上の常時見えるコンパス。進行方向へ針が回る。
+  c.save();
+  c.translate(286, 28);
+  c.fillStyle = "rgba(12,35,56,0.86)";
+  c.strokeStyle = "#fff1b8";
+  c.lineWidth = 2;
+  c.beginPath(); c.arc(0, 0, 19, 0, Math.PI * 2); c.fill(); c.stroke();
+  c.rotate(angle + Math.PI / 2);
+  const bob = Math.sin(tick / 180) * 2;
+  c.translate(0, bob);
+  c.fillStyle = "#5dd7ff";
+  c.strokeStyle = "#092e66";
+  c.lineWidth = 2;
+  c.beginPath(); c.moveTo(0, -14); c.lineTo(9, 8); c.lineTo(0, 4); c.lineTo(-9, 8); c.closePath();
+  c.fill(); c.stroke();
+  c.restore();
+
+  // 目的地点が画面内に入ったら、場所そのものにも葉形の印を出す。
+  if (targetX > 14 && targetX < G.W - 14 && targetY > 22 && targetY < G.H - 28) {
+    c.save();
+    c.translate(targetX, targetY - 18 + Math.sin(tick / 160) * 3);
+    c.rotate(-0.35);
+    c.fillStyle = "#8ee85b";
+    c.strokeStyle = "#173d24";
+    c.lineWidth = 2;
+    c.beginPath(); c.moveTo(0, -11); c.bezierCurveTo(12, -6, 10, 8, 0, 12);
+    c.bezierCurveTo(-10, 6, -10, -5, 0, -11); c.closePath(); c.fill(); c.stroke();
+    c.beginPath(); c.moveTo(0, -7); c.lineTo(0, 9); c.stroke();
+    c.restore();
+  }
+}
 
 function drawBall(x, y) {
   const pal = G.resolve("flower");

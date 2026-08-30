@@ -121,7 +121,7 @@ function finish(value) {
   resolveGate = null;
   formSpec = null;
   tabsBox.style.display = "";
-  title.textContent = "VORAZ MONSTERS";
+  title.textContent = "OORAZ MONSTERS";
   sub.innerHTML = "ログインすると、パソコンでも スマホでも<br>おなじ ぼうけんの つづきが あそべます。";
   el.skip.style.display = "";
   if (r) r(value);

@@ -56,7 +56,9 @@ if ($RemoveEdgeBackdrop) {
 for ($y=0; $y -lt $Height; $y++) {
   for ($x=0; $x -lt $Width; $x++) {
     $c = $out.GetPixel($x,$y)
-    if ($ChromaMagenta -and $c.R -gt 150 -and $c.B -gt 150 -and $c.G -lt 120 -and (($c.R + $c.B) - (2 * $c.G)) -gt 140) {
+    # 生成画像のマゼンタ背景は縮小時に紫の縁へ混ざるため、純色だけでなく
+    # 赤・青が緑より大きい補間色も除去する。
+    if ($ChromaMagenta -and $c.R -gt 95 -and $c.B -gt 95 -and $c.G -lt ([Math]::Max($c.R,$c.B) * 0.72) -and (($c.R + $c.B) - (2 * $c.G)) -gt 80) {
       $out.SetPixel($x,$y,[Drawing.Color]::Transparent); continue
     }
     if ($c.A -lt 96) { $out.SetPixel($x,$y,[Drawing.Color]::Transparent); continue }

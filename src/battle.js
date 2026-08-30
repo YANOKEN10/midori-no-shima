@@ -13,7 +13,7 @@ import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
   G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp,
-  healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove,
+  healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove, lagNetMultiplier,
 } from "./state.js";
 
 export function wait(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -431,7 +431,7 @@ async function useBattleItem(name) {
   if (d.kind === "ball") {
     if (B.isTrainer) { await ui.say(["ひとの ガオンを とるなんて だめ！"]); return "no"; }
     useItem(name);
-    return await throwBall(d.rate);
+    return await throwBall(name === "ラグ・ネット" ? d.rate * lagNetMultiplier() : d.rate, name);
   }
   if (d.kind === "heal") {
     if (!B.you) { await ui.say(["いま つかっても いみが なさそうだ。"]); return "no"; }
@@ -478,9 +478,13 @@ async function choosePartyMemberForRevive() {
   return i;
 }
 
-async function throwBall(ballRate) {
+async function throwBall(ballRate, netName) {
   const m = B.foe.mon;
   await ui.say(["ラグ・ネットを つかった！"]);
+  if (netName === "ラグ・ネット" && State.save.badges.length > 0) {
+    await ui.say(["エンブレムが " + State.save.badges.length + "こ ひかり、",
+                  "ラグ・ネットの 捕獲力が " + lagNetMultiplier().toFixed(2) + "倍に なった！"]);
+  }
   B.foe.hidden = true;
   beep("ball");
   await wait(400);

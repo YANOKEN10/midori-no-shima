@@ -76,7 +76,7 @@ export function learnMove(m, name) {
 /* --- セーブデータ --------------------------------------------- */
 export function newGame(playerName) {
   return {
-    ver: 2,
+    ver: 3,
     name: playerName || "レオ",
     rival: "フィロア",
     money: 3000,
@@ -140,6 +140,12 @@ export function seeMon(sp) { G.save.dexSeen[sp] = 1; }
 export function ownMon(sp) { G.save.dexSeen[sp] = 1; G.save.dexOwn[sp] = 1; }
 export function dexCount() {
   return { seen: Object.keys(G.save.dexSeen).length, own: Object.keys(G.save.dexOwn).length };
+}
+
+// ラグ・ネットは、土地の声を聞いた証（エンブレム）ごとに15%強くなる。
+export function lagNetMultiplier() {
+  const badges = Math.max(0, Math.min(7, (G.save.badges || []).length));
+  return 1 + badges * 0.15;
 }
 
 /* --- てもち --------------------------------------------------- */

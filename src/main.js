@@ -87,7 +87,7 @@ const title = {
     outlined("ガオン", G.W / 2, 42, 32);
     outlined("ワールド", G.W / 2, 76, 24);
     G.use("title");
-    const sub = "〜ガオンと ギャラクシー・タウン〜";
+    const sub = "〜七つの谷と リーフ・コンパス〜";
     const sw = G.textW(sub, 14) + 24;
     G.rect((G.W - sw) / 2, 114, sw, 24, 3);
     G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);

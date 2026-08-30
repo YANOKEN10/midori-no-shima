@@ -8,7 +8,7 @@
 //   t つくえ  B ベッド  K かいふくき  P パソコン  V しょくぶつ
 //
 //  ものがたり：やまの むら → やまの おくち（リーフ・コンパス）→
-//              8つの タウン → ギャラクシー・タウンの ガオンバトル大会
+//              スイス・アルプスを思わせる七つの谷 → 星環の都の山岳祭
 // ============================================================
 
 /* ============================================================
@@ -94,88 +94,95 @@ export const MAPS = {
    1. やまの むら
 ============================================================ */
   hut: {
-    name: "レオの こや",
+    name: "かぜの 丸太ごや",
     kind: "in",
     rows: [
-      "########",
-      "#tfffPf#",
-      "#ffffff#",
-      "#fBfffV#",
-      "#ffffff#",
-      "#ffffff#",
-      "#ffffff#",
-      "#fffxff#",
-      "########",
+      "##########",
+      "#bffffftf#",
+      "#ffffffff#",
+      "#fBffffVf#",
+      "#ffggggff#",
+      "#ffggggff#",
+      "#ffffffff#",
+      "#ffffffff#",
+      "#fffxxfff#",
+      "##########",
     ],
-    warps: [{ x: 4, y: 7, to: "village", tx: 5, ty: 5 }],
+    warps: [{ x: 4, y: 8, to: "village", tx: 4, ty: 6 }, { x: 5, y: 8, to: "village", tx: 4, ty: 6 }],
     npcs: [
       {
-        x: 2, y: 5, dir: "down", look: "girl", name: "ははおや",
-        talk: ["レオ、きょうは たいちょうは どう？",
-               "ぞくちょうさまが よんでいたよ。",
-               "むらの おくの いえに いっておいで。"],
+        x: 7, y: 6, dir: "left", look: "girl", name: "母 ミレナ",
+        talk: ["ミレナ「谷の 風が きのうから おかしいの。",
+               "　森の ガオンたちも、山の上を 見つめている。",
+               "　谷守の オルドが 共同ロッジで まっているわ。"],
         heal: true,
       },
     ],
     objects: [
-      { x: 5, y: 1, text: ["ふるい つうしんき。", "…でんげんが 入らない。"] },
-      { x: 3, y: 3, text: ["わらの ベッド。よく ねむれる。"] },
+      { x: 7, y: 1, text: ["谷の 天気を よむ 古い 気圧計。", "針が 山の ほうへ ふるえている。"] },
+      { x: 2, y: 3, text: ["厚い 毛布の ベッド。", "窓の そとから モミの香りがする。"] },
     ],
   },
 
   village: {
-    name: "やまの むら",
+    name: "風鳴り谷",
     kind: "out",
     sets: { r: "wood", ",": "grass" },     // わらぶきの やね
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineCabin", x: 1, y: 2, w: 6, h: 5 },
+      { art: "alpineLodge", x: 9, y: 8, w: 7, h: 6 },
+      { art: "alpineWoodBridge", x: 5, y: 6, w: 6, h: 4 },
+      { art: "alpineFirCluster", x: 0, y: 8, w: 4, h: 4 },
+    ],
     rows: [
       "TTTTTTT,,TTTTTTT",
-      "TR,,,,,,,,,,,,RT",
-      "T,TT,,,,,,,,TT,T",
-      "T,,,rrr,,rrr,,,T",
-      "T,,,#D#,,#D#,,,T",
-      "T,,,mmm,,mmm,,,T",
-      "T,,,,,,mm,,,,,,T",
-      "T,WWWWW,,WWWWW,T",
-      "T,,,,,,mm,,,,,,T",
-      "T,,F,,,,,,,,F,,T",
-      "T,,,,rrrrr,,,,,T",
-      "T,,,,rrrrr,,,,,T",
-      "T,,,,#wDw#,,,,,T",
-      "T,,,,,mmm,,,,,,T",
-      "T,,S,,,,,,,,TT,T",
+      "TTTTT,,,,,,TTTTT",
+      "TTT,,,,WW,,,,TTT",
+      "TT,,rrrWW,,,,,TT",
+      "TT,,rrrWW,TT,,TT",
+      "TT,,#D#WW,,,,,,T",
+      "T,,,,,mWW,,,,,,T",
+      "T,TT,,,WW==,,,,T",
+      "T,,,,,,WW==,TT,T",
+      "T,,F,,,WW,,,,,,T",
+      "T,,,,,,WW,rrrrrT",
+      "T,TT,,,WW,rrrrrT",
+      "T,,,,,,WW,#wDw#T",
+      "T,,,S,,WW,,mmm,T",
+      "TT,,,,,,,,,,,,TT",
       "TTTTTTT,,TTTTTTT",
     ],
     warps: [
-      { x: 5, y: 4, to: "hut", tx: 4, ty: 7 },
-      { x: 10, y: 4, to: "hut2", tx: 4, ty: 7 },
-      { x: 7, y: 12, to: "elder", tx: 4, ty: 8 },
+      { x: 4, y: 5, to: "hut", tx: 4, ty: 8 },
+      { x: 12, y: 12, to: "elder", tx: 4, ty: 8 },
       { x: 7, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
       { x: 8, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
       { x: 7, y: 15, to: "gate", tx: 6, ty: 1, edge: 1 },
       { x: 8, y: 15, to: "gate", tx: 6, ty: 1, edge: 1 },
     ],
     signs: [
-      { x: 3, y: 14, text: ["やまの むら　ひょうこう 1200m",
-                            "きた…やまの おくち",
-                            "みなみ…やまの でぐち"] },
+      { x: 3, y: 13, text: ["風鳴り谷　標高 1480m",
+                            "北…雲を生む 森　南…谷をくだる 古道"] },
     ],
     npcs: [
       {
-        x: 3, y: 9, dir: "down", look: "oldman", name: "むらびと",
-        talk: ["やまの そとには「ガオン」と よばれる",
-               "とくいせいぶつが あふれておる。",
-               "ネットなしで 出るのは むぼうじゃ。"],
+        x: 3, y: 9, dir: "down", look: "oldman", name: "木こり バルト",
+        talk: ["バルト「この谷では、人と ガオンが",
+               "　同じ 水と 薪を わけあって 暮らしてきた。",
+               "　近ごろは 森の 奥で 木々が ざわめいている。"],
       },
       {
-        x: 12, y: 6, dir: "left", look: "girl", name: "むらの こ", hair: "bun",
-        talk: ["この 谷川の 水は つめたくて おいしいよ。",
-               "はしの 石を わたって むこうに いけるの。"],
+        x: 10, y: 7, dir: "left", look: "girl", name: "羊飼い エナ", hair: "bun",
+        talk: ["エナ「雪どけ水は つめたいけど、",
+               "　ガオンたちは この川の 音が だいすき。",
+               "　丸木橋は すべるから 気をつけてね。"],
       },
       {
-        x: 11, y: 13, dir: "down", look: "hiker", name: "やまの りょうし", hair: "straw",
-        talk: ["ぞくちょうさまに みとめられないと",
-               "この やまからは 出られん。",
-               "…おれも わかい ころは そうだった。"],
+        x: 5, y: 14, dir: "down", look: "hiker", name: "橋守 ロアン", hair: "straw",
+        talk: ["ロアン「谷の外へ つづく古道は、",
+               "　リーフ・コンパスを 持つ旅人のための道だ。",
+               "　方角ではなく、命のざわめきを 指すらしい。"],
       },
     ],
   },
@@ -206,7 +213,7 @@ export const MAPS = {
   },
 
   elder: {
-    name: "ぞくちょうの いえ",
+    name: "谷守の 共同ロッジ",
     kind: "in",
     rows: [
       "##########",
@@ -223,9 +230,9 @@ export const MAPS = {
     warps: [{ x: 4, y: 8, to: "village", tx: 7, ty: 13 }],
     npcs: [
       {
-        x: 4, y: 3, dir: "down", look: "oldman", name: "ぞくちょう",
+        x: 4, y: 3, dir: "down", look: "oldman", name: "谷守 オルド",
         script: "elder",
-        talk: ["よく きた、レオよ。"],
+        talk: ["オルド「よく きた、レオ。"],
       },
       {
         x: 7, y: 6, dir: "left", look: "boy", name: "むらの わかもの",
@@ -349,7 +356,7 @@ export const MAPS = {
       { x: 7, y: 8, to: "harbor", tx: 6, ty: 1, edge: 1 },
       { x: 8, y: 8, to: "harbor", tx: 6, ty: 1, edge: 1 },
     ],
-    signs: [{ x: 3, y: 6, text: ["やまの でぐち", "この さき ハーバー・タウン"] }],
+    signs: [{ x: 3, y: 6, text: ["谷の でぐち", "この さき アーレ湖港"] }],
     npcs: [
       {
         x: 7, y: 7, dir: "up", look: "hiker", name: "みはりの おじ",
@@ -361,7 +368,7 @@ export const MAPS = {
 
 /* ============ みんなの ばしょ ============ */
   station: {
-    name: "ガオン・ステーション",
+    name: "山旅の 共同ロッジ",
     kind: "in",
     sets: { c: "machine" },
     rows: [
@@ -380,19 +387,21 @@ export const MAPS = {
     npcs: [
       {
         x: 2, y: 3, dir: "down", look: "nurse", name: "スタッフ",
-        talk: ["ガオン・ステーションへ ようこそ！"],
+        talk: ["ロッジ番「山旅の 共同ロッジへ ようこそ。",
+               "　暖炉のそばで、ガオンたちを 休ませていって。"],
         healAll: true,
       },
       {
         x: 7, y: 6, dir: "left", look: "boy", name: "たびびと",
-        talk: ["ここで やすめば ガオンは げんきに なるよ。"],
+        talk: ["旅人「このロッジは 七つの谷の人が",
+               "　薪と薬草を 持ち寄って守っているんだ。"],
       },
     ],
     objects: [{ x: 8, y: 1, text: ["ぼうけんの きろくを つける たんまつだ。"], pc: true }],
   },
 
 
-  // ハーバー・タウンの ふくや
+  // アーレ湖港の ふくや
   clothes1: {
     name: "ふくや ウミカゼ",
     kind: "in",
@@ -424,7 +433,7 @@ export const MAPS = {
     ],
   },
 
-  // サンド・タウンの びよういん
+  // 陽だまり棚田の びよういん
   salon: {
     name: "びよういん スナカゼ",
     kind: "in",
@@ -456,7 +465,7 @@ export const MAPS = {
     ],
   },
 
-  // ストーン・タウンの おしゃれな ふくや
+  // 石笛の峡谷の おしゃれな ふくや
   clothes2: {
     name: "ブティック イシヅカ",
     kind: "in",
@@ -522,7 +531,13 @@ export const MAPS = {
 ============================================================ */
 const TOWN_DEFS = [
   {
-    id: "harbor", name: "ハーバー・タウン", sets: { r: "roofBlue" },
+    id: "harbor", name: "アーレ湖港", sets: { r: "roofBlue" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineBoathouse", x: 9, y: 3, w: 7, h: 6 },
+      { art: "alpineLodge", x: 0, y: 1, w: 7, h: 6 },
+      { art: "alpineStoneBridge", x: 5, y: 6, w: 6, h: 4 },
+    ],
     // 小さな 港町：右がわは うみ、まん中に さんばし
     rows: [
       "TTTTTT,,TTTTTTTT",
@@ -551,17 +566,17 @@ const TOWN_DEFS = [
       { x: 3, y: 10, to: "clothes1", tx: 4, ty: 6 },
     ],
     signXY: [2, 6],
-    signText: ["ハーバー・タウン",
+    signText: ["アーレ湖港",
                "ちいさな 港町。ふねが 一そう つながれている",
                "◀ ステーション　ショップ ▶　ふくや も あるよ"],
     champXY: [5, 10],
     north: "route1", northXY: [7, 15], south: "gate", southXY: [7, 7],
-    emblem: "みなとエンブレム",
-    champ: { name: "タウン・チャンピオン ナギ", look: "leader1",
+    emblem: "湖風エンブレム",
+    champ: { name: "湖守 ナギ", look: "leader1",
              party: [["カニポン", 10], ["シズクン", 12]], money: 1200 },
-    champTalk: ["わたしは ハーバーの チャンピオン ナギ。",
-                "うみの ガオンの つよさ、見せてあげる！"],
-    champWin: ["みごと！ 「みなとエンブレム」を どうぞ。"],
+    champTalk: ["ナギ「湖の水は、雪と森と町を ひとつにつなぐ。",
+                "　ガオンの流れを読めるか、あなたの呼吸を見せて。"],
+    champWin: ["ナギ「水の声が あなたに応えた。「湖風エンブレム」を。"],
     people: [
       { x: 12, y: 8, look: "sailor", name: "せんいん",
         talk: ["この さんばしから ふねが 出るんだ。",
@@ -572,51 +587,70 @@ const TOWN_DEFS = [
     ],
   },
   {
-    id: "sand", name: "サンド・タウン", sets: { r: "roof", ",": "sand" },
+    id: "sand", name: "陽だまり棚田", sets: { r: "roof", ",": "grass" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineWorkshop", x: 0, y: 6, w: 7, h: 6 },
+      { art: "alpineTerrace", x: 9, y: 5, w: 6, h: 5 },
+      { art: "alpineFlowerMeadow", x: 6, y: 9, w: 5, h: 4 },
+    ],
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [10, 7, "~"], [11, 7, "~"], [12, 9, "~"], [12, 10, "~"],
             [2, 8, "r"], [3, 8, "r"], [4, 8, "r"], [2, 9, "#"], [3, 9, "D"], [4, 9, "#"]],
     extraWarps: [{ x: 3, y: 9, to: "salon", tx: 4, ty: 6 },
                  { x: 15, y: 10, to: "desert", tx: 1, ty: 6, edge: 1 }],
     north: "route2", northXY: [7, 15], south: "route1", southXY: [7, 1],
-    emblem: "すなエンブレム",
-    champ: { name: "タウン・チャンピオン ダイ", look: "hiker",
+    emblem: "陽刻エンブレム",
+    champ: { name: "牧守 ダイ", look: "hiker",
              party: [["ツチマル", 16], ["イワッコ", 16], ["スナムシ", 18]], money: 1800 },
-    champTalk: ["すなの まちの ダイだ。", "すなあらしにも たえられるか！"],
-    champWin: ["やるな！ 「すなエンブレム」を もっていけ。"],
+    champTalk: ["ダイ「ここは砂漠じゃない。氷河が削った石の段々畑だ。",
+                "　重い石を積むような、ぶれない絆を見せてみろ。"],
+    champWin: ["ダイ「いい足場だ。「陽刻エンブレム」を 受け取れ。"],
     people: [
       { x: 6, y: 11, look: "girl", name: "むすめ", hair: "pony", skirt: true,
         talk: ["すなの 下には むかしの ガオンが", "ねむっているって いわれてるの。"] },
     ],
   },
   {
-    id: "forest", name: "フォレスト・タウン", sets: { r: "roof" },
+    id: "forest", name: "モミ響きの森", sets: { r: "wood" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineHerbalist", x: 0, y: 4, w: 7, h: 6 },
+      { art: "alpineFirCluster", x: 10, y: 1, w: 5, h: 5 },
+      { art: "alpineWaterfall", x: 9, y: 7, w: 6, h: 6 },
+    ],
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [3, 8, "T"], [12, 8, "T"], [4, 11, "F"], [11, 11, "F"], [3, 10, "T"], [12, 10, "T"]],
     extraWarps: [{ x: 15, y: 10, to: "deepforest", tx: 1, ty: 6, edge: 1 }],
     north: "route3", northXY: [7, 15], south: "route2", southXY: [7, 1],
-    emblem: "もりエンブレム",
-    champ: { name: "タウン・チャンピオン シノ", look: "girl",
+    emblem: "森響エンブレム",
+    champ: { name: "薬草守 シノ", look: "girl",
              party: [["タネコロ", 20], ["キノコン", 21], ["ツルマキ", 23]], money: 2400 },
-    champTalk: ["もりの チャンピオン シノよ。",
-                "くさの ガオンの しつよさを あじわって。"],
-    champWin: ["つよいのね。「もりエンブレム」を あげる。"],
+    champTalk: ["シノ「木は声を出さない。でも根の下で水を分けあうの。",
+                "　あなたの仲間も、見えないところで支えあっている？"],
+    champWin: ["シノ「森が静かになった。「森響エンブレム」を託すね。"],
     people: [
       { x: 11, y: 6, look: "boy", name: "きこり",
         talk: ["フィロアって 子が さっき とおったよ。", "きたへ いそいでたな。"] },
     ],
   },
   {
-    id: "stone", name: "ストーン・タウン", sets: { r: "roofBlue" },
+    id: "stone", name: "石笛の峡谷", sets: { r: "roofBlue" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineRailStation", x: 0, y: 1, w: 8, h: 6 },
+      { art: "alpineTrain", x: 7, y: 1, w: 8, h: 6 },
+      { art: "alpineCliff", x: 10, y: 7, w: 6, h: 6 },
+    ],
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [11, 8, "M"], [12, 8, "M"], [12, 11, "R"], [11, 11, "R"],
             [2, 8, "r"], [3, 8, "r"], [4, 8, "r"], [2, 9, "#"], [3, 9, "D"], [4, 9, "#"]],
     extraWarps: [{ x: 3, y: 9, to: "clothes2", tx: 4, ty: 6 },
                  { x: 15, y: 10, to: "cavern", tx: 1, ty: 6, edge: 1 }],
     north: "route4", northXY: [7, 15], south: "route3", southXY: [7, 1],
-    emblem: "いしエンブレム",
-    champ: { name: "タウン・チャンピオン ゴウ", look: "hiker",
+    emblem: "石笛エンブレム",
+    champ: { name: "石工守 ゴウ", look: "hiker",
              party: [["イワッコ", 25], ["コケゴロ", 26], ["ガンセキ", 28]], money: 3000 },
-    champTalk: ["いしきりばの ゴウだ。",
-                "かたい ガオンを くずせるかな？"],
-    champWin: ["いい うでだ。「いしエンブレム」を やろう。"],
+    champTalk: ["ゴウ「列車の音が峡谷に七回返れば、天気が変わる。",
+                "　力で砕くな。響きを聞いて、最初の一手を選べ。"],
+    champWin: ["ゴウ「いい響きだ。「石笛エンブレム」を持っていけ。"],
     people: [
       { x: 6, y: 11, look: "oldman", name: "いしきり", hair: "straw",
         talk: ["きたの みずうみには「メロロン」という",
@@ -624,17 +658,23 @@ const TOWN_DEFS = [
     ],
   },
   {
-    id: "aqua", name: "アクア・タウン", sets: { r: "roofBlue" },
+    id: "aqua", name: "水鏡の入江", sets: { r: "roofBlue" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineBoathouse", x: 0, y: 1, w: 7, h: 6 },
+      { art: "alpinePond", x: 8, y: 7, w: 7, h: 6 },
+      { art: "alpineWoodBridge", x: 4, y: 6, w: 6, h: 4 },
+    ],
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [2, 9, "W"], [3, 9, "W"], [4, 9, "W"], [2, 10, "W"], [3, 10, "W"], [4, 10, "W"],
             [2, 11, "W"], [3, 11, "W"], [4, 11, "W"]],
     extraWarps: [{ x: 15, y: 10, to: "river", tx: 1, ty: 6, edge: 1 }],
     north: "route5", northXY: [7, 15], south: "route4", southXY: [7, 1],
-    emblem: "みずうみエンブレム",
-    champ: { name: "タウン・チャンピオン ミナ", look: "leader1",
+    emblem: "水鏡エンブレム",
+    champ: { name: "水路守 ミナ", look: "leader1",
              party: [["シズクン", 30], ["クラゲミ", 30], ["ミナモン", 32]], money: 3600 },
-    champTalk: ["みずうみの ミナです。",
-                "しずかな 水面のように たたかいましょう。"],
-    champWin: ["おみごと。「みずうみエンブレム」を どうぞ。"],
+    champTalk: ["ミナ「この入江は、メロロンが泳ぐと水位が変わるの。",
+                "　相手を押さえず、波に合わせる戦いを見せて。"],
+    champWin: ["ミナ「水面に道が映った。「水鏡エンブレム」をどうぞ。"],
     legend: { name: "メロロン", lv: 38, flag: "meloron", look: "nurse",
               x: 6, y: 11,
               talk: ["みずうみが ざわめいている…！",
@@ -642,7 +682,13 @@ const TOWN_DEFS = [
     people: [],
   },
   {
-    id: "sky", name: "スカイ・タウン", sets: { r: "roof", ",": "snow" },
+    id: "sky", name: "白嶺のシャレー", sets: { r: "roof", ",": "snow" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineSnowChalet", x: 0, y: 1, w: 8, h: 7 },
+      { art: "alpineSnowFirCluster", x: 10, y: 1, w: 6, h: 6 },
+      { art: "alpineTrailStairs", x: 7, y: 7, w: 6, h: 6 },
+    ],
     // まちの きたがわは 高台。かいだん(x5,6)で のぼる
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [1, 7, "M"], [2, 7, "M"], [3, 7, "L"], [4, 7, "L"], [5, 7, "H"],
             [6, 7, "H"], [7, 7, "L"], [8, 7, "M"],
@@ -651,12 +697,12 @@ const TOWN_DEFS = [
             [7, 10, "u"], [8, 10, "u"]],
     extraWarps: [{ x: 15, y: 10, to: "cloud", tx: 1, ty: 6, edge: 1 }],
     north: "route6", northXY: [7, 15], south: "route5", southXY: [7, 1],
-    emblem: "そらエンブレム",
-    champ: { name: "タウン・チャンピオン ソラ", look: "leader2",
+    emblem: "雪翼エンブレム",
+    champ: { name: "雪稜守 ソラ", look: "leader2",
              party: [["ハネデン", 34], ["トリッピ", 34], ["ソラデン", 36]], money: 4200 },
-    champTalk: ["たかい そらの まち、スカイ・タウン。",
-                "かぜより はやい ガオンたちだ！"],
-    champWin: ["すばらしい。「そらエンブレム」を！"],
+    champTalk: ["ソラ「ここでは雲が足もとに生まれ、谷へ降りていく。",
+                "　速さだけでは渡れない雪稜を、どう越える？"],
+    champWin: ["ソラ「風が道をあけた。「雪翼エンブレム」を持っていって。"],
     legend: { name: "ディーナ", lv: 42, flag: "deena", look: "girl",
               x: 10, y: 11,
               talk: ["にじいろの はねが 空を よぎった…！",
@@ -664,20 +710,26 @@ const TOWN_DEFS = [
     people: [],
   },
   {
-    id: "flame", name: "フレイム・タウン", sets: { r: "roof" },
+    id: "flame", name: "夕映え高原", sets: { r: "roof" },
+    hideTileHouses: true,
+    landmarks: [
+      { art: "alpineObservatory", x: 8, y: 1, w: 8, h: 7 },
+      { art: "alpineLodge", x: 0, y: 6, w: 7, h: 6 },
+      { art: "alpineFlowerMeadow", x: 8, y: 8, w: 6, h: 5 },
+    ],
     patch: [[15, 10, ","], [14, 10, "."], [13, 10, "."], [3, 8, "M"], [4, 9, "R"], [11, 9, "R"], [12, 8, "M"], [7, 11, "R"], [8, 11, "R"]],
     extraWarps: [{ x: 15, y: 10, to: "volcano", tx: 1, ty: 6, edge: 1 }],
     north: "route7", northXY: [7, 15], south: "route6", southXY: [7, 1],
-    emblem: "ほのおエンブレム",
-    champ: { name: "タウン・チャンピオン カグラ", look: "leader2",
+    emblem: "夕映エンブレム",
+    champ: { name: "星見守 カグラ", look: "leader2",
              party: [["ボヤッコ", 38], ["ワンヒノ", 38], ["メラボヤ", 40], ["ホノワン", 40]], money: 5000 },
-    champTalk: ["さいごの エンブレムは わたし カグラが もつ。",
-                "もえる こころを 見せてみろ！"],
-    champWin: ["いい ほのおだ。「ほのおエンブレム」を うけとれ！"],
+    champTalk: ["カグラ「山が赤く染まる一瞬、星と大地の境が消える。",
+                "　最後に必要なのは炎ではない。迷わず選ぶ意志だ。"],
+    champWin: ["カグラ「七つの谷がつながった。「夕映エンブレム」を。"],
     people: [
       { x: 11, y: 11, look: "oldman", name: "ふるどうぐや",
         talk: ["7つの エンブレムが そろえば",
-               "ギャラクシー・タウンの 大会に 出られる。"] },
+               "星環の都の 山岳祭に 参加できる。"] },
     ],
   },
 ];
@@ -704,9 +756,12 @@ const ROUTE_DEFS = [
     ],
     lv: [8, 12],
     rival: { party: [["サカナビ", 12], ["シズクン", 13]], money: 800,
-      talk: ["フィロア「あ！ さっきの きみだ！", "　おれ フィロア。うみの むこうから きたんだ。", "　ギャラクシー・タウンの 大会で ゆうしょうするのが ゆめ！", "　ちょっと しょうぶ しようよ！"],
-      win: ["フィロア「うわー まけた！ でも たのしかった！"],
-      after: ["フィロア「つぎ あうときは もっと つよくなってる！"] },
+      talk: ["フィロア「そのコンパス、葉っぱみたいに光るんだね。",
+             "　おれは フィロア。湖のむこうから 山道を測りにきた。",
+             "　七つの谷を一本の地図にするのが 夢なんだ。",
+             "　きみとガオンの歩き方、しょうぶで 見せてよ！"],
+      win: ["フィロア「負けたけど、きみの道筋は おぼえたよ！"],
+      after: ["フィロア「地図の続きは 北の谷で。風の音を 目印にね。"] },
     list: [["ネズミン", 8, 11, 14], ["カニポン", 8, 11, 14], ["トリッピ", 8, 11, 12],
            ["シズクン", 8, 12, 12], ["マルミィ", 8, 11, 10], ["ムシリン", 8, 11, 10],
            ["サカナビ", 9, 12, 10], ["クモッコ", 9, 12, 8], ["ヨルドリ", 9, 12, 6], ["アワミィ", 8, 11, 8], ["コイヌン", 8, 11, 10],
@@ -747,7 +802,7 @@ const ROUTE_DEFS = [
         talk: ["さばくを こえるなら ようじんしな。"], win: ["みごとだ。"],
         after: ["すなの ガオンは くさが にがて。"] },
     ] },
-  { id: "route3", name: "もりの みち", south: "forest", southXY: [7, 1], north: "stone", northXY: [7, 12],
+  { id: "route3", name: "モミの 回廊", south: "forest", southXY: [7, 1], north: "stone", northXY: [7, 12],
     rows: [
       "TTTTTT,,\"\"T\"\"TTT",
       "TTT,T,,,\"\"\"TT\"TT",
@@ -768,9 +823,11 @@ const ROUTE_DEFS = [
     ],
     lv: [20, 24],
     rival: { party: [["スイスイオ", 23], ["ライボルト", 23], ["カニポン", 24]], money: 1800,
-      talk: ["フィロア「やっぱり きみも きたね！", "　もりの みちは とおりみち。おれは もう エンブレム 2つだよ。", "　いくよ、しょうぶだ！"],
-      win: ["フィロア「つよい…！ でも まだ まけてないからな！"],
-      after: ["フィロア「そらの まちで また あおう！"] },
+      talk: ["フィロア「森では 方位磁針が ぐるぐる回るんだ。",
+             "　でもガオンは、根の下の水を感じて 迷わない。",
+             "　おれの地図と きみのコンパス、どちらが先に道を見つけるかな？"],
+      win: ["フィロア「なるほど…ガオンの歩幅まで 地図に描かないとね。"],
+      after: ["フィロア「つぎは 雲の上のシャレーで また会おう！"] },
     list: [["キノコン", 20, 23, 14], ["ムシリン", 20, 23, 12], ["チョウマユ", 20, 23, 12],
            ["ハッパチョ", 21, 24, 10], ["クモッコ", 20, 23, 12], ["ホタリン", 21, 24, 10],
            ["ウリボン", 21, 24, 12], ["タネコロ", 20, 23, 10], ["ヨルネコ", 21, 24, 8], ["リーフィン", 20, 23, 8], ["ハナビィ", 20, 23, 10],
@@ -811,7 +868,7 @@ const ROUTE_DEFS = [
         talk: ["いわの ガオンは そう かんたんに くずれん！"], win: ["くずれたか…"],
         after: ["いわには みずと くさが きく。"] },
     ] },
-  { id: "route5", name: "みずうみの みち", south: "aqua", southXY: [7, 1], north: "sky", northXY: [7, 12],
+  { id: "route5", name: "水鏡の 桟道", south: "aqua", southXY: [7, 1], north: "sky", northXY: [7, 12],
     rows: [
       "TTTTTT,,TTTTTTTT",
       "TT,,TT,,T\",,T\"\"T",
@@ -839,9 +896,9 @@ const ROUTE_DEFS = [
       { x: 4, y: 5, dir: "right", look: "sailor", name: "みずうみの ヨシ", hair: "cap",
         party: [["クラゲミ", 33], ["ミナモン", 34]], money: 1500,
         talk: ["みずうみの ガオンは しずかで つよい。"], win: ["おみごと。"],
-        after: ["きたの スカイ・タウンは 空に ちかい まちだ。"] },
+        after: ["きたの 白嶺のシャレーは 雪稜に 近い。"] },
     ] },
-  { id: "route6", name: "そらの かいだん", south: "sky", southXY: [7, 1], north: "flame", northXY: [7, 12],
+  { id: "route6", name: "白嶺の 石段", south: "sky", southXY: [7, 1], north: "flame", northXY: [7, 12],
     rows: [
       "TTTTTT,,TTTTTTTT",
       "TT,TT,,,,,RTTTTT",
@@ -862,9 +919,11 @@ const ROUTE_DEFS = [
     ],
     lv: [36, 40],
     rival: { party: [["スイスイオ", 38], ["ライボルト", 38], ["ハサミガニ", 39], ["ミナモン", 40]], money: 3200,
-      talk: ["フィロア「ここまで きたか！ おれも エンブレム そろってきたぞ。", "　つぎに あうのは たぶん…大会の ぶたいだ。", "　その まえに 一しょうぶ！"],
-      win: ["フィロア「くやしい！ けっしょうで まってるからな！"],
-      after: ["フィロア「ギャラクシー・タウンで まってる！"] },
+      talk: ["フィロア「見て！ 七つの谷が 地図の上でつながった。",
+             "　星環の都の山脈祭で、この道を みんなに見せるんだ。",
+             "　その前に、雪稜を越えた おたがいの力を確かめよう！"],
+      win: ["フィロア「くやしい！ でも地図の最後は 決勝で描くからな！"],
+      after: ["フィロア「星環の都で まってる！ 地図の最後を描こう！"] },
     list: [["ハネデン", 36, 39, 12], ["ソラデン", 37, 40, 10], ["トリッピ", 36, 39, 12],
            ["ソラハネ", 37, 40, 10], ["ヒバナリ", 36, 39, 10], ["ジリジリ", 36, 39, 10],
            ["ライメイ", 38, 41, 6], ["イナヅマル", 37, 40, 8], ["ピリット", 36, 39, 12],
@@ -876,7 +935,7 @@ const ROUTE_DEFS = [
         talk: ["そらの ガオンは はやいぞ！"], win: ["つかまえられた…！"],
         after: ["でんきには じめんが きく。"] },
     ] },
-  { id: "route7", name: "ギャラクシーへの みち", south: "flame", southXY: [7, 1], north: "galaxy", northXY: [8, 14],
+  { id: "route7", name: "星環鉄道沿い", south: "flame", southXY: [7, 1], north: "galaxy", northXY: [8, 14],
     rows: [
       "TTT\"T\",,TTTTTTTT",
       "TTT\"\"\",,,TT,TTTT",
@@ -902,10 +961,10 @@ const ROUTE_DEFS = [
            ["スズメバチン", 42, 45, 8], ["デカネズ", 41, 44, 10], ["ヨルグモ", 42, 45, 8], ["ヤミノヌシ", 44, 47, 3],
            ["フェニクス", 44, 47, 3], ["ヨウガンヌシ", 44, 47, 3]],
     trainers: [
-      { x: 4, y: 3, dir: "right", look: "leader2", name: "たいかいの せんぱい", hair: "beanie",
+      { x: 4, y: 3, dir: "right", look: "leader2", name: "山道の 案内人", hair: "beanie",
         party: [["メラボヤ", 43], ["シャドネコ", 44], ["ガンセキ", 44]], money: 2500,
         talk: ["大会の 出場者だ。ここで ならしておこう。"], win: ["いい しあいだった！"],
-        after: ["ギャラクシー・タウンは すぐ そこだ。"] },
+        after: ["星環の都は すぐ そこだ。"] },
     ] },
 ];
 
@@ -935,10 +994,13 @@ for (const t of TOWN_DEFS) {
     name: t.name,
     kind: "out",
     sets: t.sets,
+    hideTileHouses: Boolean(t.hideTileHouses),
+    landmarks: t.landmarks || [],
     rows: t.rows || build(TOWN, t.patch),
     warps: (t.warps || townWarps(t.id, t.north, t.south, t.northXY, t.southXY)).concat(t.extraWarps || []),
     signs: [{ x: (t.signXY || [2, 6])[0], y: (t.signXY || [2, 6])[1],
-              text: t.signText || [t.name, "◀ ステーション　ショップ ▶", "チャンピオンに かとう！"] }],
+              text: t.signText || [t.name, "山の暮らしと ガオンが息づく土地",
+                                    "リーフ・コンパスは 谷守の声を示す"] }],
     npcs: npcs,
   };
 }
@@ -973,11 +1035,18 @@ for (const r of ROUTE_DEFS) {
 }
 
 /* ============================================================
-   ギャラクシー・タウン と かいじょう
+   星環の都 と かいじょう
 ============================================================ */
 MAPS.galaxy = {
-  name: "ギャラクシー・タウン",
+  name: "星環の都",
   kind: "out",
+  hideTileHouses: true,
+  landmarks: [
+    { art: "alpineObservatory", x: 0, y: 0, w: 8, h: 7 },
+    { art: "alpineRailStation", x: 8, y: 0, w: 8, h: 6 },
+    { art: "alpineTrain", x: 7, y: 7, w: 8, h: 5 },
+    { art: "alpineStoneBridge", x: 2, y: 8, w: 6, h: 4 },
+  ],
   sets: { r: "roofBlue", ",": "path" },
   rows: [
     "TTTTTTTTTTTTTTTT",
@@ -1005,8 +1074,8 @@ MAPS.galaxy = {
     { x: 8, y: 14, to: "route7", tx: 7, ty: 1, edge: 1 },
     { x: 9, y: 14, to: "route7", tx: 7, ty: 1, edge: 1 },
   ],
-  signs: [{ x: 3, y: 9, text: ["ギャラクシー・タウン", "せかいの ちゅうしん",
-                               "上… ガオンバトル大会 かいじょう"] }],
+  signs: [{ x: 3, y: 9, text: ["星環の都", "七つの谷の道と 高山鉄道が集う場所",
+                               "上… 山脈祭 ガオンバトル会場"] }],
   npcs: [
     {
       x: 5, y: 11, dir: "down", look: "girl", name: "うけつけの ひと",
@@ -1026,7 +1095,7 @@ MAPS.galaxy = {
    まちから 枝分かれした 場所（山・森・さばく・川・海・地下・空）
 ============================================================ */
 MAPS.inlet = {
-  name: "しおかぜの いりえ",
+  name: "アーレ湖の 入江",
   kind: "out",
   sets: {",": "grass"},
   rows: [
@@ -1055,7 +1124,7 @@ MAPS.inlet = {
 };
 
 MAPS.desert = {
-  name: "ねっさの さばく",
+  name: "風化石の 牧草地",
   kind: "out",
   sets: {",": "sand","r": "roof"},
   rows: [
@@ -1075,16 +1144,16 @@ MAPS.desert = {
     "TTTTTTTTTTTTT~TT",
   ],
   warps: [{ x: 0, y: 6, to: "sand", tx: 14, ty: 10, edge: 1 }],
-  signs: [{ x: 3, y: 7, text: ["ねっさの さばく","水が ないので 長くは いられない。"] }],
+  signs: [{ x: 3, y: 7, text: ["風化石の 牧草地","乾いた風が 古い岩を けずっている。"] }],
   items: [{ x: 11, y: 12, item: "ハイヒール", flag: "desertHeal" }],
-  npcs: [{ x: 10, y: 3, dir: "down", look: "hiker", name: "さばくの たびびと",
+  npcs: [{ x: 10, y: 3, dir: "down", look: "hiker", name: "牧草地の 旅人",
            hair: "straw",
            talk: ["この さきは すなばかりだ。","水を もっていくと いい。"] }],
   enc: { rate: 18, list: [["スナムシ", 16, 20, 14], ["ツチマル", 17, 20, 14], ["サボチク", 18, 20, 12], ["ダンゴロン", 16, 20, 12], ["モグポン", 17, 20, 10], ["ヒバナリ", 18, 20, 8]] },
 };
 
 MAPS.deepforest = {
-  name: "ささやきの もり",
+  name: "樹海の 薬草道",
   kind: "out",
   rows: [
     "TTTTTTTTTTTTTTTT",
@@ -1112,7 +1181,7 @@ MAPS.deepforest = {
 };
 
 MAPS.cavern = {
-  name: "いしの ちかどう",
+  name: "氷河洞",
   kind: "cave",
   sets: { ",": "cave", S: "cave" },
   rows: [
@@ -1141,7 +1210,7 @@ MAPS.cavern = {
 };
 
 MAPS.river = {
-  name: "せせらぎの かわ",
+  name: "アーレ源流",
   kind: "out",
   rows: [
     "TTTTTTTTTTTTTTTT",
@@ -1169,7 +1238,7 @@ MAPS.river = {
 };
 
 MAPS.cloud = {
-  name: "くもの みはらしだい",
+  name: "雲上の 尾根",
   kind: "out",
   rows: [
     "TTTTTTTTTTTTTTTT",
@@ -1197,7 +1266,7 @@ MAPS.cloud = {
 };
 
 MAPS.volcano = {
-  name: "ひのやまの ふもと",
+  name: "夕焼け岩稜",
   kind: "out",
   sets: {",": "lava", R: "lavaRock"},
   rows: [
@@ -1219,14 +1288,14 @@ MAPS.volcano = {
   warps: [{ x: 0, y: 6, to: "flame", tx: 14, ty: 10, edge: 1 }],
   signs: [{ x: 3, y: 7, text: ["ひのやまの ふもと","地めんが あたたかい。"] }],
   items: [{ x: 12, y: 11, item: "ハイヒール", flag: "volcanoHeal" }],
-  npcs: [{ x: 6, y: 3, dir: "down", look: "hiker", name: "ひのやまの ひと",
+  npcs: [{ x: 6, y: 3, dir: "down", look: "hiker", name: "岩稜の 見張り",
            hair: "beanie",
            talk: ["山の 上は あつくて はいれん。","ふもとで がまんじゃ。"] }],
   enc: { rate: 20, list: [["メラボヤ", 43, 47, 14], ["ホノワン", 44, 47, 14], ["マグマゴ", 45, 47, 12], ["カガリビ", 43, 47, 12], ["ヨウガンヌシ", 44, 47, 10], ["フェニクス", 45, 47, 8]] },
 };
 
 MAPS.starhill = {
-  name: "ほしぞらの おか",
+  name: "星見の 丘",
   kind: "out",
   rows: [
     "TTTTTTTTTTTTTTTT",
@@ -1254,7 +1323,7 @@ MAPS.starhill = {
 };
 
 MAPS.arena = {
-  name: "ガオンバトル大会",
+  name: "七つの谷 山岳祭",
   kind: "in",
   sets: { g: "carpet" },
   rows: [
@@ -1279,11 +1348,33 @@ MAPS.arena = {
   ],
   npcs: [
     {
-      x: 6, y: 4, dir: "down", look: "leader1", name: "たいかい しんこうやく",
+      x: 6, y: 4, dir: "down", look: "leader1", name: "山岳祭の 進行役",
       script: "tournament",
       talk: ["ガオンバトル大会、かいまく！"],
     },
   ],
 };
+
+// 町と町のあいだも単調な四角タイルにせず、谷ごとの大きな景観を置く。
+const ROUTE_LANDMARKS = {
+  mount1: [{ art: "alpineFirCluster", x: 0, y: 1, w: 5, h: 5 }, { art: "alpineTrailStairs", x: 9, y: 8, w: 6, h: 6 }],
+  mount2: [{ art: "alpinePond", x: 3, y: 4, w: 8, h: 6 }, { art: "alpineCliff", x: 10, y: 1, w: 5, h: 5 }],
+  gate: [{ art: "alpineTrailSign", x: 0, y: 2, w: 5, h: 5 }, { art: "alpineStoneBridge", x: 8, y: 2, w: 6, h: 5 }],
+  route1: [{ art: "alpinePond", x: 8, y: 7, w: 7, h: 6 }, { art: "alpineWoodBridge", x: 1, y: 9, w: 6, h: 5 }],
+  route2: [{ art: "alpineTerrace", x: 0, y: 4, w: 6, h: 6 }, { art: "alpineTrailSign", x: 10, y: 8, w: 5, h: 5 }],
+  route3: [{ art: "alpineFirCluster", x: 8, y: 0, w: 7, h: 6 }, { art: "alpineWaterfall", x: 0, y: 7, w: 6, h: 6 }],
+  route4: [{ art: "alpineCliff", x: 8, y: 1, w: 7, h: 6 }, { art: "alpineTrailStairs", x: 0, y: 8, w: 6, h: 6 }],
+  route5: [{ art: "alpineStoneBridge", x: 7, y: 3, w: 7, h: 5 }, { art: "alpineFlowerMeadow", x: 0, y: 8, w: 6, h: 5 }],
+  route6: [{ art: "alpineSnowFirCluster", x: 0, y: 0, w: 7, h: 6 }, { art: "alpineTrailStairs", x: 9, y: 7, w: 6, h: 6 }],
+  route7: [{ art: "alpineTrain", x: 0, y: 4, w: 8, h: 6 }, { art: "alpineObservatory", x: 9, y: 7, w: 7, h: 6 }],
+  inlet: [{ art: "alpineBoathouse", x: 7, y: 1, w: 8, h: 7 }],
+  deepforest: [{ art: "alpineHerbalist", x: 8, y: 6, w: 7, h: 6 }],
+  river: [{ art: "alpineWaterfall", x: 8, y: 1, w: 7, h: 6 }],
+  cloud: [{ art: "alpineSnowFirCluster", x: 8, y: 1, w: 7, h: 6 }],
+  starhill: [{ art: "alpineObservatory", x: 8, y: 5, w: 7, h: 7 }],
+};
+for (const [id, landmarks] of Object.entries(ROUTE_LANDMARKS)) {
+  if (MAPS[id]) MAPS[id].landmarks = landmarks;
+}
 
 export const START = { map: "hut", x: 4, y: 5, dir: "down" };

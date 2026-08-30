@@ -6,7 +6,7 @@
 import { G, loadInto } from "./state.js";
 import { cloud } from "./cloud.js";
 
-const KEY = "vmon:save";
+const KEY = "gaon-world:save:v3";
 
 export function snapshot() {
   return JSON.parse(JSON.stringify(G.save));
@@ -18,7 +18,7 @@ export function saveLocal() {
   catch (e) { return false; }
 }
 
-export const SAVE_VER = 2;
+export const SAVE_VER = 3;
 
 // ものがたりが 大きく かわったので、ふるい きろくは つかいません
 export function compatible(d) { return Boolean(d) && (d.ver | 0) >= SAVE_VER; }
