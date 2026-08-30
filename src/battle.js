@@ -634,7 +634,7 @@ function drawBattle() {
     }
   }
   if (B.you && !B.you.hidden && youArt) {
-    const generated = battleArt(B.you.mon.sp);
+    const generated = battleArt(B.you.mon.sp, true);
     if (generated) G.drawScaled(generated, 8 + (B.you.shakeX | 0), 60, 128, 128);
     else {
       const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet, youAcc, MONPAL[B.you.mon.sp]);

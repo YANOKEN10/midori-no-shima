@@ -164,9 +164,23 @@ for (const name of Object.keys(FILES)) {
   cache.set(name, img);
 }
 
-export function battleArt(name) {
-  const img = cache.get(name);
+// プレイヤー側専用の背面絵。完成した種類から順に追加する。
+const BACK_FILES = {
+  リーフィン: "../../assets/monsters/battle-back/001-leafin-back.png",
+};
+const backCache = new Map();
+for (const name of Object.keys(BACK_FILES)) {
+  const img = new Image();
+  img.decoding = "async";
+  img.src = new URL(BACK_FILES[name], import.meta.url).href;
+  backCache.set(name, img);
+}
+
+export function battleArt(name, back = false) {
+  const img = back ? backCache.get(name) : cache.get(name);
+  if (back && !(img && img.complete && img.naturalWidth)) return battleArt(name, false);
   return img && img.complete && img.naturalWidth ? img : null;
 }
 
 export const BATTLE_ART_FILES = FILES;
+export const BATTLE_BACK_ART_FILES = BACK_FILES;
