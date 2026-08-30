@@ -5,6 +5,7 @@
 //   ・マスの あたりはんていは これまでどおり タイルの ままです
 // ============================================================
 import * as G from "./gfx.js";
+import { environmentTile } from "./environmentArt.js";
 
 const T = G.TILE;
 const cache = new Map();
@@ -101,6 +102,8 @@ export function houseImage(h) {
   const door = G.resolve("door");
   const glass = G.resolve("water");
   const wood = G.resolve("wood");
+  const wallTexture = G.isColor() ? environmentTile("wallPlaster") : null;
+  const roofTexture = G.isColor() ? environmentTile(h.set === "roofBlue" ? "roofBlue" : h.set === "wood" ? "roofThatch" : "roofRed") : null;
 
   const fill = (x, y, w, hh, col) => {
     c.fillStyle = col;
@@ -154,6 +157,10 @@ export function houseImage(h) {
   fill(2, H - 9, W - 4, 6, wall[2]);
   fill(2, H - 9, W - 4, 1, wall[0]);
   for (let x = 3; x < W - 3; x += 12) fill(x, H - 7, 1, 4, wall[3]);
+  if (wallTexture) {
+    c.save(); c.globalAlpha = 0.46; c.globalCompositeOperation = "source-atop";
+    c.fillStyle = c.createPattern(wallTexture, "repeat"); c.fillRect(0, wallY, W, H - wallY); c.restore();
+  }
 
   /* ---- まど ---- */
   for (const [cx, cy] of h.windows) {
@@ -197,11 +204,19 @@ export function houseImage(h) {
   }
 
   /* ---- やね ---- */
+  c.save();
+  c.scale(K, K);
   drawRoof(c, W, roofH, h.style, roof, wood);
+  if (roofTexture) {
+    c.globalAlpha = 0.58; c.globalCompositeOperation = "source-atop";
+    c.fillStyle = c.createPattern(roofTexture, "repeat"); c.fillRect(0, 0, W, roofH);
+  }
+  c.restore();
   // やねの かげが かべに おちる
   dither(2, roofH, W - 4, 4, wall[3], false);
 
-  cache.set(key, cv);
+  // 画像の先読み前に作った仮描画は固定せず、読み込み後に作り直す。
+  if (!G.isColor() || (wallTexture && roofTexture)) cache.set(key, cv);
   return cv;
 }
 

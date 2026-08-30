@@ -7,6 +7,7 @@ import { ui, BOX, topRect, overlaps, isSaying } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { battleArt } from "./data/battleart.js";
+import { environmentTile } from "./environmentArt.js";
 import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
@@ -601,18 +602,20 @@ function drawBattle() {
   G.clear(0);
   if (!B) return;
 
-  // そら と じめん
-  G.use("sky");
-  G.rect(0, 0, G.W, 90, 0);
-  G.rect(0, 78, G.W, 12, 1);
-  G.use("battleBg");
-  G.rect(0, 90, G.W, 106, 1);
-  G.rect(0, 90, G.W, 3, 2);
-  // たっている ところ
-  ellipse(248, 132, 58, 13, 2);
-  ellipse(248, 129, 58, 13, 0);
-  ellipse(72, 188, 70, 15, 2);
-  ellipse(72, 185, 70, 15, 0);
+  const battleBackground = G.isColor() && environmentTile("battleBackground");
+  const battlePlatform = G.isColor() && environmentTile("battlePlatform");
+  if (battleBackground) G.draw(battleBackground, 0, 0);
+  else {
+    G.use("sky"); G.rect(0, 0, G.W, 90, 0); G.rect(0, 78, G.W, 12, 1);
+    G.use("battleBg"); G.rect(0, 90, G.W, 106, 1); G.rect(0, 90, G.W, 3, 2);
+  }
+  if (battlePlatform) {
+    G.draw(battlePlatform, 178, 112);
+    G.draw(battlePlatform, 2, 168);
+  } else {
+    ellipse(248, 132, 58, 13, 2); ellipse(248, 129, 58, 13, 0);
+    ellipse(72, 188, 70, 15, 2); ellipse(72, 185, 70, 15, 0);
+  }
 
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
@@ -675,7 +678,8 @@ function infoBox(x, y, side, mine) {
   const m = side.mon;
   const w = 148, h = 60;
   G.use("ui");
-  G.window9(x, y, w, h);
+  const panel = G.isColor() && environmentTile("battlePanel");
+  if (panel) G.draw(panel, x, y); else G.window9(x, y, w, h);
 
   // なまえは Lv の ぶんを のこして つめる
   const lv = "Lv" + m.lv;
@@ -694,6 +698,6 @@ function infoBox(x, y, side, mine) {
   G.use("ui");
 
   // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
-  if (m.status) G.text(m.status, x + 10, y + 43, 3, 13);
-  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 10, y + 43, 3, 13);
+  if (m.status) G.text(m.status, x + 10, y + 43, 3, 11);
+  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 10, y + 43, 3, 11);
 }

@@ -722,10 +722,36 @@ const TILE_SET = {
 // override は マップごとの いろちがい（やねの 色など）
 export function tileFor(ch, frame, override, mask, variant, shade, tx, ty) {
   const set = (override && override[ch]) || TILE_SET[ch] || "path";
+  if (!shade && (!override || !override[ch])) {
+    const objectArt = ch === '"' ? environmentTile("tallgrass")
+      : ch === "R" ? environmentTile("rock")
+      : ch === "M" ? environmentTile("mountain")
+      : null;
+    if (objectArt) return objectArt;
+  }
+  if (!shade && ch === "f") {
+    const floorArt = environmentTile("floorWood");
+    if (floorArt) return floorArt;
+  }
+  if (!shade) {
+    const furnitureName = ch === "B" ? "furnitureBed"
+      : ch === "t" ? "furnitureTable"
+      : ch === "b" ? "furnitureBookshelf"
+      : ch === "c" ? "furnitureCounter"
+      : ch === "V" ? "furniturePlant"
+      : ch === "K" ? "furnitureHealer"
+      : ch === "P" ? "furnitureComputer"
+      : null;
+    const furniture = furnitureName && environmentTile(furnitureName);
+    if (furniture) return furniture;
+  }
   // マップ構造・当たり判定はそのままに、基礎地面だけ高密度画像へ置換する。
   // 特殊な縁取り・影・別パレットが必要なタイルは従来描画へ戻す。
   if (!shade && (mask == null || mask === 255) && (!override || !override[ch])) {
-    const artName = (ch === "," || ch === "F") ? "grass" : ch === "." ? "path" : ch === "W" ? "water" : null;
+    const artName = (ch === "," || ch === "F") ? "grass"
+      : ch === "." ? "path"
+      : ch === "W" ? "water"
+      : null;
     const art = artName && environmentTile(artName);
     if (art) return art;
   }

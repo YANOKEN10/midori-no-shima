@@ -6,6 +6,8 @@ import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { tileFor, solid } from "./tiles.js";
+import { battleArt } from "./data/battleart.js";
+import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
 import { MAPS } from "./data/maps.js";
@@ -748,10 +750,18 @@ export const world = {
 
     // ひとたち（うしろに いる人から）
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y }));
+    if (G.isColor() && State.save.party && State.save.party.length) {
+      const back = this.dir === "up" ? [0, 1] : this.dir === "down" ? [0, -1]
+        : this.dir === "left" ? [1, 0] : [-1, 0];
+      people.push({ follower: State.save.party[0], x: this.x + back[0], y: this.y + back[1] });
+    }
     people.push({ me: true, y: this.y + (this.oy > 0 ? 0.5 : 0) });
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
-      if (p.me) {
+      if (p.follower) {
+        const monImg = battleArt(p.follower.sp);
+        if (monImg) G.drawScaled(monImg, p.x * T - camX - 6, p.y * T - camY - 10, 44, 44);
+      } else if (p.me) {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
         let img;
@@ -765,9 +775,12 @@ export const world = {
       } else {
         const n = p.n;
         const dirn = n.dir || "down";
-        const img2 = G.isColor()
+        const personKey = ({ boy:"Boy", girl:"Girl", prof:"Prof", oldman:"Oldman", nurse:"Nurse", clerk:"Clerk",
+          sailor:"Sailor", hiker:"Hiker", leader1:"Leader1", leader2:"Leader2", rival:"Rival", philoa:"Leader1" })[n.look];
+        const generatedPerson = G.isColor() && personKey && environmentTile("person" + personKey);
+        const img2 = generatedPerson || (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][0], 1, "nc" + n.look + npcKey(n) + dirn, colorsFor(n.look))
-          : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look);
+          : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look));
         G.draw(img2, n.x * T - camX, n.y * T - camY - 12);
         if (n.alert) {
           G.use("ui");

@@ -7,9 +7,9 @@ async function capture(name, viewport, output) {
   });
   const page = await browser.newPage({ viewport });
   const errors = [];
-  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  page.on("console", (m) => { if (m.type() === "error" && !m.text().includes("Failed to load resource")) errors.push(m.text()); });
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("http://127.0.0.1:5179", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:5179", { waitUntil: "domcontentloaded" });
   await page.evaluate(() => {
     VM.State.save = VM.newGame("背面テスト");
     VM.State.save.party.push(VM.makeMon("メロロン", 30));

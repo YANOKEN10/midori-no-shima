@@ -4,6 +4,8 @@ param(
   [Parameter(Mandatory=$true)][int]$Width,
   [Parameter(Mandatory=$true)][int]$Height,
   [switch]$RemoveEdgeBackdrop,
+  [switch]$PreserveAspect,
+  [switch]$ChromaMagenta,
   [int]$EdgeTolerance = 54
 )
 
@@ -16,7 +18,12 @@ $g.Clear([Drawing.Color]::Transparent)
 $g.CompositingMode = [Drawing.Drawing2D.CompositingMode]::SourceCopy
 $g.InterpolationMode = [Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $g.PixelOffsetMode = [Drawing.Drawing2D.PixelOffsetMode]::HighQuality
-$g.DrawImage($src, 0, 0, $Width, $Height)
+if ($PreserveAspect) {
+  $scale=[Math]::Min($Width/$src.Width,$Height/$src.Height)
+  $dw=[Math]::Max(1,[Math]::Round($src.Width*$scale)); $dh=[Math]::Max(1,[Math]::Round($src.Height*$scale))
+  $dx=[Math]::Floor(($Width-$dw)/2); $dy=$Height-$dh
+  $g.DrawImage($src,$dx,$dy,$dw,$dh)
+} else { $g.DrawImage($src, 0, 0, $Width, $Height) }
 $g.Dispose()
 
 if ($RemoveEdgeBackdrop) {
@@ -46,6 +53,9 @@ if ($RemoveEdgeBackdrop) {
 for ($y=0; $y -lt $Height; $y++) {
   for ($x=0; $x -lt $Width; $x++) {
     $c = $out.GetPixel($x,$y)
+    if ($ChromaMagenta -and $c.R -gt 150 -and $c.B -gt 150 -and $c.G -lt 120 -and (($c.R + $c.B) - (2 * $c.G)) -gt 140) {
+      $out.SetPixel($x,$y,[Drawing.Color]::Transparent); continue
+    }
     if ($c.A -lt 96) { $out.SetPixel($x,$y,[Drawing.Color]::Transparent); continue }
     $q = { param($v) [Math]::Min(255,[Math]::Round($v/17)*17) }
     $out.SetPixel($x,$y,[Drawing.Color]::FromArgb(255,(&$q $c.R),(&$q $c.G),(&$q $c.B)))
