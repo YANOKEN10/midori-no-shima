@@ -88,7 +88,7 @@ export const SETS = {
   book:    ["#f4f0e0", "#4f8fd0", "#c04a3a", "#2a1c14"],
 
   // がめん・わく
-  ui:      ["#ffffff", "#dfe4ee", "#7f8ba3", "#1b2230"],
+  ui:      ["#f7fbf4", "#d7e9e4", "#3f88a2", "#10283e"],
   uiDark:  ["#e6ebf5", "#a9b4c6", "#4f5b73", "#141a26"],
   title:   ["#ffe9a8", "#f7b23a", "#c04a2a", "#2a1030"],
   sky:     ["#cdeeff", "#8fd0f5", "#4f9ad8", "#1d3f66"],
@@ -196,11 +196,24 @@ export function frame(x, y, w, h, c, t) {
   rect(x, y, b, h, c); rect(x + w - b, y, b, h, c);
 }
 
-// ゲームボーイ風の 文字わく
+// 七つの谷のガラス細工と湖を思わせる共通ウィンドウ。
 export function window9(x, y, w, h) {
-  rect(x, y, w, h, 0);
-  frame(x, y, w, h, 3, 2);
-  frame(x + 3, y + 3, w - 6, h - 6, 3, 1);
+  if (mode !== "color" || typeof ctx.roundRect !== "function") {
+    rect(x, y, w, h, 0); frame(x, y, w, h, 3, 2); frame(x + 3, y + 3, w - 6, h - 6, 3, 1);
+    return;
+  }
+  ctx.save();
+  const r = Math.max(3, Math.min(8, Math.floor(Math.min(w, h) / 7)));
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
+  const grad = ctx.createLinearGradient(x, y, x, y + h);
+  grad.addColorStop(0, "rgba(250,253,247,.98)");
+  grad.addColorStop(1, "rgba(215,237,233,.97)");
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.strokeStyle = "#10283e"; ctx.lineWidth = 3; ctx.stroke();
+  ctx.beginPath(); ctx.roundRect(x + 4, y + 4, w - 8, h - 8, Math.max(2, r - 2));
+  ctx.strokeStyle = "#4aa4bd"; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = "#e3ad43"; ctx.fillRect(x + 9, y + 5, Math.max(14, Math.min(44, w * .18)), 2);
+  ctx.restore();
 }
 
 let fontReady = false;

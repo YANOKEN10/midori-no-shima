@@ -15,6 +15,7 @@ import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
 import { START } from "./data/maps.js";
+import { drawTitleBackground } from "./revampArt.js";
 
 let scene = null;
 let last = 0;
@@ -65,6 +66,26 @@ const title = {
   update(dt) { this.t += dt; ui.update(dt); },
   draw() {
     const t = this.t;
+    if (drawTitleBackground(G.ctx, G.W, G.H)) {
+      G.ctx.save();
+      G.ctx.fillStyle = "rgba(4,18,51,.64)";
+      G.ctx.strokeStyle = "rgba(126,211,255,.82)";
+      G.ctx.lineWidth = 2;
+      G.ctx.fillRect(22, 20, G.W - 44, 80);
+      G.ctx.strokeRect(26, 24, G.W - 52, 72);
+      G.ctx.restore();
+      outlined("ガオン・ワールド", G.W / 2, 35, 25);
+      G.use("ui");
+      G.textCenter("七つの谷と リーフ・コンパス", G.W / 2, 76, 0, 13);
+      if (Math.floor(t / 500) % 2 === 0) {
+        G.ctx.fillStyle = "rgba(4,18,51,.75)";
+        G.ctx.fillRect(87, 238, 146, 30);
+        G.textCenter("PUSH  START", G.W / 2 + 1, 245, 3, 16);
+        G.textCenter("PUSH  START", G.W / 2, 244, 0, 16);
+      }
+      ui.draw();
+      return;
+    }
     // そら → うみ → くさ の はいけい
     G.use("sky");
     G.clear(0);

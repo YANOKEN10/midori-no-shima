@@ -23,6 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
+import { drawTerrain, drawHero } from "./revampArt.js";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -66,6 +67,19 @@ function colorsFor(look) {
 }
 G.onPaletteChange(() => lookColorCache.clear());
 
+const SOLID_LANDMARKS = new Set([
+  "alpineCabin","alpineLodge","alpineBoathouse","alpineWorkshop","alpineHerbalist",
+  "alpineSnowChalet","alpineRailStation","alpineObservatory"
+]);
+function landmarkBlocked(map, x, y) {
+  if ((map.warps || []).some((w) => w.x === x && w.y === y)) return false;
+  return (map.landmarks || []).some((lm) => {
+    if (!SOLID_LANDMARKS.has(lm.art)) return false;
+    const w=lm.w||4,h=lm.h||4;
+    if (x < lm.x || x >= lm.x+w || y < lm.y || y >= lm.y+h) return false;
+    return !(y === lm.y+h-1 && x === lm.x+Math.floor(w/2));
+  });
+}
 export const world = {
   mapId: "", map: null,
   x: 0, y: 0, dir: "down",
@@ -80,13 +94,13 @@ export const world = {
     this.mapId = mapId;
     this.map = MAPS[mapId];
     // ばんのため：とおれない マスに 出ないよう、ちかくの あるける マスへ
-    if (solid(tileAt(this.map, x, y)) || tileAt(this.map, x, y) === null) {
+    if (solid(tileAt(this.map, x, y)) || tileAt(this.map, x, y) === null || landmarkBlocked(this.map, x, y)) {
       let found = null;
       for (let r = 1; r <= 4 && !found; r++) {
         for (let dy = -r; dy <= r && !found; dy++) {
           for (let dx = -r; dx <= r && !found; dx++) {
             const c = tileAt(this.map, x + dx, y + dy);
-            if (c !== null && !solid(c) && c !== "L") found = [x + dx, y + dy];
+            if (c !== null && !solid(c) && c !== "L" && !landmarkBlocked(this.map, x + dx, y + dy)) found = [x + dx, y + dy];
           }
         }
       }
@@ -157,7 +171,7 @@ export const world = {
       beep("blip");
       return;
     }
-    if (solid(ch)) return;
+    if (solid(ch) || landmarkBlocked(this.map, nx, ny)) return;
     if (this.npcAt(nx, ny)) return;
     this.mx = nx; this.my = ny;
     this.moving = true;
@@ -723,7 +737,9 @@ export const world = {
         // き の ところは まず じめんだけ えがく（木は あとで かさねる）
         const hiddenBuilding = map.hideTileHouses && (ch === "r" || ch === "#" || ch === "w" || ch === "D");
         const draw = hiddenBuilding ? "," : (ch === "T") ? ((map.sets && map.sets.T2) || ",") : ch;
-        G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tx * T - camX, ty * T - camY);
+        const tileX = tx * T - camX, tileY = ty * T - camY;
+        const newGround = !sh && drawTerrain(G.ctx, draw, map, tileX, tileY, T, tx, ty);
+        if (!newGround) G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tileX, tileY);
       }
     }
 
@@ -778,14 +794,14 @@ export const world = {
       } else if (p.me) {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
-        let img;
-        const f = playerFrames()[this.dir][fi];
-        if (G.isColor()) {
-          img = G.makeColorArt(f, 1, "pc" + this.dir + fi, playerColors(State.save.look));
-        } else {
-          img = G.makeArt(framesFor("player")[this.dir][fi], 1, "p" + this.dir + fi, "player");
+        const heroX = px - camX, heroY = py - camY - 28 + hopY;
+        if (!G.isColor() || !drawHero(G.ctx, this.dir, this.moving, this.tick, heroX, heroY)) {
+          let img;
+          const f = playerFrames()[this.dir][fi];
+          if (G.isColor()) img = G.makeColorArt(f, 1, "pc" + this.dir + fi, playerColors(State.save.look));
+          else img = G.makeArt(framesFor("player")[this.dir][fi], 1, "p" + this.dir + fi, "player");
+          G.draw(img, px - camX, py - camY - 12 + hopY);
         }
-        G.draw(img, px - camX, py - camY - 12 + hopY);
       } else {
         const n = p.n;
         const dirn = n.dir || "down";

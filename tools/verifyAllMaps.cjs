@@ -1,4 +1,4 @@
-const { chromium } = require("C:/Users/81801/AppData/Local/OpenAI/Codex/runtimes/cua_node/f24ab376120677c2/bin/node_modules/playwright-core");
+const { chromium } = require("C:/Users/81801/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core");
 
 (async () => {
   const browser = await chromium.launch({ executablePath: "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", headless: true });

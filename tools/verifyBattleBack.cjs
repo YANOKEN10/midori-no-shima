@@ -1,4 +1,4 @@
-const { chromium } = require("C:/Users/81801/AppData/Local/OpenAI/Codex/runtimes/cua_node/f24ab376120677c2/bin/node_modules/playwright-core");
+const { chromium } = require("C:/Users/81801/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core");
 
 const fieldMap = process.argv[2] || "village";
 async function capture(name, viewport, output) {

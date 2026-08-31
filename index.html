@@ -95,6 +95,72 @@
     color: #b9c4d8; background: rgba(20,26,38,.7); padding: 3px 8px; border-radius: 3px;
     pointer-events: auto; cursor: pointer;
   }
+
+  /* Alpine glass controller — 操作配置は維持し、色・質感・視認性を統一 */
+  html, body {
+    background:
+      radial-gradient(circle at 50% 18%, rgba(30,112,160,.28), transparent 38%),
+      linear-gradient(165deg, #07182b 0%, #0b2740 48%, #061525 100%);
+  }
+  #screen {
+    border-radius: 10px;
+    box-shadow: 0 0 0 2px rgba(114,203,238,.8), 0 0 0 7px rgba(7,31,52,.9),
+                0 20px 55px rgba(0,0,0,.58), 0 0 38px rgba(37,166,210,.2);
+  }
+  body.touch #stage { height: 58vh; padding-top: max(18px, env(safe-area-inset-top)); }
+  body.touch #screen { width: min(92vw, 720px) !important; height: auto !important; }
+  .btn {
+    overflow: hidden;
+    border: 2px solid rgba(151,225,247,.82);
+    background: linear-gradient(145deg, rgba(28,103,151,.96), rgba(7,39,73,.98));
+    color: #f7fdff;
+    text-shadow: 0 2px 0 #06213b;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.32), inset 0 -5px 12px rgba(0,18,43,.45),
+                0 8px 20px rgba(0,0,0,.34), 0 0 16px rgba(45,186,224,.15);
+    backdrop-filter: blur(10px);
+  }
+  .btn::after {
+    content:""; position:absolute; inset:3px; border-radius:inherit;
+    border:1px solid rgba(255,255,255,.12); pointer-events:none;
+  }
+  .btn:active, .btn.on {
+    transform: translateY(2px);
+    background: linear-gradient(145deg, #f6c75d, #dc7d28);
+    border-color:#fff0a8; color:#09233a; text-shadow:none;
+    box-shadow: inset 0 2px 7px rgba(111,53,0,.28), 0 3px 9px rgba(0,0,0,.3);
+  }
+  #dpad { filter: drop-shadow(0 10px 20px rgba(0,0,0,.35)); }
+  #dpad .btn { border-radius: 15px; font: 700 21px system-ui,sans-serif; }
+  #dc {
+    background: radial-gradient(circle, #123f68 0 35%, #082b50 38% 100%);
+    border-color:rgba(151,225,247,.4);
+  }
+  #ba {
+    background: radial-gradient(circle at 35% 28%, #ffd978, #e78925 58%, #9e461a);
+    border-color:#ffe8a5; color:#17263b; text-shadow:0 1px rgba(255,255,255,.5);
+  }
+  #bb {
+    background: radial-gradient(circle at 35% 28%, #73e5df, #168a9c 60%, #075169);
+    border-color:#a9fff5;
+  }
+  #bs, #bm {
+    border-radius:22px; letter-spacing:1.5px;
+    background:linear-gradient(145deg,#234f85,#0c2b55);
+    border-color:rgba(137,207,244,.72);
+  }
+  #whoami { color:#d9f5ff; background:rgba(4,28,50,.72); border:1px solid rgba(95,195,231,.25); }
+  #gate { background: radial-gradient(circle at 50% 10%, rgba(25,117,158,.36), transparent 42%), rgba(3,18,33,.95); }
+  .card {
+    background: linear-gradient(165deg, rgba(17,57,84,.97), rgba(7,27,48,.98));
+    border: 1px solid rgba(137,219,240,.72); border-radius: 18px;
+    box-shadow: inset 0 1px rgba(255,255,255,.18), 0 22px 65px rgba(0,0,0,.55), 0 0 28px rgba(30,165,201,.16);
+  }
+  .card h1 { color:#fff1a9; text-shadow:0 2px #563b11; }
+  .tab { border-radius:10px; background:rgba(4,30,54,.72); border-color:rgba(106,185,216,.38); }
+  .tab.on { background:linear-gradient(135deg,#188fa4,#2865a4); border-color:#9cece8; }
+  input { border-radius:10px; background:rgba(2,21,40,.8); border-color:rgba(112,192,222,.45); }
+  button.go { border-radius:12px; background:linear-gradient(135deg,#e8aa3d,#db7527); box-shadow:0 8px 18px rgba(0,0,0,.28); }
+  button.ghost { border-radius:12px; border-color:rgba(112,192,222,.45); color:#caeaf2; }
 </style>
 
 <div id="stage"><canvas id="screen" width="320" height="288"></canvas></div>
@@ -102,10 +168,10 @@
 <div id="pad">
   <div id="dpad">
     <div class="btn" id="dc"></div>
-    <div class="btn" id="du" data-k="up">▲</div>
-    <div class="btn" id="dd" data-k="down">▼</div>
-    <div class="btn" id="dl" data-k="left">◀</div>
-    <div class="btn" id="dr" data-k="right">▶</div>
+    <div class="btn" id="du" data-k="up">&#9650;&#65038;</div>
+    <div class="btn" id="dd" data-k="down">&#9660;&#65038;</div>
+    <div class="btn" id="dl" data-k="left">&#9664;&#65038;</div>
+    <div class="btn" id="dr" data-k="right">&#9654;&#65038;</div>
   </div>
   <div class="btn" id="ba" data-k="a">A</div>
   <div class="btn" id="bb" data-k="b">B</div>
@@ -163,5 +229,5 @@
   </div>
 </div>
 
-<meta name="voraz-build" content="20260831-alpine-world">
-<script type="module" src="src/main.js?v=20260831-alpine-world"></script>
+<meta name="voraz-build" content="20260831-full-revamp">
+<script type="module" src="src/main.js?v=20260831-full-revamp"></script>
