@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail } from "./revampArt.js";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail } from "./revampArt.js?v=20260901-seamless-map-v2";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;

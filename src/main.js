@@ -15,7 +15,7 @@ import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
 import { START } from "./data/maps.js";
-import { drawTitleBackground } from "./revampArt.js";
+import { drawTitleBackground } from "./revampArt.js?v=20260901-seamless-map-v2";
 
 let scene = null;
 let last = 0;
