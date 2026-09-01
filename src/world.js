@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero } from "./revampArt.js";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail } from "./revampArt.js";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -740,6 +740,7 @@ export const world = {
         const tileX = tx * T - camX, tileY = ty * T - camY;
         const newGround = !sh && drawTerrain(G.ctx, draw, map, tileX, tileY, T, tx, ty);
         if (!newGround) G.draw(tileFor(draw, frame, map.sets, draw === ch ? mask : 255, vr, sh, tx, ty), tileX, tileY);
+        if(newGround) drawTileDetail(G.ctx,ch,tileX,tileY,T);
       }
     }
 
@@ -750,8 +751,11 @@ export const world = {
         const kind = ((tx * 5 + ty * 11 + tx * ty) >>> 0) % 4;
         const foot = edgeTile(map, tx, ty + 1) !== "T";     // 下に 木が なければ みきを 出す
         const winterTree = map.sets && map.sets[","] === "snow";
-        G.draw(treeImage(kind, foot, winterTree),
-               tx * T - camX - (TREE_W - T) / 2, ty * T - camY - TREE_UP);
+        const treeX=tx*T-camX, treeY=ty*T-camY;
+        if(!G.isColor() || !drawRevampTree(G.ctx,treeX,treeY)) {
+          G.draw(treeImage(kind, foot, winterTree),
+                 treeX - (TREE_W - T) / 2, treeY - TREE_UP);
+        }
       }
     }
 
@@ -764,12 +768,13 @@ export const world = {
 
     // 山岳世界の大型建築・橋・崖。複数マスをまたぐ高密度画像で奥行きを出す。
     for (const lm of map.landmarks || []) {
-      const img = environmentTile(lm.art);
-      if (!img) continue;
       const sx = lm.x * T - camX, sy = lm.y * T - camY;
       const w = (lm.w || 4) * T, h = (lm.h || 4) * T;
       if (sx > G.W || sy > G.H || sx + w < 0 || sy + h < 0) continue;
-      G.drawScaled(img, sx, sy, w, h);
+      if(!G.isColor() || !drawRevampObject(G.ctx,lm.art,sx,sy,w,h)) {
+        const img = environmentTile(lm.art);
+        if (img) G.drawScaled(img, sx, sy, w, h);
+      }
     }
 
     // おちている どうぐ
