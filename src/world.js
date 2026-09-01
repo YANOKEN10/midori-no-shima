@@ -10,7 +10,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260901-world-layout-v3";
+import { MAPS } from "./data/maps.js?v=20260901-world-layout-v4";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail } from "./revampArt.js?v=20260901-world-layout-v3";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260901-world-layout-v4";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -93,6 +93,9 @@ export const world = {
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
     this.mapId = mapId;
     this.map = MAPS[mapId];
+    if (this.map.freeMove && (tileAt(this.map, Math.floor(x), Math.floor(y)) == null || solid(tileAt(this.map, Math.floor(x), Math.floor(y))))) {
+      x = this.map.spawn.x; y = this.map.spawn.y;
+    }
     // ばんのため：とおれない マスに 出ないよう、ちかくの あるける マスへ
     if (solid(tileAt(this.map, x, y)) || tileAt(this.map, x, y) === null || landmarkBlocked(this.map, x, y)) {
       let found = null;
@@ -107,6 +110,8 @@ export const world = {
       if (found) { x = found[0]; y = found[1]; }
     }
     this.x = x; this.y = y;
+    this.fx = x; this.fy = y;
+    this.freeCellX = Math.floor(x); this.freeCellY = Math.floor(y);
     if (dir) this.dir = dir;
     this.ox = this.oy = 0;
     this.moving = false;
@@ -123,6 +128,11 @@ export const world = {
     if (ui.busy || this.busy) return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
+
+    if (this.map.freeMove) {
+      if (In.hit("a")) { this.interact(); return; }
+      this.updateFree(dt); return;
+    }
 
     if (this.moving) {
       const sp = SPEED * (this.hop ? 1.5 : 1);
@@ -153,6 +163,50 @@ export const world = {
     } else {
       this.walkFrame = 0;
     }
+  },
+
+  updateFree(dt) {
+    const move = In.movementVector();
+    if (!move.x && !move.y) { this.moving = false; this.walkFrame = 0; return; }
+    const length = Math.hypot(move.x, move.y) || 1;
+    const vx = move.x / length, vy = move.y / length;
+    const distance = Math.min(0.18, dt * 0.0062);
+    if (Math.abs(vx) > Math.abs(vy)) this.dir = vx < 0 ? "left" : "right";
+    else this.dir = vy < 0 ? "up" : "down";
+
+    let nx = this.fx + vx * distance, ny = this.fy + vy * distance;
+    // 壁沿いで止まり過ぎないよう、X/Yを分離して滑らせる。
+    if (this.canFreeStand(nx, this.fy)) this.fx = nx;
+    if (this.canFreeStand(this.fx, ny)) this.fy = ny;
+    this.x = this.fx; this.y = this.fy;
+    this.ox = this.oy = 0;
+    this.moving = true;
+    this.walkTimer += dt;
+    if (this.walkTimer > 110) { this.walkTimer = 0; this.walkFrame = (this.walkFrame + 1) % 4; }
+    State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
+
+    const wp = (this.map.warps || []).find((w) => Math.abs(w.x - this.fx) < 0.38 && Math.abs(w.y - this.fy) < 0.38);
+    if (wp && !this.busy) { this.busy = true; this.doWarp(wp).finally(() => { this.busy = false; }); return; }
+
+    const cellX = Math.floor(this.fx), cellY = Math.floor(this.fy);
+    if (cellX !== this.freeCellX || cellY !== this.freeCellY) {
+      this.freeCellX = cellX; this.freeCellY = cellY;
+      State.save.steps = (State.save.steps || 0) + 1;
+      const ch = tileAt(this.map, cellX, cellY);
+      // 野生ガオンは「濃い草むら (")」に足を踏み入れた時だけ出現する。
+      if (ch === '"' && this.map.enc && chance(this.map.enc.rate / 100) && !this.busy) {
+        this.wildBattle();
+      }
+    }
+  },
+
+  canFreeStand(x, y) {
+    const foot = [[0,0],[-.22,-.08],[.22,-.08],[-.2,.18],[.2,.18]];
+    for (const [ox, oy] of foot) {
+      const ch = tileAt(this.map, Math.floor(x + ox), Math.floor(y + oy));
+      if (ch == null || solid(ch) || ch === "L") return false;
+    }
+    return !this.npcs.some((n) => !n.gone && Math.hypot(n.x - x, n.y - y) < .58);
   },
 
   /* --- あるく ------------------------------------------------- */
@@ -202,7 +256,21 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     beep("warp");
-    await wait(160);
+    const enteringBuilding = this.map && this.map.freeMove && !wp.edge && wp.to !== "@back";
+    if (enteringBuilding) {
+      // 玄関の奥へ歩き、戸口に隠れてから暗転する。
+      this.dir = "up"; this.moving = true;
+      for (let i = 1; i <= 7; i++) {
+        this.fy -= 0.055;
+        this.y = this.fy;
+        this.walkFrame = i % 4;
+        this.doorFade = Math.max(0, (i - 3) / 4);
+        await wait(36);
+      }
+    } else {
+      this.doorFade = 1;
+      await wait(150);
+    }
     if (wp.to === "@back") {
       const b = State.save.backTo || { map: "village", x: 7, y: 6 };
       this.enter(b.map, b.x, b.y, "down");
@@ -210,6 +278,11 @@ export const world = {
       if (wp.back) State.save.backTo = wp.back;
       this.enter(wp.to, wp.tx, wp.ty, wp.edge ? this.dir : "down");
     }
+    for (let i = 5; i >= 0; i--) {
+      this.doorFade = i / 5;
+      await wait(32);
+    }
+    this.doorFade = 0;
     saveLocal();
     this.busy = false;
   },
@@ -259,7 +332,7 @@ export const world = {
   interact() {
     const dx = this.dir === "left" ? -1 : this.dir === "right" ? 1 : 0;
     const dy = this.dir === "up" ? -1 : this.dir === "down" ? 1 : 0;
-    const tx = this.x + dx, ty = this.y + dy;
+    const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
 
     const n = this.npcAt(tx, ty);
     if (n) { this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
@@ -714,8 +787,10 @@ export const world = {
 
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
+    const fullBackdrop = map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
     for (let ty = y0; ty <= y0 + Math.ceil(G.H / T); ty++) {
       for (let tx = x0; tx <= x0 + Math.ceil(G.W / T); tx++) {
+        if (fullBackdrop) continue;
         // 地図の そとは いちばん はしの マスを つづけて えがく
         const ch = edgeTile(map, tx, ty);
         if (ch === null) continue;
@@ -747,7 +822,7 @@ export const world = {
     // き（1本ずつ かさねて もりに 見せる）
     for (let ty = y0 - 1; ty <= y0 + Math.ceil(G.H / T) + 1; ty++) {
       for (let tx = x0; tx <= x0 + Math.ceil(G.W / T); tx++) {
-        if (edgeTile(map, tx, ty) !== "T") continue;
+        if (fullBackdrop || edgeTile(map, tx, ty) !== "T") continue;
         const kind = ((tx * 5 + ty * 11 + tx * ty) >>> 0) % 4;
         const foot = edgeTile(map, tx, ty + 1) !== "T";     // 下に 木が なければ みきを 出す
         const winterTree = map.sets && map.sets[","] === "snow";
@@ -760,14 +835,14 @@ export const world = {
     }
 
     // たてもの（何マスかに またがる 1まいの え）
-    for (const hs of map.hideTileHouses ? [] : findHouses(map)) {
+    for (const hs of fullBackdrop || map.hideTileHouses ? [] : findHouses(map)) {
       const sx = hs.x * T - camX, sy = hs.y * T - camY;
       if (sx > G.W || sy > G.H || sx + hs.w * T < 0 || sy + hs.h * T < 0) continue;
       G.draw(houseImage(hs), sx, sy);
     }
 
     // 山岳世界の大型建築・橋・崖。複数マスをまたぐ高密度画像で奥行きを出す。
-    for (const lm of map.landmarks || []) {
+    for (const lm of fullBackdrop ? [] : (map.landmarks || [])) {
       const sx = lm.x * T - camX, sy = lm.y * T - camY;
       const w = (lm.w || 4) * T, h = (lm.h || 4) * T;
       if (sx > G.W || sy > G.H || sx + w < 0 || sy + h < 0) continue;
@@ -833,6 +908,10 @@ export const world = {
       G.text(map.name, 24, 19, 3, 16);
     }
     if (compassEnabled()) drawCompassArrow(this.mapId, this.x, this.y, camX, camY, this.tick);
+    if (this.doorFade > 0) {
+      G.ctx.fillStyle = `rgba(3, 12, 23, ${Math.min(1, this.doorFade)})`;
+      G.ctx.fillRect(0, 0, G.W, G.H);
+    }
     ui.draw();
   },
 };

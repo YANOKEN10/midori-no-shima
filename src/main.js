@@ -8,14 +8,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260901-world-layout-v3";
+import { world, bgmFor } from "./world.js?v=20260901-world-layout-v4";
 import { battle, startBattle } from "./battle.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260901-world-layout-v3";
-import { drawTitleBackground } from "./revampArt.js?v=20260901-world-layout-v3";
+import { START } from "./data/maps.js?v=20260901-world-layout-v4";
+import { drawTitleBackground } from "./revampArt.js?v=20260901-world-layout-v4";
 
 let scene = null;
 let last = 0;
@@ -149,6 +149,14 @@ async function boot() {
 
   scene = title;
   requestAnimationFrame(loop);
+
+  // 自動ビジュアル検証専用。公開環境では動作しない。
+  if (/^(localhost|127.0.0.1)$/.test(location.hostname) && new URLSearchParams(location.search).has("v4test")) {
+    loadInto(newGame("レオ"));
+    world.enter("village", 21, 19, "down");
+    scene = world;
+    return;
+  }
 
   cloud.init();
   const local = loadLocal();

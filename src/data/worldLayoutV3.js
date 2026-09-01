@@ -148,7 +148,7 @@ export function rebuildOutdoorWorld(maps) {
   const info={};
   for(const [id,map] of Object.entries(maps)) {
     map.id=id;
-    if(map.kind!=="out") continue;
+    if(map.kind!=="out" || map.layoutVersion === 4) continue;
     const ow=map.rows[0].length,oh=map.rows.length;
     info[id]={ow,oh,nw:Math.max(MIN_W,ow+8),nh:Math.max(MIN_H,oh+8)};
   }

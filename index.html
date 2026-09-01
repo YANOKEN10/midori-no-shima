@@ -41,11 +41,9 @@
     color: #eef2f8; font: 16px "DotGothic16", monospace; border-radius: 12px;
   }
   .btn:active, .btn.on { background: rgba(247,178,58,.75); color: #141a26; }
-  #dpad { position: absolute; left: 14px; bottom: 96px; width: 156px; height: 156px; pointer-events: auto; }
-  #dpad .btn { width: 52px; height: 52px; border-radius: 10px; }
-  #du { left: 52px; top: 0; } #dd { left: 52px; top: 104px; }
-  #dl { left: 0; top: 52px; } #dr { left: 104px; top: 52px; }
-  #dc { left: 52px; top: 52px; background: rgba(30,38,56,.5); border-color: rgba(223,228,238,.2); pointer-events: none; }
+  #joystick { position:absolute; left:18px; bottom:92px; width:154px; height:154px; border-radius:50%; pointer-events:auto; touch-action:none; background:radial-gradient(circle,rgba(24,91,135,.72) 0 36%,rgba(5,35,64,.92) 38% 100%); border:3px solid rgba(151,225,247,.68); box-shadow:inset 0 8px 22px rgba(255,255,255,.1),0 12px 24px rgba(0,0,0,.38); }
+  #joystick::before { content:""; position:absolute; inset:20px; border-radius:50%; border:1px solid rgba(168,231,248,.26); }
+  #stickKnob { position:absolute; left:50%; top:50%; width:66px; height:66px; margin:-33px; border-radius:50%; background:radial-gradient(circle at 34% 28%,#58b9e6,#146298 58%,#082f5c); border:3px solid #9de7fa; box-shadow:inset 0 3px 8px rgba(255,255,255,.28),0 8px 16px rgba(0,0,0,.42); transition:transform 55ms linear; }
   #ba { right: 18px; bottom: 150px; width: 76px; height: 76px; border-radius: 50%; font-size: 24px; }
   #bb { right: 100px; bottom: 96px; width: 68px; height: 68px; border-radius: 50%; font-size: 22px; }
   #bs { right: 18px; bottom: 40px; width: 96px; height: 40px; font-size: 13px; }
@@ -129,12 +127,7 @@
     border-color:#fff0a8; color:#09233a; text-shadow:none;
     box-shadow: inset 0 2px 7px rgba(111,53,0,.28), 0 3px 9px rgba(0,0,0,.3);
   }
-  #dpad { filter: drop-shadow(0 10px 20px rgba(0,0,0,.35)); }
-  #dpad .btn { border-radius: 15px; font: 700 21px system-ui,sans-serif; }
-  #dc {
-    background: radial-gradient(circle, #123f68 0 35%, #082b50 38% 100%);
-    border-color:rgba(151,225,247,.4);
-  }
+  #joystick.on #stickKnob { box-shadow:inset 0 3px 8px rgba(255,255,255,.35),0 4px 10px rgba(0,0,0,.4),0 0 18px rgba(91,214,244,.35); }
   #ba {
     background: radial-gradient(circle at 35% 28%, #ffd978, #e78925 58%, #9e461a);
     border-color:#ffe8a5; color:#17263b; text-shadow:0 1px rgba(255,255,255,.5);
@@ -166,13 +159,7 @@
 <div id="stage"><canvas id="screen" width="320" height="288"></canvas></div>
 
 <div id="pad">
-  <div id="dpad">
-    <div class="btn" id="dc"></div>
-    <div class="btn" id="du" data-k="up">&#9650;&#65038;</div>
-    <div class="btn" id="dd" data-k="down">&#9660;&#65038;</div>
-    <div class="btn" id="dl" data-k="left">&#9664;&#65038;</div>
-    <div class="btn" id="dr" data-k="right">&#9654;&#65038;</div>
-  </div>
+  <div id="joystick" aria-label="移動スティック"><div id="stickKnob"></div></div>
   <div class="btn" id="ba" data-k="a">A</div>
   <div class="btn" id="bb" data-k="b">B</div>
   <div class="btn" id="bs" data-k="start">START</div>
@@ -229,5 +216,5 @@
   </div>
 </div>
 
-<meta name="voraz-build" content="20260901-world-layout-v3">
-<script type="module" src="src/main.js?v=20260901-world-layout-v3"></script>
+<meta name="voraz-build" content="20260901-world-layout-v4">
+<script type="module" src="src/main.js?v=20260901-world-layout-v4"></script>

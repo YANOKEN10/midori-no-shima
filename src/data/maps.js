@@ -1,4 +1,5 @@
 import { rebuildOutdoorWorld } from "./worldLayoutV3.js";
+import { KAZENARI_VALLEY } from "./worldV4.js";
 
 // ============================================================
 //  マップ（1もじ＝1マス）
@@ -110,7 +111,7 @@ export const MAPS = {
       "#fffxxfff#",
       "##########",
     ],
-    warps: [{ x: 4, y: 8, to: "village", tx: 4, ty: 6 }, { x: 5, y: 8, to: "village", tx: 4, ty: 6 }],
+    warps: [{ x: 4, y: 8, to: "village", tx: 9, ty: 17 }, { x: 5, y: 8, to: "village", tx: 9, ty: 17 }],
     npcs: [
       {
         x: 7, y: 6, dir: "left", look: "girl", name: "母 ミレナ",
@@ -126,68 +127,7 @@ export const MAPS = {
     ],
   },
 
-  village: {
-    name: "風鳴り谷",
-    kind: "out",
-    sets: { r: "wood", ",": "grass" },     // わらぶきの やね
-    hideTileHouses: true,
-    landmarks: [
-      { art: "alpineCabin", x: 1, y: 2, w: 6, h: 5 },
-      { art: "alpineLodge", x: 9, y: 8, w: 7, h: 6 },
-      { art: "alpineWoodBridge", x: 5, y: 6, w: 6, h: 4 },
-      { art: "alpineFirCluster", x: 0, y: 8, w: 4, h: 4 },
-    ],
-    rows: [
-      "TTTTTTT,,TTTTTTT",
-      "TTTTT,,,,,,TTTTT",
-      "TTT,,,,WW,,,,TTT",
-      "TT,,rrrWW,,,,,TT",
-      "TT,,rrrWW,TT,,TT",
-      "TT,,#D#WW,,,,,,T",
-      "T,,,,,mWW,,,,,,T",
-      "T,TT,,,WW==,,,,T",
-      "T,,,,,,WW==,TT,T",
-      "T,,F,,,WW,,,,,,T",
-      "T,,,,,,WW,rrrrrT",
-      "T,TT,,,WW,rrrrrT",
-      "T,,,,,,WW,#wDw#T",
-      "T,,,S,,WW,,mmm,T",
-      "TT,,,,,,,,,,,,TT",
-      "TTTTTTT,,TTTTTTT",
-    ],
-    warps: [
-      { x: 4, y: 5, to: "hut", tx: 4, ty: 8 },
-      { x: 12, y: 12, to: "elder", tx: 4, ty: 8 },
-      { x: 7, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
-      { x: 8, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
-      { x: 7, y: 15, to: "gate", tx: 6, ty: 1, edge: 1 },
-      { x: 8, y: 15, to: "gate", tx: 6, ty: 1, edge: 1 },
-    ],
-    signs: [
-      { x: 3, y: 13, text: ["風鳴り谷　標高 1480m",
-                            "北…雲を生む 森　南…谷をくだる 古道"] },
-    ],
-    npcs: [
-      {
-        x: 3, y: 9, dir: "down", look: "oldman", name: "木こり バルト",
-        talk: ["バルト「この谷では、人と ガオンが",
-               "　同じ 水と 薪を わけあって 暮らしてきた。",
-               "　近ごろは 森の 奥で 木々が ざわめいている。"],
-      },
-      {
-        x: 10, y: 7, dir: "left", look: "girl", name: "羊飼い エナ", hair: "bun",
-        talk: ["エナ「雪どけ水は つめたいけど、",
-               "　ガオンたちは この川の 音が だいすき。",
-               "　丸木橋は すべるから 気をつけてね。"],
-      },
-      {
-        x: 5, y: 14, dir: "down", look: "hiker", name: "橋守 ロアン", hair: "straw",
-        talk: ["ロアン「谷の外へ つづく古道は、",
-               "　リーフ・コンパスを 持つ旅人のための道だ。",
-               "　方角ではなく、命のざわめきを 指すらしい。"],
-      },
-    ],
-  },
+  village: KAZENARI_VALLEY,
 
   // となりの こや（むらの もう ひとつの いえ）
   hut2: {
@@ -204,7 +144,7 @@ export const MAPS = {
       "#fffxff#",
       "########",
     ],
-    warps: [{ x: 4, y: 7, to: "village", tx: 10, ty: 5 }],
+    warps: [{ x: 4, y: 7, to: "village", tx: 39, ty: 27 }],
     npcs: [
       {
         x: 3, y: 4, dir: "down", look: "girl", name: "おばさん",
@@ -229,7 +169,7 @@ export const MAPS = {
       "#fffxffff#",
       "##########",
     ],
-    warps: [{ x: 4, y: 8, to: "village", tx: 7, ty: 13 }],
+    warps: [{ x: 4, y: 8, to: "village", tx: 39, ty: 27 }],
     npcs: [
       {
         x: 4, y: 3, dir: "down", look: "oldman", name: "谷守 オルド",
@@ -274,8 +214,8 @@ export const MAPS = {
       "TTTTTTT,,TTTTTTT",
     ],
     warps: [
-      { x: 7, y: 19, to: "village", tx: 7, ty: 1, edge: 1 },
-      { x: 8, y: 19, to: "village", tx: 7, ty: 1, edge: 1 },
+      { x: 7, y: 19, to: "village", tx: 21, ty: 1, edge: 1 },
+      { x: 8, y: 19, to: "village", tx: 22, ty: 1, edge: 1 },
       { x: 6, y: 0, to: "mount2", tx: 7, ty: 14, edge: 1 },
       { x: 7, y: 0, to: "mount2", tx: 7, ty: 14, edge: 1 },
     ],
@@ -353,8 +293,8 @@ export const MAPS = {
       "RRRRRRR,,RRRRRRR",
     ],
     warps: [
-      { x: 6, y: 0, to: "village", tx: 7, ty: 14, edge: 1 },
-      { x: 7, y: 0, to: "village", tx: 7, ty: 14, edge: 1 },
+      { x: 6, y: 0, to: "village", tx: 21, ty: 33, edge: 1 },
+      { x: 7, y: 0, to: "village", tx: 22, ty: 33, edge: 1 },
       { x: 7, y: 8, to: "harbor", tx: 6, ty: 1, edge: 1 },
       { x: 8, y: 8, to: "harbor", tx: 6, ty: 1, edge: 1 },
     ],

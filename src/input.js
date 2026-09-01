@@ -14,12 +14,21 @@ const down = Object.create(null);
 const pressed = Object.create(null);
 let repeatAt = Object.create(null);
 let anyInput = false;
+let analogX = 0, analogY = 0;
 
 export function isDown(k) { return Boolean(down[k]); }
 export function hit(k) { return Boolean(pressed[k]); }
 export function anyHit() { return KEYS.some((k) => pressed[k]); }
 export function consumedAll() { for (const k of KEYS) pressed[k] = false; }
 export function usedInput() { const v = anyInput; anyInput = false; return v; }
+export function movementVector() {
+  let x = (down.right ? 1 : 0) - (down.left ? 1 : 0);
+  let y = (down.down ? 1 : 0) - (down.up ? 1 : 0);
+  if (Math.abs(analogX) > Math.abs(x)) x = analogX;
+  if (Math.abs(analogY) > Math.abs(y)) y = analogY;
+  const length = Math.hypot(x, y);
+  return length > 1 ? { x: x / length, y: y / length } : { x, y };
+}
 
 // おしっぱなしで くりかえす（メニューの カーソル用）
 export function repeat(k, now, first, every) {
@@ -103,6 +112,35 @@ export function initInput() {
   pad.addEventListener("touchmove", onMove, { passive: false });
   pad.addEventListener("touchend", onEnd, { passive: false });
   pad.addEventListener("touchcancel", onEnd, { passive: false });
+
+  // 360度アナログスティック。フィールドでは斜めを含む連続移動に使う。
+  const stick = document.getElementById("joystick");
+  const knob = document.getElementById("stickKnob");
+  let stickPointer = null;
+  const updateStick = (clientX, clientY) => {
+    const r = stick.getBoundingClientRect();
+    const radius = r.width * 0.34;
+    let dx = clientX - (r.left + r.width / 2), dy = clientY - (r.top + r.height / 2);
+    const length = Math.hypot(dx, dy);
+    if (length > radius) { dx *= radius / length; dy *= radius / length; }
+    analogX = dx / radius; analogY = dy / radius;
+    knob.style.transform = `translate(${dx}px, ${dy}px)`;
+    anyInput = true;
+  };
+  const releaseStick = () => {
+    stickPointer = null; analogX = analogY = 0;
+    knob.style.transform = "translate(0, 0)";
+    stick.classList.remove("on");
+  };
+  stick.addEventListener("pointerdown", (e) => {
+    e.preventDefault(); stickPointer = e.pointerId; stick.setPointerCapture(e.pointerId);
+    stick.classList.add("on"); updateStick(e.clientX, e.clientY);
+  });
+  stick.addEventListener("pointermove", (e) => {
+    if (e.pointerId === stickPointer) { e.preventDefault(); updateStick(e.clientX, e.clientY); }
+  });
+  stick.addEventListener("pointerup", releaseStick);
+  stick.addEventListener("pointercancel", releaseStick);
 
   // マウスでも おせるように（パソコンで さわりたい人むけ）
   for (const b of btns) {

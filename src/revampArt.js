@@ -1,6 +1,7 @@
 const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
 const TITLE_SRC = "../assets/revamp/title-alpine.png";
+const WORLD_V4 = { "kazenari-valley": "../assets/world-v4/kazenari-valley.png" };
 
 function image(src) {
   const im = new Image();
@@ -11,6 +12,7 @@ function image(src) {
 const hero = image(HERO_SRC);
 const objects = image(OBJECT_SRC);
 const title = image(TITLE_SRC);
+const worldBackdrops = new Map(Object.entries(WORLD_V4).map(([key, src]) => [key, image(src)]));
 const heroFrames = new Map();
 const terrainTextures = new Map();
 const objectFrames = new Map();
@@ -154,6 +156,15 @@ function objectFrame(name){
   const d=c.getImageData(0,0,cw,ch);
   for(let i=0;i<d.data.length;i+=4){const r=d.data[i],g=d.data[i+1],b=d.data[i+2];if(r>120&&b>120&&g<Math.max(r,b)*.78)d.data[i+3]=0;}
   c.putImageData(d,0,0);objectFrames.set(name,out);return out;
+}
+
+export function drawWorldBackdrop(ctx, key, camX, camY, worldW, worldH) {
+  const backdrop = worldBackdrops.get(key);
+  if (!backdrop || !backdrop.complete || !backdrop.naturalWidth) return false;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(backdrop, Math.round(-camX), Math.round(-camY), worldW, worldH);
+  return true;
 }
 
 export function drawRevampObject(ctx,name,x,y,w,h){
