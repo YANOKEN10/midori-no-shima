@@ -21,6 +21,71 @@ function kazenariCollision() {
   return grid.map((row) => row.join(""));
 }
 
+function field(width = 40, height = 40) {
+  const grid = Array.from({ length: height }, () => Array(width).fill("X"));
+  const rect = (x, y, w, h, tile = ".") => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) {
+      if (yy >= 0 && yy < height && xx >= 0 && xx < width) grid[yy][xx] = tile;
+    }
+  };
+  return { rect, rows: () => grid.map((row) => row.join("")) };
+}
+
+function mountainTrailRows() {
+  const m = field();
+  m.rect(17, 0, 9, 40);                 // 南北の砂利道
+  m.rect(14, 8, 12, 24);                // 曲がり道の肩
+  m.rect(17, 14, 9, 5, "d");          // 雪解け川の橋面
+  m.rect(5, 21, 10, 7, '"');           // 西の濃い草むら
+  m.rect(27, 23, 10, 8, '"');          // 東の濃い草むら
+  m.rect(14, 24, 4, 3); m.rect(25, 26, 3, 3);
+  return m.rows();
+}
+
+function mountainSanctuaryRows() {
+  const m = field();
+  m.rect(18, 20, 8, 20);                // 南からの主路
+  m.rect(7, 8, 24, 17, ",");           // 物語イベントの草原
+  m.rect(9, 6, 20, 7);                  // 環状路の北側
+  m.rect(27, 16, 8, 7, "d");          // 源流に架かる橋
+  m.rect(4, 19, 10, 8, '"');           // 西の濃い草むら
+  m.rect(29, 24, 9, 8, '"');           // 東の濃い草むら
+  m.rect(13, 20, 6, 4); m.rect(25, 24, 5, 4);
+  return m.rows();
+}
+
+function mountainGateRows() {
+  const m = field();
+  m.rect(17, 0, 9, 40);                 // 峠を貫く主路
+  m.rect(15, 5, 13, 9);                 // 門の前後
+  m.rect(7, 12, 11, 9);                 // 山小屋への枝道
+  m.rect(25, 22, 11, 8, '"');          // 柵内の濃い草むら
+  m.rect(24, 24, 3, 4);
+  return m.rows();
+}
+
+function windCabinRows() {
+  const m = field();
+  m.rect(5, 12, 30, 22, "f");          // 木床
+  m.rect(18, 32, 6, 8, "f");           // 南玄関
+  // 家具は一枚絵に合わせ、床から明示的に除外する。
+  m.rect(5, 12, 8, 5, "X"); m.rect(4, 17, 8, 10, "X");
+  m.rect(15, 8, 10, 7, "X"); m.rect(26, 10, 9, 7, "X");
+  m.rect(29, 24, 6, 7, "X"); m.rect(5, 29, 6, 5, "X");
+  return m.rows();
+}
+
+function valleyLodgeRows() {
+  const m = field();
+  m.rect(4, 9, 32, 25, "f");
+  m.rect(18, 32, 6, 8, "f");
+  m.rect(5, 8, 30, 5, "X");             // 北壁の暖炉・資料棚
+  m.rect(17, 16, 7, 13, "X");           // 中央の長机
+  m.rect(5, 15, 7, 6, "X"); m.rect(28, 14, 8, 8, "X");
+  m.rect(6, 25, 8, 7, "X"); m.rect(27, 25, 8, 7, "X");
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -40,10 +105,10 @@ export const KAZENARI_VALLEY = {
   warps: [
     { x: 9, y: 16, to: "hut", tx: 4, ty: 8 },
     { x: 39, y: 26, to: "elder", tx: 4, ty: 8 },
-    { x: 21, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
-    { x: 22, y: 0, to: "mount1", tx: 7, ty: 19, edge: 1 },
-    { x: 21, y: 34, to: "gate", tx: 6, ty: 1, edge: 1 },
-    { x: 22, y: 34, to: "gate", tx: 6, ty: 1, edge: 1 },
+    { x: 21, y: 0, to: "mount1", tx: 20, ty: 38, edge: 1 },
+    { x: 22, y: 0, to: "mount1", tx: 21, ty: 38, edge: 1 },
+    { x: 21, y: 34, to: "gate", tx: 20, ty: 1, edge: 1 },
+    { x: 22, y: 34, to: "gate", tx: 21, ty: 1, edge: 1 },
   ],
   signs: [{ x: 17, y: 20, text: ["風鳴り谷　標高 1480m", "北…雲を生む森　南…谷をくだる古道"] }],
   npcs: [
@@ -52,3 +117,60 @@ export const KAZENARI_VALLEY = {
     { x: 23, y: 30, dir: "down", look: "hiker", name: "橋守 ロアン", hair: "straw", talk: ["ロアン「谷の外へ続く古道は、", "　リーフ・コンパスを持つ旅人のための道だ。", "　方角ではなく、命のざわめきを指すらしい。"] },
   ],
 };
+
+export function applyFirstRegionV4(maps) {
+  const hutNpc = maps.hut.npcs;
+  Object.assign(maps.hut, {
+    layoutVersion: 4, fullArt: "wind-cabin-interior", freeMove: true,
+    spawn: { x: 20, y: 31 }, rows: windCabinRows(),
+    warps: [{ x: 20, y: 37, to: "village", tx: 9, ty: 17 }, { x: 21, y: 37, to: "village", tx: 9, ty: 17 }],
+    npcs: hutNpc.map((n, i) => Object.assign({}, n, i === 0 ? { x: 28, y: 22 } : {})),
+    objects: [
+      { x: 27, y: 12, text: ["谷の天気を読む 古い気圧計。", "針が山のほうへ ふるえている。"] },
+      { x: 12, y: 20, text: ["厚い毛布のベッド。", "窓の外から モミの香りがする。"] },
+    ],
+  });
+
+  const elderNpcs = maps.elder.npcs;
+  Object.assign(maps.elder, {
+    layoutVersion: 4, fullArt: "valley-lodge-interior", freeMove: true,
+    spawn: { x: 20, y: 31 }, rows: valleyLodgeRows(),
+    warps: [{ x: 20, y: 37, to: "village", tx: 39, ty: 27 }, { x: 21, y: 37, to: "village", tx: 39, ty: 27 }],
+    npcs: elderNpcs.map((n, i) => Object.assign({}, n, i === 0 ? { x: 20, y: 14 } : { x: 29, y: 23 })),
+  });
+
+  const mount1Npcs = maps.mount1.npcs, mount1Enc = maps.mount1.enc;
+  Object.assign(maps.mount1, {
+    layoutVersion: 4, fullArt: "mountain-trail", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: mountainTrailRows(), enc: mount1Enc,
+    warps: [
+      { x: 20, y: 39, to: "village", tx: 21, ty: 1, edge: 1 }, { x: 21, y: 39, to: "village", tx: 22, ty: 1, edge: 1 },
+      { x: 20, y: 0, to: "mount2", tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: "mount2", tx: 21, ty: 38, edge: 1 },
+    ],
+    signs: [{ x: 28, y: 8, text: ["やまみち", "この先に 山の奥地"] }],
+    items: [{ x: 27, y: 29, item: "ヒールジェル", flag: "m1heal" }],
+    npcs: mount1Npcs.map((n) => Object.assign({}, n, { x: 25, y: 23 })),
+  });
+
+  const mount2Npcs = maps.mount2.npcs, mount2Enc = maps.mount2.enc;
+  Object.assign(maps.mount2, {
+    layoutVersion: 4, fullArt: "mountain-sanctuary", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: mountainSanctuaryRows(), enc: mount2Enc,
+    warps: [{ x: 20, y: 39, to: "mount1", tx: 20, ty: 1, edge: 1 }, { x: 21, y: 39, to: "mount1", tx: 21, ty: 1, edge: 1 }],
+    npcs: mount2Npcs.map((n) => Object.assign({}, n, { x: 19, y: 10 })),
+  });
+
+  const gateNpcs = maps.gate.npcs;
+  Object.assign(maps.gate, {
+    layoutVersion: 4, fullArt: "mountain-gate", freeMove: true,
+    spawn: { x: 20, y: 2 }, rows: mountainGateRows(),
+    enc: { rate: 12, list: [["タネコロ", 4, 6, 35], ["ムシリン", 4, 6, 30], ["ネズミン", 4, 6, 20], ["ウサポン", 5, 7, 15]] },
+    warps: [
+      { x: 20, y: 0, to: "village", tx: 21, ty: 33, edge: 1 }, { x: 21, y: 0, to: "village", tx: 22, ty: 33, edge: 1 },
+      { x: 20, y: 39, to: "harbor", tx: 10, ty: 5, edge: 1 }, { x: 21, y: 39, to: "harbor", tx: 11, ty: 5, edge: 1 },
+      { x: 10, y: 15, to: "station", tx: 4, ty: 8, back: { map: "gate", x: 11, y: 18 } },
+    ],
+    signs: [{ x: 14, y: 19, text: ["谷の出口", "この先 アーレ湖港"] }],
+    npcs: gateNpcs.map((n) => Object.assign({}, n, { x: 20, y: 34 })),
+  });
+}

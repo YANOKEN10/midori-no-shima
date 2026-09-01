@@ -1,7 +1,14 @@
 const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
 const TITLE_SRC = "../assets/revamp/title-alpine.png";
-const WORLD_V4 = { "kazenari-valley": "../assets/world-v4/kazenari-valley.png" };
+const WORLD_V4 = {
+  "kazenari-valley": "../assets/world-v4/kazenari-valley.png",
+  "wind-cabin-interior": "../assets/world-v4/wind-cabin-interior.png",
+  "valley-lodge-interior": "../assets/world-v4/valley-lodge-interior.png",
+  "mountain-trail": "../assets/world-v4/mountain-trail.png",
+  "mountain-sanctuary": "../assets/world-v4/mountain-sanctuary.png",
+  "mountain-gate": "../assets/world-v4/mountain-gate.png",
+};
 
 function image(src) {
   const im = new Image();

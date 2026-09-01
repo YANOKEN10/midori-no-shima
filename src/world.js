@@ -256,7 +256,7 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     beep("warp");
-    const enteringBuilding = this.map && this.map.freeMove && !wp.edge && wp.to !== "@back";
+    const enteringBuilding = this.map && this.map.kind === "out" && this.map.freeMove && !wp.edge && wp.to !== "@back";
     if (enteringBuilding) {
       // 玄関の奥へ歩き、戸口に隠れてから暗転する。
       this.dir = "up"; this.moving = true;

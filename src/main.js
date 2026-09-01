@@ -151,9 +151,15 @@ async function boot() {
   requestAnimationFrame(loop);
 
   // 自動ビジュアル検証専用。公開環境では動作しない。
-  if (/^(localhost|127.0.0.1)$/.test(location.hostname) && new URLSearchParams(location.search).has("v4test")) {
+  const testMap = new URLSearchParams(location.search).get("v4test");
+  if (/^(localhost|127.0.0.1)$/.test(location.hostname) && testMap) {
     loadInto(newGame("レオ"));
-    world.enter("village", 21, 19, "down");
+    const starts = {
+      village: [21, 19], hut: [20, 31], elder: [20, 31],
+      mount1: [20, 37], mount2: [20, 37], gate: [20, 2],
+    };
+    const at = starts[testMap] || starts.village;
+    world.enter(starts[testMap] ? testMap : "village", at[0], at[1], "down");
     scene = world;
     return;
   }
