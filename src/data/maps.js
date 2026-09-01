@@ -1,3 +1,5 @@
+import { rebuildOutdoorWorld } from "./worldLayoutV3.js";
+
 // ============================================================
 //  マップ（1もじ＝1マス）
 //   . みち   , くさ   " たかいくさ   F はな   ~ すな   L がけ
@@ -1376,5 +1378,7 @@ const ROUTE_LANDMARKS = {
 for (const [id, landmarks] of Object.entries(ROUTE_LANDMARKS)) {
   if (MAPS[id]) MAPS[id].landmarks = landmarks;
 }
+
+rebuildOutdoorWorld(MAPS);
 
 export const START = { map: "hut", x: 4, y: 5, dir: "down" };

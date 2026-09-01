@@ -1,4 +1,3 @@
-const TERRAIN_SRC = "../assets/revamp-v2/terrain-source.png";
 const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
 const TITLE_SRC = "../assets/revamp/title-alpine.png";
@@ -9,7 +8,6 @@ function image(src) {
   im.src = new URL(src, import.meta.url).href;
   return im;
 }
-const terrain = image(TERRAIN_SRC);
 const hero = image(HERO_SRC);
 const objects = image(OBJECT_SRC);
 const title = image(TITLE_SRC);
@@ -43,7 +41,7 @@ function terrainName(ch, map) {
 }
 
 export function drawTerrain(ctx, ch, map, dx, dy, size, tx, ty) {
-  if (!terrain.complete || !terrain.naturalWidth || map.kind === "in" || map.kind === "cave") return false;
+  if (map.kind === "in" || map.kind === "cave") return false;
   const name = terrainName(ch, map);
   if (!name) return false;
   const texture = terrainTexture(name);
@@ -59,21 +57,40 @@ export function drawTerrain(ctx, ch, map, dx, dy, size, tx, ty) {
 
 function mod(n,m){ return ((n%m)+m)%m; }
 
-// 同種の地面は共通テクスチャ上の連続座標を読み、マス境界の線をなくす。
+const TERRAIN_COLORS={
+  meadow:["#6faf4d","#83c45b","#4e8e3d"],forest:["#497b39","#5f9345","#315f32"],
+  gravel:["#b89567","#caa978","#8c704f"],cobble:["#a8adb0","#c5c9c5","#747e83"],
+  river:["#28a8c6","#54c7dc","#167994"],lake:["#238da9","#46b4ca","#14677f"],
+  bank:["#7caa55","#a1c76c","#4e7c3d"],shore:["#c3ad7d","#dfcb9b","#8e7958"],
+  cliff:["#77756d","#9b978b","#4e514e"],wall:["#8c887e","#aaa59a","#5b5c58"],
+  flowers:["#6faf4d","#8ac85e","#4b8b3c"],grass:["#4d963e","#66ae48","#33742f"],
+  snow:["#eaf3f2","#ffffff","#b9d4dc"],ice:["#91d8e7","#c9f2f7","#539db6"],
+  wood:["#9c6738","#c68a4c","#68452e"],stairs:["#8f918d","#b4b5ae","#5d625f"],
+};
+
+function hash(x,y,s){let n=Math.imul(x+17,374761393)^Math.imul(y+31,668265263)^Math.imul(s+7,1442695041);n=(n^(n>>>13))*1274126177;return(n^(n>>>16))>>>0;}
+
+// 32px基準で描く、ガオン・ワールド専用の規則的な地形タイル。
 function terrainTexture(name) {
   if (terrainTextures.has(name)) return terrainTextures.get(name);
-  if (!terrain.complete || !terrain.naturalWidth) return null;
-  const [cx,cy]=CELLS[name], cw=terrain.naturalWidth/4, ch=terrain.naturalHeight/4;
-  const src=document.createElement("canvas"); src.width=64; src.height=64;
-  const c=src.getContext("2d"); c.imageSmoothingEnabled=true;
-  const inset=Math.floor(Math.min(cw,ch)*.14), sw=cw-inset*2, sh=ch-inset*2;
-  c.drawImage(terrain,cx*cw+inset,cy*ch+inset,sw,sh,0,0,64,64);
-  const out=document.createElement("canvas"); out.width=128; out.height=128;
-  const o=out.getContext("2d"); o.imageSmoothingEnabled=false;
-  o.drawImage(src,0,0,64,64,0,0,64,64);
-  o.save();o.translate(128,0);o.scale(-1,1);o.drawImage(src,0,0,64,64);o.restore();
-  o.save();o.translate(0,128);o.scale(1,-1);o.drawImage(src,0,0,64,64);o.restore();
-  o.save();o.translate(128,128);o.scale(-1,-1);o.drawImage(src,0,0,64,64);o.restore();
+  const out=document.createElement("canvas");out.width=128;out.height=128;
+  const o=out.getContext("2d"),pal=TERRAIN_COLORS[name]||TERRAIN_COLORS.meadow;
+  o.fillStyle=pal[0];o.fillRect(0,0,128,128);
+  if(name==="river"||name==="lake"||name==="ice"){
+    o.strokeStyle=pal[1];o.lineWidth=2;o.globalAlpha=.72;
+    for(let y=8;y<128;y+=13){o.beginPath();for(let x=-8;x<136;x+=8){const yy=y+Math.sin((x+y)*.11)*2;if(x===-8)o.moveTo(x,yy);else o.lineTo(x,yy);}o.stroke();}
+    o.globalAlpha=1;
+  }else if(name==="cobble"||name==="stairs"||name==="wall"||name==="cliff"){
+    o.strokeStyle=pal[2];o.lineWidth=2;
+    for(let y=0;y<128;y+=16)for(let x=(y/16%2)*-12;x<128;x+=24){o.fillStyle=pal[1];o.fillRect(x+2,y+2,20,12);o.strokeRect(x+2,y+2,20,12);}
+  }else if(name==="wood"){
+    for(let y=0;y<128;y+=16){o.fillStyle=(y/16)%2?pal[0]:pal[1];o.fillRect(0,y,128,15);o.fillStyle=pal[2];o.fillRect(0,y+14,128,2);}
+  }else{
+    for(let i=0;i<150;i++){const x=hash(i,3,name.length)%128,y=hash(i,9,name.length)%128;o.fillStyle=i%3?pal[1]:pal[2];o.globalAlpha=.25+(i%4)*.08;o.fillRect(x,y,i%5===0?2:1,i%7===0?3:1);}
+    o.globalAlpha=1;
+    if(name==="grass")for(let i=0;i<48;i++){const x=hash(i,21,5)%128,y=hash(i,37,8)%128;o.strokeStyle=pal[2];o.beginPath();o.moveTo(x,y+5);o.lineTo(x-2,y);o.moveTo(x,y+5);o.lineTo(x+2,y);o.stroke();}
+    if(name==="flowers")for(let i=0;i<26;i++){const x=hash(i,41,7)%128,y=hash(i,51,9)%128;o.fillStyle=["#fff5c4","#f19aa8","#9cd5ff"][i%3];o.fillRect(x,y,3,3);o.fillStyle="#fff";o.fillRect(x+1,y+1,1,1);}
+  }
   terrainTextures.set(name,out); return out;
 }
 
