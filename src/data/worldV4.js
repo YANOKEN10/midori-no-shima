@@ -86,6 +86,23 @@ function valleyLodgeRows() {
   return m.rows();
 }
 
+function secondRegionRows(kind = "route") {
+  const m = field();
+  m.rect(16, 0, 9, 40);
+  m.rect(7, 8, 28, 24);
+  if (kind === "route") {
+    m.rect(15, 18, 11, 5, "d");
+    m.rect(3, 25, 11, 9, '"');
+    m.rect(27, 8, 11, 9, '"');
+  } else {
+    m.rect(0, 18, 11, 8);
+    m.rect(30, 18, 10, 8);
+    m.rect(7, 29, 10, 7, '"');
+    m.rect(29, 29, 8, 7, '"');
+  }
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -173,4 +190,51 @@ export function applyFirstRegionV4(maps) {
     signs: [{ x: 14, y: 19, text: ["谷の出口", "この先 アーレ湖港"] }],
     npcs: gateNpcs.map((n) => Object.assign({}, n, { x: 20, y: 34 })),
   });
+}
+
+export function applySecondRegionV4(maps) {
+  const set = (id, fullArt, kind, warps, points) => {
+    const map = maps[id];
+    Object.assign(map, {
+      layoutVersion: 4,
+      fullArt,
+      freeMove: true,
+      spawn: { x: 20, y: 37 },
+      rows: secondRegionRows(kind),
+      warps,
+      npcs: (map.npcs || []).map((npc, i) => Object.assign({}, npc, points[i] || points[0] || {})),
+    });
+  };
+  const edges = (south, north) => [
+    { x: 20, y: 39, to: south, tx: 20, ty: 2, edge: 1 },
+    { x: 21, y: 39, to: south, tx: 21, ty: 2, edge: 1 },
+    { x: 20, y: 0, to: north, tx: 20, ty: 38, edge: 1 },
+    { x: 21, y: 0, to: north, tx: 21, ty: 38, edge: 1 },
+  ];
+
+  set("harbor", "aare-lake-harbor", "town", [
+    ...edges("gate", "route1"),
+    { x: 0, y: 21, to: "inlet", tx: 5, ty: 10, edge: 1 },
+    { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "harbor", x: 11, y: 14 } },
+    { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "harbor", x: 30, y: 14 } },
+    { x: 31, y: 24, to: "clothes1", tx: 4, ty: 6 },
+  ], [{ x: 20, y: 22 }, { x: 12, y: 25 }, { x: 28, y: 23 }]);
+  maps.harbor.spawn = { x: 20, y: 3 };
+
+  set("route1", "lakeside-route", "route", edges("harbor", "sand"), [{ x: 18, y: 27 }, { x: 24, y: 12 }]);
+  set("sand", "sunny-terraces", "town", [
+    ...edges("route1", "route2"),
+    { x: 39, y: 21, to: "desert", tx: 5, ty: 10, edge: 1 },
+    { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "sand", x: 11, y: 14 } },
+    { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "sand", x: 30, y: 14 } },
+    { x: 9, y: 24, to: "salon", tx: 4, ty: 6 },
+  ], [{ x: 18, y: 22 }, { x: 27, y: 24 }]);
+  set("route2", "dry-pasture-route", "route", edges("sand", "forest"), [{ x: 20, y: 27 }]);
+  set("forest", "fir-echo-forest", "town", [
+    ...edges("route2", "route3"),
+    { x: 39, y: 21, to: "deepforest", tx: 5, ty: 10, edge: 1 },
+    { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "forest", x: 11, y: 14 } },
+    { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "forest", x: 30, y: 14 } },
+  ], [{ x: 18, y: 22 }, { x: 27, y: 24 }]);
+  set("route3", "fir-corridor", "route", edges("forest", "stone"), [{ x: 18, y: 27 }, { x: 24, y: 12 }]);
 }

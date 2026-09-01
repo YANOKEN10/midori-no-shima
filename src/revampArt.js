@@ -8,6 +8,12 @@ const WORLD_V4 = {
   "mountain-trail": "../assets/world-v4/mountain-trail.png",
   "mountain-sanctuary": "../assets/world-v4/mountain-sanctuary.png",
   "mountain-gate": "../assets/world-v4/mountain-gate.png",
+  "aare-lake-harbor": "../assets/world-v4/aare-lake-harbor.png",
+  "lakeside-route": "../assets/world-v4/lakeside-route.png",
+  "sunny-terraces": "../assets/world-v4/sunny-terraces.png",
+  "dry-pasture-route": "../assets/world-v4/dry-pasture-route.png",
+  "fir-echo-forest": "../assets/world-v4/fir-echo-forest.png",
+  "fir-corridor": "../assets/world-v4/fir-corridor.png",
 };
 
 function image(src) {

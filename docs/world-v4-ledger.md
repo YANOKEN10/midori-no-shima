@@ -26,16 +26,16 @@
 | salon | びよういん スナカゼ | 屋内 | pending |
 | clothes2 | ブティック イシヅカ | 屋内 | pending |
 | shop | ラグ・ショップ | 屋内 | pending |
-| harbor | アーレ湖港 | 屋外 | pending |
-| sand | 陽だまり棚田 | 屋外 | pending |
-| forest | モミ響きの森 | 屋外 | pending |
+| harbor | アーレ湖港 | 屋外 | implemented_unverified |
+| sand | 陽だまり棚田 | 屋外 | implemented_unverified |
+| forest | モミ響きの森 | 屋外 | implemented_unverified |
 | stone | 石笛の峡谷 | 屋外 | pending |
 | aqua | 水鏡の入江 | 屋外 | pending |
 | sky | 白嶺のシャレー | 屋外 | pending |
 | flame | 夕映え高原 | 屋外 | pending |
-| route1 | 湖沿いの道 | 屋外 | pending |
-| route2 | 乾いた牧道 | 屋外 | pending |
-| route3 | モミの回廊 | 屋外 | pending |
+| route1 | 湖沿いの道 | 屋外 | implemented_unverified |
+| route2 | 乾いた牧道 | 屋外 | implemented_unverified |
+| route3 | モミの回廊 | 屋外 | implemented_unverified |
 | route4 | 石切りの道 | 屋外 | pending |
 | route5 | 水鏡の桟道 | 屋外 | pending |
 | route6 | 白嶺の石段 | 屋外 | pending |

@@ -157,6 +157,8 @@ async function boot() {
     const starts = {
       village: [21, 19], hut: [20, 31], elder: [20, 31],
       mount1: [20, 37], mount2: [20, 37], gate: [20, 2],
+      harbor: [20, 3], route1: [20, 37], sand: [20, 37],
+      route2: [20, 37], forest: [20, 37], route3: [20, 37],
     };
     const at = starts[testMap] || starts.village;
     world.enter(starts[testMap] ? testMap : "village", at[0], at[1], "down");
