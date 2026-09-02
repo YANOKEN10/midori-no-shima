@@ -10,7 +10,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260901-world-layout-v4";
+import { MAPS } from "./data/maps.js?v=20260902-movement-v5";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260901-world-layout-v4";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260902-movement-v5";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -115,7 +115,10 @@ export const world = {
     if (dir) this.dir = dir;
     this.ox = this.oy = 0;
     this.moving = false;
-    this.npcs = (this.map.npcs || []).map((n, i) => Object.assign({}, n, { idx: i, ox: 0, oy: 0 }));
+    this.npcs = (this.map.npcs || []).map((n, i) => Object.assign({}, n, {
+      idx: i, ox: 0, oy: 0, homeX: n.x, homeY: n.y,
+      roamWait: 900 + i * 370, moving: false, walkFrame: 0,
+    }));
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
     playBgm(bgmFor(mapId));
@@ -125,6 +128,7 @@ export const world = {
     this.tick += dt;
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
+    if (this.map.freeMove && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
@@ -200,6 +204,33 @@ export const world = {
     }
   },
 
+  updateNpcRoam(dt) {
+    const dirs = [[0,-1,"up"],[0,1,"down"],[-1,0,"left"],[1,0,"right"]];
+    for (const n of this.npcs) {
+      if (n.gone || n.noRoam || n.trainer) continue;
+      n.roamWait -= dt;
+      if (!n.moving && n.roamWait <= 0) {
+        const d = dirs[(n.idx + Math.floor(this.tick / 1100)) % dirs.length];
+        const tx = n.x + d[0], ty = n.y + d[1];
+        const ch = tileAt(this.map, Math.floor(tx), Math.floor(ty));
+        const nearHome = Math.hypot(tx - n.homeX, ty - n.homeY) <= 1.8;
+        const nearPlayer = Math.hypot(tx - this.fx, ty - this.fy) >= .8;
+        if (nearHome && nearPlayer && ch != null && !solid(ch) && ch !== "L") {
+          n.fromX = n.x; n.fromY = n.y; n.toX = tx; n.toY = ty;
+          n.dir = d[2]; n.roamProgress = 0; n.moving = true;
+        }
+        n.roamWait = 1200 + ((n.idx * 431 + Math.floor(this.tick)) % 1300);
+      }
+      if (n.moving) {
+        n.roamProgress = Math.min(1, n.roamProgress + dt / 520);
+        n.x = n.fromX + (n.toX - n.fromX) * n.roamProgress;
+        n.y = n.fromY + (n.toY - n.fromY) * n.roamProgress;
+        n.walkFrame = Math.floor(n.roamProgress * 4) % 4;
+        if (n.roamProgress >= 1) { n.x = n.toX; n.y = n.toY; n.moving = false; }
+      }
+    }
+  },
+
   canFreeStand(x, y) {
     const foot = [[0,0],[-.22,-.08],[.22,-.08],[-.2,.18],[.2,.18]];
     for (const [ox, oy] of foot) {
@@ -231,7 +262,11 @@ export const world = {
     this.moving = true;
   },
 
-  npcAt(x, y) { return this.npcs.find((n) => n.x === x && n.y === y && !n.gone); },
+  npcAt(x, y) {
+    return this.npcs.find((n) => !n.gone && (this.map.freeMove
+      ? Math.hypot(n.x - x, n.y - y) < .72
+      : n.x === x && n.y === y));
+  },
 
   async afterStep() {
     State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
@@ -888,9 +923,10 @@ export const world = {
         const personKey = ({ boy:"Boy", girl:"Girl", prof:"Prof", oldman:"Oldman", nurse:"Nurse", clerk:"Clerk",
           sailor:"Sailor", hiker:"Hiker", leader1:"Leader1", leader2:"Leader2", rival:"Rival", philoa:"Leader1" })[n.look];
         const generatedPerson = G.isColor() && personKey && environmentTile("person" + personKey);
+        const nfi = n.moving ? n.walkFrame : 0;
         const img2 = generatedPerson || (G.isColor()
-          ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][0], 1, "nc" + n.look + npcKey(n) + dirn, colorsFor(n.look))
-          : G.makeArt(framesFor(n.look)[dirn][0], 1, "n" + n.look + dirn, n.look));
+          ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))
+          : G.makeArt(framesFor(n.look)[dirn][nfi], 1, "n" + n.look + dirn + nfi, n.look));
         G.draw(img2, n.x * T - camX, n.y * T - camY - 12);
         if (n.alert) {
           G.use("ui");

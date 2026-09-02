@@ -142,6 +142,20 @@ export function initInput() {
   stick.addEventListener("pointerup", releaseStick);
   stick.addEventListener("pointercancel", releaseStick);
 
+  // iOSのホーム画面アプリではPointer Captureが失敗する場合があるため、
+  // Touch Eventsでも同じアナログ値を更新する。
+  const stickTouch = (e) => {
+    const t = e.touches[0] || e.changedTouches[0];
+    if (!t) return;
+    e.preventDefault();
+    stick.classList.add("on");
+    updateStick(t.clientX, t.clientY);
+  };
+  stick.addEventListener("touchstart", stickTouch, { passive: false });
+  stick.addEventListener("touchmove", stickTouch, { passive: false });
+  stick.addEventListener("touchend", (e) => { e.preventDefault(); releaseStick(); }, { passive: false });
+  stick.addEventListener("touchcancel", releaseStick, { passive: false });
+
   // マウスでも おせるように（パソコンで さわりたい人むけ）
   for (const b of btns) {
     b.addEventListener("mousedown", (e) => { e.preventDefault(); set(b.dataset.k, true); b.classList.add("on"); });
