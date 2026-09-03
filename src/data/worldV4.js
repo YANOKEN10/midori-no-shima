@@ -135,6 +135,22 @@ function mirrorBoardwalkRows() {
   return m.rows();
 }
 
+function snowTownRows() {
+  const m = field();
+  m.rect(17, 0, 8, 40); m.rect(6, 8, 29, 24);
+  m.rect(16, 21, 10, 6, "d");
+  m.rect(5, 27, 11, 8, '"'); m.rect(0, 18, 10, 7); m.rect(31, 18, 9, 7);
+  return m.rows();
+}
+
+function snowStepsRows() {
+  const m = field();
+  m.rect(16, 0, 9, 40); m.rect(10, 5, 19, 30);
+  m.rect(15, 20, 13, 6, "d");
+  m.rect(3, 24, 11, 9, '"'); m.rect(27, 7, 10, 9, '"');
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -300,4 +316,29 @@ export function applyThirdRegionV4(maps) {
   maps.stone.signs = [{ x: 15, y: 30, text: ["石笛の峡谷", "岩壁を渡る風が 笛のように鳴る"] }];
   maps.aqua.signs = [{ x: 15, y: 30, text: ["水鏡の入江", "空と峰を映す 青い入江"] }];
   maps.route4.signs = [{ x: 15, y: 31, text: ["石切りの道", "足もとの石段に 気をつけよう"] }];
+}
+
+export function applyFourthRegionV4(maps) {
+  const edges = (south, north) => [
+    { x: 20, y: 39, to: south, tx: 20, ty: 2, edge: 1 }, { x: 21, y: 39, to: south, tx: 21, ty: 2, edge: 1 },
+    { x: 20, y: 0, to: north, tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: north, tx: 21, ty: 38, edge: 1 },
+  ];
+  const sky = maps.sky;
+  Object.assign(sky, {
+    layoutVersion: 4, fullArt: "white-ridge-chalet", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: snowTownRows(),
+    warps: [...edges("route5", "route6"),
+      { x: 39, y: 21, to: "cloud", tx: 5, ty: 10, edge: 1 },
+      { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "sky", x: 11, y: 14 } },
+      { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "sky", x: 30, y: 14 } }],
+    signs: [{ x: 15, y: 30, text: ["白嶺のシャレー", "雪と星を見守る 高地の集落"] }],
+    npcs: (sky.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 28, y: 22 } : { x: 17, y: 24 })),
+  });
+  const route = maps.route6;
+  Object.assign(route, {
+    layoutVersion: 4, fullArt: "white-ridge-steps", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: snowStepsRows(), warps: edges("sky", "flame"),
+    signs: [{ x: 15, y: 31, text: ["白嶺の石段", "吹雪の前に 峰を越えよう"] }],
+    npcs: (route.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 24, y: 12 } : { x: 18, y: 28 })),
+  });
 }

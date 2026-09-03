@@ -1,5 +1,5 @@
 import { rebuildOutdoorWorld } from "./worldLayoutV3.js";
-import { KAZENARI_VALLEY, applyFirstRegionV4, applySecondRegionV4, applyThirdRegionV4 } from "./worldV4.js";
+import { KAZENARI_VALLEY, applyFirstRegionV4, applySecondRegionV4, applyThirdRegionV4, applyFourthRegionV4 } from "./worldV4.js";
 
 // ============================================================
 //  マップ（1もじ＝1マス）
@@ -1323,5 +1323,6 @@ rebuildOutdoorWorld(MAPS);
 applyFirstRegionV4(MAPS);
 applySecondRegionV4(MAPS);
 applyThirdRegionV4(MAPS);
+applyFourthRegionV4(MAPS);
 
 export const START = { map: "hut", x: 4, y: 5, dir: "down" };

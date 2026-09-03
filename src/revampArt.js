@@ -18,6 +18,8 @@ const WORLD_V4 = {
   "stonecutter-road": "../assets/world-v4/stonecutter-road.png",
   "mirrorwater-cove": "../assets/world-v4/mirrorwater-cove.png",
   "mirrorwater-boardwalk": "../assets/world-v4/mirrorwater-boardwalk.png",
+  "white-ridge-chalet": "../assets/world-v4/white-ridge-chalet.png",
+  "white-ridge-steps": "../assets/world-v4/white-ridge-steps.png",
 };
 
 function image(src) {
