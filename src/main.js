@@ -8,14 +8,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260902-movement-v5";
+import { world, bgmFor } from "./world.js?v=20260903-world-v4";
 import { battle, startBattle } from "./battle.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260902-movement-v5";
-import { drawTitleBackground } from "./revampArt.js?v=20260902-movement-v5";
+import { START } from "./data/maps.js?v=20260903-world-v4";
+import { drawTitleBackground } from "./revampArt.js?v=20260903-world-v4";
 
 let scene = null;
 let last = 0;
@@ -162,6 +162,10 @@ async function boot() {
       stone: [20, 37], route4: [20, 37], aqua: [20, 37], route5: [20, 37],
       sky: [20, 37], route6: [20, 37],
       flame: [20, 37], route7: [15, 37], galaxy: [20, 37],
+      inlet: [2, 21], desert: [2, 21], deepforest: [2, 21],
+      cavern: [2, 21], river: [2, 21], cloud: [2, 21], volcano: [2, 21], starhill: [2, 21],
+      station: [20, 34], clothes1: [20, 34], salon: [20, 34], clothes2: [20, 34],
+      shop: [20, 34], hut2: [20, 34], arena: [20, 34],
     };
     const at = starts[testMap] || starts.village;
     world.enter(starts[testMap] ? testMap : "village", at[0], at[1], "down");

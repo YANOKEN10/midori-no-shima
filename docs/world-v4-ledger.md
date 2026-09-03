@@ -22,17 +22,17 @@
 
 | ID | 表示名 | 種別 | 状態 |
 |---|---|---|---|
-| village | 風鳴り谷 | 屋外 | verified |
-| hut | かぜの丸太ごや | 屋内 | implemented_unverified |
-| elder | 谷守の共同ロッジ | 屋内 | implemented_unverified |
+| village | 風鳴り谷 | 屋外 | automated_verified |
+| hut | かぜの丸太ごや | 屋内 | automated_verified |
+| elder | 谷守の共同ロッジ | 屋内 | automated_verified |
 | mount1 | やまみち | 屋外 | implemented_unverified |
 | mount2 | やまの奥地 | 屋外 | implemented_unverified |
 | gate | 山の出口 | 屋外 | implemented_unverified |
-| station | 山旅の共同ロッジ | 屋内 | pending |
-| clothes1 | ふくや ウミカゼ | 屋内 | pending |
-| salon | びよういん スナカゼ | 屋内 | pending |
-| clothes2 | ブティック イシヅカ | 屋内 | pending |
-| shop | ラグ・ショップ | 屋内 | pending |
+| station | 山旅の共同ロッジ | 屋内 | implemented_unverified |
+| clothes1 | ふくや ウミカゼ | 屋内 | implemented_unverified |
+| salon | びよういん スナカゼ | 屋内 | implemented_unverified |
+| clothes2 | ブティック イシヅカ | 屋内 | implemented_unverified |
+| shop | ラグ・ショップ | 屋内 | implemented_unverified |
 | harbor | アーレ湖港 | 屋外 | implemented_unverified |
 | sand | 陽だまり棚田 | 屋外 | implemented_unverified |
 | forest | モミ響きの森 | 屋外 | implemented_unverified |
@@ -48,16 +48,16 @@
 | route6 | 白嶺の石段 | 屋外 | implemented_unverified |
 | route7 | 星環鉄道沿い | 屋外 | implemented_unverified |
 | galaxy | 星環の都 | 屋外 | implemented_unverified |
-| inlet | アーレ湖の入江 | 屋外 | pending |
-| desert | 風化石の牧草地 | 屋外 | pending |
-| deepforest | 樹海の薬草道 | 屋外 | pending |
-| cavern | 氷河洞 | 洞窟 | pending |
-| river | アーレ源流 | 屋外 | pending |
-| cloud | 雲上の尾根 | 屋外 | pending |
-| volcano | 夕焼け岩稜 | 屋外 | pending |
-| starhill | 星見の丘 | 屋外 | pending |
-| arena | 七つの谷 山岳祭 | 屋内 | pending |
-| hut2 | 村の家 | 屋内 | pending |
+| inlet | アーレ湖の入江 | 屋外 | implemented_unverified |
+| desert | 風化石の牧草地 | 屋外 | implemented_unverified |
+| deepforest | 樹海の薬草道 | 屋外 | implemented_unverified |
+| cavern | 氷河洞 | 洞窟 | implemented_unverified |
+| river | アーレ源流 | 屋外 | implemented_unverified |
+| cloud | 雲上の尾根 | 屋外 | implemented_unverified |
+| volcano | 夕焼け岩稜 | 屋外 | implemented_unverified |
+| starhill | 星見の丘 | 屋外 | implemented_unverified |
+| arena | 七つの谷 山岳祭 | 屋内 | implemented_unverified |
+| hut2 | 村の家 | 屋内 | implemented_unverified |
 
 ## 証拠欄
 
@@ -98,3 +98,26 @@
 - 配置検査: 屋外26マップ `failures: 0`
 - 回帰: リーフ・コンパス PC/スマホ `errors: 0`, 戦闘背景 PC/スマホ `errors: 0`, 環境画像 `errors: 0`
 - 未検証: 3マップ全ワープの手動操作、物理iPhone/Android、ホーム画面PWA
+
+### 第6群（入江・牧草地・薬草道）
+
+- 画像: `assets/world-v4/aare-lake-cove.png`, `weathered-stone-pasture.png`, `deep-forest-herb-trail.png`
+- 衝突マスク: `src/data/worldV4.js` の `sideAreaRows`
+- 接続: 西端から各親マップへ往復し、橋・道・草地を自由移動可能
+- 出現: 濃い草むらだけを `"` として指定
+- 未検証: 自動検査、ブラウザ操作、物理iPhone/Android、ホーム画面PWA
+
+### 第7群（氷河洞・源流・雲上・岩稜・星見）
+
+- 画像: `assets/world-v4/glacier-cave.png`, `aare-river-source.png`, `cloudtop-ridge.png`, `sunset-volcanic-ridge.png`, `stargazer-hill.png`
+- 衝突マスク: `src/data/worldV4.js` の `glacierCaveRows`, `sideAreaRows`
+- 接続: 西端から各親マップへ往復。橋は通行可、崖は不可、石段のみ高低差を接続
+- 出現: 屋外4マップは濃い草むらのみ。氷河洞は洞窟床の既存遭遇設定を維持
+- 未検証: 自動検査、ブラウザ操作、物理iPhone/Android、ホーム画面PWA
+
+### 第8群（全室内）
+
+- 画像: `assets/world-v4/mountain-travel-lodge.png`, `umikaze-clothier.png`, `sunakaze-salon.png`, `ishizuka-boutique.png`, `rag-shop-interior.png`, `village-family-cabin.png`, `seven-valleys-arena.png`
+- 衝突マスク: `src/data/worldV4.js` の `interiorRows`, `arenaRows`
+- 入口: 全室内を南中央に統一し、既存の暗転遷移と台詞・買物・美容・大会イベントを維持
+- 未検証: 自動検査、ブラウザ操作、物理iPhone/Android、ホーム画面PWA

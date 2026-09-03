@@ -23,6 +23,21 @@ const WORLD_V4 = {
   "sunset-glow-highlands": "../assets/world-v4/sunset-glow-highlands.png",
   "star-ring-railway": "../assets/world-v4/star-ring-railway.png",
   "star-ring-capital": "../assets/world-v4/star-ring-capital.png",
+  "aare-lake-cove": "../assets/world-v4/aare-lake-cove.png",
+  "weathered-stone-pasture": "../assets/world-v4/weathered-stone-pasture.png",
+  "deep-forest-herb-trail": "../assets/world-v4/deep-forest-herb-trail.png",
+  "glacier-cave": "../assets/world-v4/glacier-cave.png",
+  "aare-river-source": "../assets/world-v4/aare-river-source.png",
+  "cloudtop-ridge": "../assets/world-v4/cloudtop-ridge.png",
+  "sunset-volcanic-ridge": "../assets/world-v4/sunset-volcanic-ridge.png",
+  "stargazer-hill": "../assets/world-v4/stargazer-hill.png",
+  "mountain-travel-lodge": "../assets/world-v4/mountain-travel-lodge.png",
+  "umikaze-clothier": "../assets/world-v4/umikaze-clothier.png",
+  "sunakaze-salon": "../assets/world-v4/sunakaze-salon.png",
+  "ishizuka-boutique": "../assets/world-v4/ishizuka-boutique.png",
+  "rag-shop-interior": "../assets/world-v4/rag-shop-interior.png",
+  "village-family-cabin": "../assets/world-v4/village-family-cabin.png",
+  "seven-valleys-arena": "../assets/world-v4/seven-valleys-arena.png",
 };
 
 function image(src) {

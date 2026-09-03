@@ -175,6 +175,64 @@ function capitalRows() {
   return m.rows();
 }
 
+function sideAreaRows(kind = "meadow") {
+  const m = field();
+  m.rect(0, 17, 25, 9);                 // 本線から続く西側の入口
+  m.rect(8, 8, 24, 25, ",");          // 見通しのよい探索広場
+  m.rect(21, 12, 14, 9);                // 小屋・見晴台へ向かう道
+  m.rect(12, 27, 22, 7, '"');          // ガオンが現れる濃い草むら
+  m.rect(26, 20, 8, 9, '"');
+  if (kind === "inlet") {
+    m.rect(15, 17, 12, 9, "d");        // 入江を横切る木橋
+    m.rect(27, 10, 7, 8);
+  } else if (kind === "pasture") {
+    m.rect(5, 10, 13, 8, '"');
+    m.rect(19, 21, 12, 5, "d");
+  } else {
+    m.rect(7, 7, 10, 11, '"');
+    m.rect(18, 16, 6, 11, "d");
+  }
+  return m.rows();
+}
+
+function glacierCaveRows() {
+  const m = field();
+  m.rect(0, 17, 19, 9, "C");
+  m.rect(8, 9, 24, 24, "C");
+  m.rect(17, 16, 15, 7, "d");       // 氷河水を渡る橋
+  m.rect(24, 7, 11, 12, "C");
+  m.rect(24, 25, 11, 9, "C");
+  return m.rows();
+}
+
+function interiorRows(kind = "shop") {
+  const m = field();
+  m.rect(4, 5, 32, 31, "f");
+  m.rect(18, 34, 6, 6, "f");             // 南側の玄関
+  m.rect(5, 5, 30, 6, "X");             // 奥壁・陳列棚
+  m.rect(5, 12, 7, 9, "X");
+  m.rect(28, 12, 7, 9, "X");
+  if (kind === "station") {
+    m.rect(14, 16, 12, 5, "X"); m.rect(7, 26, 9, 5, "X"); m.rect(24, 26, 9, 5, "X");
+  } else if (kind === "home") {
+    m.rect(7, 13, 9, 7, "X"); m.rect(24, 13, 9, 7, "X"); m.rect(15, 25, 10, 6, "X");
+  } else {
+    m.rect(15, 18, 10, 7, kind === "arena" ? "g" : "X");
+    m.rect(7, 27, 8, 5, "X"); m.rect(25, 27, 8, 5, "X");
+  }
+  return m.rows();
+}
+
+function arenaRows() {
+  const m = field();
+  m.rect(4, 5, 32, 31, "f"); m.rect(18, 34, 6, 6, "f");
+  m.rect(4, 5, 7, 25, "X"); m.rect(29, 5, 7, 25, "X");
+  m.rect(11, 5, 18, 6, "X");
+  m.rect(12, 13, 16, 15, "g");           // 中央の対戦床
+  m.rect(10, 29, 20, 5, "f");
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -326,13 +384,13 @@ export function applyThirdRegionV4(maps) {
   };
   set("stone", "stone-whistle-gorge", stoneTownRows(), [
     ...edges("route3", "route4"), { x: 0, y: 21, to: "clothes2", tx: 4, ty: 6 },
-    { x: 39, y: 21, to: "cavern", tx: 1, ty: 6, edge: 1 },
+    { x: 39, y: 21, to: "cavern", tx: 2, ty: 21, edge: 1 },
     { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "stone", x: 11, y: 14 } },
     { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "stone", x: 30, y: 14 } },
   ], [{ x: 18, y: 21 }, { x: 27, y: 22 }]);
   set("route4", "stonecutter-road", stoneRoadRows(), edges("stone", "aqua"), [{ x: 20, y: 28 }]);
   set("aqua", "mirrorwater-cove", mirrorTownRows(), [
-    ...edges("route4", "route5"), { x: 39, y: 21, to: "river", tx: 5, ty: 10, edge: 1 },
+    ...edges("route4", "route5"), { x: 39, y: 21, to: "river", tx: 2, ty: 21, edge: 1 },
     { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "aqua", x: 11, y: 14 } },
     { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "aqua", x: 30, y: 14 } },
   ], [{ x: 17, y: 25 }, { x: 28, y: 22 }]);
@@ -352,7 +410,7 @@ export function applyFourthRegionV4(maps) {
     layoutVersion: 4, fullArt: "white-ridge-chalet", freeMove: true,
     spawn: { x: 20, y: 37 }, rows: snowTownRows(),
     warps: [...edges("route5", "route6"),
-      { x: 39, y: 21, to: "cloud", tx: 5, ty: 10, edge: 1 },
+      { x: 39, y: 21, to: "cloud", tx: 2, ty: 21, edge: 1 },
       { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "sky", x: 11, y: 14 } },
       { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "sky", x: 30, y: 14 } }],
     signs: [{ x: 15, y: 30, text: ["白嶺のシャレー", "雪と星を見守る 高地の集落"] }],
@@ -377,7 +435,7 @@ export function applyFifthRegionV4(maps) {
     layoutVersion: 4, fullArt: "sunset-glow-highlands", freeMove: true,
     spawn: { x: 20, y: 37 }, rows: sunsetTownRows(),
     warps: [...edges("route6", "route7"),
-      { x: 39, y: 23, to: "volcano", tx: 5, ty: 10, edge: 1 },
+      { x: 39, y: 23, to: "volcano", tx: 2, ty: 21, edge: 1 },
       { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "flame", x: 11, y: 14 } },
       { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "flame", x: 30, y: 14 } }],
     signs: [{ x: 15, y: 30, text: ["夕映え高原", "金色の風が吹く 山上の広場"] }],
@@ -400,10 +458,96 @@ export function applyFifthRegionV4(maps) {
     warps: [
       { x: 20, y: 39, to: "route7", tx: 15, ty: 2, edge: 1 }, { x: 21, y: 39, to: "route7", tx: 16, ty: 2, edge: 1 },
       { x: 20, y: 7, to: "arena", tx: 6, ty: 12 }, { x: 21, y: 7, to: "arena", tx: 7, ty: 12 },
-      { x: 39, y: 21, to: "starhill", tx: 5, ty: 10, edge: 1 },
+      { x: 39, y: 21, to: "starhill", tx: 2, ty: 21, edge: 1 },
       { x: 8, y: 12, to: "station", tx: 5, ty: 8, back: { map: "galaxy", x: 8, y: 14 } },
       { x: 31, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "galaxy", x: 31, y: 14 } }],
     signs: [{ x: 15, y: 31, text: ["星環の都", "七つの谷が出会う 山岳都市"] }],
     npcs: (city.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 27, y: 22 } : { x: 16, y: 22 })),
   });
+}
+
+export function applySixthRegionV4(maps) {
+  const set = (id, fullArt, kind, backTo, backY, npcPoint, itemPoint) => {
+    const map = maps[id];
+    Object.assign(map, {
+      layoutVersion: 4,
+      fullArt,
+      freeMove: true,
+      spawn: { x: 2, y: 21 },
+      rows: sideAreaRows(kind),
+      warps: [{ x: 0, y: 21, to: backTo, tx: 38, ty: backY, edge: 1 }],
+      npcs: (map.npcs || []).map((npc) => Object.assign({}, npc, npcPoint)),
+      items: (map.items || []).map((item) => Object.assign({}, item, itemPoint)),
+    });
+  };
+  set("inlet", "aare-lake-cove", "inlet", "harbor", 21, { x: 29, y: 17 }, { x: 29, y: 27 });
+  set("desert", "weathered-stone-pasture", "pasture", "sand", 21, { x: 15, y: 14 }, { x: 29, y: 29 });
+  set("deepforest", "deep-forest-herb-trail", "forest", "forest", 21, { x: 28, y: 17 }, { x: 14, y: 29 });
+}
+
+export function applySeventhRegionV4(maps) {
+  const set = (id, fullArt, backTo, backY, npcPoint, itemPoint, kind = "meadow") => {
+    const map = maps[id];
+    Object.assign(map, {
+      layoutVersion: 4, fullArt, freeMove: true,
+      spawn: { x: 2, y: 21 }, rows: sideAreaRows(kind),
+      warps: [{ x: 0, y: 21, to: backTo, tx: 38, ty: backY, edge: 1 }],
+      npcs: (map.npcs || []).map((npc) => Object.assign({}, npc, npcPoint)),
+      items: (map.items || []).map((item) => Object.assign({}, item, itemPoint)),
+    });
+  };
+  const cavern = maps.cavern;
+  Object.assign(cavern, {
+    layoutVersion: 4, fullArt: "glacier-cave", freeMove: true,
+    spawn: { x: 2, y: 21 }, rows: glacierCaveRows(),
+    warps: [{ x: 0, y: 21, to: "stone", tx: 38, ty: 21, edge: 1 }],
+    npcs: (cavern.npcs || []).map((npc) => Object.assign({}, npc, { x: 27, y: 13 })),
+    items: (cavern.items || []).map((item) => Object.assign({}, item, { x: 29, y: 29 })),
+  });
+  set("river", "aare-river-source", "aqua", 21, { x: 28, y: 17 }, { x: 29, y: 29 }, "inlet");
+  set("cloud", "cloudtop-ridge", "sky", 21, { x: 28, y: 17 }, { x: 14, y: 29 }, "forest");
+  set("volcano", "sunset-volcanic-ridge", "flame", 23, { x: 15, y: 14 }, { x: 29, y: 29 }, "pasture");
+  set("starhill", "stargazer-hill", "galaxy", 21, { x: 28, y: 17 }, { x: 14, y: 29 }, "inlet");
+}
+
+export function applyEighthRegionV4(maps) {
+  const set = (id, fullArt, kind, warps, points) => {
+    const map = maps[id];
+    Object.assign(map, {
+      layoutVersion: 4, fullArt, freeMove: true,
+      spawn: { x: 20, y: 34 }, rows: interiorRows(kind), warps,
+      npcs: (map.npcs || []).map((npc, i) => Object.assign({}, npc, points[i] || points[0] || {})),
+    });
+  };
+  set("station", "mountain-travel-lodge", "station",
+    [{ x: 19, y: 39, to: "@back" }, { x: 20, y: 39, to: "@back" }],
+    [{ x: 13, y: 23 }, { x: 27, y: 23 }]);
+  maps.station.objects = [{ x: 33, y: 12, text: ["冒険の記録をつける 山旅の端末だ。"], pc: true }];
+  set("clothes1", "umikaze-clothier", "shop",
+    [{ x: 19, y: 39, to: "harbor", tx: 31, ty: 25 }, { x: 20, y: 39, to: "harbor", tx: 31, ty: 25 }],
+    [{ x: 13, y: 23 }, { x: 27, y: 23 }]);
+  set("salon", "sunakaze-salon", "shop",
+    [{ x: 19, y: 39, to: "sand", tx: 9, ty: 25 }, { x: 20, y: 39, to: "sand", tx: 9, ty: 25 }],
+    [{ x: 13, y: 23 }, { x: 27, y: 23 }]);
+  set("clothes2", "ishizuka-boutique", "shop",
+    [{ x: 19, y: 39, to: "stone", tx: 2, ty: 21 }, { x: 20, y: 39, to: "stone", tx: 2, ty: 21 }],
+    [{ x: 13, y: 23 }, { x: 27, y: 23 }]);
+  set("shop", "rag-shop-interior", "shop",
+    [{ x: 19, y: 39, to: "@back" }, { x: 20, y: 39, to: "@back" }],
+    [{ x: 13, y: 23 }, { x: 27, y: 23 }]);
+  set("hut2", "village-family-cabin", "home",
+    [{ x: 19, y: 39, to: "village", tx: 30, ty: 22 }, { x: 20, y: 39, to: "village", tx: 30, ty: 22 }],
+    [{ x: 20, y: 23 }]);
+  const arena = maps.arena;
+  Object.assign(arena, {
+    layoutVersion: 4, fullArt: "seven-valleys-arena", freeMove: true,
+    spawn: { x: 20, y: 34 }, rows: arenaRows(),
+    warps: [{ x: 19, y: 39, to: "galaxy", tx: 20, ty: 9 }, { x: 20, y: 39, to: "galaxy", tx: 21, ty: 9 }],
+    npcs: (arena.npcs || []).map((npc) => Object.assign({}, npc, { x: 20, y: 13 })),
+  });
+  const interiorTargets = new Set(["station", "clothes1", "salon", "clothes2", "shop", "hut2", "arena"]);
+  for (const map of Object.values(maps)) {
+    map.warps = (map.warps || []).map((warp) => interiorTargets.has(warp.to)
+      ? Object.assign({}, warp, { tx: 20, ty: 34 }) : warp);
+  }
 }
