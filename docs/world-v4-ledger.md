@@ -36,15 +36,15 @@
 | harbor | アーレ湖港 | 屋外 | implemented_unverified |
 | sand | 陽だまり棚田 | 屋外 | implemented_unverified |
 | forest | モミ響きの森 | 屋外 | implemented_unverified |
-| stone | 石笛の峡谷 | 屋外 | pending |
-| aqua | 水鏡の入江 | 屋外 | pending |
+| stone | 石笛の峡谷 | 屋外 | implemented_unverified |
+| aqua | 水鏡の入江 | 屋外 | implemented_unverified |
 | sky | 白嶺のシャレー | 屋外 | pending |
 | flame | 夕映え高原 | 屋外 | pending |
 | route1 | 湖沿いの道 | 屋外 | implemented_unverified |
 | route2 | 乾いた牧道 | 屋外 | implemented_unverified |
 | route3 | モミの回廊 | 屋外 | implemented_unverified |
-| route4 | 石切りの道 | 屋外 | pending |
-| route5 | 水鏡の桟道 | 屋外 | pending |
+| route4 | 石切りの道 | 屋外 | implemented_unverified |
+| route5 | 水鏡の桟道 | 屋外 | implemented_unverified |
 | route6 | 白嶺の石段 | 屋外 | pending |
 | route7 | 星環鉄道沿い | 屋外 | pending |
 | galaxy | 星環の都 | 屋外 | pending |
@@ -71,3 +71,12 @@
 - 回帰: リーフ・コンパス PC/スマホ `errors: 0`, 戦闘背景 PC/スマホ `errors: 0`
 - 描画: Chromiumデスクトップ5画面、Pixel 5エミュレーション5画面の読込と撮影に成功
 - 未検証: 5マップ全ワープのブラウザ操作、物理iPhone/Android、ホーム画面PWA
+
+### 第3群（石笛・水鏡地域）
+
+- 画像: `assets/world-v4/stone-whistle-gorge.png`, `stonecutter-road.png`, `mirrorwater-cove.png`, `mirrorwater-boardwalk.png`
+- 衝突マスク: `src/data/worldV4.js` の `stoneTownRows`, `stoneRoadRows`, `mirrorTownRows`, `mirrorBoardwalkRows`
+- 静的接続検査: 全36マップ `errors: 0`, `failed: 0`
+- 配置検査: 屋外26マップ `failures: 0`
+- 回帰: リーフ・コンパス PC/スマホ `errors: 0`, 戦闘背景 PC/スマホ `errors: 0`, 環境画像 `errors: 0`
+- 未検証: 4マップ全ワープの手動操作、物理iPhone/Android、ホーム画面PWA

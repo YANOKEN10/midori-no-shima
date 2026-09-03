@@ -1,5 +1,5 @@
 import { rebuildOutdoorWorld } from "./worldLayoutV3.js";
-import { KAZENARI_VALLEY, applyFirstRegionV4, applySecondRegionV4 } from "./worldV4.js";
+import { KAZENARI_VALLEY, applyFirstRegionV4, applySecondRegionV4, applyThirdRegionV4 } from "./worldV4.js";
 
 // ============================================================
 //  マップ（1もじ＝1マス）
@@ -1322,5 +1322,6 @@ for (const [id, landmarks] of Object.entries(ROUTE_LANDMARKS)) {
 rebuildOutdoorWorld(MAPS);
 applyFirstRegionV4(MAPS);
 applySecondRegionV4(MAPS);
+applyThirdRegionV4(MAPS);
 
 export const START = { map: "hut", x: 4, y: 5, dir: "down" };

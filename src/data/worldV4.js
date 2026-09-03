@@ -103,6 +103,38 @@ function secondRegionRows(kind = "route") {
   return m.rows();
 }
 
+function stoneTownRows() {
+  const m = field();
+  m.rect(17, 0, 8, 40); m.rect(8, 8, 25, 24);
+  m.rect(15, 24, 12, 6, "d");
+  m.rect(30, 27, 8, 8, '"'); m.rect(0, 19, 11, 7); m.rect(31, 18, 9, 7);
+  return m.rows();
+}
+
+function stoneRoadRows() {
+  const m = field();
+  m.rect(16, 0, 9, 40); m.rect(10, 6, 18, 29);
+  m.rect(15, 23, 12, 5, "d");
+  m.rect(4, 25, 10, 8, '"'); m.rect(27, 8, 10, 8, '"');
+  return m.rows();
+}
+
+function mirrorTownRows() {
+  const m = field();
+  m.rect(17, 0, 8, 40); m.rect(5, 8, 30, 25);
+  m.rect(11, 17, 24, 8, "d");
+  m.rect(29, 29, 9, 7, '"'); m.rect(0, 18, 10, 7); m.rect(31, 18, 9, 7);
+  return m.rows();
+}
+
+function mirrorBoardwalkRows() {
+  const m = field();
+  m.rect(17, 0, 8, 40, "d"); m.rect(12, 5, 17, 30, "d");
+  m.rect(3, 10, 10, 9, '"'); m.rect(28, 24, 10, 9, '"');
+  m.rect(11, 12, 3, 4); m.rect(27, 27, 3, 4);
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -164,7 +196,7 @@ export function applyFirstRegionV4(maps) {
       { x: 20, y: 39, to: "village", tx: 21, ty: 1, edge: 1 }, { x: 21, y: 39, to: "village", tx: 22, ty: 1, edge: 1 },
       { x: 20, y: 0, to: "mount2", tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: "mount2", tx: 21, ty: 38, edge: 1 },
     ],
-    signs: [{ x: 28, y: 8, text: ["やまみち", "この先に 山の奥地"] }],
+    signs: [{ x: 24, y: 8, text: ["やまみち", "この先に 山の奥地"] }],
     items: [{ x: 27, y: 29, item: "ヒールジェル", flag: "m1heal" }],
     npcs: mount1Npcs.map((n) => Object.assign({}, n, { x: 25, y: 23 })),
   });
@@ -237,4 +269,35 @@ export function applySecondRegionV4(maps) {
     { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "forest", x: 30, y: 14 } },
   ], [{ x: 18, y: 22 }, { x: 27, y: 24 }]);
   set("route3", "fir-corridor", "route", edges("forest", "stone"), [{ x: 18, y: 27 }, { x: 24, y: 12 }]);
+  maps.harbor.signs = [{ x: 15, y: 29, text: ["アーレ湖港", "湖沿いの道と 谷の古道をつなぐ港"] }];
+  maps.sand.signs = [{ x: 15, y: 29, text: ["陽だまり棚田", "風と水を分けあう 山の棚田"] }];
+  maps.forest.signs = [{ x: 15, y: 29, text: ["モミ響きの森", "木々の声が 谷へひびく集落"] }];
+}
+
+export function applyThirdRegionV4(maps) {
+  const edges = (south, north) => [
+    { x: 20, y: 39, to: south, tx: 20, ty: 2, edge: 1 }, { x: 21, y: 39, to: south, tx: 21, ty: 2, edge: 1 },
+    { x: 20, y: 0, to: north, tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: north, tx: 21, ty: 38, edge: 1 },
+  ];
+  const set = (id, fullArt, rows, warps, points) => {
+    const map = maps[id];
+    Object.assign(map, { layoutVersion: 4, fullArt, freeMove: true, spawn: { x: 20, y: 37 }, rows, warps,
+      npcs: (map.npcs || []).map((npc, i) => Object.assign({}, npc, points[i] || points[0] || {})) });
+  };
+  set("stone", "stone-whistle-gorge", stoneTownRows(), [
+    ...edges("route3", "route4"), { x: 0, y: 21, to: "clothes2", tx: 4, ty: 6 },
+    { x: 39, y: 21, to: "cavern", tx: 1, ty: 6, edge: 1 },
+    { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "stone", x: 11, y: 14 } },
+    { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "stone", x: 30, y: 14 } },
+  ], [{ x: 18, y: 21 }, { x: 27, y: 22 }]);
+  set("route4", "stonecutter-road", stoneRoadRows(), edges("stone", "aqua"), [{ x: 20, y: 28 }]);
+  set("aqua", "mirrorwater-cove", mirrorTownRows(), [
+    ...edges("route4", "route5"), { x: 39, y: 21, to: "river", tx: 5, ty: 10, edge: 1 },
+    { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "aqua", x: 11, y: 14 } },
+    { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "aqua", x: 30, y: 14 } },
+  ], [{ x: 17, y: 25 }, { x: 28, y: 22 }]);
+  set("route5", "mirrorwater-boardwalk", mirrorBoardwalkRows(), edges("aqua", "sky"), [{ x: 20, y: 25 }]);
+  maps.stone.signs = [{ x: 15, y: 30, text: ["石笛の峡谷", "岩壁を渡る風が 笛のように鳴る"] }];
+  maps.aqua.signs = [{ x: 15, y: 30, text: ["水鏡の入江", "空と峰を映す 青い入江"] }];
+  maps.route4.signs = [{ x: 15, y: 31, text: ["石切りの道", "足もとの石段に 気をつけよう"] }];
 }

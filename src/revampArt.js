@@ -14,6 +14,10 @@ const WORLD_V4 = {
   "dry-pasture-route": "../assets/world-v4/dry-pasture-route.png",
   "fir-echo-forest": "../assets/world-v4/fir-echo-forest.png",
   "fir-corridor": "../assets/world-v4/fir-corridor.png",
+  "stone-whistle-gorge": "../assets/world-v4/stone-whistle-gorge.png",
+  "stonecutter-road": "../assets/world-v4/stonecutter-road.png",
+  "mirrorwater-cove": "../assets/world-v4/mirrorwater-cove.png",
+  "mirrorwater-boardwalk": "../assets/world-v4/mirrorwater-boardwalk.png",
 };
 
 function image(src) {
