@@ -161,6 +161,7 @@ async function boot() {
       route2: [20, 37], forest: [20, 37], route3: [20, 37],
       stone: [20, 37], route4: [20, 37], aqua: [20, 37], route5: [20, 37],
       sky: [20, 37], route6: [20, 37],
+      flame: [20, 37], route7: [15, 37], galaxy: [20, 37],
     };
     const at = starts[testMap] || starts.village;
     world.enter(starts[testMap] ? testMap : "village", at[0], at[1], "down");

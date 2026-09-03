@@ -20,6 +20,9 @@ const WORLD_V4 = {
   "mirrorwater-boardwalk": "../assets/world-v4/mirrorwater-boardwalk.png",
   "white-ridge-chalet": "../assets/world-v4/white-ridge-chalet.png",
   "white-ridge-steps": "../assets/world-v4/white-ridge-steps.png",
+  "sunset-glow-highlands": "../assets/world-v4/sunset-glow-highlands.png",
+  "star-ring-railway": "../assets/world-v4/star-ring-railway.png",
+  "star-ring-capital": "../assets/world-v4/star-ring-capital.png",
 };
 
 function image(src) {

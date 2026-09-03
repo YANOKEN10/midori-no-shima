@@ -151,6 +151,30 @@ function snowStepsRows() {
   return m.rows();
 }
 
+function sunsetTownRows() {
+  const m = field();
+  m.rect(17, 0, 8, 40); m.rect(6, 8, 29, 24);
+  m.rect(25, 21, 15, 6, "d");
+  m.rect(4, 27, 11, 8, '"'); m.rect(0, 18, 10, 7);
+  return m.rows();
+}
+
+function railwayRows() {
+  const m = field();
+  m.rect(11, 0, 9, 40); m.rect(8, 7, 15, 27);
+  m.rect(8, 19, 25, 5, "d");
+  m.rect(3, 9, 8, 9, '"'); m.rect(3, 25, 8, 8, '"');
+  return m.rows();
+}
+
+function capitalRows() {
+  const m = field();
+  m.rect(17, 0, 9, 40); m.rect(4, 8, 32, 25);
+  m.rect(13, 16, 15, 13); m.rect(15, 27, 11, 8, "d");
+  m.rect(31, 18, 9, 8); m.rect(29, 29, 9, 7, '"');
+  return m.rows();
+}
+
 export const KAZENARI_VALLEY = {
   id: "village",
   name: "風鳴り谷",
@@ -340,5 +364,46 @@ export function applyFourthRegionV4(maps) {
     spawn: { x: 20, y: 37 }, rows: snowStepsRows(), warps: edges("sky", "flame"),
     signs: [{ x: 15, y: 31, text: ["白嶺の石段", "吹雪の前に 峰を越えよう"] }],
     npcs: (route.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 24, y: 12 } : { x: 18, y: 28 })),
+  });
+}
+
+export function applyFifthRegionV4(maps) {
+  const edges = (south, north) => [
+    { x: 20, y: 39, to: south, tx: 20, ty: 2, edge: 1 }, { x: 21, y: 39, to: south, tx: 21, ty: 2, edge: 1 },
+    { x: 20, y: 0, to: north, tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: north, tx: 21, ty: 38, edge: 1 },
+  ];
+  const flame = maps.flame;
+  Object.assign(flame, {
+    layoutVersion: 4, fullArt: "sunset-glow-highlands", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: sunsetTownRows(),
+    warps: [...edges("route6", "route7"),
+      { x: 39, y: 23, to: "volcano", tx: 5, ty: 10, edge: 1 },
+      { x: 11, y: 12, to: "station", tx: 5, ty: 8, back: { map: "flame", x: 11, y: 14 } },
+      { x: 30, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "flame", x: 30, y: 14 } }],
+    signs: [{ x: 15, y: 30, text: ["夕映え高原", "金色の風が吹く 山上の広場"] }],
+    npcs: (flame.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 28, y: 22 } : { x: 17, y: 24 })),
+  });
+  const route = maps.route7;
+  Object.assign(route, {
+    layoutVersion: 4, fullArt: "star-ring-railway", freeMove: true,
+    spawn: { x: 15, y: 37 }, rows: railwayRows(),
+    warps: [
+      { x: 15, y: 39, to: "flame", tx: 20, ty: 2, edge: 1 }, { x: 16, y: 39, to: "flame", tx: 21, ty: 2, edge: 1 },
+      { x: 15, y: 0, to: "galaxy", tx: 20, ty: 37, edge: 1 }, { x: 16, y: 0, to: "galaxy", tx: 21, ty: 37, edge: 1 }],
+    signs: [{ x: 10, y: 30, text: ["星環鉄道沿い", "線路は踏切だけ 横断できます"] }],
+    npcs: (route.npcs || []).map((n) => Object.assign({}, n, { x: 15, y: 27 })),
+  });
+  const city = maps.galaxy;
+  Object.assign(city, {
+    layoutVersion: 4, fullArt: "star-ring-capital", freeMove: true,
+    spawn: { x: 20, y: 37 }, rows: capitalRows(),
+    warps: [
+      { x: 20, y: 39, to: "route7", tx: 15, ty: 2, edge: 1 }, { x: 21, y: 39, to: "route7", tx: 16, ty: 2, edge: 1 },
+      { x: 20, y: 7, to: "arena", tx: 6, ty: 12 }, { x: 21, y: 7, to: "arena", tx: 7, ty: 12 },
+      { x: 39, y: 21, to: "starhill", tx: 5, ty: 10, edge: 1 },
+      { x: 8, y: 12, to: "station", tx: 5, ty: 8, back: { map: "galaxy", x: 8, y: 14 } },
+      { x: 31, y: 12, to: "shop", tx: 4, ty: 6, back: { map: "galaxy", x: 31, y: 14 } }],
+    signs: [{ x: 15, y: 31, text: ["星環の都", "七つの谷が出会う 山岳都市"] }],
+    npcs: (city.npcs || []).map((n, i) => Object.assign({}, n, i ? { x: 27, y: 22 } : { x: 16, y: 22 })),
   });
 }
