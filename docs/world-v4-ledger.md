@@ -128,6 +128,14 @@
 - 出現: 屋外4マップは濃い草むらのみ。氷河洞は洞窟床の既存遭遇設定を維持
 - 未検証: 自動検査、ブラウザ操作、物理iPhone/Android、ホーム画面PWA
 
+### 2026-09-04 移動不能の追加修正
+
+- 原因再現: village (19,10) 等、中心点は通行可でも足元が壁と重なり全方向に進めない保存座標。
+- 実装: enter 時に歩行と同じ足元/NPC判定を使い、不正な位置だけ近傍の安全な床中心へ補正。正常な小数座標は維持。
+- 自動検証: verifySpawnFootprint.cjs の開始位置・ワープ到着・村全整数座標 1,702ケース失敗0。CDPタッチ操作で補正位置から移動。
+- 回帰: verifyMovementRecovery.cjs PCキーボード/スマホ相当操作、小数座標再入場、ブラウザ例外0。
+- 未検証: 物理iPhone/Android、インストール済PWA、全風景と衝突マスクの視覚的一致。今回の検証はこれらの完了を意味しない。
+
 ### 第8群（全室内）
 
 - 画像: `assets/world-v4/mountain-travel-lodge.png`, `umikaze-clothier.png`, `sunakaze-salon.png`, `ishizuka-boutique.png`, `rag-shop-interior.png`, `village-family-cabin.png`, `seven-valleys-arena.png`

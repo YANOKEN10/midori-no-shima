@@ -10,7 +10,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260904-recovery-v1";
+import { MAPS } from "./data/maps.js?v=20260904-footprint-v2";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260904-recovery-v1";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260904-footprint-v2";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -123,6 +123,23 @@ export const world = {
       idx: i, ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
+    // Saved tile origins can overlap a wall with the walking footprint.
+    // Validate using exactly the same collision test as movement, including NPCs.
+    if (this.map.freeMove && !this.canFreeStand(x, y)) {
+      const candidates = [];
+      for (let cy = 0; cy < this.map.rows.length; cy++) {
+        for (let cx = 0; cx < this.map.rows[cy].length; cx++) {
+          const sx = cx + .5, sy = cy + .5;
+          if (this.canFreeStand(sx, sy)) candidates.push({ x: sx, y: sy, d: Math.hypot(sx - x, sy - y) });
+        }
+      }
+      candidates.sort((a, b) => a.d - b.d);
+      if (candidates.length) {
+        x = candidates[0].x; y = candidates[0].y;
+        this.x = this.fx = x; this.y = this.fy = y;
+        this.freeCellX = Math.floor(x); this.freeCellY = Math.floor(y);
+      }
+    }
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
     playBgm(bgmFor(mapId));
