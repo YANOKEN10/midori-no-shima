@@ -49,7 +49,27 @@ function image(src) {
 const hero = image(HERO_SRC);
 const objects = image(OBJECT_SRC);
 const title = image(TITLE_SRC);
-const worldBackdrops = new Map(Object.entries(WORLD_V4).map(([key, src]) => [key, image(src)]));
+// モバイルで36枚を一斉取得しない。訪問した地図のみ取得し、失敗は再試行する。
+const worldBackdrops = new Map();
+function backdropFor(key) {
+  if (!WORLD_V4[key]) return null;
+  let entry = worldBackdrops.get(key);
+  if (!entry || (entry.failedAt && Date.now() - entry.failedAt > 3000 && entry.attempts < 3)) {
+    const attempts = (entry?.attempts || 0) + 1;
+    const im = new Image();
+    entry = { im, attempts, failedAt: 0 };
+    worldBackdrops.set(key, entry);
+    im.decoding = "async";
+    im.onerror = () => {
+      entry.failedAt = Date.now();
+      console.error("[world-art] image failed", key, "attempt", attempts);
+    };
+    const url = new URL(WORLD_V4[key], import.meta.url);
+    if (attempts > 1) url.searchParams.set("retry", attempts);
+    im.src = url.href;
+  }
+  return entry.im;
+}
 const heroFrames = new Map();
 const terrainTextures = new Map();
 const objectFrames = new Map();
@@ -142,6 +162,25 @@ function drawWrapped(ctx,img,sx,sy,size,dx,dy){
   if(w<size&&h<size) ctx.drawImage(img,0,0,size-w,size-h,dx+w,dy+h,size-w,size-h);
 }
 
+function clearBorderMatte(data, width, height) {
+  const seen = new Uint8Array(width * height), queue = [];
+  const visit = (x, y) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+    const p = y * width + x, i = p * 4;
+    if (seen[p]) return;
+    seen[p] = 1;
+    if (data[i + 3] === 0 || (data[i] <= 8 && data[i + 1] <= 8 && data[i + 2] <= 8)) {
+      data[i + 3] = 0; queue.push([x, y]);
+    }
+  };
+  for (let x = 0; x < width; x++) { visit(x, 0); visit(x, height - 1); }
+  for (let y = 0; y < height; y++) { visit(0, y); visit(width - 1, y); }
+  for (let at = 0; at < queue.length; at++) {
+    const [x, y] = queue[at];
+    visit(x-1,y); visit(x+1,y); visit(x,y-1); visit(x,y+1);
+  }
+}
+
 function buildHeroFrame(dir, step) {
   if (!hero.complete || !hero.naturalWidth) return null;
   const key=dir+":"+step;
@@ -152,6 +191,7 @@ function buildHeroFrame(dir, step) {
   const src=document.createElement("canvas"); src.width=cw; src.height=ch;
   const sc=src.getContext("2d",{willReadFrequently:true}); sc.drawImage(hero,col*cw,row*ch,cw,ch,0,0,cw,ch);
   const data=sc.getImageData(0,0,cw,ch);
+  clearBorderMatte(data.data, cw, ch);
   let minX=cw,minY=ch,maxX=0,maxY=0;
   for(let y=0;y<ch;y++) for(let x=0;x<cw;x++) {
     const i=(y*cw+x)*4,r=data.data[i],g=data.data[i+1],b=data.data[i+2];
@@ -196,7 +236,7 @@ function objectFrame(name){
 }
 
 export function drawWorldBackdrop(ctx, key, camX, camY, worldW, worldH) {
-  const backdrop = worldBackdrops.get(key);
+  const backdrop = backdropFor(key);
   if (!backdrop || !backdrop.complete || !backdrop.naturalWidth) return false;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";

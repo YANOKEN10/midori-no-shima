@@ -10,7 +10,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260903-world-v4";
+import { MAPS } from "./data/maps.js?v=20260904-recovery-v1";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -23,7 +23,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260903-world-v4";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260904-recovery-v1";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -72,6 +72,7 @@ const SOLID_LANDMARKS = new Set([
   "alpineSnowChalet","alpineRailStation","alpineObservatory"
 ]);
 function landmarkBlocked(map, x, y) {
+  if (map.fullArt) return false; // 一枚絵は専用衝突マスクのみを使う。
   if ((map.warps || []).some((w) => w.x === x && w.y === y)) return false;
   return (map.landmarks || []).some((lm) => {
     if (!SOLID_LANDMARKS.has(lm.art)) return false;
@@ -93,6 +94,9 @@ export const world = {
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
     this.mapId = mapId;
     this.map = MAPS[mapId];
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      x = this.map.spawn?.x ?? 1; y = this.map.spawn?.y ?? 1;
+    }
     if (this.map.freeMove && (tileAt(this.map, Math.floor(x), Math.floor(y)) == null || solid(tileAt(this.map, Math.floor(x), Math.floor(y))))) {
       x = this.map.spawn.x; y = this.map.spawn.y;
     }
@@ -823,6 +827,17 @@ export const world = {
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     const fullBackdrop = map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
+    if (map.fullArt && !fullBackdrop) {
+      // 衝突用 X マスクや旧ランドマークを風景として表示しない。
+      G.ctx.fillStyle = "#092438";
+      G.ctx.fillRect(0, 0, G.W, G.H);
+      G.ctx.fillStyle = "#ffffff";
+      G.ctx.font = "18px sans-serif";
+      G.ctx.textAlign = "center";
+      G.ctx.fillText("地図を読み込んでいます…", G.W / 2, G.H / 2);
+      G.ctx.textAlign = "start";
+      return;
+    }
     for (let ty = y0; ty <= y0 + Math.ceil(G.H / T); ty++) {
       for (let tx = x0; tx <= x0 + Math.ceil(G.W / T); tx++) {
         if (fullBackdrop) continue;
@@ -1007,6 +1022,8 @@ function drawBall(x, y) {
 }
 
 export function tileAt(map, x, y) {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+  x = Math.floor(x); y = Math.floor(y);
   if (y < 0 || y >= map.rows.length) return null;
   const row = map.rows[y];
   if (x < 0 || x >= row.length) return null;
