@@ -136,6 +136,13 @@
 - 回帰: verifyMovementRecovery.cjs PCキーボード/スマホ相当操作、小数座標再入場、ブラウザ例外0。
 - 未検証: 物理iPhone/Android、インストール済PWA、全風景と衝突マスクの視覚的一致。今回の検証はこれらの完了を意味しない。
 
+### 2026-09-05 登場人物の表示サイズ統一
+
+- 指示: 全ての登場人物を主人公と同じ大きさで作り直す。
+- 実装: フィールド上の全NPC素材から透明余白を除去し、主人公と同じ32×48表示枠、30×46人物領域、足元基準で描画する。
+- 検証: PC・スマホ相当画面でNPCと主人公の32×48描画を捕捉し、スクリーンショットを目視確認。ブラウザ例外0。
+- 未検証: 物理iPhone/Android、インストール済PWA。
+
 ### 第8群（全室内）
 
 - 画像: `assets/world-v4/mountain-travel-lodge.png`, `umikaze-clothier.png`, `sunakaze-salon.png`, `ishizuka-boutique.png`, `rag-shop-interior.png`, `village-family-cabin.png`, `seven-valleys-arena.png`

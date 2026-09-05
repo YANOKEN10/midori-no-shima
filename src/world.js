@@ -10,7 +10,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260904-footprint-v2";
+import { MAPS } from "./data/maps.js?v=20260905-character-scale-v1";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -23,13 +23,36 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260904-footprint-v2";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260905-character-scale-v1";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
 
 const charCache = new Map();
+const npcScaleCache = new WeakMap();
 let rawFrames = null;
+
+// Remove transparent padding from NPC art and normalize the visible body to
+// the same 30 x 46 content box used by buildHeroFrame().
+function matchedNpcFrame(img) {
+  if (npcScaleCache.has(img)) return npcScaleCache.get(img);
+  const sw = img.naturalWidth || img.width, sh = img.naturalHeight || img.height;
+  if (!sw || !sh) return img;
+  const source = document.createElement("canvas"); source.width = sw; source.height = sh;
+  const sc = source.getContext("2d", { willReadFrequently:true }); sc.drawImage(img, 0, 0);
+  const pixels = sc.getImageData(0, 0, sw, sh).data;
+  let minX=sw,minY=sh,maxX=-1,maxY=-1;
+  for (let y=0;y<sh;y++) for (let x=0;x<sw;x++) {
+    if (pixels[(y*sw+x)*4+3] > 8) { minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y); }
+  }
+  if (maxX < minX) return img;
+  const bw=maxX-minX+1,bh=maxY-minY+1,scale=Math.min(30/bw,46/bh);
+  const dw=Math.max(1,Math.round(bw*scale)),dh=Math.max(1,Math.round(bh*scale));
+  const out=document.createElement("canvas");out.width=32;out.height=48;
+  const oc=out.getContext("2d");oc.imageSmoothingEnabled=false;
+  oc.drawImage(source,minX,minY,bw,bh,Math.floor((32-dw)/2),48-dh,dw,dh);
+  npcScaleCache.set(img,out); return out;
+}
 function playerStyle() {
   const L = State.save.look || {};
   return { hair: L.hat || L.style || "short", bangs: L.bangs == null ? "seven" : L.bangs,
@@ -959,7 +982,10 @@ export const world = {
         const img2 = generatedPerson || (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))
           : G.makeArt(framesFor(n.look)[dirn][nfi], 1, "n" + n.look + dirn + nfi, n.look));
-        G.draw(img2, n.x * T - camX, n.y * T - camY - 12);
+        // NPCs use the same 32 x 48 on-screen frame and foot anchor as the hero.
+        // Generated NPC sources are 32 x 40 after AS scaling, which made every
+        // character visibly smaller than the player on the field.
+        G.drawScaled(matchedNpcFrame(img2), n.x * T - camX, n.y * T - camY - 28, 32, 48);
         if (n.alert) {
           G.use("ui");
           G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);
