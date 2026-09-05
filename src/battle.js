@@ -606,7 +606,8 @@ function drawBattle() {
   G.clear(0);
   if (!B) return;
 
-  const winterField = /^(sky|route6|cloud|mount2)$/.test((State.save.where && State.save.where.map) || "");
+  // mount2 is a green river sanctuary despite its alpine story location.
+  const winterField = /^(sky|route6|cloud)$/.test((State.save.where && State.save.where.map) || "");
   const battleBackground = G.isColor() && environmentTile(winterField ? "battleBackgroundWinter" : "battleBackground");
   const battlePlatform = G.isColor() && environmentTile(winterField ? "battlePlatformWinter" : "battlePlatform");
   if (battleBackground) G.draw(battleBackground, 0, 0);

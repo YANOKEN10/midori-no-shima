@@ -44,13 +44,27 @@ function mountainTrailRows() {
 
 function mountainSanctuaryRows() {
   const m = field();
-  m.rect(18, 20, 8, 20);                // 南からの主路
-  m.rect(7, 8, 24, 17, ",");           // 物語イベントの草原
-  m.rect(9, 6, 20, 7);                  // 環状路の北側
-  m.rect(27, 16, 8, 7, "d");          // 源流に架かる橋
-  m.rect(4, 19, 10, 8, '"');           // 西の濃い草むら
-  m.rect(29, 24, 9, 8, '"');           // 東の濃い草むら
-  m.rect(13, 20, 6, 4); m.rect(25, 24, 5, 4);
+  const polygon = (points, tile = ".") => {
+    for (let y=0;y<40;y++) for (let x=0;x<40;x++) {
+      let inside=false;
+      for (let i=0,j=points.length-1;i<points.length;j=i++) {
+        const a=points[i],b=points[j];
+        if (((a[1]>y+.5)!==(b[1]>y+.5)) && x+.5 < (b[0]-a[0])*(y+.5-a[1])/(b[1]-a[1])+a[0]) inside=!inside;
+      }
+      if (inside) m.rect(x,y,1,1,tile);
+    }
+  };
+  // The sanctuary is not a rectangular tile field. Trace only the visible
+  // meadow/path bounded by cliffs, fences and the river in the background art.
+  polygon([[18,40],[18,31],[15,28],[10,27],[6,23],[7,15],[11,10],[18,7],[24,8],[27,12],[26,17],[29,19],[26,24],[22,28],[22,40]], ",");
+  polygon([[4,18],[12,16],[15,20],[13,26],[6,26],[3,23]], '"');
+  polygon([[29,23],[38,23],[39,30],[35,33],[28,31],[26,27]], '"');
+  m.rect(26, 18, 6, 4, "d");           // visible wooden bridge only
+  // Water occupies the north-east channel and the channel below the bridge;
+  // leave those cells as X even when adjacent meadow polygons approach it.
+  polygon([[28,7],[40,7],[40,23],[32,23],[31,21],[27,18],[29,15]], "X");
+  polygon([[24,21],[31,21],[31,28],[27,31],[23,28]], "X");
+  m.rect(26, 18, 6, 4, "d");           // restore bridge over blocked water
   return m.rows();
 }
 

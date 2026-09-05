@@ -143,6 +143,14 @@
 - 検証: PC・スマホ相当画面でNPCと主人公の32×48描画を捕捉し、スクリーンショットを目視確認。ブラウザ例外0。
 - 未検証: 物理iPhone/Android、インストール済PWA。
 
+### 2026-09-05 山の奥地の地形・戦闘背景修正
+
+- 指示: 非雪山で雪山バトルになる、水上や進入不可地形へ立てる問題を修正。
+- 原因: `mount2` をIDだけで冬背景扱いし、一枚絵に汎用長方形マスクを重ねていた。
+- 実装: 緑の山の奥地は通常バトル背景に変更。画像に沿う専用マスクで草原・道・草むら・橋だけを通行可とし、川・崖・樹木・柵を遮断。
+- 検証: PC・スマホ相当で北東の川、橋下流、崖を通行不可、草原・橋・開始地点を通行可、水上の既存保存位置を安全地帯へ補正、通常バトル背景を確認。
+- 未検証: 物理iPhone/Android、インストール済PWA。他の一枚絵全てのピクセル単位のマスク一致。
+
 ### 第8群（全室内）
 
 - 画像: `assets/world-v4/mountain-travel-lodge.png`, `umikaze-clothier.png`, `sunakaze-salon.png`, `ishizuka-boutique.png`, `rag-shop-interior.png`, `village-family-cabin.png`, `seven-valleys-arena.png`
