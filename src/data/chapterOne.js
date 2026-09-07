@@ -32,7 +32,7 @@ export function buildChapterOne(){
  const hospital=add('hospital','ガオンびょういん',16,14,'in');rect(hospital,2,2,3,2,'K');rect(hospital,10,2,3,2,'B');npc(hospital,7,5,'看護師','nurse',['ガオンびょういんへ ようこそ！'],{healAll:true});
  const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true});
  const rh=add('rodsHome','ロッズタウンの家',16,14,'in');rect(rh,3,4,3,2,'t');npc(rh,10,5,'村のひと','oldman',['草むらで会える ガオンは','道路ごとに ちがうんだ。']);
- for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push({x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
+ for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push(m.id==='hut'?{x:7,y:12,to:'village',tx:13,ty:12}:{x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
  const mountain=add('mountain','山おく',30,34);mountain.spawn={x:14,y:31};path(mountain,14,33,14,24);path(mountain,14,24,6,17);path(mountain,6,17,20,10);path(mountain,20,10,14,4);rect(mountain,11,3,8,5,'.');
  rect(mountain,3,23,5,6,'"');rect(mountain,22,15,5,6,'"');rect(mountain,8,10,3,4,'"');
  // One-tile stair and ladder corridors are part of the actual walkable route.
