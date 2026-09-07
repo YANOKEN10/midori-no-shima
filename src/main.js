@@ -8,14 +8,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260905-sanctuary-collision-v1";
-import { battle, startBattle } from "./battle.js?v=20260905-sanctuary-collision-v1";
+import { world, bgmFor } from "./world.js?v=20260907-chapter1";
+import { battle, startBattle } from "./battle.js?v=20260907-chapter1";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260905-sanctuary-collision-v1";
-import { drawTitleBackground } from "./revampArt.js?v=20260905-sanctuary-collision-v1";
+import { START } from "./data/maps.js?v=20260907-chapter1";
+import { drawTitleBackground } from "./revampArt.js?v=20260907-chapter1";
 
 let scene = null;
 let last = 0;
@@ -76,7 +76,7 @@ const title = {
       G.ctx.restore();
       outlined("ガオン・ワールド", G.W / 2, 35, 25);
       G.use("ui");
-      G.textCenter("七つの谷と リーフ・コンパス", G.W / 2, 76, 0, 13);
+      G.textCenter("ガオンずかんを 完成させよう", G.W / 2, 76, 0, 13);
       if (Math.floor(t / 500) % 2 === 0) {
         G.ctx.fillStyle = "rgba(4,18,51,.75)";
         G.ctx.fillRect(87, 238, 146, 30);
@@ -108,7 +108,7 @@ const title = {
     outlined("ガオン", G.W / 2, 42, 32);
     outlined("ワールド", G.W / 2, 76, 24);
     G.use("title");
-    const sub = "〜七つの谷と リーフ・コンパス〜";
+    const sub = "〜ガオンずかんを 完成させよう〜";
     const sw = G.textW(sub, 14) + 24;
     G.rect((G.W - sw) / 2, 114, sw, 24, 3);
     G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);
@@ -154,21 +154,7 @@ async function boot() {
   const testMap = new URLSearchParams(location.search).get("v4test");
   if (/^(localhost|127.0.0.1)$/.test(location.hostname) && testMap) {
     loadInto(newGame("レオ"));
-    const starts = {
-      village: [21, 19], hut: [20, 31], elder: [20, 31],
-      mount1: [20, 37], mount2: [20, 37], gate: [20, 2],
-      harbor: [20, 3], route1: [20, 37], sand: [20, 37],
-      route2: [20, 37], forest: [20, 37], route3: [20, 37],
-      stone: [20, 37], route4: [20, 37], aqua: [20, 37], route5: [20, 37],
-      sky: [20, 37], route6: [20, 37],
-      flame: [20, 37], route7: [15, 37], galaxy: [20, 37],
-      inlet: [2, 21], desert: [2, 21], deepforest: [2, 21],
-      cavern: [2, 21], river: [2, 21], cloud: [2, 21], volcano: [2, 21], starhill: [2, 21],
-      station: [20, 34], clothes1: [20, 34], salon: [20, 34], clothes2: [20, 34],
-      shop: [20, 34], hut2: [20, 34], arena: [20, 34],
-    };
-    const at = starts[testMap] || starts.village;
-    world.enter(starts[testMap] ? testMap : "village", at[0], at[1], "down");
+    world.enter(testMap, NaN, NaN, "down");
     scene = world;
     return;
   }
@@ -243,7 +229,8 @@ async function mainFlow(local, restored) {
       await ui.say([
         "ようこそ ガオンの せかいへ！",
         "きみの なまえは " + name + "。",
-        "きたの けんきゅうじょで", "はかせが まっている。",
+        "ここは きみの生まれた ネイチャータウン。",
+        "村の女の子が めずらしいガオンを見たらしい。",
       ]);
       startGame();
       return;

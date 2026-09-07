@@ -12,14 +12,15 @@ import * as In from "./input.js";
 import { beep } from "./audio.js";
 
 const BOX = { x: 8, y: 196, w: 304, h: 84 };
-const PAD = 18;                 // わくの 内がわの よゆう（左右）
-const LINE_H = 27;              // 1行の 高さ
+const PAD = 24;                 // わくの 内がわの よゆう（左右）
+const LINE_H = 26;              // 1行の 高さ
 const TEXT_SIZE = 16;
 const SAY_LINES = 2;            // 1ページに 出す 行数
 
-const CH_PAD_L = 26;            // ▶ のぶんの 左よゆう
-const CH_PAD_R = 16;
-const CH_ROW = 24;
+const CH_PAD_L = 32;            // ▶ のぶんの 左よゆう
+const CH_PAD_R = 24;
+const CH_ROW = 28;
+const CH_PAD_Y = 16;
 
 let stack = [];       // うえに あるものが 入力を うけとる
 let now = 0;
@@ -167,11 +168,11 @@ function drawSay(w) {
     const line = cur[i];
     const show = line.slice(0, Math.max(0, left));
     left -= line.length;
-    G.textFit(show, BOX.x + PAD, BOX.y + 15 + i * LINE_H, sayWidth(), 3, TEXT_SIZE);
+    G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), 3, TEXT_SIZE);
   }
   const total = cur.join("").length;
   if (w.shown >= total && Math.floor(now / 300) % 2 === 0) {
-    G.text("▼", BOX.x + BOX.w - 26, BOX.y + BOX.h - 24, 3, 14);
+    G.text("▼", BOX.x + BOX.w - PAD - 10, BOX.y + BOX.h - 20, 3, 10);
   }
 }
 
@@ -190,20 +191,11 @@ function boxOf(w) {
   if (x < 8) x = 8;
 
   let y = w.y == null ? 8 : w.y;
-  let rows = Math.min(w.items.length, w.rows);
-  let h = 16 + rows * CH_ROW;
-
-  // 下に はみ出すなら 行数を へらし、それでも だめなら 上へ ずらす
-  if (y + h > G.H - 8) {
-    const fits = Math.floor((G.H - 8 - y - 16) / CH_ROW);
-    if (fits >= 2) { rows = Math.min(rows, fits); h = 16 + rows * CH_ROW; }
-    else { y = G.H - 8 - h; }
-  }
-  if (y < 8) { y = 8; }
-  if (y + h > G.H - 8) {
-    rows = Math.max(1, Math.floor((G.H - 16 - y - 16) / CH_ROW));
-    h = 16 + rows * CH_ROW;
-  }
+  const maxRows = Math.max(1, Math.floor((G.H - 16 - CH_PAD_Y * 2) / CH_ROW));
+  const rows = Math.min(w.items.length, w.rows, maxRows);
+  const h = CH_PAD_Y * 2 + rows * CH_ROW;
+  // 余白と行数を保ったまま、画面の内側へ移動する。
+  y = Math.max(8, Math.min(y, G.H - 8 - h));
   return { x: x, y: y, w: width, h: h, rows: rows };
 }
 
@@ -228,14 +220,14 @@ function drawChoice(w) {
   for (let r = 0; r < b.rows; r++) {
     const i = w.top + r;
     if (i >= w.items.length) break;
-    const y = b.y + 10 + r * CH_ROW;
-    if (i === w.i) G.text("▶", b.x + 8, y, 3, TEXT_SIZE);
+    const y = b.y + CH_PAD_Y + r * CH_ROW;
+    if (i === w.i) G.text("▶", b.x + 14, y, 3, 12);
     G.textFit(w.items[i], b.x + CH_PAD_L, y, maxW, 3, TEXT_SIZE);
   }
   if (w.extra) w.extra(b, w.i);
   G.use("ui");
-  if (w.top > 0) G.text("▲", b.x + b.w - 18, b.y + 2, 3, 12);
-  if (w.top + b.rows < w.items.length) G.text("▼", b.x + b.w - 18, b.y + b.h - 14, 3, 12);
+  if (w.top > 0) G.text("▲", b.x + b.w - 22, b.y + 5, 3, 10);
+  if (w.top + b.rows < w.items.length) G.text("▼", b.x + b.w - 22, b.y + b.h - 15, 3, 10);
 }
 
 export { BOX };

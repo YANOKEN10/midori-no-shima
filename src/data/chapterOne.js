@@ -1,0 +1,60 @@
+// Hand-authored first chapter. One cell is one 32px movement tile.
+function map(name,w,h,kind='out') { const g=Array.from({length:h},(_,y)=>Array.from({length:w},(_,x)=>x===0||y===0||x===w-1||y===h-1?'X':kind==='in'?'f':','));return {name,kind,tileWorld:true,chapter:1,g,warps:[],npcs:[],signs:[],items:[],props:[],spawn:{x:Math.floor(w/2),y:h-3}}; }
+function rect(m,x,y,w,h,ch){for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)if(m.g[j]?.[i]!=null)m.g[j][i]=ch;}
+function path(m,ax,ay,bx,by,width=2){rect(m,Math.min(ax,bx),ay,Math.abs(bx-ax)+width,width,'.');rect(m,bx,Math.min(ay,by),width,Math.abs(by-ay)+width,'.');}
+function prop(m,art,x,y,w,h,ch='T'){rect(m,x,y,w,h,ch);m.props.push({art,x,y,w,h});}
+function tree(m,x,y,art='tree'){if(m.npcs.some(n=>n.x>=x&&n.x<x+2&&n.y>=y&&n.y<y+3))return;if(m.g.slice(y,y+3).length===3&&m.g.slice(y,y+3).every(r=>r.slice(x,x+2).length===2&&r.slice(x,x+2).every(c=>c===',')))prop(m,art,x,y,2,3);}
+function trees(m){for(let y=1;y<m.g.length-3;y+=4)for(let x=1;x<m.g[0].length-2;x+=3)if((x*7+y*11)%5!==0)tree(m,x,y,(x+y)%2?'fir':'tree');}
+function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:true,talk,...extra});}
+function sign(m,x,y,text){rect(m,x,y,1,1,'S');m.signs.push({x,y,text:Array.isArray(text)?text:[text]});}
+function building(m,x,y,art,to,label){prop(m,art,x,y,5,5,'#');const dx=x+2,dy=y+4;m.g[dy][dx]='D';m.props.at(-1).door={x:dx,y:dy};m.props.at(-1).label=label;m.warps.push({x:dx,y:dy,to,tx:7,ty:10,back:{map:m.id,x:dx,y:dy+1}});if(dy<16)path(m,dx,dy+1,dx,16,1);else{path(m,16,16,16,dy+1,2);path(m,16,dy+1,dx,dy+1,1);}}
+function link(a,ax,ay,b,bx,by,req){a.g[ay][ax]='.';b.g[by][bx]='.';a.warps.push({x:ax,y:ay,to:b.id,tx:bx,ty:by+(by===0?1:by===b.g.length-1?-1:0),edge:1,requires:req});b.warps.push({x:bx,y:by,to:a.id,tx:ax,ty:ay+(ay===0?1:ay===a.g.length-1?-1:0),edge:1});}
+function trainer(m,x,y,name,look,dir,party,talk){npc(m,x,y,name,look,[talk],{dir,trainer:{party,money:120+party[0][1]*35},win:['いい しょうぶだったね！'],after:['弱ったら ガオンびょういんへ。','くすりと ラグネットは ショップで買えるよ。']});}
+export function buildChapterOne(){
+ const M={};const add=(id,name,w,h,kind)=>{const m=map(name,w,h,kind);m.id=id;M[id]=m;return m};
+ const v=add('village','ネイチャータウン',34,29);
+ const r=add('rods','ロッズタウン',34,29);
+ for(const m of [v,r]){rect(m,2,5,30,18,',');path(m,16,0,16,28,2);path(m,3,16,29,16,2);m.spawn={x:16,y:19};building(m,3,6,'chaletClinic','hospital','ガオンびょういん');building(m,25,6,'harborShop','shop','ショップ');sign(m,4,12,['ガオンびょういん','ガオンの HP・状態・技の回数を回復。']);sign(m,26,12,['ショップ','ガオンのくすりと ラグネット。']);}
+ building(v,11,7,'chalet','hut','主人公の家');building(v,21,19,'chaletStone','lab','けんきゅうしせつ');
+ // Reserve clear routes before placing trees or decorations.
+ path(v,16,24,23,24,2);path(v,16,16,16,4,2);
+ npc(v,19,15,'ラテットを見た女の子','girl',[],{script:'v5:witness'});
+ npc(v,12,19,'村のひと','oldman',['ここは ネイチャータウン。','山おくへの道は 北にあるよ。']);
+ sign(v,18,3,['北：山おく','南：1ばんどうろ・ロッズタウン']);
+ sign(v,22,25,['スイスはかせの けんきゅうしせつ']);
+ npc(r,19,16,'ヤノケン','boy',[],{script:'v5:dex'});
+ building(r,11,6,'chalet','rodsHome','村の家');
+ npc(r,12,21,'旅のひと','hiker',['南の 2ばんどうろには','6人の トレーナーがいるよ。','先へ進む前に ガオンを仲間にしよう。']);
+ sign(r,18,25,['南：2ばんどうろ','その先：ネイチャーのもり']);
+ for(const m of [v,r]){rect(m,3,21,5,3,'F');for(let x=3;x<8;x++)m.g[24][x]='=';trees(m);}
+ const home=add('hut','主人公の家',16,14,'in');home.spawn={x:7,y:10};rect(home,2,2,3,1,'b');rect(home,11,3,2,2,'B');rect(home,4,5,2,2,'t');npc(home,9,6,'お母さん','girl',['山おくへ行くなら 気をつけてね。','ガオンと帰ってきたら 一緒に休もう。'],{heal:true});
+ const lab=add('lab','スイスはかせの研究施設',16,14,'in');rect(lab,2,2,5,1,'b');rect(lab,10,2,3,1,'P');rect(lab,3,5,3,2,'t');npc(lab,8,5,'スイスはかせ','prof',[],{script:'v5:professor'});npc(lab,12,8,'研究員','girl',['弱ったガオンほど つかまえやすいよ。','マスターラグなら 確実につかまるんだ。']);
+ const hospital=add('hospital','ガオンびょういん',16,14,'in');rect(hospital,2,2,3,2,'K');rect(hospital,10,2,3,2,'B');npc(hospital,7,5,'看護師','nurse',['ガオンびょういんへ ようこそ！'],{healAll:true});
+ const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true});
+ const rh=add('rodsHome','ロッズタウンの家',16,14,'in');rect(rh,3,4,3,2,'t');npc(rh,10,5,'村のひと','oldman',['草むらで会える ガオンは','道路ごとに ちがうんだ。']);
+ for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push({x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
+ const mountain=add('mountain','山おく',30,34);mountain.spawn={x:14,y:31};path(mountain,14,33,14,24);path(mountain,14,24,6,17);path(mountain,6,17,20,10);path(mountain,20,10,14,4);rect(mountain,11,3,8,5,'.');
+ rect(mountain,3,23,5,6,'"');rect(mountain,22,15,5,6,'"');rect(mountain,8,10,3,4,'"');
+ // One-tile stair and ladder corridors are part of the actual walkable route.
+ rect(mountain,6,18,2,4,'R');rect(mountain,6,18,1,4,'H');rect(mountain,20,11,2,4,'R');rect(mountain,20,11,1,4,'h');
+ for(const [x,y] of [[11,22],[18,22],[23,8],[5,7],[24,27]])mountain.g[y][x]='R';
+ npc(mountain,14,4,'ラテット','boy',[],{script:'v5:latett',artMon:'ラテット',hideFlag:'v5:latettSeen'});
+ mountain.enc={rate:15,list:[['イシゴロ',3,5,60],['ツチノコ',3,5,40]]};mountain.battleTerrain='grass';trees(mountain);
+ const one=add('route1','1ばんどうろ',26,32);path(one,12,0,12,31);path(one,5,10,18,10);rect(one,3,5,6,7,'"');rect(one,17,15,6,7,'"');rect(one,5,24,5,4,'"');one.enc={rate:17,list:[['ネズミン',2,3,55],['トリッピ',2,4,45]]};sign(one,10,4,['1ばんどうろ','北：ネイチャー　南：ロッズ']);npc(one,15,26,'旅の女の子','girl',['ガオンを持っていなくても','ラグネットを投げて つかまえられるよ。']);trees(one);
+ const two=add('route2','2ばんどうろ',30,42);path(two,14,0,14,41);path(two,5,10,24,10);path(two,5,23,24,23);path(two,5,34,24,34);
+ rect(two,3,4,7,5,'"');rect(two,20,13,7,6,'"');rect(two,3,27,7,6,'"');rect(two,19,36,8,4,'"');
+ // The first trainer sees the main path near the entrance. No trainers exist earlier.
+ const trainers=[[11,5,'トレーナーの アキ','boy','right',[['ネズミン',3]],'はじめての トレーナーしょうぶだね！'],[18,11,'トレーナーの メイ','girl','left',[['トリッピ',4]],'ガオンと 一緒に がんばろう！'],[11,18,'むしとりの ソウ','boy','right',[['ムシコロ',4],['ムシコロ',4]],'ぼくの ガオンを 見て！'],[18,25,'トレーナーの リナ','girl','left',[['タネコロ',5]],'くすりの 準備は できてる？'],[11,32,'やまあるきの ダン','hiker','right',[['イシゴロ',5]],'森へ行く前に しょうぶだ！'],[18,38,'トレーナーの ユウ','boy','left',[['ピリット',5],['ネズミン',5]],'6人目は ぼくだよ！']];
+ for(const [x,y,name,look,dir,party,talk] of trainers){rect(two,Math.min(x,14),y,Math.abs(x-14)+2,1,'.');trainer(two,x,y,name,look,dir,party,talk);}
+ two.enc={rate:18,list:[['ムシコロ',3,5,50],['タネコロ',3,5,45],['ピリット',4,5,5]]};sign(two,16,2,['2ばんどうろ','トレーナーは 全部で6人。']);trees(two);
+ const forest=add('natureforest','ネイチャーのもり',34,38);forest.spawn={x:16,y:2};path(forest,16,0,16,8);path(forest,16,8,7,19);path(forest,7,19,24,29);path(forest,24,29,16,34);rect(forest,13,31,8,5,',');
+ rect(forest,3,5,7,7,'"');rect(forest,23,5,8,9,'"');rect(forest,3,25,7,7,'"');rect(forest,19,18,7,7,'"');
+ // Riverbank is explicitly impassable; the one crossing is a bridge.
+ rect(forest,9,14,22,4,'R');rect(forest,10,15,20,2,'W');rect(forest,16,14,2,4,'d');path(forest,7,12,16,13);path(forest,7,18,16,19);
+ for(const [x,y,dir,name,party] of [[12,8,'right','森のトレーナー ミオ',[['キノコン',6]]],[4,20,'right','森のトレーナー ケイ',[['ハナビィ',6],['ムシコロ',5]]],[27,29,'left','森のトレーナー ナオ',[['コケゴロ',7]]]]){rect(forest,x,y,1,1,'.');trainer(forest,x,y,name,'hiker',dir,party,'森の ガオンと しょうぶしよう！');}
+ forest.enc={rate:20,list:[['キノコン',5,7,45],['ハナビィ',5,7,35],['コケゴロ',6,8,18],['ハッパチョ',7,8,2]]};forest.rareSpecies='ハッパチョ';
+ sign(forest,18,34,['ここまでが 今回の冒険エリア。','戻って 別のガオンも さがしてみよう！']);trees(forest);
+ link(v,16,0,mountain,14,33,'v5:heardLatett');link(v,16,28,one,12,0,'v5:netGift');link(one,12,31,r,16,0);link(r,16,28,two,14,0,'v5:dex');link(two,14,41,forest,16,0);
+ for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
+ return M;
+}

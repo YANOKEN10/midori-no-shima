@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ガオン・ワールド — スイスのマップ素材</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#152b32;color:#ecf2e6;font:16px/1.8 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:40px 28px}h1{font-size:30px;margin:0}p{color:#b9ceca;margin:8px 0 28px}h2{margin:36px 0 14px} .towns{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.town{background:#233d42;padding:20px;border-radius:12px}h3{margin:0 0 14px;font-size:20px}canvas{image-rendering:pixelated;max-width:100%;height:auto}.town canvas{display:block;width:100%;border-radius:4px}.assets{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}.asset{background:#294349;border-radius:8px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:230px}.asset small{color:#c0d5d0}a{color:#a9e7ce}.tag{font-size:13px;color:#152b32;background:#a9e7ce;border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:14px}
+</style><main><span class="tag">素材プレビュー · 第1版</span><h1>スイスの自然と、4つの町</h1><p>草と岩は1マス。木と家は複数マスで配置します。以下は素材と配色の確認用で、実際のゲームマップではありません。</p><div class="towns" id="towns"></div><h2>素材一覧</h2><p>1マス＝32pxで表示。地形のつなぎ目と当たり判定は、マップへの組み込み時に調整します。</p><div class="assets" id="assets"></div><p><a href="swiss-atlas-v1.png">素材シート原寸</a> · <a href="atlas.json">切り出し座標と配置サイズ</a></p></main>
+<script type="module">
+const atlas=await(await fetch('./atlas.json')).json();
+const img=new Image();img.src=atlas.image;await img.decode();
+function sprite(ctx,id,x,y,w,h){const s=atlas.sprites[id];ctx.imageSmoothingEnabled=false;ctx.drawImage(img,...s.rect,x,y,w??s.tiles[0]*32,h??s.tiles[1]*32)}
+for(const town of Object.values(atlas.towns)){
+ const el=document.createElement('section');el.className='town';const h=document.createElement('h3');h.textContent=town.name+(town.startTown?' · はじまりの村':'');el.append(h);
+ const c=document.createElement('canvas');c.width=384;c.height=288;const ctx=c.getContext('2d');
+ for(let y=0;y<9;y++)for(let x=0;x<12;x++)sprite(ctx,town.water&&x>=9?town.water:y>=6&&y<=7?town.path:town.ground,x*32,y*32,32,32);
+ sprite(ctx,town.buildings[0],24,34,128,128);sprite(ctx,town.buildings[1],174,34,128,128);
+ if(town.trees){sprite(ctx,town.trees[0],4,180,64,96);sprite(ctx,town.trees[1],300,170,64,96)}
+ sprite(ctx,'rock',100,242,32,32);sprite(ctx,'flowers',144,244,32,32);sprite(ctx,'lamp',252,192,32,64);
+ el.append(c);document.querySelector('#towns').append(el);
+}
+for(const [id,s] of Object.entries(atlas.sprites)){
+ const el=document.createElement('div');el.className='asset';const c=document.createElement('canvas');c.width=s.tiles[0]*32;c.height=s.tiles[1]*32;const ctx=c.getContext('2d');
+ ctx.fillStyle='#6dbb98';ctx.fillRect(0,0,c.width,c.height);sprite(ctx,id,0,0);el.append(c);
+ const label=document.createElement('small');label.textContent=`${id} · ${s.tiles[0]} × ${s.tiles[1]}マス`;el.append(label);document.querySelector('#assets').append(el);
+}
+window.materialPreviewReady=true;
+</script>

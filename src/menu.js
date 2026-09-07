@@ -1,3 +1,4 @@
+import { chapterObjective } from "./chapterStory.js";
 // ============================================================
 //  メニュー（START ボタン）
 // ============================================================
@@ -27,7 +28,7 @@ export async function openMenu() {
     if (i < 0 || i === 6) return;
     if (i === 0) await partyMenu();
     else if (i === 1) await bagMenu();
-    else if (i === 2) await dexMenu();
+    else if (i === 2) { if (hasItem("ガオンずかん")) await dexMenu(); else await ui.say(["ガオンずかんは まだ持っていない。"]); }
     else if (i === 3) await trainerCard();
     else if (i === 4) await reportMenu();
     else if (i === 5) await settingsMenu();
@@ -117,7 +118,7 @@ export async function bagMenu() {
     const it = all[i];
     if (!it) return;
     const d = itemData(it.name);
-    const desc = it.name === "ラグ・ネット"
+    const desc = it.name === "ラグネット"
       ? [d.desc, "エンブレム " + State.save.badges.length + "こ／捕獲力 " + lagNetMultiplier().toFixed(2) + "倍"]
       : [d.desc];
     await ui.say(desc);
@@ -237,8 +238,8 @@ async function trainerCard() {
     G.textFit("なまえ　" + s.name, 24, 60, W, 3, 16);
     G.textFit("おかね　" + s.money + "円", 24, 88, W, 3, 16);
     G.textFit("ずかん　みた " + c.seen + " / つかまえた " + c.own, 24, 116, W, 3, 16);
-    G.text("エンブレム　" + s.badges.length + " / 7", 24, 144, 3, 16);
-    s.badges.slice(0, 3).forEach((b, i) => G.textFit("・" + b, 40, 170 + i * 22, W - 16, 3, 14));
+    G.textFit("目標：全ガオンを 仲間にする",24,144,W,3,16);
+    G.textFit(chapterObjective(),24,180,W,3,14);
     G.textFit(cloud.signedIn ? "☁ " + cloud.who + " で ログイン中" : "この たんまつだけで あそんでいます", 24, 240, W, 3, 13);
   });
 }

@@ -9,3 +9,6 @@ shots/
 .vercel
 .env*
 .devart/
+
+work/
+artifacts/

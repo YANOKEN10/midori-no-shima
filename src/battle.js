@@ -1,3 +1,4 @@
+import { drawChapterBattle } from "./chapterArt.js";
 // ============================================================
 //  たたかい
 // ============================================================
@@ -84,7 +85,7 @@ export async function startBattle(opts) {
   if (isTrainer) await ui.say([opts.trainer.name + "が しょうぶを しかけてきた！"]);
   else await ui.say(["あっ！ やせいの " + B.foe.mon.sp + "が とびだしてきた！"]);
   if (B.you) await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
-  else await ui.say(["まだ ガオンを もっていない。", "ラグ・ネットで つかまえてみよう！"]);
+  else await ui.say(["まだ ガオンを もっていない。", "ラグネットで つかまえてみよう！"]);
 
   let result = "";
   while (!result) {
@@ -131,10 +132,10 @@ export async function startBattle(opts) {
 async function chooseAction() {
   for (;;) {
     if (!B.you) {
-      const j = await ui.choice(["ラグ・ネットを つかう", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
+      const j = await ui.choice(["ラグネットをつかう", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
       if (j === 1) return { kind: "run" };
       const list = bagList("battle").filter((x) => itemData(x.name).kind === "ball");
-      if (!list.length) { await ui.say(["ラグ・ネットを もっていない！"]); return { kind: "run" }; }
+      if (!list.length) { await ui.say(["ラグネットを もっていない！"]); return { kind: "run" }; }
       if (list.length === 1) return { kind: "item", item: list[0].name };
       const k = await ui.choice(list.map((x) => x.name + " ×" + x.n), { x: 8, y: 140, w: 240, rows: 4 });
       if (k >= 0) return { kind: "item", item: list[k].name };
@@ -173,7 +174,7 @@ async function chooseMove() {
 async function chooseItem() {
   const list = bagList("battle");
   if (!list.length) { await ui.say(["どうぐを もっていない。"]); return null; }
-  const labels = list.map((x) => x.name + " ×" + x.n);
+  const labels = list.map((x) => (x.name === "ラグネット" ? "ラグネットをつかう" : x.name) + " ×" + x.n);
   const i = await ui.choice(labels, { x: 8, y: 140, w: 240, rows: 5 });
   if (i < 0) return null;
   return list[i].name;
@@ -430,8 +431,8 @@ async function useBattleItem(name) {
   const d = itemData(name);
   if (d.kind === "ball") {
     if (B.isTrainer) { await ui.say(["ひとの ガオンを とるなんて だめ！"]); return "no"; }
-    useItem(name);
-    return await throwBall(name === "ラグ・ネット" ? d.rate * lagNetMultiplier() : d.rate, name);
+    if (!useItem(name)) { await ui.say(["そのネットは もう残っていない！"]); return "no"; }
+    return await throwBall(name === "ラグネット" ? d.rate * lagNetMultiplier() : d.rate, name);
   }
   if (d.kind === "heal") {
     if (!B.you) { await ui.say(["いま つかっても いみが なさそうだ。"]); return "no"; }
@@ -480,10 +481,10 @@ async function choosePartyMemberForRevive() {
 
 async function throwBall(ballRate, netName) {
   const m = B.foe.mon;
-  await ui.say(["ラグ・ネットを つかった！"]);
-  if (netName === "ラグ・ネット" && State.save.badges.length > 0) {
+  await ui.say([(netName === "ラグネット" ? "ラグネット" : netName) + "を つかった！"]);
+  if (netName === "ラグネット" && State.save.badges.length > 0) {
     await ui.say(["エンブレムが " + State.save.badges.length + "こ ひかり、",
-                  "ラグ・ネットの 捕獲力が " + lagNetMultiplier().toFixed(2) + "倍に なった！"]);
+                  "ラグネットの 捕獲力が " + lagNetMultiplier().toFixed(2) + "倍に なった！"]);
   }
   B.foe.hidden = true;
   beep("ball");
@@ -492,7 +493,7 @@ async function throwBall(ballRate, netName) {
   const max = maxHp(m);
   const statusBonus = m.status === "ねむり" ? 2 : (m.status ? 1.5 : 1);
   let a = ((3 * max - 2 * m.hp) * species(m.sp).catch * ballRate * statusBonus) / (3 * max);
-  a = Math.min(255, a);
+  a = itemData(netName).guaranteed ? 255 : Math.min(255, a);
   const b = 65536 / Math.pow(255 / Math.max(1, a), 0.1875);
 
   let shakes = 0;
@@ -509,7 +510,9 @@ async function throwBall(ballRate, netName) {
     beep("catch");
     await ui.say(["やった！ " + m.sp + "を つかまえた！"]);
     ownMon(m.sp);
+    const firstPartner = State.save.party.length === 0;
     const where = addToParty(m);
+    if (firstPartner) await ui.say([m.sp + "が 仲間になった！", "次のバトルから「たたかう」で、一緒に戦えるようになった。", "「どうぐ」からラグネットを使い、ほかのガオンも仲間にしよう。"]);
     if (where === "box") await ui.say(["てもちが いっぱいなので", m.sp + "を ボックスへ おくった。"]);
     return "caught";
   }
@@ -610,12 +613,14 @@ function drawBattle() {
   const winterField = /^(sky|route6|cloud)$/.test((State.save.where && State.save.where.map) || "");
   const battleBackground = G.isColor() && environmentTile(winterField ? "battleBackgroundWinter" : "battleBackground");
   const battlePlatform = G.isColor() && environmentTile(winterField ? "battlePlatformWinter" : "battlePlatform");
-  if (battleBackground) G.draw(battleBackground, 0, 0);
+  const chapterBackground = G.isColor() && drawChapterBattle(G.ctx, State.save.battleTerrain || "grass");
+  if (chapterBackground) { /* Platforms are included in the new background. */ }
+  else if (battleBackground) G.draw(battleBackground, 0, 0);
   else {
     G.use("sky"); G.rect(0, 0, G.W, 90, 0); G.rect(0, 78, G.W, 12, 1);
     G.use("battleBg"); G.rect(0, 90, G.W, 106, 1); G.rect(0, 90, G.W, 3, 2);
   }
-  if (battlePlatform) {
+  if (chapterBackground) { /* No duplicate legacy platforms. */ } else if (battlePlatform) {
     G.draw(battlePlatform, 178, 112);
     G.draw(battlePlatform, 2, 168);
   } else {
@@ -667,8 +672,8 @@ function drawBattle() {
 
   // じょうほうの わくは、メニューと かさなるときは かくす
   const top = topRect();
-  const foeR = { x: 8, y: 12, w: 148, h: 60 };
-  const youR = { x: 164, y: 132, w: 148, h: 60 };
+  const foeR = { x: 8, y: 12, w: 148, h: 72 };
+  const youR = { x: 164, y: 120, w: 148, h: 72 };
   if (!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
   if (B.you && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
 }
@@ -682,18 +687,22 @@ function ellipse(cx, cy, rx, ry, c) {
 
 function infoBox(x, y, side, mine) {
   const m = side.mon;
-  const w = 148, h = 60;
+  const w = 148, h = 72;
   G.use("ui");
-  const panel = G.isColor() && environmentTile("battlePanel");
-  if (panel) G.draw(panel, x, y); else G.window9(x, y, w, h);
+  if (G.isColor()) {
+    G.ctx.fillStyle="#315456";G.ctx.fillRect(x+3,y+3,w,h);
+    G.ctx.fillStyle="#324b4c";G.ctx.fillRect(x,y,w,h);
+    G.ctx.fillStyle="#f8f8df";G.ctx.fillRect(x+3,y+3,w-6,h-6);
+    G.ctx.fillStyle="#b4bea0";G.ctx.fillRect(x+6,y+6,w-12,1);
+  } else G.window9(x, y, w, h);
 
   // なまえは Lv の ぶんを のこして つめる
   const lv = "Lv" + m.lv;
   const lvW = G.textW(lv, 14);
-  G.textFit(monName(m), x + 10, y + 8, w - 24 - lvW, 3, 16);
-  G.textRight(lv, x + w - 10, y + 10, 3, 14);
+  G.textFit(monName(m), x + 14, y + 12, w - 36 - lvW, 3, 16);
+  G.textRight(lv, x + w - 14, y + 14, 3, 14);
 
-  const bx = x + 10, by = y + 32, bw = w - 20, bh = 8;
+  const bx = x + 14, by = y + 36, bw = w - 28, bh = 8;
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
@@ -704,6 +713,6 @@ function infoBox(x, y, side, mine) {
   G.use("ui");
 
   // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
-  if (m.status) G.text(m.status, x + 10, y + 43, 3, 11);
-  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 10, y + 43, 3, 11);
+  if (m.status) G.text(m.status, x + 14, y + 52, 3, 11);
+  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 14, y + 52, 3, 11);
 }

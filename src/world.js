@@ -1,3 +1,5 @@
+import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
+import { chapterNpc } from "./chapterStory.js";
 // ============================================================
 //  フィールド（まちや どうろを あるく ところ）
 // ============================================================
@@ -10,7 +12,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260905-sanctuary-collision-v1";
+import { MAPS } from "./data/maps.js?v=20260907-chapter1";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -18,12 +20,12 @@ import {
   G as State, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260905-sanctuary-collision-v1";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260907-chapter1";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260905-sanctuary-collision-v1";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260907-chapter1";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -136,6 +138,7 @@ export const world = {
       }
       if (found) { x = found[0]; y = found[1]; }
     }
+    if (this.map.tileWorld) { x=Math.round(x); y=Math.round(y); }
     this.x = x; this.y = y;
     this.fx = x; this.fy = y;
     this.freeCellX = Math.floor(x); this.freeCellY = Math.floor(y);
@@ -143,7 +146,7 @@ export const world = {
     this.ox = this.oy = 0;
     this.moving = false;
     this.npcs = (this.map.npcs || []).map((n, i) => Object.assign({}, n, {
-      idx: i, ox: 0, oy: 0, homeX: n.x, homeY: n.y,
+      idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
     // Saved tile origins can overlap a wall with the walking footprint.
@@ -320,6 +323,10 @@ export const world = {
     const wp = (this.map.warps || []).find((w) => w.x === this.x && w.y === this.y);
     if (wp) { await this.doWarp(wp); return; }
 
+    if (this.map.tileWorld) {
+      const legend=this.npcs.find(n=>n.script==="v5:latett"&&!n.gone);
+      if(legend&&flag("v5:heardLatett")&&Math.abs(this.x-legend.x)+Math.abs(this.y-legend.y)<=3){this.busy=true;try{await chapterNpc(this,legend);}finally{this.busy=false;}return;}
+    }
     // トレーナーに 見つかる
     const t = this.spotter();
     if (t) { await this.trainerSpot(t); return; }
@@ -334,6 +341,10 @@ export const world = {
 
   async doWarp(wp) {
     this.busy = true;
+    if(wp.requires&&!flag(wp.requires)){
+      const lines=wp.requires==="v5:heardLatett"?["村の女の子が 山おくの話をしていた。","まずは 話を聞いてみよう。"]:wp.requires==="v5:dex"?["ロッズタウンの ヤノケンに会おう。"]:["旅に出る前に スイスはかせへ","ラテットのことを 報告しよう。"];
+      await ui.say(lines);this.busy=false;return;
+    }
     beep("warp");
     const enteringBuilding = this.map && this.map.kind === "out" && this.map.freeMove && !wp.edge && wp.to !== "@back";
     if (enteringBuilding) {
@@ -453,6 +464,8 @@ export const world = {
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
     /* --- ものがたりの イベント --- */
+    if (n.script?.startsWith("v5:")) { await chapterNpc(this,n); return; }
+    if (n.script === "mother") { await this.motherEvent(n); return; }
     if (n.script === "elder") { await this.elderEvent(n); return; }
     if (n.script === "latette") { await this.latetteEvent(n); return; }
     if (n.script === "gate") { await this.gateEvent(n); return; }
@@ -461,6 +474,8 @@ export const world = {
     if (n.script === "tournament") { await this.tournamentEvent(n); return; }
 
     if (n.trainer && !flag(beatKey)) {
+      if(!State.save.party.length){await ui.say(["まずは 草むらで ガオンをつかまえよう。","仲間ができたら しょうぶしよう！"]);return;}
+      State.save.battleTerrain="grass";
       await ui.say(n.talk || ["しょうぶだ！"]);
       const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name }) });
       if (res === "lose") { await this.blackout(); return; }
@@ -536,22 +551,51 @@ export const world = {
      ものがたり
   ============================================================ */
 
-  // 谷守：山の異変をしらべるため、ラグ・ネットをたくす
+  // 母からの旅立ちの贈り物。既存の記録でも、この贈り物は一度だけ受け取れる。
+  async motherEvent(n) {
+    if (!flag("motherNetGift")) {
+      await ui.say([
+        "ミレナ「旅に出る前に、これを持っていってね。",
+        "ラグネットを15個、用意しておいたわ。",
+      ]);
+      addItem("ラグネット", 15);
+      setFlag("motherNetGift");
+      setFlag("gotNet");
+      saveLocal();
+      beep("levelup");
+      await ui.say([
+        State.save.name + "は お母さんから",
+        "ラグネットを15個 もらった！",
+        "野生のガオンに出会ったら、ネットで捕まえてみてね。",
+        "仲間になったガオンと、次のバトルで戦えるわ。",
+        "バトル中も「どうぐ」から、ラグネットを使えるのよ。",
+        "谷守のオルドが、共同ロッジで待っているわ。",
+      ]);
+      return;
+    }
+    await ui.say(["ミレナ「おかえり。みんな元気？"]);
+    if (await ui.ask(["家で ゆっくり休んでいく？"])) {
+      healParty();
+      beep("heal");
+      saveLocal();
+      await ui.say(["ガオンたちも 元気になった！"]);
+    }
+  },
+
+  // 谷守は図鑑を渡す。ネットの贈り物とは独立して進行する。
   async elderEvent(n) {
-    if (!flag("gotNet")) {
+    if (!hasItem("ガオンずかん")) {
       await ui.say([
         "オルド「よく きた、" + State.save.name + "。",
         "　今朝、谷をぬける風から 音が消えた。",
         "　ガオンたちも 雪峰のほうを 見つめている。",
         "　山の奥で なにかが 目をさましたのだ。",
       ]);
-      addItem("ラグ・ネット", 8);
       addItem("ガオンずかん");
-      setFlag("gotNet");
       beep("levelup");
       await ui.say([
-        State.save.name + "は「ラグ・ネット」を うけとった！",
-        "谷のつる草で 編まれた網。ガオンを 傷つけずに 保護できる。",
+        State.save.name + "は「ガオンずかん」を うけとった！",
+        "出会ったガオンと、仲間になったガオンを記録できる。",
       ]);
       await ui.say([
         "オルド「これは 谷の生き物を記す 観察帳だ。",
@@ -794,7 +838,9 @@ export const world = {
 
   /* --- やせいの ガオン ---------------------------------------- */
   async wildBattle() {
+    if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
+    State.save.battleTerrain=this.map.battleTerrain||"grass";
     const enc = this.map.enc;
     const total = enc.list.reduce((s, e) => s + e[3], 0);
     let r = rnd(total), chosen = enc.list[0];
@@ -827,9 +873,9 @@ export const world = {
     const lost = Math.floor(State.save.money / 2);
     State.save.money -= lost;
     healParty();
-    const c = State.save.lastCenter || { map: "village", x: 7, y: 6 };
+    const c = State.save.lastCenter || { map: "village", x: 5, y: 11 };
     this.enter(c.map, c.x, c.y, "down");
-    await ui.say(["おかねを " + lost + "円 おとしてしまった…", "ガオン・ステーションで めを さました。"]);
+    await ui.say(["おかねを " + lost + "円 おとしてしまった…", "ガオンびょういんで 手当てをうけた。"]);
     saveLocal();
   },
 
@@ -866,7 +912,7 @@ export const world = {
 
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
-    const fullBackdrop = map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
+    const fullBackdrop = map.tileWorld ? drawChapterMap(G.ctx,map,camX,camY) : map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
     if (map.fullArt && !fullBackdrop) {
       // 衝突用 X マスクや旧ランドマークを風景として表示しない。
       G.ctx.fillStyle = "#092438";
@@ -974,6 +1020,7 @@ export const world = {
         }
       } else {
         const n = p.n;
+        if(n.artMon){const im=battleArt(n.artMon);if(im)G.drawScaled(im,n.x*T-camX-16,n.y*T-camY-32,64,64);continue;}
         const dirn = n.dir || "down";
         const personKey = ({ boy:"Boy", girl:"Girl", prof:"Prof", oldman:"Oldman", nurse:"Nurse", clerk:"Clerk",
           sailor:"Sailor", hiker:"Hiker", leader1:"Leader1", leader2:"Leader2", rival:"Rival", philoa:"Leader1" })[n.look];
@@ -994,6 +1041,7 @@ export const world = {
       }
     }
 
+    if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     // まちの なまえ（はいってすぐ）
     G.use("ui");
     if (this.showName > 0) {

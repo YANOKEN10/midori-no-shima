@@ -1,0 +1,733 @@
+{
+  "version": 1,
+  "image": "swiss-atlas-v1.png",
+  "imageSize": [
+    1254,
+    1254
+  ],
+  "tileSize": 32,
+  "status": "material-preview",
+  "placementRules": {
+    "doorWidthTiles": 1,
+    "stairsWidthTiles": 1,
+    "ladderWidthTiles": 1,
+    "stairsAndLaddersExtendAlong": "y",
+    "shorelineWalkable": false,
+    "waterWalkable": false,
+    "treeWalkable": false,
+    "treeCollisionFootprint": "entire-tile-rectangle-including-canopy",
+    "explicitCrossings": [
+      "bridge",
+      "jetty"
+    ],
+    "integrationStatus": "pending-game-collision-implementation",
+    "tallGrassWalkable": true,
+    "tallGrassOcclusion": "draw-grass-foreground-over-feet-during-idle-and-movement"
+  },
+  "sprites": {
+    "grass": {
+      "rect": [
+        24,
+        24,
+        118,
+        118
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "tallGrass": {
+      "rect": [
+        173,
+        23,
+        46,
+        54
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "path": {
+      "rect": [
+        343,
+        36,
+        110,
+        108
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "cobble": {
+      "rect": [
+        640,
+        24,
+        124,
+        124
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "redCobble": {
+      "rect": [
+        797,
+        24,
+        128,
+        128
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "snow": {
+      "rect": [
+        965,
+        36,
+        103,
+        108
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "sea": {
+      "rect": [
+        1110,
+        26,
+        118,
+        118
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "river": {
+      "rect": [
+        57,
+        183,
+        53,
+        112
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "ground"
+    },
+    "cliff": {
+      "rect": [
+        329,
+        169,
+        131,
+        132
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "stairs": {
+      "rect": [
+        502,
+        185,
+        85,
+        116
+      ],
+      "tiles": [
+        1,
+        2
+      ],
+      "layer": "ground"
+    },
+    "rock": {
+      "rect": [
+        18,
+        319,
+        121,
+        122
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "smallRock": {
+      "rect": [
+        203,
+        352,
+        73,
+        71
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "flowers": {
+      "rect": [
+        335,
+        329,
+        125,
+        112
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "decoration"
+    },
+    "fenceHorizontal": {
+      "rect": [
+        480,
+        345,
+        151,
+        80
+      ],
+      "tiles": [
+        2,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "fenceVertical": {
+      "rect": [
+        684,
+        324,
+        44,
+        120
+      ],
+      "tiles": [
+        1,
+        2
+      ],
+      "layer": "obstacle"
+    },
+    "fenceCorner": {
+      "rect": [
+        795,
+        340,
+        137,
+        103
+      ],
+      "tiles": [
+        2,
+        2
+      ],
+      "layer": "obstacle"
+    },
+    "sign": {
+      "rect": [
+        976,
+        340,
+        85,
+        88
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "lamp": {
+      "rect": [
+        1139,
+        310,
+        67,
+        143
+      ],
+      "tiles": [
+        1,
+        2
+      ],
+      "layer": "obstacle"
+    },
+    "tree": {
+      "rect": [
+        8,
+        451,
+        153,
+        179
+      ],
+      "tiles": [
+        2,
+        3
+      ],
+      "layer": "obstacle"
+    },
+    "fir": {
+      "rect": [
+        174,
+        444,
+        137,
+        187
+      ],
+      "tiles": [
+        2,
+        3
+      ],
+      "layer": "obstacle"
+    },
+    "snowFir": {
+      "rect": [
+        322,
+        449,
+        147,
+        183
+      ],
+      "tiles": [
+        2,
+        3
+      ],
+      "layer": "obstacle"
+    },
+    "christmasTree": {
+      "rect": [
+        478,
+        448,
+        141,
+        184
+      ],
+      "tiles": [
+        3,
+        4
+      ],
+      "layer": "obstacle"
+    },
+    "bush": {
+      "rect": [
+        636,
+        480,
+        140,
+        125
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "pinkFlowers": {
+      "rect": [
+        798,
+        490,
+        125,
+        114
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "decoration"
+    },
+    "meadowFlowers": {
+      "rect": [
+        954,
+        489,
+        133,
+        112
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "decoration"
+    },
+    "flowerBox": {
+      "rect": [
+        1110,
+        505,
+        130,
+        94
+      ],
+      "tiles": [
+        2,
+        1
+      ],
+      "layer": "decoration"
+    },
+    "chalet": {
+      "rect": [
+        2,
+        642,
+        155,
+        193
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "chaletBalcony": {
+      "rect": [
+        158,
+        635,
+        166,
+        200
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "chaletStone": {
+      "rect": [
+        327,
+        640,
+        146,
+        195
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "chaletClinic": {
+      "rect": [
+        475,
+        630,
+        158,
+        205
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "snowChalet": {
+      "rect": [
+        635,
+        633,
+        159,
+        206
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "marketStall": {
+      "rect": [
+        799,
+        680,
+        142,
+        158
+      ],
+      "tiles": [
+        3,
+        3
+      ],
+      "layer": "building"
+    },
+    "canalHouse": {
+      "rect": [
+        944,
+        637,
+        159,
+        207
+      ],
+      "tiles": [
+        4,
+        5
+      ],
+      "layer": "building"
+    },
+    "harborShop": {
+      "rect": [
+        1105,
+        638,
+        145,
+        206
+      ],
+      "tiles": [
+        4,
+        4
+      ],
+      "layer": "building"
+    },
+    "clockTower": {
+      "rect": [
+        7,
+        835,
+        134,
+        232
+      ],
+      "tiles": [
+        3,
+        6
+      ],
+      "layer": "building"
+    },
+    "stoneBridge": {
+      "rect": [
+        143,
+        923,
+        180,
+        145
+      ],
+      "tiles": [
+        4,
+        3
+      ],
+      "layer": "bridge"
+    },
+    "station": {
+      "rect": [
+        329,
+        917,
+        167,
+        153
+      ],
+      "tiles": [
+        5,
+        4
+      ],
+      "layer": "building"
+    },
+    "glassTower": {
+      "rect": [
+        502,
+        843,
+        133,
+        226
+      ],
+      "tiles": [
+        4,
+        6
+      ],
+      "layer": "building"
+    },
+    "cityApartment": {
+      "rect": [
+        638,
+        847,
+        150,
+        222
+      ],
+      "tiles": [
+        4,
+        6
+      ],
+      "layer": "building"
+    },
+    "cityOffice": {
+      "rect": [
+        790,
+        876,
+        153,
+        191
+      ],
+      "tiles": [
+        4,
+        5
+      ],
+      "layer": "building"
+    },
+    "festiveCityHouse": {
+      "rect": [
+        946,
+        863,
+        149,
+        211
+      ],
+      "tiles": [
+        4,
+        5
+      ],
+      "layer": "building"
+    },
+    "modernTower": {
+      "rect": [
+        1102,
+        841,
+        139,
+        232
+      ],
+      "tiles": [
+        4,
+        6
+      ],
+      "layer": "building"
+    },
+    "garland": {
+      "rect": [
+        2,
+        1074,
+        179,
+        176
+      ],
+      "tiles": [
+        4,
+        3
+      ],
+      "layer": "decoration"
+    },
+    "quay": {
+      "rect": [
+        184,
+        1094,
+        144,
+        150
+      ],
+      "tiles": [
+        3,
+        3
+      ],
+      "layer": "obstacle"
+    },
+    "jetty": {
+      "rect": [
+        329,
+        1082,
+        204,
+        162
+      ],
+      "tiles": [
+        4,
+        3
+      ],
+      "layer": "bridge"
+    },
+    "bollard": {
+      "rect": [
+        550,
+        1115,
+        80,
+        97
+      ],
+      "tiles": [
+        1,
+        1
+      ],
+      "layer": "obstacle"
+    },
+    "harborLamp": {
+      "rect": [
+        648,
+        1136,
+        156,
+        99
+      ],
+      "tiles": [
+        2,
+        1
+      ],
+      "layer": "decoration"
+    },
+    "woodPost": {
+      "rect": [
+        815,
+        1109,
+        102,
+        124
+      ],
+      "tiles": [
+        1,
+        2
+      ],
+      "layer": "obstacle"
+    },
+    "snowCliff": {
+      "rect": [
+        932,
+        1084,
+        156,
+        162
+      ],
+      "tiles": [
+        2,
+        2
+      ],
+      "layer": "obstacle"
+    },
+    "snowPeak": {
+      "rect": [
+        1095,
+        1074,
+        154,
+        173
+      ],
+      "tiles": [
+        3,
+        3
+      ],
+      "layer": "obstacle"
+    }
+  },
+  "towns": {
+    "nature": {
+      "name": "ネイチャータウン",
+      "startTown": true,
+      "ground": "grass",
+      "path": "path",
+      "trees": [
+        "tree",
+        "fir"
+      ],
+      "buildings": [
+        "chalet",
+        "chaletBalcony",
+        "chaletStone"
+      ]
+    },
+    "christmas": {
+      "name": "クリスマスタウン",
+      "ground": "snow",
+      "path": "redCobble",
+      "trees": [
+        "snowFir",
+        "christmasTree"
+      ],
+      "buildings": [
+        "snowChalet",
+        "marketStall",
+        "festiveCityHouse"
+      ]
+    },
+    "blue": {
+      "name": "ブルータウン",
+      "ground": "grass",
+      "path": "path",
+      "water": "sea",
+      "buildings": [
+        "harborShop",
+        "canalHouse",
+        "chaletBalcony"
+      ]
+    },
+    "galaxy": {
+      "name": "ギャラクシータウン",
+      "ground": "cobble",
+      "path": "cobble",
+      "buildings": [
+        "glassTower",
+        "cityApartment",
+        "cityOffice",
+        "modernTower",
+        "station"
+      ]
+    }
+  }
+}

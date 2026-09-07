@@ -5,3 +5,9 @@ shots
 assets/monsters/source
 *.zip
 .env*
+
+work
+artifacts
+tools
+docs
+*.ps1

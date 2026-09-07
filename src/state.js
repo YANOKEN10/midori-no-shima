@@ -77,6 +77,7 @@ export function learnMove(m, name) {
 export function newGame(playerName) {
   return {
     ver: 3,
+    chapterVersion: 5,
     name: playerName || "レオ",
     rival: "フィロア",
     money: 3000,
@@ -105,6 +106,10 @@ export function loadInto(data) {
   G.save.bag = G.save.bag || {};
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
+  const names = {"ラグ・ネット":"ラグネット", "スーパーネット":"スーパーラグ", "ハイパーネット":"ハイパーラグ", "ヒールジェル":"ガオンのくすり"};
+  for (const [oldName,newName] of Object.entries(names)) if (G.save.bag[oldName]) { G.save.bag[newName]=(G.save.bag[newName]||0)+G.save.bag[oldName]; delete G.save.bag[oldName]; }
+  if (data && data.chapterVersion !== 5) { G.save.where={...START}; G.save.backTo={map:"village",x:13,y:12}; G.save.lastCenter=null; }
+  G.save.chapterVersion=5;
   G.save.look = G.save.look || { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" };
 }
 
@@ -142,7 +147,7 @@ export function dexCount() {
   return { seen: Object.keys(G.save.dexSeen).length, own: Object.keys(G.save.dexOwn).length };
 }
 
-// ラグ・ネットは、土地の声を聞いた証（エンブレム）ごとに15%強くなる。
+// ラグネットは、土地の声を聞いた証（エンブレム）ごとに15%強くなる。
 export function lagNetMultiplier() {
   const badges = Math.max(0, Math.min(7, (G.save.badges || []).length));
   return 1 + badges * 0.15;

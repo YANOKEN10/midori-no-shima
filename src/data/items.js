@@ -3,11 +3,13 @@
 //   kind: net(つかまえる) / heal / cure / revive / escape / key
 // ============================================================
 export const ITEMS = {
-  "ラグ・ネット": { kind: "ball", rate: 1, price: 200, desc: "のびちぢみする あみ。ガオンを つかまえる。" },
-  "スーパーネット": { kind: "ball", rate: 1.5, price: 600, desc: "あみ目が こまかく、つかまえやすい。" },
-  "ハイパーネット": { kind: "ball", rate: 2, price: 1200, desc: "どんな ガオンも のがさない じまんの あみ。" },
+  "ラグネット": { kind: "ball", rate: 1, price: 200, desc: "のびちぢみする あみ。ガオンを つかまえる。" },
+  "スーパーラグ": { kind: "ball", rate: 1.5, price: 600, desc: "あみ目が こまかく、つかまえやすい。" },
+  "ハイパーラグ": { kind: "ball", rate: 2, price: 1200, desc: "より高い性能で ガオンをつかまえる。" },
 
-  "ヒールジェル": { kind: "heal", amount: 20, price: 300, desc: "たいりょくを 20 かいふくする ジェル。" },
+  "マスターラグ": { kind: "ball", rate: 255, guaranteed: true, price: 0, desc: "野生のガオンを 必ずつかまえる。" },
+
+  "ガオンのくすり": { kind: "heal", amount: 20, price: 300, desc: "たいりょくを 20 かいふくする ジェル。" },
   "ハイヒール": { kind: "heal", amount: 50, price: 700, desc: "たいりょくを 50 かいふくする。" },
   "スーパーヒール": { kind: "heal", amount: 200, price: 1500, desc: "たいりょくを 200 かいふくする。" },
   "フルヒール": { kind: "heal", amount: 9999, price: 2500, desc: "たいりょくを ぜんぶ かいふくする。" },
@@ -39,7 +41,7 @@ export function isKey(name) { return item(name).kind === "key"; }
 
 // ショップの しなぞろえ
 export const SHOP_LIST = [
-  "ラグ・ネット", "スーパーネット", "ヒールジェル", "ハイヒール",
+  "ラグネット", "スーパーラグ", "ガオンのくすり", "ハイヒール",
   "げどくそう", "しびれどめ", "ひやしそう", "めざましそう", "ぬけみちいし",
 ];
 

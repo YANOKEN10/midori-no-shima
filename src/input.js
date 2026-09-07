@@ -13,10 +13,11 @@ const MAP = {
 const down = Object.create(null);
 const pressed = Object.create(null);
 let repeatAt = Object.create(null);
+const repeatHeld = Object.create(null);
 let anyInput = false;
 let analogX = 0, analogY = 0;
 
-export function isDown(k) { return Boolean(down[k]); }
+export function isDown(k) { return Boolean(down[k]) || (k === "up" && analogY < -.45) || (k === "down" && analogY > .45) || (k === "left" && analogX < -.45) || (k === "right" && analogX > .45); }
 export function hit(k) { return Boolean(pressed[k]); }
 export function anyHit() { return KEYS.some((k) => pressed[k]); }
 export function consumedAll() { for (const k of KEYS) pressed[k] = false; }
@@ -32,8 +33,13 @@ export function movementVector() {
 
 // おしっぱなしで くりかえす（メニューの カーソル用）
 export function repeat(k, now, first, every) {
-  if (!down[k]) { repeatAt[k] = 0; return false; }
-  if (pressed[k]) { repeatAt[k] = now + (first || 260); return true; }
+  // スティックは移動だけでなく、メニューの上下選択にも使う。
+  const stickHeld = (k === "down" && analogY > .45) || (k === "up" && analogY < -.45)
+    || (k === "right" && analogX > .45) || (k === "left" && analogX < -.45);
+  if (!down[k] && !stickHeld) { repeatAt[k] = 0; repeatHeld[k] = false; return false; }
+  const firstPress = !repeatHeld[k];
+  repeatHeld[k] = true;
+  if (pressed[k] || firstPress) { repeatAt[k] = now + (first || 260); return true; }
   if (repeatAt[k] && now >= repeatAt[k]) { repeatAt[k] = now + (every || 90); return true; }
   return false;
 }

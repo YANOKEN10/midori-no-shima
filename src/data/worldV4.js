@@ -309,7 +309,7 @@ export function applyFirstRegionV4(maps) {
       { x: 20, y: 0, to: "mount2", tx: 20, ty: 38, edge: 1 }, { x: 21, y: 0, to: "mount2", tx: 21, ty: 38, edge: 1 },
     ],
     signs: [{ x: 24, y: 8, text: ["やまみち", "この先に 山の奥地"] }],
-    items: [{ x: 27, y: 29, item: "ヒールジェル", flag: "m1heal" }],
+    items: [{ x: 27, y: 29, item: "ガオンのくすり", flag: "m1heal" }],
     npcs: mount1Npcs.map((n) => Object.assign({}, n, { x: 25, y: 23 })),
   });
 
