@@ -27,7 +27,11 @@ export function buildChapterOne(){
  npc(r,12,21,'旅のひと','hiker',['南の 2ばんどうろには','6人の トレーナーがいるよ。','先へ進む前に ガオンを仲間にしよう。']);
  sign(r,18,25,['南：2ばんどうろ','その先：ネイチャーのもり']);
  for(const m of [v,r]){rect(m,3,21,5,3,'F');for(let x=3;x<8;x++)m.g[24][x]='=';trees(m);}
- const home=add('hut','主人公の家',16,14,'in');home.spawn={x:7,y:10};rect(home,2,2,3,1,'b');rect(home,11,3,2,2,'B');rect(home,4,5,2,2,'t');npc(home,9,6,'お母さん','girl',['山おくへ行くなら 気をつけてね。','ガオンと帰ってきたら 一緒に休もう。'],{heal:true});
+ // Only west/east borders change. Keep the north/south rows and exits intact.
+ for(const old of v.props.filter(p=>p.art==='tree'||p.art==='fir'))if(old.x<2||old.x+old.w>32){for(let y=old.y;y<old.y+old.h;y++)for(let x=old.x;x<old.x+old.w;x++)if(v.g[y][x]==='T')v.g[y][x]=',';}
+ v.props=v.props.filter(p=>!((p.art==='tree'||p.art==='fir')&&(p.x<2||p.x+p.w>32)));
+ for(let y=1;y<=25;y+=3){prop(v,'tree',0,y,2,3);prop(v,'tree',32,y,2,3);}
+ const home=add('hut','主人公の家',16,14,'in');home.spawn={x:7,y:10};rect(home,2,2,3,1,'b');rect(home,11,3,2,2,'B');rect(home,4,5,2,2,'t');npc(home,9,6,'お母さん','girl',[],{script:'v5:mother'});
  const lab=add('lab','スイスはかせの研究施設',16,14,'in');rect(lab,2,2,5,1,'b');rect(lab,10,2,3,1,'P');rect(lab,3,5,3,2,'t');npc(lab,8,5,'スイスはかせ','prof',[],{script:'v5:professor'});npc(lab,12,8,'研究員','girl',['弱ったガオンほど つかまえやすいよ。','マスターラグなら 確実につかまるんだ。']);
  const hospital=add('hospital','ガオンびょういん',16,14,'in');rect(hospital,2,2,3,2,'K');rect(hospital,10,2,3,2,'B');npc(hospital,7,5,'看護師','nurse',['ガオンびょういんへ ようこそ！'],{healAll:true});
  const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true});

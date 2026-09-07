@@ -1,5 +1,5 @@
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
-import { chapterNpc } from "./chapterStory.js";
+import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
 //  フィールド（まちや どうろを あるく ところ）
 // ============================================================
@@ -342,7 +342,7 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires&&!flag(wp.requires)){
-      const lines=wp.requires==="v5:heardLatett"?["村の女の子が 山おくの話をしていた。","まずは 話を聞いてみよう。"]:wp.requires==="v5:dex"?["ロッズタウンの ヤノケンに会おう。"]:["旅に出る前に スイスはかせへ","ラテットのことを 報告しよう。"];
+      const lines=chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
     beep("warp");
