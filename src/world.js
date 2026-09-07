@@ -1,3 +1,4 @@
+import { drawNpc } from './npcArt.js';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -175,7 +176,7 @@ export const world = {
     this.tick += dt;
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
-    if (this.map.freeMove && !ui.busy && !this.busy) this.updateNpcRoam(dt);
+    if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
@@ -254,27 +255,30 @@ export const world = {
   updateNpcRoam(dt) {
     const dirs = [[0,-1,"up"],[0,1,"down"],[-1,0,"left"],[1,0,"right"]];
     for (const n of this.npcs) {
-      if (n.gone || n.noRoam || n.trainer) continue;
-      n.roamWait -= dt;
-      if (!n.moving && n.roamWait <= 0) {
-        const d = dirs[(n.idx + Math.floor(this.tick / 1100)) % dirs.length];
-        const tx = n.x + d[0], ty = n.y + d[1];
-        const ch = tileAt(this.map, Math.floor(tx), Math.floor(ty));
-        const nearHome = Math.hypot(tx - n.homeX, ty - n.homeY) <= 1.8;
-        const nearPlayer = Math.hypot(tx - this.fx, ty - this.fy) >= .8;
-        if (nearHome && nearPlayer && ch != null && !solid(ch) && ch !== "L") {
-          n.fromX = n.x; n.fromY = n.y; n.toX = tx; n.toY = ty;
-          n.dir = d[2]; n.roamProgress = 0; n.moving = true;
-        }
-        n.roamWait = 1200 + ((n.idx * 431 + Math.floor(this.tick)) % 1300);
-      }
+      if (n.gone || n.noRoam || n.artMon) continue;
       if (n.moving) {
-        n.roamProgress = Math.min(1, n.roamProgress + dt / 520);
-        n.x = n.fromX + (n.toX - n.fromX) * n.roamProgress;
-        n.y = n.fromY + (n.toY - n.fromY) * n.roamProgress;
+        n.roamProgress = Math.min(1, n.roamProgress + dt / 650);
+        n.ox = (n.toX - n.x) * T * n.roamProgress;
+        n.oy = (n.toY - n.y) * T * n.roamProgress;
         n.walkFrame = Math.floor(n.roamProgress * 4) % 4;
-        if (n.roamProgress >= 1) { n.x = n.toX; n.y = n.toY; n.moving = false; }
+        if (n.roamProgress >= 1) {
+          n.x=n.toX; n.y=n.toY; n.ox=n.oy=0; n.moving=false;
+          n.roamWait=900+Math.random()*2600;
+        }
+        continue;
       }
+      n.roamWait -= dt;
+      if (n.roamWait > 0) continue;
+      n.roamWait=700+Math.random()*2000;
+      if (Math.random()<.3) continue;
+      const d=dirs[Math.floor(Math.random()*dirs.length)];
+      const tx=n.x+d[0],ty=n.y+d[1],ch=tileAt(this.map,tx,ty);
+      n.dir=d[2];
+      const occupied=this.npcs.some(o=>o!==n&&!o.gone&&((o.x===tx&&o.y===ty)||(o.moving&&o.toX===tx&&o.toY===ty)));
+      const player=(this.x===tx&&this.y===ty)||(this.moving&&this.mx===tx&&this.my===ty);
+      const special=[...(this.map.warps||[]),...(this.map.signs||[])].some(o=>Math.abs(o.x-tx)+Math.abs(o.y-ty)<=1);
+      if (Math.hypot(tx-n.homeX,ty-n.homeY)>2 || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
+      n.toX=tx;n.toY=ty;n.roamProgress=0;n.moving=true;
     }
   },
 
@@ -312,7 +316,7 @@ export const world = {
   npcAt(x, y) {
     return this.npcs.find((n) => !n.gone && (this.map.freeMove
       ? Math.hypot(n.x - x, n.y - y) < .72
-      : n.x === x && n.y === y));
+      : (n.x === x && n.y === y) || (n.moving && n.toX === x && n.toY === y)));
   },
 
   async afterStep() {
@@ -380,7 +384,7 @@ export const world = {
   // 4マス さきまで 見ている トレーナー
   spotter() {
     for (const n of this.npcs) {
-      if (!n.trainer || n.gone) continue;
+      if (!n.trainer || n.gone || n.moving) continue;
       if (flag("beat:" + this.mapId + ":" + n.idx)) continue;
       const dx = this.x - n.x, dy = this.y - n.y;
       const face = n.dir;
@@ -425,7 +429,7 @@ export const world = {
     const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
 
     const n = this.npcAt(tx, ty);
-    if (n) { this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
+    if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
 
     const it = (this.map.items || []).find((i) => i.x === tx && i.y === ty && !flag(i.flag));
     if (it) { this.busy = true; this.pickItem(it).then(() => { this.busy = false; }); return; }
@@ -995,7 +999,7 @@ export const world = {
     }
 
     // ひとたち（うしろに いる人から）
-    const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y }));
+    const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
     if (G.isColor() && State.save.party && State.save.party.length) {
       const back = this.dir === "up" ? [0, 1] : this.dir === "down" ? [0, -1]
         : this.dir === "left" ? [1, 0] : [-1, 0];
@@ -1024,6 +1028,7 @@ export const world = {
         const dirn = n.dir || "down";
         const personKey = ({ boy:"Boy", girl:"Girl", prof:"Prof", oldman:"Oldman", nurse:"Nurse", clerk:"Clerk",
           sailor:"Sailor", hiker:"Hiker", leader1:"Leader1", leader2:"Leader2", rival:"Rival", philoa:"Leader1" })[n.look];
+        const newPerson = G.isColor() && drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0));
         const generatedPerson = G.isColor() && personKey && environmentTile("person" + personKey);
         const nfi = n.moving ? n.walkFrame : 0;
         const img2 = generatedPerson || (G.isColor()
@@ -1032,7 +1037,7 @@ export const world = {
         // NPCs use the same 32 x 48 on-screen frame and foot anchor as the hero.
         // Generated NPC sources are 32 x 40 after AS scaling, which made every
         // character visibly smaller than the player on the field.
-        G.drawScaled(matchedNpcFrame(img2), n.x * T - camX, n.y * T - camY - 28, 32, 48);
+        if (!newPerson) G.drawScaled(matchedNpcFrame(img2), n.x * T - camX+(n.ox||0), n.y * T - camY - 28+(n.oy||0), 32, 48);
         if (n.alert) {
           G.use("ui");
           G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);

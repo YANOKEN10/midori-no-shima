@@ -5,7 +5,7 @@ function path(m,ax,ay,bx,by,width=2){rect(m,Math.min(ax,bx),ay,Math.abs(bx-ax)+w
 function prop(m,art,x,y,w,h,ch='T'){rect(m,x,y,w,h,ch);m.props.push({art,x,y,w,h});}
 function tree(m,x,y,art='tree'){if(m.npcs.some(n=>n.x>=x&&n.x<x+2&&n.y>=y&&n.y<y+3))return;if(m.g.slice(y,y+3).length===3&&m.g.slice(y,y+3).every(r=>r.slice(x,x+2).length===2&&r.slice(x,x+2).every(c=>c===',')))prop(m,art,x,y,2,3);}
 function trees(m){for(let y=1;y<m.g.length-3;y+=4)for(let x=1;x<m.g[0].length-2;x+=3)if((x*7+y*11)%5!==0)tree(m,x,y,(x+y)%2?'fir':'tree');}
-function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:true,talk,...extra});}
+function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:false,talk,...extra});}
 function sign(m,x,y,text){rect(m,x,y,1,1,'S');m.signs.push({x,y,text:Array.isArray(text)?text:[text]});}
 function building(m,x,y,art,to,label){prop(m,art,x,y,5,5,'#');const dx=x+2,dy=y+4;m.g[dy][dx]='D';m.props.at(-1).door={x:dx,y:dy};m.props.at(-1).label=label;m.warps.push({x:dx,y:dy,to,tx:7,ty:10,back:{map:m.id,x:dx,y:dy+1}});if(dy<16)path(m,dx,dy+1,dx,16,1);else{path(m,16,16,16,dy+1,2);path(m,16,dy+1,dx,dy+1,1);}}
 function link(a,ax,ay,b,bx,by,req){a.g[ay][ax]='.';b.g[by][bx]='.';a.warps.push({x:ax,y:ay,to:b.id,tx:bx,ty:by+(by===0?1:by===b.g.length-1?-1:0),edge:1,requires:req});b.warps.push({x:bx,y:by,to:a.id,tx:ax,ty:ay+(ay===0?1:ay===a.g.length-1?-1:0),edge:1});}
@@ -33,8 +33,8 @@ export function buildChapterOne(){
  for(let y=1;y<=25;y+=3){prop(v,'tree',0,y,2,3);prop(v,'tree',32,y,2,3);}
  const home=add('hut','主人公の家',16,14,'in');home.spawn={x:7,y:10};rect(home,2,2,3,1,'b');rect(home,11,3,2,2,'B');rect(home,4,5,2,2,'t');npc(home,9,6,'お母さん','girl',[],{script:'v5:mother'});
  const lab=add('lab','スイスはかせの研究施設',16,14,'in');rect(lab,2,2,5,1,'b');rect(lab,10,2,3,1,'P');rect(lab,3,5,3,2,'t');npc(lab,8,5,'スイスはかせ','prof',[],{script:'v5:professor'});npc(lab,12,8,'研究員','girl',['弱ったガオンほど つかまえやすいよ。','マスターラグなら 確実につかまるんだ。']);
- const hospital=add('hospital','ガオンびょういん',16,14,'in');rect(hospital,2,2,3,2,'K');rect(hospital,10,2,3,2,'B');npc(hospital,7,5,'看護師','nurse',['ガオンびょういんへ ようこそ！'],{healAll:true});
- const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true});
+ const hospital=add('hospital','ガオンびょういん',16,14,'in');rect(hospital,2,2,3,2,'K');rect(hospital,10,2,3,2,'B');npc(hospital,7,5,'看護師','nurse',['ガオンびょういんへ ようこそ！'],{healAll:true,noRoam:true});
+ const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true,noRoam:true});
  const rh=add('rodsHome','ロッズタウンの家',16,14,'in');rect(rh,3,4,3,2,'t');npc(rh,10,5,'村のひと','oldman',['草むらで会える ガオンは','道路ごとに ちがうんだ。']);
  for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push(m.id==='hut'?{x:7,y:12,to:'village',tx:13,ty:12}:{x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
  const mountain=add('mountain','山おく',30,34);mountain.spawn={x:14,y:31};path(mountain,14,33,14,24);path(mountain,14,24,6,17);path(mountain,6,17,20,10);path(mountain,20,10,14,4);rect(mountain,11,3,8,5,'.');
