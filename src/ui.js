@@ -69,7 +69,7 @@ export const ui = {
   custom(drawFn, opt) {
     const o = opt || {};
     return new Promise((resolve) => {
-      stack.push({ kind: "custom", draw: drawFn, keep: o.keep, resolve: resolve });
+      stack.push({ kind: "custom", draw: drawFn, keep: o.keep, onPage: o.onPage, resolve: resolve });
     });
   },
 
@@ -82,7 +82,7 @@ export const ui = {
     if (!w) return;
     if (w.kind === "say") updateSay(w, dt);
     else if (w.kind === "choice") updateChoice(w);
-    else if (w.kind === "custom") { if (In.hit("a") || In.hit("b")) { beep("back"); close(w, true); } }
+    else if (w.kind === "custom") { if(w.onPage && (In.hit("left") || In.hit("right"))) { w.onPage(); beep("blip"); } if (In.hit("a") || In.hit("b")) { beep("back"); close(w, true); } }
   },
 
   draw() {

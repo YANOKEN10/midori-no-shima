@@ -12,7 +12,7 @@ const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-run
  const data=await p.evaluate(async rows=>{
   const {SPECIES:S}=await import('/src/data/species.js');const {makeMon,gainExp,expForLevel}=await import('/src/state.js');const a=await import('/src/data/battleart.js');
   if(S['コケゴロ'].evo)throw Error('Kokegoro evolves');
-  for(const row of rows){for(const key of ['base','learn','types','catch','exp'])if(JSON.stringify(S[row.name][key])!==JSON.stringify(row[key]))throw Error('Changed '+row.name+' '+key);if(row.name!=='コケゴロ'&&JSON.stringify(S[row.name].evo)!==JSON.stringify(row.evo))throw Error('Evolution changed '+row.name);}
+  for(const row of rows){for(const key of ['base','learn','types','catch','exp'])if(JSON.stringify(key==='base'?Object.fromEntries(Object.keys(row.base).map(k=>[k,S[row.name].base[k]])):S[row.name][key])!==JSON.stringify(row[key]))throw Error('Changed '+row.name+' '+key);if(row.name!=='コケゴロ'&&JSON.stringify(S[row.name].evo)!==JSON.stringify(row.evo))throw Error('Evolution changed '+row.name);}
   const m=makeMon('コケゴロ',27),r=gainExp(m,expForLevel(100)-m.exp);if(r.evolve||m.sp!=='コケゴロ'||m.lv!==100)throw Error('Kokegoro level-up failed');
   const control=makeMon('ヨルネコ',27),cr=gainExp(control,expForLevel(28)-control.exp);if(cr.evolve!=='シャドネコ')throw Error('Other evolution broken');
   let count=0,v9=0;

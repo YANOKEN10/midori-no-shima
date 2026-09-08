@@ -263,6 +263,19 @@ for (const [n, b] of Object.entries(LEGEND)) {
   if (SPECIES[n]) { SPECIES[n].base = b; SPECIES[n].catch = 10; SPECIES[n].exp = 250; }
 }
 
+// Six permanent base stats and deterministic species-specific training rewards.
+export const STAT_KEYS = ["hp", "atk", "def", "spc", "sdef", "spd"];
+export const STAT_LABELS = {hp:"HP",atk:"こうげき",def:"ぼうぎょ",spc:"とくこう",sdef:"とくぼう",spd:"すばやさ"};
+const evolutionTargets = new Set(Object.values(SPECIES).map(s=>s.evo?.to).filter(Boolean));
+for (const [name, sp] of Object.entries(SPECIES)) {
+  sp.base.sdef = sp.base.spc;
+  const best = Math.max(...STAT_KEYS.map(k=>sp.base[k]));
+  const candidates = STAT_KEYS.filter(k=>sp.base[k]===best);
+  const key = candidates[sp.no % candidates.length];
+  const amount = sp.no>=151 ? 3 : evolutionTargets.has(name) ? (sp.evo ? 2 : 3) : (sp.evo ? 1 : 2);
+  sp.evYield = Object.fromEntries(STAT_KEYS.map(k=>[k,k===key?amount:0]));
+}
+
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
 // その モンスターを ぬる いろセット
 

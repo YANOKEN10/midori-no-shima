@@ -7,11 +7,11 @@ import * as G from "./gfx.js";
 import { ui } from "./ui.js";
 import { beep, setMuted, isMuted, playBgm } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
-import { SPECIES, DEX_ORDER } from "./data/species.js";
+import { SPECIES, DEX_ORDER, STAT_KEYS, STAT_LABELS } from "./data/species.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData, SHOP_LIST } from "./data/items.js";
 import {
-  G as State, species, palOf, accentOf, maxHp, statOf, monName, fainted, healFull,
+  G as State, species, palOf, accentOf, maxHp, statOf, normalizeMonStats, evTotal, monName, fainted, healFull,
   bagList, useItem, addItem, dexCount, hasItem, lagNetMultiplier,
 } from "./state.js";
 import { saveLocal, saveCloud, loadCloud, applySave, describeSave, compatible } from "./save.js";
@@ -73,11 +73,23 @@ export async function partyMenu(forItem) {
 }
 
 export async function showStatus(m) {
+  normalizeMonStats(m);
+  let page=0;
   const sp = species(m.sp);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
+    if(page===1){
+      G.window9(4,4,312,276);
+      G.textFit(monName(m)+" の のうりょく",18,16,284,3,17);
+      G.text("能力",18,52,3,13);G.textRight("種族値",158,52,3,13);G.textRight("個体値",224,52,3,13);G.textRight("努力値",300,52,3,13);
+      STAT_KEYS.forEach((key,i)=>{const y=80+i*25;G.text(STAT_LABELS[key],18,y,3,13);G.textRight(sp.base[key],154,y,3,14);G.textRight(m.iv[key],220,y,3,14);G.textRight(m.ev[key],296,y,3,14);});
+      G.text("努力値 合計 "+evTotal(m)+" / 510",18,228,3,13);
+      G.text("個体値0〜31 / 努力値 各252まで",18,245,3,11);
+      G.text("← → きりかえ   A・B もどる",18,260,3,10);
+      return;
+    }
     G.window9(4, 4, 312, 156);
     const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp), accentOf(sp), MONPAL[m.sp]);
     const current=battleArt(m.sp);
@@ -89,20 +101,18 @@ export async function showStatus(m) {
     G.textFit("タイプ/" + sp.types.join("・"), 140, 58, 162, 3, 14);
     G.text("HP " + m.hp + "/" + maxHp(m), 140, 80, 3, 14);
     if (m.status) G.textRight(m.status, 302, 80, 3, 14);
-    G.text("こうげき " + statOf(m, "atk"), 140, 104, 3, 14);
-    G.text("ぼうぎょ " + statOf(m, "def"), 226, 104, 3, 14);
-    G.text("すばやさ " + statOf(m, "spd"), 140, 128, 3, 14);
-    G.text("まほう " + statOf(m, "spc"), 226, 128, 3, 14);
+    [["atk","def"],["spc","sdef"],["spd",null]].forEach((pair,row)=>pair.forEach((key,col)=>{if(!key)return;const x=140+col*84,y=100+row*18;G.text(STAT_LABELS[key],x,y,3,11);G.textRight(statOf(m,key),x+78,y,3,11);}));
 
     G.window9(4, 166, 312, 114);
     m.moves.forEach((mv, i) => {
       const d = moveData(mv.name);
-      const y = 176 + i * 25;
+      const y = 176 + i * 23;
       G.textFit(mv.name, 18, y, 142, 3, 15);
       G.text(d.type, 166, y + 1, 3, 13);
       G.textRight(mv.pp + "/" + mv.max, 304, y + 1, 3, 13);
     });
-  });
+    G.text("← → 個体値・努力値",18,266,3,10);
+  }, {onPage:()=>{page=1-page;}});
 }
 
 /* ============ どうぐ ============ */

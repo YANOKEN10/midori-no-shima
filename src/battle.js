@@ -13,7 +13,7 @@ import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
-  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp,
+  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp, gainEffort,
   healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove, lagNetMultiplier,
 } from "./state.js";
 
@@ -25,7 +25,7 @@ function stageMul(s) { return STAGE[Math.max(-6, Math.min(6, s)) + 6]; }
 function fresh(mon, isPlayer) {
   return {
     mon: mon, player: Boolean(isPlayer),
-    st: { atk: 0, def: 0, spd: 0, spc: 0, acc: 0 },
+    st: { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 },
     flinch: false, sleep: 0, leech: false, trap: 0,
     shakeX: 0, hidden: false, flash: 0,
   };
@@ -344,12 +344,12 @@ function calcDamage(atk, def, d, fx) {
 
   const phys = d.cat === "phys";
   let A = statOf(a, phys ? "atk" : "spc") * stageMul(phys ? atk.st.atk : atk.st.spc);
-  let D = statOf(b, phys ? "def" : "spc") * stageMul(phys ? def.st.def : def.st.spc);
+  let D = statOf(b, phys ? "def" : "sdef") * stageMul(phys ? def.st.def : def.st.sdef);
   if (phys && a.status === "やけど") A *= 0.5;
 
   const critRate = (fx.crit ? 0.125 : 0.0625);
   const crit = chance(critRate);
-  if (crit) { A = statOf(a, phys ? "atk" : "spc"); D = statOf(b, phys ? "def" : "spc"); }
+  if (crit) { A = statOf(a, phys ? "atk" : "spc"); D = statOf(b, phys ? "def" : "sdef"); }
 
   let dmg = Math.floor(Math.floor(Math.floor((2 * a.lv) / 5 + 2) * d.pow * A / Math.max(1, D)) / 50) + 2;
   if (crit) dmg *= 2;
@@ -400,14 +400,14 @@ async function applyEffects(atk, def, fx, dealt) {
     await ui.say([label(atk) + "は ねむって げんきに なった！"]);
   }
   if (fx.reset) {
-    B.you.st = { atk: 0, def: 0, spd: 0, spc: 0, acc: 0 };
-    B.foe.st = { atk: 0, def: 0, spd: 0, spc: 0, acc: 0 };
+    B.you.st = { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 };
+    B.foe.st = { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 };
     await ui.say(["のうりょくの へんかが もとに もどった！"]);
   }
 }
 
 function statName(k) {
-  return { atk: "こうげき", def: "ぼうぎょ", spd: "すばやさ", spc: "まほう", acc: "めいちゅう" }[k] || k;
+  return { atk: "こうげき", def: "ぼうぎょ", spd: "すばやさ", spc: "とくこう", sdef: "とくぼう", acc: "めいちゅう" }[k] || k;
 }
 
 /* --- にげる ---------------------------------------------------- */
@@ -535,6 +535,8 @@ async function onFoeDown() {
   const gain = Math.max(1, Math.floor((base * B.foe.mon.lv / 7) * (B.isTrainer ? 1.5 : 1)));
   const m = B.you.mon;
   await ui.say([monName(m) + "は " + gain + " けいけんちを もらった！"]);
+  gainEffort(m, B.foe.mon.sp);
+  State.dirty = true;
   const res = gainExp(m, gain);
   for (const lv of res.levels) {
     beep("levelup");

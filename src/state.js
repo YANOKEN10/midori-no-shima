@@ -1,7 +1,7 @@
 // ============================================================
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
 // ============================================================
-import { SPECIES, species, palOf, accentOf } from "./data/species.js";
+import { SPECIES, species, palOf, accentOf, STAT_KEYS } from "./data/species.js";
 import { newMove, move } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
@@ -18,9 +18,9 @@ export function expForLevel(lv) { return lv * lv * lv; }
 export function makeMon(spName, lv, opt) {
   const sp = species(spName);
   const o = opt || {};
-  const iv = o.iv || { hp: rnd(16), atk: rnd(16), def: rnd(16), spd: rnd(16), spc: rnd(16) };
+  const iv = Object.fromEntries(STAT_KEYS.map(k=>[k,clampStat(o.iv?.[k] ?? rnd(32),31)]));
   const m = {
-    sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv: iv,
+    sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv, ev: normalizeEV(o.ev), statVersion: 2,
     moves: [], status: "", hp: 0,
   };
   // レベルまでに おぼえる わざの うち あたらしい 4つ
@@ -33,13 +33,40 @@ export function makeMon(spName, lv, opt) {
   return m;
 }
 
-export function maxHp(m) {
-  const b = species(m.sp).base;
-  return Math.floor(((b.hp + m.iv.hp) * 2 * m.lv) / 100) + m.lv + 10;
+export const IV_MAX=31, EV_STAT_MAX=252, EV_TOTAL_MAX=510;
+function clampStat(value,max) { return Math.max(0,Math.min(max,Number.isFinite(Number(value))?Math.floor(Number(value)):0)); }
+function normalizeEV(input) {
+  let left=EV_TOTAL_MAX;
+  return Object.fromEntries(STAT_KEYS.map(k=>{const n=Math.min(left,clampStat(input?.[k],EV_STAT_MAX));left-=n;return [k,n];}));
 }
-export function statOf(m, key) {
-  const b = species(m.sp).base;
-  return Math.floor(((b[key] + m.iv[key]) * 2 * m.lv) / 100) + 5;
+export function normalizeMonStats(m) {
+  const old=m.statVersion!==2, iv=m.iv||{};
+  m.iv=Object.fromEntries(STAT_KEYS.map(k=>{
+    const value=iv[k] ?? (k==='sdef'?iv.spc:0) ?? 0;
+    return [k,old?clampStat(value,15)*2:clampStat(value,IV_MAX)];
+  }));
+  m.ev=normalizeEV(m.ev);m.statVersion=2;
+  return m;
+}
+function statTerm(m,key) {
+  if(m.statVersion!==2||!m.ev||!m.iv)normalizeMonStats(m);
+  return Math.floor((2*species(m.sp).base[key]+(m.iv[key]||0)+Math.floor((m.ev[key]||0)/4))*m.lv/100);
+}
+export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
+export function statOf(m,key) { return key==='hp'?maxHp(m):statTerm(m,key)+5; }
+export function evTotal(m) { return STAT_KEYS.reduce((n,k)=>n+(m.ev?.[k]||0),0); }
+export function gainEffort(m,defeatedSpecies) {
+  normalizeMonStats(m);
+  const gained=Object.fromEntries(STAT_KEYS.map(k=>[k,0]));
+  if(fainted(m))return gained;
+  const before=maxHp(m),yieldStats=species(defeatedSpecies).evYield;
+  let remaining=EV_TOTAL_MAX-evTotal(m);
+  for(const key of STAT_KEYS){
+    const n=Math.max(0,Math.min(yieldStats[key],EV_STAT_MAX-m.ev[key],remaining));
+    m.ev[key]+=n;gained[key]=n;remaining-=n;
+  }
+  m.hp=Math.min(maxHp(m),m.hp+maxHp(m)-before);
+  return gained;
 }
 export function monName(m) { return m.nick || m.sp; }
 export function fainted(m) { return m.hp <= 0; }
@@ -106,6 +133,8 @@ export function loadInto(data) {
   G.save.bag = G.save.bag || {};
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
+  G.save.box = G.save.box || [];
+  for(const mon of [...G.save.party,...G.save.box]) normalizeMonStats(mon);
   const names = {"ラグ・ネット":"ラグネット", "スーパーネット":"スーパーラグ", "ハイパーネット":"ハイパーラグ", "ヒールジェル":"ガオンのくすり"};
   for (const [oldName,newName] of Object.entries(names)) if (G.save.bag[oldName]) { G.save.bag[newName]=(G.save.bag[newName]||0)+G.save.bag[oldName]; delete G.save.bag[oldName]; }
   if (data && data.chapterVersion !== 5) { G.save.where={...START}; G.save.backTo={map:"village",x:13,y:12}; G.save.lastCenter=null; }
