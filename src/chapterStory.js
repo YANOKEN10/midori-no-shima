@@ -3,7 +3,6 @@ import { G as State, flag, setFlag, addItem, hasItem, seeMon, healParty } from '
 import { saveLocal, saveCloud } from './save.js';
 import { cloud } from './cloud.js';
 import { beep } from './audio.js';
-import { wait } from './battle.js?v=20260908-gaons-v11';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export async function chapterNpc(world,n){
  if(n.script==='v5:mother'){
@@ -21,9 +20,9 @@ export async function chapterNpc(world,n){
  if(n.script==='v5:latett'){
   if(flag('v5:latettSeen'))return;
   await ui.say(['あっ！ 伝説のガオン ラテットだ！']);beep('ok');
-  for(let i=0;i<12;i++){n.x+=.25;await wait(55);}n.gone=true;
+  n.gone=true;
   seeMon('ラテット');setFlag('v5:latettSeen');await persist();
-  await ui.say(['ラテットは すぐに 逃げてしまった。','ネイチャータウンに 戻って','スイスはかせに 知らせよう！']);return;
+  await ui.say(['ラテットは その場で パッと消えた。','ネイチャータウンに 戻って','スイスはかせに 知らせよう！']);return;
  }
  if(n.script==='v5:professor'){
   if(!flag('v5:heardLatett')){await ui.say(['わしは スイスはかせ。','ここで ガオンの研究を しておる。','村の人たちと 話してごらん。','おもしろい発見が あるかもしれんぞ。']);return;}

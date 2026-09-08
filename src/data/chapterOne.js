@@ -6,9 +6,19 @@ function prop(m,art,x,y,w,h,ch='T'){rect(m,x,y,w,h,ch);m.props.push({art,x,y,w,h
 function tree(m,x,y,art='tree'){if(m.npcs.some(n=>n.x>=x&&n.x<x+2&&n.y>=y&&n.y<y+3))return;if(m.g.slice(y,y+3).length===3&&m.g.slice(y,y+3).every(r=>r.slice(x,x+2).length===2&&r.slice(x,x+2).every(c=>c===',')))prop(m,art,x,y,2,3);}
 function trees(m){for(let y=1;y<m.g.length-3;y+=4)for(let x=1;x<m.g[0].length-2;x+=3)if((x*7+y*11)%5!==0)tree(m,x,y,(x+y)%2?'fir':'tree');}
 function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:false,talk,...extra});}
-function sign(m,x,y,text){rect(m,x,y,1,1,'S');m.signs.push({x,y,text:Array.isArray(text)?text:[text]});}
+function sign(m,x,y,text){const ground=m.g[y][x];rect(m,x,y,1,1,'S');m.signs.push({x,y,ground,text:Array.isArray(text)?text:[text]});}
 function building(m,x,y,art,to,label){prop(m,art,x,y,5,5,'#');const dx=x+2,dy=y+4;m.g[dy][dx]='D';m.props.at(-1).door={x:dx,y:dy};m.props.at(-1).label=label;m.warps.push({x:dx,y:dy,to,tx:7,ty:10,back:{map:m.id,x:dx,y:dy+1}});if(dy<16)path(m,dx,dy+1,dx,16,1);else{path(m,16,16,16,dy+1,2);path(m,16,dy+1,dx,dy+1,1);}}
-function link(a,ax,ay,b,bx,by,req){a.g[ay][ax]='.';b.g[by][bx]='.';a.warps.push({x:ax,y:ay,to:b.id,tx:bx+(bx===0?1:bx===b.g[0].length-1?-1:0),ty:by+(by===0?1:by===b.g.length-1?-1:0),edge:1,requires:req});b.warps.push({x:bx,y:by,to:a.id,tx:ax+(ax===0?1:ax===a.g[0].length-1?-1:0),ty:ay+(ay===0?1:ay===a.g.length-1?-1:0),edge:1});}
+function link(a,ax,ay,b,bx,by,req){
+ a.g[ay][ax]='.';b.g[by][bx]='.';
+ const opening=(m,x,y)=>{const horizontal=y===0||y===m.g.length-1,dx=horizontal?1:0,dy=horizontal?0:1;let sx=x,sy=y;
+  while(m.g[sy-dy]?.[sx-dx]==='.') {sx-=dx;sy-=dy;}
+  const lanes=[];while(m.g[sy]?.[sx]==='.') {lanes.push({x:sx,y:sy});sx+=dx;sy+=dy;}
+  return lanes;
+ };
+ const aa=opening(a,ax,ay),bb=opening(b,bx,by);
+ const connect=(from,lanes,to,targets,requires)=>lanes.forEach((p,i)=>{const q=targets[Math.min(i,targets.length-1)];from.warps.push({x:p.x,y:p.y,to:to.id,tx:q.x+(q.x===0?1:q.x===to.g[0].length-1?-1:0),ty:q.y+(q.y===0?1:q.y===to.g.length-1?-1:0),edge:1,requires});});
+ connect(a,aa,b,bb,req);connect(b,bb,a,aa);
+}
 function trainer(m,x,y,name,look,dir,party,talk){npc(m,x,y,name,look,[talk],{dir,trainer:{party,money:120+party[0][1]*35},win:['いい しょうぶだったね！'],after:['弱ったら ガオンびょういんへ。','くすりと ラグネットは ショップで買えるよ。']});}
 export function buildChapterOne(){
  const M={};const add=(id,name,w,h,kind)=>{const m=map(name,w,h,kind);m.id=id;M[id]=m;return m};

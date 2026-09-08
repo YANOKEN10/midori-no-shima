@@ -29,7 +29,8 @@ export function drawChapterMap(ctx,map,camX,camY){
   if(ch==='.')ground(c,'path',dx,dy);
   continue;
  }
- const base=ch==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';ground(c,base,dx,dy);
+ const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
+ const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';ground(c,base,dx,dy);
  if(ch==='"')ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R')drawMaterial(c,'rock',dx,dy,32,32);
