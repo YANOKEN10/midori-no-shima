@@ -1,0 +1,1539 @@
+[
+  {
+    "name": "コケゴロ",
+    "pal": "くさ2",
+    "no": 35,
+    "types": [
+      "くさ",
+      "じめん"
+    ],
+    "base": {
+      "hp": 65,
+      "atk": 53,
+      "def": 99,
+      "spd": 35,
+      "spc": 57
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 28,
+      "to": "モスゴレム"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "つるのムチ"
+      ],
+      [
+        7,
+        "やどりぎ"
+      ],
+      [
+        13,
+        "かたくなる"
+      ],
+      [
+        19,
+        "はっぱカッター"
+      ],
+      [
+        27,
+        "こうごうせい"
+      ],
+      [
+        34,
+        "ソーラーリーフ"
+      ]
+    ],
+    "dex": "こけを まとった いし。うごくと おどろかれる。",
+    "art": {
+      "body": "rock",
+      "eye": "dot",
+      "mouth": "none",
+      "pat": "back"
+    },
+    "role": "def",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/035-kokegoro.png",
+      "assets/monsters/battle-back/035-kokegoro-back.png"
+    ],
+    "index": 0,
+    "prompt": "Create a production game sprite sheet for ONE original monster named コケゴロ. Redraw the attached reference in polished readable fantasy RPG PIXEL ART, retaining the character identity, improving clear silhouette, facial expression, deliberate crisp pixel clusters and rich restrained 4-tone shading. A friendly squat moss-covered stone golem; warm grey face and belly stone plates, thick lush green moss like shaggy hair, short heavy arms and legs, gentle dot eyes. Exactly TWO full-body sprites of this SAME creature: LEFT a front three-quarter battle view facing toward the left; RIGHT its matching back three-quarter view facing toward the right. Both entire bodies visible, consistent anatomy and colors, identical scale, separate with generous blank space. A 2-column by 1-row sheet, each half square. Transparent background with alpha, no shadow, no floor, no scenery, no text, no borders, no labels. All contours crisp; the creature is designed to read clearly at 80x80 native pixels, not smooth illustration or low-detail blocky icon. Preserve small highlights and expressive features. Keep each whole sprite within central 80% of its half.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4161bedf-8c6d-45f3-a826-b6bcfcdc2fc0.png",
+    "cleanup": "Edit this sprite sheet: replace ALL of the grey-and-white checkerboard background with a completely uniform pure white (#FFFFFF) background. Remove every checkered square including gaps between limbs and wings. Preserve BOTH monster sprites exactly: shape, colors, crisp pixel detail, position, scale, full body, front and back view. No checkerboard, no texture, no shadow, no added text. Flat white everywhere outside the creatures."
+  },
+  {
+    "name": "タキビィ",
+    "pal": "ほのお3",
+    "no": 46,
+    "types": [
+      "ほのお"
+    ],
+    "base": {
+      "hp": 54,
+      "atk": 49,
+      "def": 52,
+      "spd": 60,
+      "spc": 98
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 15,
+      "to": "カガリビ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "ひのこ"
+      ],
+      [
+        7,
+        "にらみつける"
+      ],
+      [
+        13,
+        "なきごえ"
+      ],
+      [
+        19,
+        "ひばしら"
+      ],
+      [
+        27,
+        "もえるつばさ"
+      ],
+      [
+        34,
+        "かえんほうしゃ"
+      ]
+    ],
+    "dex": "ちいさな ひだね。かぜに ふかれて とんでいく。",
+    "art": {
+      "body": "ball",
+      "crest": "flame",
+      "eye": "big",
+      "mouth": "none",
+      "pat": "dots"
+    },
+    "role": "spc",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/046-takibii.png",
+      "assets/monsters/battle-back/046-takibii-back.png"
+    ],
+    "index": 1,
+    "prompt": "Create a production game sprite sheet for ONE original monster named タキビィ. Redraw the attached reference in polished readable fantasy RPG PIXEL ART, retaining the character identity, improving clear silhouette, facial expression, deliberate crisp pixel clusters and rich restrained 4-tone shading. A tiny cute living campfire ember, round charcoal lower body and bright orange yellow flame head and little flame arms, big expressive shiny eyes. Exactly TWO full-body sprites of this SAME creature: LEFT a front three-quarter battle view facing toward the left; RIGHT its matching back three-quarter view facing toward the right. Both entire bodies visible, consistent anatomy and colors, identical scale, separate with generous blank space. A 2-column by 1-row sheet, each half square. Transparent background with alpha, no shadow, no floor, no scenery, no text, no borders, no labels. All contours crisp; the creature is designed to read clearly at 80x80 native pixels, not smooth illustration or low-detail blocky icon. Preserve small highlights and expressive features. Keep each whole sprite within central 80% of its half.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-03f2885e-0139-4bb5-8198-858a1934b458.png"
+  },
+  {
+    "name": "オオヒノオ",
+    "pal": "ほのお3",
+    "no": 48,
+    "types": [
+      "ほのお",
+      "やみ"
+    ],
+    "base": {
+      "hp": 89,
+      "atk": 77,
+      "def": 87,
+      "spd": 93,
+      "spc": 152
+    },
+    "catch": 45,
+    "exp": 212,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "ひのこ"
+      ],
+      [
+        12,
+        "にらみつける"
+      ],
+      [
+        18,
+        "なきごえ"
+      ],
+      [
+        24,
+        "ひばしら"
+      ],
+      [
+        32,
+        "もえるつばさ"
+      ],
+      [
+        39,
+        "かえんほうしゃ"
+      ],
+      [
+        49,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "みちびく ひとも いれば、まよわす ひとも いる。",
+    "art": {
+      "body": "ghost",
+      "crest": "crown",
+      "ear": "side",
+      "eye": "glow",
+      "mouth": "fang",
+      "pat": "band"
+    },
+    "role": "spc",
+    "stage": 3,
+    "files": [
+      "assets/monsters/battle/048-oohinoo.png",
+      "assets/monsters/battle-back/048-oohinoo-back.png"
+    ],
+    "index": 2,
+    "prompt": "Create a production game sprite sheet for ONE original monster named オオヒノオ. Redraw the attached reference in polished readable fantasy RPG PIXEL ART, retaining the character identity, improving clear silhouette, facial expression, deliberate crisp pixel clusters and rich restrained 4-tone shading. A majestic black and gold flame spirit with pointed crown, angular gold flame wings/arms, tapered floating lower body and confident glowing eyes. Exactly TWO full-body sprites of this SAME creature: LEFT a front three-quarter battle view facing toward the left; RIGHT its matching back three-quarter view facing toward the right. Both entire bodies visible, consistent anatomy and colors, identical scale, separate with generous blank space. A 2-column by 1-row sheet, each half square. Transparent background with alpha, no shadow, no floor, no scenery, no text, no borders, no labels. All contours crisp; the creature is designed to read clearly at 80x80 native pixels, not smooth illustration or low-detail blocky icon. Preserve small highlights and expressive features. Keep each whole sprite within central 80% of its half.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-83321e6e-b890-4b25-9788-8c2ce7a9112d.png"
+  },
+  {
+    "name": "スミビン",
+    "pal": "ほのお",
+    "no": 54,
+    "types": [
+      "ほのお"
+    ],
+    "base": {
+      "hp": 88,
+      "atk": 70,
+      "def": 124,
+      "spd": 47,
+      "spc": 90
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "ひのこ"
+      ],
+      [
+        8,
+        "にらみつける"
+      ],
+      [
+        14,
+        "かたくなる"
+      ],
+      [
+        20,
+        "ひばしら"
+      ],
+      [
+        28,
+        "もえるつばさ"
+      ],
+      [
+        35,
+        "かえんほうしゃ"
+      ]
+    ],
+    "dex": "ずっと あかく くすぶっている いし。",
+    "art": {
+      "body": "rock",
+      "eye": "sleepy",
+      "mouth": "none",
+      "pat": "dots"
+    },
+    "role": "def",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/054-sumibin.png",
+      "assets/monsters/battle-back/054-sumibin-back.png"
+    ],
+    "index": 3,
+    "prompt": "Create a production game sprite sheet for ONE original monster named スミビン. Redraw the attached reference in polished readable fantasy RPG PIXEL ART, retaining the character identity, improving clear silhouette, facial expression, deliberate crisp pixel clusters and rich restrained 4-tone shading. A sleepy chunky coal boulder creature, dark grey irregular rounded rocks, vivid glowing orange cracks, small tucked stone legs. Exactly TWO full-body sprites of this SAME creature: LEFT a front three-quarter battle view facing toward the left; RIGHT its matching back three-quarter view facing toward the right. Both entire bodies visible, consistent anatomy and colors, identical scale, separate with generous blank space. A 2-column by 1-row sheet, each half square. Transparent background with alpha, no shadow, no floor, no scenery, no text, no borders, no labels. All contours crisp; the creature is designed to read clearly at 80x80 native pixels, not smooth illustration or low-detail blocky icon. Preserve small highlights and expressive features. Keep each whole sprite within central 80% of its half.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-6676cb98-b34c-4a75-bee6-d38f05dee4da.png"
+  },
+  {
+    "name": "ヨウガンヌシ",
+    "pal": "ほのお2",
+    "no": 55,
+    "types": [
+      "ほのお",
+      "じめん"
+    ],
+    "base": {
+      "hp": 66,
+      "atk": 128,
+      "def": 76,
+      "spd": 83,
+      "spc": 71
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "ひのこ"
+      ],
+      [
+        8,
+        "にらみつける"
+      ],
+      [
+        14,
+        "みだれづき"
+      ],
+      [
+        20,
+        "ひばしら"
+      ],
+      [
+        28,
+        "もえるつばさ"
+      ],
+      [
+        35,
+        "かえんほうしゃ"
+      ]
+    ],
+    "dex": "ようがんの 川を およぐと いわれる ぬし。",
+    "art": {
+      "body": "drake",
+      "crest": "spike",
+      "ear": "horn",
+      "tail": "spike",
+      "eye": "angry",
+      "mouth": "fang",
+      "pat": "plate"
+    },
+    "role": "atk",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/055-yogannushi.png",
+      "assets/monsters/battle-back/055-yogannushi-back.png"
+    ],
+    "index": 4,
+    "prompt": "Create a production game sprite sheet for ONE original monster named ヨウガンヌシ. Redraw the attached reference in polished readable fantasy RPG PIXEL ART, retaining the character identity, improving clear silhouette, facial expression, deliberate crisp pixel clusters and rich restrained 4-tone shading. A powerful volcanic dragon with charcoal armor scales, molten orange belly and wing membranes, lava cracks, horns, long tail and four clawed legs. Exactly TWO full-body sprites of this SAME creature: LEFT a front three-quarter battle view facing toward the left; RIGHT its matching back three-quarter view facing toward the right. Both entire bodies visible, consistent anatomy and colors, identical scale, separate with generous blank space. A 2-column by 1-row sheet, each half square. Transparent background with alpha, no shadow, no floor, no scenery, no text, no borders, no labels. All contours crisp; the creature is designed to read clearly at 80x80 native pixels, not smooth illustration or low-detail blocky icon. Preserve small highlights and expressive features. Keep each whole sprite within central 80% of its half.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-78fed712-7993-4293-bccf-03ba782968ea.png",
+    "cleanup": "Edit this sprite sheet: replace ALL of the grey-and-white checkerboard background with a completely uniform pure white (#FFFFFF) background. Remove every checkered square including gaps between limbs and wings. Preserve BOTH monster sprites exactly: shape, colors, crisp pixel detail, position, scale, full body, front and back view. No checkerboard, no texture, no shadow, no added text. Flat white everywhere outside the creatures."
+  },
+  {
+    "name": "アワミィ",
+    "no": 7,
+    "types": [
+      "みず"
+    ],
+    "base": {
+      "hp": 44,
+      "atk": 48,
+      "def": 65,
+      "spd": 43,
+      "spc": 64
+    },
+    "catch": 45,
+    "exp": 66,
+    "evo": {
+      "lv": 16,
+      "to": "ウズマリン"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "しっぽふり"
+      ],
+      [
+        8,
+        "みずでっぽう"
+      ],
+      [
+        15,
+        "かたくなる"
+      ],
+      [
+        22,
+        "バブルこうせん"
+      ],
+      [
+        31,
+        "うずしお"
+      ],
+      [
+        39,
+        "ハイドロなみ"
+      ]
+    ],
+    "dex": "ほおぶくろに みずを ためている。びっくりすると あわを ふきだす。",
+    "files": [
+      "assets/monsters/battle/007-awamii.png",
+      "assets/monsters/battle-back/007-awamii-back.png"
+    ],
+    "index": 5,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-74290d87-2c32-486b-ab92-4a1713f65297.png"
+  },
+  {
+    "name": "ヌシガエル",
+    "no": 23,
+    "types": [
+      "みず"
+    ],
+    "base": {
+      "hp": 105,
+      "atk": 95,
+      "def": 95,
+      "spd": 55,
+      "spc": 95
+    },
+    "catch": 20,
+    "exp": 220,
+    "learn": [
+      [
+        1,
+        "みずでっぽう"
+      ],
+      [
+        1,
+        "かみつく"
+      ],
+      [
+        30,
+        "うずしお"
+      ],
+      [
+        38,
+        "じしん"
+      ],
+      [
+        46,
+        "ハイドロなみ"
+      ],
+      [
+        52,
+        "ねむる"
+      ]
+    ],
+    "dex": "ぬまの ぬしと つたわる おおガエル。ひとの ことばが わかるらしい。",
+    "files": [
+      "assets/monsters/battle/023-nushigaeru.png",
+      "assets/monsters/battle-back/023-nushigaeru-back.png"
+    ],
+    "index": 6,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d60bf31b-1477-4499-8c92-9c4548add6fe.png"
+  },
+  {
+    "name": "ピリット",
+    "no": 16,
+    "types": [
+      "でんき"
+    ],
+    "base": {
+      "hp": 40,
+      "atk": 40,
+      "def": 40,
+      "spd": 75,
+      "spc": 70
+    },
+    "catch": 190,
+    "exp": 82,
+    "evo": {
+      "lv": 22,
+      "to": "ライボルト"
+    },
+    "learn": [
+      [
+        1,
+        "でんきショック"
+      ],
+      [
+        1,
+        "しっぽふり"
+      ],
+      [
+        10,
+        "でんじは"
+      ],
+      [
+        18,
+        "スパークボール"
+      ],
+      [
+        26,
+        "でんこうせっか"
+      ],
+      [
+        34,
+        "１０まんボルト"
+      ]
+    ],
+    "dex": "からだに でんきを ためこむ。さわると ぱちぱちと はねる。",
+    "files": [
+      "assets/monsters/battle/016-pirritto.png",
+      "assets/monsters/battle-back/016-pirritto-back.png"
+    ],
+    "index": 7,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-034aae1f-c271-40e5-9015-78e49ed1dabe.png"
+  },
+  {
+    "name": "ドリルモグ",
+    "no": 19,
+    "types": [
+      "じめん"
+    ],
+    "base": {
+      "hp": 70,
+      "atk": 95,
+      "def": 80,
+      "spd": 60,
+      "spc": 45
+    },
+    "catch": 70,
+    "exp": 149,
+    "learn": [
+      [
+        1,
+        "じならし"
+      ],
+      [
+        1,
+        "すなかけ"
+      ],
+      [
+        26,
+        "ドリルアタック"
+      ],
+      [
+        35,
+        "いわおとし"
+      ],
+      [
+        44,
+        "じしん"
+      ]
+    ],
+    "dex": "はなの ドリルで いわを けずる。トンネルを ほるのを てつだってくれる。",
+    "files": [
+      "assets/monsters/battle/019-drillmogu.png",
+      "assets/monsters/battle-back/019-drillmogu-back.png"
+    ],
+    "index": 8,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0407645e-4c27-4645-85f6-0be8d63b58a2.png"
+  },
+  {
+    "name": "イワッコ",
+    "pal": "じめん2",
+    "no": 91,
+    "types": [
+      "じめん"
+    ],
+    "base": {
+      "hp": 60,
+      "atk": 54,
+      "def": 90,
+      "spd": 33,
+      "spc": 59
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 18,
+      "to": "ガンセキ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "すなかけ"
+      ],
+      [
+        7,
+        "かたくなる"
+      ],
+      [
+        13,
+        "かたくなる"
+      ],
+      [
+        19,
+        "じならし"
+      ],
+      [
+        27,
+        "いわおとし"
+      ],
+      [
+        34,
+        "じしん"
+      ]
+    ],
+    "dex": "がけから ころがりおちても へいきな からだ。",
+    "art": {
+      "body": "rock",
+      "eye": "dot",
+      "mouth": "line",
+      "pat": "spot"
+    },
+    "role": "def",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/091-iwakko.png",
+      "assets/monsters/battle-back/091-iwakko-back.png"
+    ],
+    "index": 9,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-80eda493-ee92-49e4-8c30-0a92b7ea29ab.png"
+  },
+  {
+    "name": "モグポン",
+    "pal": "じめん",
+    "no": 97,
+    "types": [
+      "じめん"
+    ],
+    "base": {
+      "hp": 49,
+      "atk": 62,
+      "def": 41,
+      "spd": 99,
+      "spc": 54
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 25,
+      "to": "モグドリル"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "すなかけ"
+      ],
+      [
+        7,
+        "かたくなる"
+      ],
+      [
+        13,
+        "でんこうせっか"
+      ],
+      [
+        19,
+        "じならし"
+      ],
+      [
+        27,
+        "いわおとし"
+      ],
+      [
+        34,
+        "じしん"
+      ]
+    ],
+    "dex": "ひかりが にがて。ずっと つちの 中に いる。",
+    "art": {
+      "body": "puppy",
+      "ear": "round",
+      "eye": "closed",
+      "mouth": "line",
+      "pat": "belly"
+    },
+    "role": "spd",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/097-mogupon.png",
+      "assets/monsters/battle-back/097-mogupon-back.png"
+    ],
+    "index": 10,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-cb627a34-29e6-4849-b2e9-6e722476ba05.png"
+  },
+  {
+    "name": "カセキン",
+    "pal": "じめん2",
+    "no": 99,
+    "types": [
+      "じめん",
+      "やみ"
+    ],
+    "base": {
+      "hp": 64,
+      "atk": 53,
+      "def": 97,
+      "spd": 36,
+      "spc": 57
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 30,
+      "to": "カセキガミ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "すなかけ"
+      ],
+      [
+        7,
+        "かたくなる"
+      ],
+      [
+        13,
+        "かたくなる"
+      ],
+      [
+        19,
+        "じならし"
+      ],
+      [
+        27,
+        "いわおとし"
+      ],
+      [
+        34,
+        "じしん"
+      ]
+    ],
+    "dex": "とても むかしの すがたを のこす いきもの。",
+    "art": {
+      "body": "shell",
+      "eye": "glow",
+      "mouth": "none",
+      "pat": "plate"
+    },
+    "role": "def",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/099-kasekin.png",
+      "assets/monsters/battle-back/099-kasekin-back.png"
+    ],
+    "index": 11,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-47618ba5-95c3-48aa-8b4d-94466a234b1e.png"
+  },
+  {
+    "name": "イシゴロ",
+    "no": 20,
+    "types": [
+      "じめん"
+    ],
+    "base": {
+      "hp": 60,
+      "atk": 80,
+      "def": 100,
+      "spd": 20,
+      "spc": 30
+    },
+    "catch": 150,
+    "exp": 96,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "かたくなる"
+      ],
+      [
+        12,
+        "いわおとし"
+      ],
+      [
+        22,
+        "じならし"
+      ],
+      [
+        33,
+        "じしん"
+      ],
+      [
+        40,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "ほら穴の いわに まぎれている。うごかないので いわと まちがえられる。",
+    "files": [
+      "assets/monsters/battle/020-ishigoro.png",
+      "assets/monsters/battle-back/020-ishigoro-back.png"
+    ],
+    "index": 12,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-12bb3112-1681-4899-9d11-5581541f01cf.png"
+  },
+  {
+    "name": "ドロヌマ",
+    "pal": "じめん3",
+    "no": 101,
+    "types": [
+      "じめん",
+      "みず"
+    ],
+    "base": {
+      "hp": 137,
+      "atk": 81,
+      "def": 90,
+      "spd": 43,
+      "spc": 81
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "すなかけ"
+      ],
+      [
+        8,
+        "かたくなる"
+      ],
+      [
+        14,
+        "ねむる"
+      ],
+      [
+        20,
+        "じならし"
+      ],
+      [
+        28,
+        "いわおとし"
+      ],
+      [
+        35,
+        "じしん"
+      ]
+    ],
+    "dex": "ぬまの そこで じっとして いる。においが つよい。",
+    "art": {
+      "body": "blob",
+      "eye": "sleepy",
+      "mouth": "open",
+      "pat": "spot"
+    },
+    "role": "hp",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/101-doronuma.png",
+      "assets/monsters/battle-back/101-doronuma-back.png"
+    ],
+    "index": 13,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9540d526-e3f8-44d2-8dc1-61e3f1120fa8.png"
+  },
+  {
+    "name": "チョウマユ",
+    "pal": "むし2",
+    "no": 107,
+    "types": [
+      "むし"
+    ],
+    "base": {
+      "hp": 57,
+      "atk": 57,
+      "def": 94,
+      "spd": 33,
+      "spc": 65
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 15,
+      "to": "ハネチョウ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "むしくい"
+      ],
+      [
+        7,
+        "いとをはく"
+      ],
+      [
+        13,
+        "かたくなる"
+      ],
+      [
+        19,
+        "どくばり"
+      ],
+      [
+        27,
+        "かたくなる"
+      ],
+      [
+        34,
+        "シザーカット"
+      ]
+    ],
+    "dex": "かたい からで みを まもりながら そだつ。",
+    "art": {
+      "body": "worm",
+      "eye": "closed",
+      "mouth": "none",
+      "pat": "band"
+    },
+    "role": "def",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/107-choumayu.png",
+      "assets/monsters/battle-back/107-choumayu-back.png"
+    ],
+    "index": 14,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e2a9ac52-6dab-4d28-9429-d189b0767701.png"
+  },
+  {
+    "name": "ヨルネコ",
+    "no": 21,
+    "types": [
+      "やみ"
+    ],
+    "base": {
+      "hp": 45,
+      "atk": 60,
+      "def": 45,
+      "spd": 80,
+      "spc": 55
+    },
+    "catch": 150,
+    "exp": 88,
+    "evo": {
+      "lv": 28,
+      "to": "シャドネコ"
+    },
+    "learn": [
+      [
+        1,
+        "ひっかく"
+      ],
+      [
+        1,
+        "にらみつける"
+      ],
+      [
+        11,
+        "かげぬい"
+      ],
+      [
+        20,
+        "かみつく"
+      ],
+      [
+        29,
+        "さいみんじゅつ"
+      ],
+      [
+        37,
+        "よるのつめ"
+      ]
+    ],
+    "dex": "よるに なると めが ひかる。かげの なかを すべるように あるく。",
+    "files": [
+      "assets/monsters/battle/021-yoruneko.png",
+      "assets/monsters/battle-back/021-yoruneko-back.png"
+    ],
+    "index": 15,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-284dd534-885d-4859-b0a5-4c90328518ba.png"
+  },
+  {
+    "name": "シャドネコ",
+    "no": 22,
+    "types": [
+      "やみ"
+    ],
+    "base": {
+      "hp": 70,
+      "atk": 90,
+      "def": 65,
+      "spd": 110,
+      "spc": 80
+    },
+    "catch": 60,
+    "exp": 158,
+    "learn": [
+      [
+        1,
+        "かげぬい"
+      ],
+      [
+        1,
+        "にらみつける"
+      ],
+      [
+        30,
+        "さいみんじゅつ"
+      ],
+      [
+        36,
+        "ゆめくい"
+      ],
+      [
+        45,
+        "よるのつめ"
+      ],
+      [
+        50,
+        "くろいきり"
+      ]
+    ],
+    "dex": "つきの ない よるにしか すがたを みせない。かげと まざって きえる。",
+    "files": [
+      "assets/monsters/battle/022-shadowneko.png",
+      "assets/monsters/battle-back/022-shadowneko-back.png"
+    ],
+    "index": 16,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7b779570-7c9e-4eba-8253-0667b6b5b689.png"
+  },
+  {
+    "name": "カゲポン",
+    "pal": "やみ",
+    "no": 120,
+    "types": [
+      "やみ"
+    ],
+    "base": {
+      "hp": 50,
+      "atk": 66,
+      "def": 44,
+      "spd": 90,
+      "spc": 55
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 16,
+      "to": "シャドウン"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "かげぬい"
+      ],
+      [
+        7,
+        "さいみんじゅつ"
+      ],
+      [
+        13,
+        "でんこうせっか"
+      ],
+      [
+        19,
+        "よるのつめ"
+      ],
+      [
+        27,
+        "くろいきり"
+      ],
+      [
+        34,
+        "ゆめくい"
+      ]
+    ],
+    "dex": "かべの かげから そっと ついてくる。",
+    "art": {
+      "body": "ghost",
+      "eye": "glow",
+      "mouth": "none",
+      "pat": "none"
+    },
+    "role": "spd",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/120-kagepon.png",
+      "assets/monsters/battle-back/120-kagepon-back.png"
+    ],
+    "index": 17,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-700eb454-7595-4f8b-aaea-b20fa5ecd912.png"
+  },
+  {
+    "name": "ボウレイ",
+    "pal": "やみ2",
+    "no": 125,
+    "types": [
+      "やみ"
+    ],
+    "base": {
+      "hp": 82,
+      "atk": 70,
+      "def": 84,
+      "spd": 107,
+      "spc": 140
+    },
+    "catch": 45,
+    "exp": 212,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "かげぬい"
+      ],
+      [
+        12,
+        "さいみんじゅつ"
+      ],
+      [
+        18,
+        "なきごえ"
+      ],
+      [
+        24,
+        "よるのつめ"
+      ],
+      [
+        32,
+        "くろいきり"
+      ],
+      [
+        39,
+        "ゆめくい"
+      ],
+      [
+        49,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "ゆめの 中まで おいかけてくると いわれる。",
+    "art": {
+      "body": "cloud",
+      "crest": "crown",
+      "eye": "glow",
+      "mouth": "open",
+      "pat": "band"
+    },
+    "role": "spc",
+    "stage": 3,
+    "files": [
+      "assets/monsters/battle/125-bourei.png",
+      "assets/monsters/battle-back/125-bourei-back.png"
+    ],
+    "index": 18,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-35d3ac5f-dcdc-4ef3-a728-47d283c2c053.png"
+  },
+  {
+    "name": "ムラサキビ",
+    "pal": "やみ3",
+    "no": 133,
+    "types": [
+      "やみ",
+      "ほのお"
+    ],
+    "base": {
+      "hp": 69,
+      "atk": 61,
+      "def": 73,
+      "spd": 85,
+      "spc": 132
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "かげぬい"
+      ],
+      [
+        8,
+        "さいみんじゅつ"
+      ],
+      [
+        14,
+        "なきごえ"
+      ],
+      [
+        20,
+        "よるのつめ"
+      ],
+      [
+        28,
+        "くろいきり"
+      ],
+      [
+        35,
+        "ゆめくい"
+      ]
+    ],
+    "dex": "むらさきの ほのお。あついのに つめたく かんじる。",
+    "art": {
+      "body": "fire",
+      "crest": "ball",
+      "eye": "glow",
+      "mouth": "none",
+      "pat": "dots"
+    },
+    "role": "spc",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/133-murasakibi.png",
+      "assets/monsters/battle-back/133-murasakibi-back.png"
+    ],
+    "index": 19,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-deb22cb0-4bbe-491f-a0ab-f08843bf6e4d.png"
+  },
+  {
+    "name": "ヤミノヌシ",
+    "pal": "やみ2",
+    "no": 135,
+    "types": [
+      "やみ"
+    ],
+    "base": {
+      "hp": 137,
+      "atk": 83,
+      "def": 80,
+      "spd": 49,
+      "spc": 72
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "かげぬい"
+      ],
+      [
+        8,
+        "さいみんじゅつ"
+      ],
+      [
+        14,
+        "ねむる"
+      ],
+      [
+        20,
+        "よるのつめ"
+      ],
+      [
+        28,
+        "くろいきり"
+      ],
+      [
+        35,
+        "ゆめくい"
+      ]
+    ],
+    "dex": "やみを つかさどると つたわる まぼろしの すがた。",
+    "art": {
+      "body": "drake",
+      "crest": "crown",
+      "ear": "horn",
+      "wing": "big",
+      "tail": "long",
+      "eye": "glow",
+      "mouth": "fang",
+      "pat": "plate"
+    },
+    "role": "hp",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/135-yaminonushi.png",
+      "assets/monsters/battle-back/135-yaminonushi-back.png"
+    ],
+    "index": 20,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-be3a2b64-20ac-41c5-b548-2e0845127066.png"
+  },
+  {
+    "name": "トリッピ",
+    "no": 12,
+    "types": [
+      "ノーマル"
+    ],
+    "base": {
+      "hp": 40,
+      "atk": 45,
+      "def": 40,
+      "spd": 56,
+      "spc": 35
+    },
+    "catch": 255,
+    "exp": 55,
+    "evo": {
+      "lv": 20,
+      "to": "ソラハネ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "なきごえ"
+      ],
+      [
+        9,
+        "すなかけ"
+      ],
+      [
+        17,
+        "でんこうせっか"
+      ],
+      [
+        25,
+        "みだれづき"
+      ],
+      [
+        33,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "まだ とおくまでは とべない。はねを ばたつかせて すなを まきあげる。",
+    "files": [
+      "assets/monsters/battle/012-torippi.png",
+      "assets/monsters/battle-back/012-torippi-back.png"
+    ],
+    "index": 21,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-ffd7a197-9d98-49c6-b49c-c3dbf5a7e793.png"
+  },
+  {
+    "name": "マルミィ",
+    "pal": "ノーマル",
+    "no": 136,
+    "types": [
+      "ノーマル"
+    ],
+    "base": {
+      "hp": 90,
+      "atk": 64,
+      "def": 57,
+      "spd": 34,
+      "spc": 59
+    },
+    "catch": 190,
+    "exp": 62,
+    "evo": {
+      "lv": 16,
+      "to": "マルモコ"
+    },
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        7,
+        "なきごえ"
+      ],
+      [
+        13,
+        "ねむる"
+      ],
+      [
+        19,
+        "かみつく"
+      ],
+      [
+        27,
+        "みだれづき"
+      ],
+      [
+        34,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "だれにでも なつく。ころころと ついてくる。",
+    "art": {
+      "body": "blob",
+      "ear": "round",
+      "eye": "round",
+      "mouth": "smile",
+      "pat": "belly"
+    },
+    "role": "hp",
+    "stage": 1,
+    "files": [
+      "assets/monsters/battle/136-marumii.png",
+      "assets/monsters/battle-back/136-marumii-back.png"
+    ],
+    "index": 22,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9315afe9-4ddd-4e5a-91c1-a0f58ad6ba76.png",
+    "cleanup": "Remove the entire grey checkerboard background of this two-view sprite sheet and replace it with perfectly flat pure white #FFFFFF. Preserve the two cream mouse creatures exactly, their outline, eyes, pink ears, shading, positions and full-body front/back views. Remove checkerboard in ALL gaps. No shadows, no checkerboard, no texture, no text."
+  },
+  {
+    "name": "パンダン",
+    "pal": "ノーマル3",
+    "no": 149,
+    "types": [
+      "ノーマル"
+    ],
+    "base": {
+      "hp": 87,
+      "atk": 79,
+      "def": 139,
+      "spd": 47,
+      "spc": 81
+    },
+    "catch": 125,
+    "exp": 132,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        8,
+        "なきごえ"
+      ],
+      [
+        14,
+        "かたくなる"
+      ],
+      [
+        20,
+        "かみつく"
+      ],
+      [
+        28,
+        "みだれづき"
+      ],
+      [
+        35,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "たけを たべながら のんびり くらしている。",
+    "art": {
+      "body": "beast",
+      "ear": "round",
+      "eye": "closed",
+      "mouth": "smile",
+      "pat": "band"
+    },
+    "role": "def",
+    "stage": 0,
+    "files": [
+      "assets/monsters/battle/149-pandan.png",
+      "assets/monsters/battle-back/149-pandan-back.png"
+    ],
+    "index": 23,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-13ded47b-4b39-4631-aadc-a7818d56a583.png"
+  },
+  {
+    "name": "ディーナ",
+    "pal": "でんき2",
+    "no": 152,
+    "types": [
+      "でんき",
+      "ノーマル"
+    ],
+    "base": {
+      "hp": 85,
+      "atk": 95,
+      "def": 80,
+      "spd": 138,
+      "spc": 110
+    },
+    "catch": 10,
+    "exp": 250,
+    "learn": [
+      [
+        1,
+        "たいあたり"
+      ],
+      [
+        1,
+        "でんきショック"
+      ],
+      [
+        8,
+        "でんじは"
+      ],
+      [
+        14,
+        "でんこうせっか"
+      ],
+      [
+        20,
+        "スパークボール"
+      ],
+      [
+        28,
+        "でんこうせっか"
+      ],
+      [
+        35,
+        "１０まんボルト"
+      ],
+      [
+        45,
+        "すてみタックル"
+      ]
+    ],
+    "dex": "にじいろの おびれを ひろげる。かぜより はやいという。",
+    "art": {
+      "body": "peacock",
+      "crest": "antenna",
+      "eye": "big",
+      "mouth": "beak",
+      "pat": "dots"
+    },
+    "role": "spd",
+    "stage": 9,
+    "files": [
+      "assets/monsters/battle/152-dina.png",
+      "assets/monsters/battle-back/152-dina-back.png"
+    ],
+    "index": 24,
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-2edad04c-7b1c-4dee-b3d0-737e9c9253bf.png"
+  }
+]

@@ -9,14 +9,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260908-gaon-v8";
-import { battle, startBattle } from "./battle.js?v=20260908-gaon-v8";
+import { world, bgmFor } from "./world.js?v=20260908-gaon-v9";
+import { battle, startBattle } from "./battle.js?v=20260908-gaon-v9";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260908-gaon-v8";
-import { drawTitleBackground } from "./revampArt.js?v=20260908-gaon-v8";
+import { START } from "./data/maps.js?v=20260908-gaon-v9";
+import { drawTitleBackground } from "./revampArt.js?v=20260908-gaon-v9";
 
 let scene = null;
 let last = 0;

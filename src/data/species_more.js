@@ -44,7 +44,8 @@ export const MORE = [
   { body: "quad", ear: "round", crest: "horns", tail: "puff", eye: "angry", mouth: "fang", pat: "stripe" },
   "つっこむ いきおいは いわをも くだく。"],
 
-["コケゴロ", "くさ", "じめん", "def", 1, "モスゴレム", 28,
+// 能力値・習得技の区分は維持し、進化先のみ設定しない。
+["コケゴロ", "くさ", "じめん", "def", 1, null, null,
   { body: "rock", eye: "dot", mouth: "none", pat: "back" },
   "こけを まとった いし。うごくと おどろかれる。"],
 ["モスゴレム", "くさ", "じめん", "def", 2, null, null,

@@ -1,7 +1,7 @@
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260908-gaon-v8";
+import { MAPS } from "./data/maps.js?v=20260908-gaon-v9";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [
