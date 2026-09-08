@@ -18,6 +18,17 @@ export function drawChapterMap(ctx,map,camX,camY){
   if(ch==='x'){c.fillStyle='#8c514c';c.fillRect(dx,dy,32,32);c.fillStyle='#deb577';c.fillRect(dx+2,dy+3,28,3);}
   continue;
  }
+ if(map.kind==='cave'){
+  const colors=map.theme==='volcano'?['#5a3d38','#6e4a3a']:map.theme==='shadow'?['#252d40','#343c55']:['#4a4356','#60556c'];
+  c.fillStyle=colors[0];c.fillRect(dx,dy,32,32);c.fillStyle=colors[1];
+  if(map.theme==='ruins'){c.fillRect(dx+2,dy+3,27,1);c.fillRect(dx+4,dy+6,1,19);c.fillRect(dx+18,dy+24,9,2);}
+  else{const n=(x*17+y*31)%23;c.fillRect(dx+3+n%6,dy+5+n%9,7,2);c.fillRect(dx+8+n%7,dy+6+n%9,2,6);c.fillRect(dx+21,dy+22,3,2);c.fillRect(dx+5,dy+26,2,1);}
+  if(ch==='X'||ch==='R')drawMaterial(c,'rock',dx,dy,32,32);
+  if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
+  if(ch==='W'){c.fillStyle='#a52f1c';c.fillRect(dx,dy,32,32);c.fillStyle='#ffb347';c.fillRect(dx+2,dy+8,19,3);c.fillRect(dx+12,dy+23,18,3);}
+  if(ch==='.')ground(c,'path',dx,dy);
+  continue;
+ }
  const base=ch==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';ground(c,base,dx,dy);
  if(ch==='"')ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);

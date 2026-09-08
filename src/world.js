@@ -1,4 +1,5 @@
-import { drawNpc } from './npcArt.js?v=20260908-training-v10';
+import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
+import { drawNpc } from './npcArt.js?v=20260908-gaons-v11';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -13,7 +14,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260908-training-v10";
+import { MAPS } from "./data/maps.js?v=20260908-gaons-v11";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -21,12 +22,12 @@ import {
   G as State, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260908-training-v10";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260908-gaons-v11";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260908-training-v10";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260908-gaons-v11";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -335,6 +336,9 @@ export const world = {
     const t = this.spotter();
     if (t) { await this.trainerSpot(t); return; }
 
+    // The rare tile roll is direct (1% / 3%), independent of ordinary grass odds.
+    const rare=rollRareEncounter(State.save,this.mapId,this.x,this.y);
+    if(rare){await this.wildBattle(rare);return;}
     // やせいの モンスター
     const ch = tileAt(this.map, this.x, this.y);
     const enc = this.map.enc;
@@ -345,8 +349,9 @@ export const world = {
 
   async doWarp(wp) {
     this.busy = true;
+    if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
     if(wp.requires&&!flag(wp.requires)){
-      const lines=chapterTravelHint();
+      const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
     beep("warp");
@@ -841,14 +846,14 @@ export const world = {
   },
 
   /* --- やせいの ガオン ---------------------------------------- */
-  async wildBattle() {
+  async wildBattle(rare = null) {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=this.map.battleTerrain||"grass";
-    const enc = this.map.enc;
-    const total = enc.list.reduce((s, e) => s + e[3], 0);
-    let r = rnd(total), chosen = enc.list[0];
-    for (const e of enc.list) { r -= e[3]; if (r < 0) { chosen = e; break; } }
+    const list=ordinaryEncounters(this.map.enc?.list);
+    if(!rare&&!list.length){this.busy=false;return;}
+    let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
+    if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
     const lv = chosen[1] + rnd(chosen[2] - chosen[1] + 1);
     const mon = makeMon(chosen[0], lv);
     const res = await startBattle({ wild: mon });

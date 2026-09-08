@@ -15,7 +15,7 @@ export const MORE = [
   "つるを のばして えものを からめとる。"],
 ["ジャングド", "くさ", null, "atk", 3, null, null,
   { body: "drake", crest: "fan", ear: "side", wing: "big", tail: "long", eye: "angry", mouth: "fang", pat: "back" },
-  "みつりんの おうじゃ。ひとふりで きを なぎたおす。"],
+  "おおきな うずまきの からに もりを やどす カタツムリ。"],
 
 ["ハナビィ", "くさ", null, "spc", 1, "フラワン", 16,
   { body: "ball", crest: "leaf", eye: "big", mouth: "smile", pat: "dots" },
@@ -162,12 +162,12 @@ export const MORE = [
   { body: "crystal", crest: "spike", eye: "glow", mouth: "line", pat: "band" },
   "いきを はくだけで まわりが こおりつく。"],
 
-["シャチマル", "みず", null, "atk", 0, null, null,
+["シオマント", "みず", null, "atk", 0, null, null,
   { body: "fish", crest: "fan", wing: "fin", eye: "angry", mouth: "fang", pat: "belly" },
-  "しろと くろの もようで なかまを 見わける。"],
-["タツノコ", "みず", null, "spc", 0, null, null,
+  "しおの マントと かいがらの たてで なかまを まもる。"],
+["ミナモリス", "みず", null, "spc", 0, null, null,
   { body: "neck", crest: "fan", eye: "round", mouth: "line", pat: "stripe" },
-  "しっぽを くさに まきつけて ねむる。"],
+  "みなもを はねる こりす。リボンの しっぽで およぐ。"],
 ["ウズシオヌシ", "みず", null, "hp", 0, null, null,
   { body: "shell", crest: "spike", eye: "glow", mouth: "none", pat: "plate" },
   "うずしおの まん中に すむと つたわる ぬし。"],
@@ -455,6 +455,6 @@ export const MORE = [
   "にじいろの おびれを ひろげる。かぜより はやいという。"],
 ["メロロン", "みず", null, "hp", 9, null, null,
   { body: "seal", ear: "fin", eye: "big", mouth: "smile", pat: "belly" },
-  "みずうみの ぬし。おおきな からだで なみを おこす。"],
+  "にじいろの つのが もりを てらす。いのちを まもる でんせつの シカ。"],
 
 ];

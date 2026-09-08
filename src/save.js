@@ -62,6 +62,7 @@ export async function loadCloud() {
 
 export function applySave(data) {
   loadInto(data);
+  saveLocal();
 }
 
 // どちらが あたらしいか

@@ -1,0 +1,24 @@
+const fs=require('fs'),assert=require('node:assert/strict');
+const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const base=process.argv[2]||'http://127.0.0.1:5179',browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});try{
+const p=await browser.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+'/gaon-zukan/');
+const result=await p.evaluate(async()=>{
+ const rare=await import('/src/rareEncounters.js'),st=await import('/src/state.js'),{MAPS}=await import('/src/data/maps.js'),{SPECIES:S}=await import('/src/data/species.js');
+ const check=(v,msg)=>{if(!v)throw Error(msg)},eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+ const solid=new Set(['T','R','M','W','#','r','w','S','X','=','c','b','t','K','V','P','s']);
+ const reachable=m=>{const q=[[m.spawn.x,m.spawn.y]],seen=new Set();while(q.length){const [x,y]=q.pop(),k=x+','+y;if(seen.has(k)||!m.rows[y]?.[x]||solid.has(m.rows[y][x]))continue;seen.add(k);q.push([x-1,y],[x+1,y],[x,y-1],[x,y+1]);}return seen;};
+ const habitats=[...new Set(rare.RARE_RULES.map(r=>r.map))],reach=Object.fromEntries(habitats.map(id=>[id,reachable(MAPS[id])])),counts={};
+ for(const id of ['natureforest',...habitats]){const m=MAPS[id],seen=reachable(m);for(const w of m.warps){check(seen.has(w.x+','+w.y),'unreachable warp '+id);if(w.to!=='@back')check(!solid.has(MAPS[w.to].rows[w.ty]?.[w.tx]),'blocked destination '+id);} }
+ for(const id of habitats){const c=rare.rareCandidates(id);check(c.length>20,'candidate count '+id);check(c.every(p=>reach[id].has(p.x+','+p.y)),'blocked rare tile');counts[id]=c.length;}
+ const variations=new Set();for(let seed=0;seed<100;seed++){const a=rare.createRareSpawns(seed);check(eq(a,rare.createRareSpawns(seed)),'seed determinism');check(Object.keys(a.spots).length===5,'five spots');check(new Set(Object.values(a.spots).map(p=>p.map+':'+p.x+':'+p.y)).size===5,'duplicate spots');variations.add(JSON.stringify(a.spots));check(eq(a,rare.createRareSpawns(a.seed,a.spots)),'stable repair');}check(variations.size>90,'random variation');
+ const save=st.newGame('rare');save.rareSpawns=rare.createRareSpawns(123456);const first=JSON.stringify(save.rareSpawns);st.loadInto(JSON.parse(JSON.stringify(save)));check(JSON.stringify(st.G.save.rareSpawns)===first,'reload position');
+ for(const r of rare.RARE_RULES){const a=save.rareSpawns.spots[r.name];check(!rare.rollRareEncounter(save,a.map,a.x,a.y,()=>0),'story gate');}
+ save.flags['v5:dex']=1;MAPS.natureforest.npcs.forEach((n,i)=>{if(n.trainer)save.flags['beat:natureforest:'+i]=1;});check(rare.rareAreasUnlocked(save),'unlock');const rates={};
+ for(const r of rare.RARE_RULES){const a=save.rareSpawns.spots[r.name];let hits=0;for(let i=0;i<10000;i++)if(rare.rollRareEncounter(save,a.map,a.x,a.y,()=>i/10000)?.name===r.name)hits++;check(hits===r.rate*10000,'probability '+r.name);check(!rare.rollRareEncounter(save,a.map,0,0,()=>0),'wrong tile');check(!rare.rollRareEncounter(save,'village',a.x,a.y,()=>0),'wrong map');rates[r.name]=hits/100+'%';check(Object.values(S[r.name].base).reduce((a,b)=>a+b,0)>=(r.name==='オバケシ'?500:600),'rare strength');}
+ const forbidden=[...rare.EXCLUSIVE_WILD,...rare.EVOLUTION_ONLY];check(rare.ordinaryEncounters([...forbidden.map(n=>[n,1,2,1]),['ネズミン',1,2,1]]).length===1,'normal filtering');for(const m of Object.values(MAPS))check(!(m.enc?.list||[]).some(e=>forbidden.includes(e[0])),'normal map leaked rare');
+ check(!S['コケゴロ'].evo,'Kokegoro evolution');check(S['オバケシ'].evo.to==='ユウレイン'&&S['ユウレイン'].evo.to==='ボウレイ','ghost evolution');
+ const old=st.newGame('old'),mon=st.makeMon('シオマント',25);mon.sp='シャチマル';mon.nick='相棒';old.party=[mon];old.box=[st.makeMon('ミナモリス',15)];old.box[0].sp='タツノコ';old.dexOwn={'シャチマル':1,'タツノコ':1};old.dexSeen={...old.dexOwn};delete old.rareSpawns;const iv=JSON.stringify(mon.iv),ev=JSON.stringify(mon.ev);st.loadInto(old);check(st.G.save.party[0].sp==='シオマント'&&st.G.save.box[0].sp==='ミナモリス','name migration');check(st.G.save.party[0].nick==='相棒'&&JSON.stringify(mon.iv)===iv&&JSON.stringify(mon.ev)===ev,'retain individual');check(st.G.save.dexOwn['シオマント']&&!st.G.save.dexOwn['シャチマル'],'dex migration');const migrated=JSON.stringify(st.G.save.rareSpawns);st.loadInto(JSON.parse(JSON.stringify(st.G.save)));check(JSON.stringify(st.G.save.rareSpawns)===migrated,'old save stable');
+ return {maps:Object.keys(MAPS).length,counts,rates,seeds:100,saveMigration:true,evolutionOnly:true};
+});
+assert.deepEqual(errors,[]);fs.writeFileSync('artifacts/rare-verification.json',JSON.stringify({base,...result,errors},null,2));console.log(JSON.stringify({base,...result,errors}));
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

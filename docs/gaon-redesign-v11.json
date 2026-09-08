@@ -1,0 +1,359 @@
+[
+  {
+    "index": 0,
+    "name": "ブルームナ",
+    "newName": "ブルームナ",
+    "no": 29,
+    "files": [
+      "assets/monsters/redesign-v8/front/029-bloomna.png",
+      "assets/monsters/redesign-v8/back/029-bloomna-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for ブルームナ. Completely redesign this evolved flower creature into an irresistibly cute plump blossom fairy: a small cream body, big warm sparkling eyes and smiling face inside a soft peach-pink lotus petal hood, tiny leaf hands and feet, rounded flower-petal skirt, mint green accents. No dangling roots, no unsettling face, no thin tentacles. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-18c49b6e-64d5-489d-afb0-452c2fb7abef.png"
+  },
+  {
+    "index": 1,
+    "name": "リーフィン",
+    "newName": "リーフィン",
+    "no": 1,
+    "files": [
+      "assets/monsters/redesign-v8/front/001-leafin.png",
+      "assets/monsters/redesign-v8/back/001-leafin-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for リーフィン. Baby stage of a three-stage leaf rabbit family. An adorable round cream-white leaf-eared bunny, very large warm brown eyes, peach cheeks, tiny round paws, one mint-green leaf ear and one slightly folded leaf ear, a small green sprout tail. Plush proportions and welcoming smile. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1650c74f-66a8-455c-b0d1-f10c0d6e5588.png"
+  },
+  {
+    "index": 2,
+    "name": "リーフォード",
+    "newName": "リーフォード",
+    "no": 2,
+    "files": [
+      "assets/monsters/redesign-v8/front/002-leaford.png",
+      "assets/monsters/redesign-v8/back/002-leaford-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for リーフォード. Middle stage of the SAME cream-white leaf rabbit family. Cute youthful fluffy cream bunny with large warm brown eyes, peach cheeks, two longer mint leaf ears, a small leafy neck scarf, round paws and compact graceful body. Bigger than baby but still very cute. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-3ca0acf2-86a8-421a-acf4-31a131c84cbf.png"
+  },
+  {
+    "index": 3,
+    "name": "フォレスタ",
+    "newName": "フォレスタ",
+    "no": 3,
+    "files": [
+      "assets/monsters/redesign-v8/front/003-foresta.png",
+      "assets/monsters/redesign-v8/back/003-foresta-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for フォレスタ. Final stage of the SAME cream-white leaf rabbit family. A majestic yet VERY adorable fluffy forest bunny guardian with long mint-green leaf ears, a lush leafy scarf dotted with small pink flowers, full cream-white fluffy cheeks, large kind brown eyes and rounded paws. Elegant seated four-legged pose; cute face, no harsh antlers. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-49ba7163-2819-4c42-bd5f-e11df517551d.png",
+    "cleanup": "Edit this two-sprite sheet to give BOTH creatures generous blank margins, reducing their visual scale to occupy at most 75% of the width and height of their own half. Restore all tips of ears, mane, horns and tails so their whole anatomy is completely visible. Keep exact existing character design, pixel style, colors, front and back views. TWO columns ONE row. Transparent alpha background, no checkerboard, no text, no shadow."
+  },
+  {
+    "index": 4,
+    "name": "ジャングド",
+    "newName": "ジャングド",
+    "no": 26,
+    "files": [
+      "assets/monsters/redesign-v8/front/026-jangudo.png",
+      "assets/monsters/redesign-v8/back/026-jangudo-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for ジャングド. A final-evolution GIANT SNAIL. Huge heavy emerald and golden-ochre spiral shell with broad fern leaves growing along its ridge, a plump pale green snail body with clearly visible broad crawling foot, two long soft eyestalks and small cute smiling face. Must unmistakably look like a much larger snail, no insect legs, no beetle body. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-efaa74fc-6899-48e5-9c13-106827b9d35e.png"
+  },
+  {
+    "index": 5,
+    "name": "カガリビ",
+    "newName": "カガリビ",
+    "no": 47,
+    "files": [
+      "assets/monsters/redesign-v8/front/047-kagaribi.png",
+      "assets/monsters/redesign-v8/back/047-kagaribi-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for カガリビ. Middle evolution between the attached cute orange baby ember and regal black-gold flame spirit. A youthful hovering charcoal flame creature, cute expressive amber eyes, orange-gold flame crest beginning to form a small crown, short flared gold flame ear-fins, two little flame arms and a curling flame lower body. Retain the baby's cute face and orange palette but hint at the final form's crown and flowing black-and-gold silhouette. Not a spider, no long insect legs. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-f3603cc8-ee81-4fce-ad49-209d4698a2a0.png",
+    "cleanup": "Remove every grey/white checkerboard square and replace the whole background with flat pure white #FFFFFF. Preserve BOTH flame sprites exactly, front and back, same shape, colors, scale, full bodies. No checkerboard anywhere including gaps, no added details or shadows."
+  },
+  {
+    "index": 6,
+    "name": "アワミィ",
+    "newName": "アワミィ",
+    "no": 7,
+    "files": [
+      "assets/monsters/redesign-v9/front/007-awamii.png",
+      "assets/monsters/redesign-v9/back/007-awamii-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for アワミィ. An extra cute and appealing baby aqua-blue aquatic dragon pup, preserving its iconic large sky-blue fin ears, three-prong water head crest, cream belly, big shiny navy eyes, rosy cheek details, short paws and curled blue fish tail. Cheerful confident expression, polished cute-and-cool mascot design. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-aeee1b86-a319-499e-b28f-564a8bd85cf6.png"
+  },
+  {
+    "index": 7,
+    "name": "ウズマリン",
+    "newName": "ウズマリン",
+    "no": 8,
+    "files": [
+      "assets/monsters/redesign-v8/front/008-uzumarin.png",
+      "assets/monsters/redesign-v8/back/008-uzumarin-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for ウズマリン. Middle evolution of the SAME aqua-blue aquatic dragon pup in the reference: retain big blue fin ears, three-prong crest, cream belly, shiny navy eyes, cheek details and curved fish tail. Grow into a graceful playful water-dragon youngster with four paws, a slightly longer body and a few pearly fin accents, cute confident face. Clearly its evolution, not a different animal. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0a6d4743-96c1-4ffb-b097-60183d3121cc.png",
+    "cleanup": "Edit this exact two-view sprite sheet. Preserve BOTH creatures exactly: design, colors, pose, silhouette, all body parts and placement. Replace the ENTIRE gray checkerboard background everywhere including enclosed gaps between tails, arms, tentacles, rings and whiskers with uniform solid pure white RGB 255,255,255. NO checkerboard, no gray, no texture, no ground shadow, no transparency preview. Keep full bodies with clear white margins. Do not alter character white highlights. This is only a white backdrop cleanup for sprite import."
+  },
+  {
+    "index": 8,
+    "name": "タイダルオ",
+    "newName": "タイダルオ",
+    "no": 9,
+    "files": [
+      "assets/monsters/redesign-v8/front/009-tidalor.png",
+      "assets/monsters/redesign-v8/back/009-tidalor-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for タイダルオ. Final evolution of the SAME aqua-blue aquatic dragon pup: retain recognizable fin ears, three-prong head crest, cream muzzle/belly, kind large navy eyes and characteristic curved fish tail. A majestic four-legged sapphire/aqua aquatic dragon with flowing translucent-looking fin frills, a strong elegant body and friendly heroic face. Cute and cool, full creature no serpentine-only or manta body. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-76dd0b4d-1c45-42f2-b704-768e0fa4c217.png"
+  },
+  {
+    "index": 9,
+    "name": "リュウグウ",
+    "newName": "リュウグウ",
+    "no": 61,
+    "files": [
+      "assets/monsters/redesign-v8/front/061-ryuuguu.png",
+      "assets/monsters/redesign-v8/back/061-ryuuguu-back.png"
+    ],
+    "prompt": "Production PIXEL ART RPG monster sheet for リュウグウ. Preserve this elegant long coiled sea dragon's anatomy and silhouette, but give it a cooler regal palette: deep midnight navy body, luminous electric turquoise fin edges, silver-white belly, subtle amethyst highlights, bright cyan eyes, and flowing pale silver whiskers. Rich high contrast royal ocean colors, not pink/pastel. Exactly TWO full-body sprites of the SAME design on a horizontal 2-column 1-row sheet: LEFT front three-quarter view, RIGHT true rear three-quarter view. Front looks left, back looks right. Match scale and all anatomical features. Polished clear 80x80-native pixel-art character style, crisp colored outlines, deliberate pixel clusters, expressive face and rich 4-tone shading. Keep each entire creature centered in its own half with 12% blank margin on every edge. Transparent alpha background. NO checkerboard, background pattern, shadows, platforms, text or labels. Reference images guide identity or evolution relationship, but follow the requested redesign.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d145e7b3-4893-4cdd-98a9-925817dfd9a9.png",
+    "cleanup": "Edit this exact two-view sprite sheet. Preserve BOTH creatures exactly: design, colors, pose, silhouette, all body parts and placement. Replace the ENTIRE gray checkerboard background everywhere including enclosed gaps between tails, arms, tentacles, rings and whiskers with uniform solid pure white RGB 255,255,255. NO checkerboard, no gray, no texture, no ground shadow, no transparency preview. Keep full bodies with clear white margins. Do not alter character white highlights. This is only a white backdrop cleanup for sprite import."
+  },
+  {
+    "index": 10,
+    "name": "ラゲドン",
+    "newName": "ラゲドン",
+    "no": 66,
+    "files": [
+      "assets/monsters/redesign-v8/front/066-ragedon.png",
+      "assets/monsters/redesign-v8/back/066-ragedon-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for ラゲドン. A gorgeous royal jellyfish sovereign. Preserve the elegant jellyfish identity but greatly increase luxury: opalescent violet bell shaped like a jeweled parasol, delicate gold filigree ribs, sapphire and pearl ornaments, luminous aqua mantle frills, long flowing ribbon tentacles and a serene expressive face. Beautiful regal silhouette, not cluttered. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1054590b-d6af-40a3-9907-b218a7b4c713.png",
+    "cleanup": "Edit this exact two-view sprite sheet. Preserve BOTH creatures exactly: design, colors, pose, silhouette, all body parts and placement. Replace the ENTIRE gray checkerboard background everywhere including enclosed gaps between tails, arms, tentacles, rings and whiskers with uniform solid pure white RGB 255,255,255. NO checkerboard, no gray, no texture, no ground shadow, no transparency preview. Keep full bodies with clear white margins. Do not alter character white highlights. This is only a white backdrop cleanup for sprite import."
+  },
+  {
+    "index": 11,
+    "name": "ヒョウガン",
+    "newName": "ヒョウガン",
+    "no": 68,
+    "files": [
+      "assets/monsters/redesign-v8/front/068-hyougan.png",
+      "assets/monsters/redesign-v8/back/068-hyougan-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for ヒョウガン. A proud handsome emperor penguin wearing an actual tailored midnight-navy suit jacket with gold buttons, crisp white shirt, elegant burgundy bow tie, and a gold royal crown set with blue gems. Keep blue ice-flipper accents, dignified confident face, two penguin feet. Clearly crown AND formal suit. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-042c1891-c8df-4c53-91ce-34459a4caa5c.png",
+    "cleanup": "Keep this exact crowned penguin wearing the elegant navy SUIT with gold buttons, white shirt, red bow tie. Same two views side by side. Expand the canvas margins so full crown tips and both feet fit completely with at least 8% blank margin on all four sides and a wide central gap. Preserve its design and pixel art. Uniform PURE WHITE RGB255 backdrop throughout, no checkerboard or shadows."
+  },
+  {
+    "index": 12,
+    "name": "シャチマル",
+    "newName": "シオマント",
+    "no": 69,
+    "files": [
+      "assets/monsters/redesign-v8/front/069-shachimar.png",
+      "assets/monsters/redesign-v8/back/069-shachimar-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for シオマント. Entirely new original water creature named シオマント: a graceful sea-knight with a pale pearl mask-like cute face, navy-blue flowing manta-like cloak, coral-red crest, teal small armored body, two graceful fin arms holding a scallop-shell shield and a pearl lance grown from its fin. Strong charming silhouette, not a whale or orca; no resemblance to original reference. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-bbae383a-aa8e-4a41-96a3-998d479030e4.png"
+  },
+  {
+    "index": 13,
+    "name": "タツノコ",
+    "newName": "ミナモリス",
+    "no": 70,
+    "files": [
+      "assets/monsters/redesign-v8/front/070-tatsunoko.png",
+      "assets/monsters/redesign-v8/back/070-tatsunoko-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for ミナモリス. Entirely new original water creature named ミナモリス: a cute athletic turquoise aquatic flying squirrel with very large silky fin ears, soft ivory belly, tiny pearl scales, large expressive dark eyes, webbed paws, and a magnificent curled water-ribbon tail with a single pearl tip. Cheerful agile pose. Not a seahorse or dragon. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-dbb845e9-e162-4bf9-a19f-7525e22f7dbc.png"
+  },
+  {
+    "index": 14,
+    "name": "ライボルト",
+    "newName": "ライボルト",
+    "no": 17,
+    "files": [
+      "assets/monsters/redesign-v8/front/017-raibolt.png",
+      "assets/monsters/redesign-v8/back/017-raibolt-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for ライボルト. Evolution of the yellow round antenna creature in the reference. Preserve unmistakable round sunshine-yellow body, large cute amber eyes, smiling mouth and TWO flexible antennae each ending in a glowing gold sphere. Slightly larger heroic body, plump strong arms, small pointed feet, a fluffy white collar and a few cobalt electric markings. Cute and powerful, yellow dominant; no dragon or long reptile body. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-03907570-2c87-49b8-a935-9fe51b5c4d68.png"
+  },
+  {
+    "index": 15,
+    "name": "サンダマ",
+    "newName": "サンダマ",
+    "no": 74,
+    "files": [
+      "assets/monsters/redesign-v8/front/074-sandama.png",
+      "assets/monsters/redesign-v8/back/074-sandama-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for サンダマ. A very powerful electro-plasma orb guardian: large brilliant golden spherical core with fierce focused glowing eyes, two thick dark navy-and-gold orbiting armor rings, four substantial magnet-like claw arms and angular lightning spikes. Strong imposing silhouette, energy arcs close to body, high contrast yellow/cobalt/electric cyan. Much stronger-looking than simple thin orbital rings. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-84cd122e-eae1-44f6-90ca-442c8aa04eac.png",
+    "cleanup": "Edit this exact two-view sprite sheet. Preserve BOTH creatures exactly: design, colors, pose, silhouette, all body parts and placement. Replace the ENTIRE gray checkerboard background everywhere including enclosed gaps between tails, arms, tentacles, rings and whiskers with uniform solid pure white RGB 255,255,255. NO checkerboard, no gray, no texture, no ground shadow, no transparency preview. Keep full bodies with clear white margins. Do not alter character white highlights. This is only a white backdrop cleanup for sprite import."
+  },
+  {
+    "index": 16,
+    "name": "コンセン",
+    "newName": "コンセン",
+    "no": 82,
+    "files": [
+      "assets/monsters/redesign-v8/front/082-konsen.png",
+      "assets/monsters/redesign-v8/back/082-konsen-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for コンセン. An evolved adorable plug robot. Retain the original navy rounded plug head and TWO gold electrical prongs, cute large bright eyes. Grow into a compact strong rounded navy and cobalt mech, gold shoulder armor, oversized rounded gauntlets, sturdy small feet, glowing cyan chest battery. Strong yet toy-like cute, recognizable as an evolved plug creature. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-21991ef5-5b26-4389-a860-8aa24834ca1d.png",
+    "cleanup": "Edit this exact two-view sprite sheet. Preserve BOTH creatures exactly: design, colors, pose, silhouette, all body parts and placement. Replace the ENTIRE gray checkerboard background everywhere including enclosed gaps between tails, arms, tentacles, rings and whiskers with uniform solid pure white RGB 255,255,255. NO checkerboard, no gray, no texture, no ground shadow, no transparency preview. Keep full bodies with clear white margins. Do not alter character white highlights. This is only a white backdrop cleanup for sprite import."
+  },
+  {
+    "index": 17,
+    "name": "ジリジリ",
+    "newName": "ジリジリ",
+    "no": 83,
+    "files": [
+      "assets/monsters/redesign-v8/front/083-jirijiri.png",
+      "assets/monsters/redesign-v8/back/083-jirijiri-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for ジリジリ. Completely new design: a cute electric firefly grub with rounded lime-and-cream body, tiny black six legs, small navy head, two soft gold antennae and a glowing amber lantern abdomen under short pale cyan wing covers. A fresh round and approachable bug silhouette. No red beetle or wasp. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a586ff66-2607-430c-92b7-f7a572fa67a1.png"
+  },
+  {
+    "index": 18,
+    "name": "バチバチ",
+    "newName": "バチバチ",
+    "no": 84,
+    "files": [
+      "assets/monsters/redesign-v8/front/084-bachibachi.png",
+      "assets/monsters/redesign-v8/back/084-bachibachi-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for バチバチ. Evolution of a lime electric firefly: a powerful elegant firefly guardian with navy-and-gold wing armor, luminous amber lantern abdomen, six neat insect limbs, graceful pale cyan wings and twin arched golden antennae. Retain lime accents and cute expressive eyes while adding heroic armored shape. No red wasp or cicada. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-fd2abf86-5b1e-4e05-8c87-9bf756b0600e.png"
+  },
+  {
+    "index": 19,
+    "name": "イナヅマル",
+    "newName": "イナヅマル",
+    "no": 85,
+    "files": [
+      "assets/monsters/redesign-v8/front/085-inazumaru.png",
+      "assets/monsters/redesign-v8/back/085-inazumaru-back.png"
+    ],
+    "prompt": "Create a polished original RPG PIXEL ART sprite pair for イナヅマル. Completely new electric creature: a dynamic athletic thunder hare with long swept-back black-tipped white ears, golden yellow and ivory fluffy body, navy forearm markings, powerful rabbit hind legs and a small round electric tail. Energetic determined cute face, crouched lightning-fast runner pose, a few cyan sparks. Not a serpent. Exactly 2 complete full-body views on a two-column one-row sheet: LEFT front three-quarter facing left; RIGHT true back three-quarter facing right. Identical design, scale and colors. Crisp deliberate pixel clusters, dark colored outline, clear expressive face, refined highlights and 4-tone shading, readable at 80x80 native game size. Center each body entirely within its half with generous 12% margins. Transparent alpha background only; NO checkerboard, labels, text, shadow, ground, scenery or clipping.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-b55e0708-eabb-4eed-a062-9b1da5052df6.png"
+  },
+  {
+    "index": 20,
+    "name": "ライメイ",
+    "newName": "ライメイ",
+    "no": 87,
+    "files": [
+      "assets/monsters/redesign-v8/front/087-raimei.png",
+      "assets/monsters/redesign-v8/back/087-raimei-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for ライメイ. Transform into a majestic traditional thunder-god creature: a stocky blue-skinned oni with a wild white mane, two small golden horns, expressive fierce but charming face, tiger-striped waistcloth, floating dark storm-cloud feet, two golden drumsticks, and a halo ring of THREE small thunder drums behind its shoulders. Electric gold lightning accents, navy and cyan shading. Recognizably a thunder deity, not a simple black cloud. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-de64325d-ffa1-48b5-89e5-80f0c5bfac09.png"
+  },
+  {
+    "index": 21,
+    "name": "モグドリル",
+    "newName": "モグドリル",
+    "no": 98,
+    "files": [
+      "assets/monsters/redesign-v8/front/098-mogudrill.png",
+      "assets/monsters/redesign-v8/back/098-mogudrill-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for モグドリル. Evolution of the cute brown mole in the reference. Preserve its plush brown fur, cream round belly, little folded ears, closed smiling eyes, broad pink nose and pink paw pads. Make it slightly bigger and heroic with strong but rounded ivory digging claws, small stone shoulder pads and a subtle drill-shaped forelock. Cute round friendly face; no realistic sharp-nosed rodent. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a00d713a-2333-4961-8713-697b6f9e6839.png"
+  },
+  {
+    "index": 22,
+    "name": "イシゴロ",
+    "newName": "イシゴロ",
+    "no": 20,
+    "files": [
+      "assets/monsters/redesign-v9/front/020-ishigoro.png",
+      "assets/monsters/redesign-v9/back/020-ishigoro-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for イシゴロ. Make this stone golem much cuter: rounded smooth warm-grey boulder body and short rounded stone arms/feet, large kind shiny dark eyes, small friendly smile, subtle rosy mineral cheeks. Keep the recognizable rock creature identity and cracked stone texture but remove harsh menacing angles, use charming sturdy plush-like proportions. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a234ae28-f266-45d1-990f-718651fed783.png"
+  },
+  {
+    "index": 23,
+    "name": "ドロヌマ",
+    "newName": "ドロヌマ",
+    "no": 101,
+    "files": [
+      "assets/monsters/redesign-v9/front/101-doronuma.png",
+      "assets/monsters/redesign-v9/back/101-doronuma-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for ドロヌマ. Make this mud creature extremely cute: a round squishy chocolate-brown mud-pudding body, little drooping mud ears, two small rounded arms, bright large kind eyes and a tiny happy smiling mouth, sky-blue watery freckles and a little curled puddle tail. No huge open mouth or creepy drooling appearance. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-27a09db3-c85f-4d45-8dca-d3ed36e12798.png"
+  },
+  {
+    "index": 24,
+    "name": "オニイワ",
+    "newName": "オニイワ",
+    "no": 102,
+    "files": [
+      "assets/monsters/redesign-v8/front/102-oniiwa.png",
+      "assets/monsters/redesign-v8/back/102-oniiwa-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for オニイワ. A very cool imposing stone oni warrior: broad basalt-grey armored shoulders, muscular rock arms, a sculpted stern oni face with glowing jade eyes, two sweeping ivory stone horns, red mineral sash detail and enormous stone gauntlets. Short heavy legs and balanced heroic battle pose. Intricate but readable angular armor, not a pile of red stones. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4a56805d-6af1-4637-baac-085e8c004740.png"
+  },
+  {
+    "index": 25,
+    "name": "ジシンヌシ",
+    "newName": "ジシンヌシ",
+    "no": 103,
+    "files": [
+      "assets/monsters/redesign-v8/front/103-jishinnushi.png",
+      "assets/monsters/redesign-v8/back/103-jishinnushi-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for ジシンヌシ. A fearsome earth guardian: massive low four-legged rock-armored pangolin dragon with layered dark slate and golden sandstone plates, powerful broad head with two chisel-like horns, luminous amber eyes, immense digging claws and a heavy stone hammer tail. Dynamic dignified posture, very cool imposing silhouette; not a simple worm. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-24024cd7-8482-425c-8b8c-ee382b3b0c23.png"
+  },
+  {
+    "index": 26,
+    "name": "ギガビート",
+    "newName": "ギガビート",
+    "no": 15,
+    "files": [
+      "assets/monsters/redesign-v8/front/015-gigabeet.png",
+      "assets/monsters/redesign-v8/back/015-gigabeet-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for ギガビート. An exceptionally cool armored stag-beetle warrior with a powerful obsidian and emerald carapace, two sweeping golden blade-like stag horns, focused ruby eyes, six sharply articulated strong insect legs and deep red wing-cover accents. Heroic compact battle stance, metallic highlights, serious and powerful. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-61addc34-3f5e-47ab-a8df-e0c7e952f951.png"
+  },
+  {
+    "index": 27,
+    "name": "ラテット",
+    "newName": "ラテット",
+    "no": 151,
+    "files": [
+      "assets/monsters/redesign-v8/front/151-ratetto.png",
+      "assets/monsters/redesign-v8/back/151-ratetto-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for ラテット. Make this BLUE legendary lion significantly cooler: powerful athletic royal lion with deep cobalt body, sculpted sweeping azure and silver mane shaped like flowing mountain wind, sharp bright cyan eyes, silver-white muzzle and chest, strong clawed paws, long tail with a luminous blue tuft. Dignified heroic three-quarter stance, proud fierce expression, a small sapphire forehead jewel. Keep lion anatomy and blue base; no wings, no extra limbs. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-bc9f7758-9b2b-443b-9e64-083cde251d9e.png"
+  },
+  {
+    "index": 28,
+    "name": "メロロン",
+    "newName": "メロロン",
+    "no": 153,
+    "files": [
+      "assets/monsters/redesign-v8/front/153-meroron.png",
+      "assets/monsters/redesign-v8/back/153-meroron-back.png"
+    ],
+    "prompt": "Production game monster PIXEL ART sheet for メロロン. A majestic legendary water/starlight stag, inspired by the awe of a divine deer with vast branching antlers. Sleek deep navy and luminous azure body, ivory chest and elegant long legs, noble intelligent face, enormous symmetrical coral-crystal antlers whose branching tips glow in rainbow jewel colors. Small star motifs and flowing aqua shoulder wisps, sophisticated elegant silhouette, powerful graceful stance. Original Gaon named メロロン, clear creature design with restrained luminous accents. Exactly TWO full-body views of the identical creature on a horizontal TWO-column ONE-row layout: left front three-quarter facing left, right true back three-quarter facing right. Both same scale and appearance, crisp outlined pixel clusters with expressive details and polished 4-tone shading; readable at 80x80 native game size. Keep every horn, limb and tail wholly inside the central76% of each half, generous blank margins, no overlap. Transparent alpha background only. Absolutely NO checkerboard or scenery, no ground shadow, no text or labels.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-874801d8-e392-467a-9cc5-13aa46c52a42.png",
+    "cleanup": "Keep these exact two views of the majestic navy blue stag with branching rainbow crystal antlers, white chest and luminous blue tail. Replace ALL backdrop and all external glow/halo with uniform solid PURE WHITE RGB255. No gradients, shadows, checkerboard, atmospheric effects or bloom outside the character. Crisp pixel silhouettes. Keep colorful antler crystals and tail themselves vivid. Full antlers and hooves with clear margins. Only backdrop/halo cleanup, preserve the design."
+  }
+]

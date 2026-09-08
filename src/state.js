@@ -1,3 +1,4 @@
+import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
 // ============================================================
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
 // ============================================================
@@ -6,6 +7,7 @@ import { newMove, move } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
 
+const SPECIES_ALIASES = {"シャチマル": "シオマント", "タツノコ": "ミナモリス"};
 export const MAX_PARTY = 6;
 
 export function rnd(n) { return Math.floor(Math.random() * n); }
@@ -16,6 +18,7 @@ export function pick(list) { return list[rnd(list.length)]; }
 export function expForLevel(lv) { return lv * lv * lv; }
 
 export function makeMon(spName, lv, opt) {
+  spName=SPECIES_ALIASES[spName]||spName;
   const sp = species(spName);
   const o = opt || {};
   const iv = Object.fromEntries(STAT_KEYS.map(k=>[k,clampStat(o.iv?.[k] ?? rnd(32),31)]));
@@ -104,6 +107,7 @@ export function learnMove(m, name) {
 export function newGame(playerName) {
   return {
     ver: 3,
+    rareSpawns: createRareSpawns(),
     chapterVersion: 5,
     name: playerName || "レオ",
     rival: "フィロア",
@@ -134,11 +138,17 @@ export function loadInto(data) {
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
   G.save.box = G.save.box || [];
-  for(const mon of [...G.save.party,...G.save.box]) normalizeMonStats(mon);
+  for(const mon of [...G.save.party,...G.save.box]){mon.sp=SPECIES_ALIASES[mon.sp]||mon.sp;normalizeMonStats(mon);}
+  for(const key of ['dexSeen','dexOwn']){
+    G.save[key] ||= {};
+    for(const [oldName,newName]of Object.entries(SPECIES_ALIASES))if(G.save[key][oldName]){G.save[key][newName]=G.save[key][oldName];delete G.save[key][oldName];}
+  }
+  for(const key of ['starter','rivalStarter'])G.save[key]=SPECIES_ALIASES[G.save[key]]||G.save[key];
   const names = {"ラグ・ネット":"ラグネット", "スーパーネット":"スーパーラグ", "ハイパーネット":"ハイパーラグ", "ヒールジェル":"ガオンのくすり"};
   for (const [oldName,newName] of Object.entries(names)) if (G.save.bag[oldName]) { G.save.bag[newName]=(G.save.bag[newName]||0)+G.save.bag[oldName]; delete G.save.bag[oldName]; }
   if (data && data.chapterVersion !== 5) { G.save.where={...START}; G.save.backTo={map:"village",x:13,y:12}; G.save.lastCenter=null; }
   G.save.chapterVersion=5;
+  normalizeRareSpawns(G.save);
   G.save.look = G.save.look || { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" };
 }
 

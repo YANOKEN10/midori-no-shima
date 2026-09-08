@@ -8,7 +8,7 @@ function trees(m){for(let y=1;y<m.g.length-3;y+=4)for(let x=1;x<m.g[0].length-2;
 function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:false,talk,...extra});}
 function sign(m,x,y,text){rect(m,x,y,1,1,'S');m.signs.push({x,y,text:Array.isArray(text)?text:[text]});}
 function building(m,x,y,art,to,label){prop(m,art,x,y,5,5,'#');const dx=x+2,dy=y+4;m.g[dy][dx]='D';m.props.at(-1).door={x:dx,y:dy};m.props.at(-1).label=label;m.warps.push({x:dx,y:dy,to,tx:7,ty:10,back:{map:m.id,x:dx,y:dy+1}});if(dy<16)path(m,dx,dy+1,dx,16,1);else{path(m,16,16,16,dy+1,2);path(m,16,dy+1,dx,dy+1,1);}}
-function link(a,ax,ay,b,bx,by,req){a.g[ay][ax]='.';b.g[by][bx]='.';a.warps.push({x:ax,y:ay,to:b.id,tx:bx,ty:by+(by===0?1:by===b.g.length-1?-1:0),edge:1,requires:req});b.warps.push({x:bx,y:by,to:a.id,tx:ax,ty:ay+(ay===0?1:ay===a.g.length-1?-1:0),edge:1});}
+function link(a,ax,ay,b,bx,by,req){a.g[ay][ax]='.';b.g[by][bx]='.';a.warps.push({x:ax,y:ay,to:b.id,tx:bx+(bx===0?1:bx===b.g[0].length-1?-1:0),ty:by+(by===0?1:by===b.g.length-1?-1:0),edge:1,requires:req});b.warps.push({x:bx,y:by,to:a.id,tx:ax+(ax===0?1:ax===a.g[0].length-1?-1:0),ty:ay+(ay===0?1:ay===a.g.length-1?-1:0),edge:1});}
 function trainer(m,x,y,name,look,dir,party,talk){npc(m,x,y,name,look,[talk],{dir,trainer:{party,money:120+party[0][1]*35},win:['いい しょうぶだったね！'],after:['弱ったら ガオンびょういんへ。','くすりと ラグネットは ショップで買えるよ。']});}
 export function buildChapterOne(){
  const M={};const add=(id,name,w,h,kind)=>{const m=map(name,w,h,kind);m.id=id;M[id]=m;return m};
@@ -55,10 +55,25 @@ export function buildChapterOne(){
  rect(forest,3,5,7,7,'"');rect(forest,23,5,8,9,'"');rect(forest,3,25,7,7,'"');rect(forest,19,18,7,7,'"');
  // Riverbank is explicitly impassable; the one crossing is a bridge.
  rect(forest,9,14,22,4,'R');rect(forest,10,15,20,2,'W');rect(forest,16,14,2,4,'d');path(forest,7,12,16,13);path(forest,7,18,16,19);
- for(const [x,y,dir,name,party] of [[12,8,'right','森のトレーナー ミオ',[['キノコン',6]]],[4,20,'right','森のトレーナー ケイ',[['ハナビィ',6],['ムシコロ',5]]],[27,29,'left','森のトレーナー ナオ',[['コケゴロ',7]]]]){rect(forest,x,y,1,1,'.');trainer(forest,x,y,name,'hiker',dir,party,'森の ガオンと しょうぶしよう！');}
- forest.enc={rate:20,list:[['キノコン',5,7,45],['ハナビィ',5,7,35],['コケゴロ',6,8,18],['ハッパチョ',7,8,2]]};forest.rareSpecies='ハッパチョ';
- sign(forest,18,34,['ここまでが 今回の冒険エリア。','戻って 別のガオンも さがしてみよう！']);trees(forest);
+ for(const [x,y,dir,name,party] of [[12,8,'right','森のトレーナー ミオ',[['キノコン',6]]],[4,20,'right','森のトレーナー ケイ',[['ハナビィ',6],['ムシコロ',5]]],[27,29,'left','森のトレーナー ナオ',[['キノコン',7]]]]){rect(forest,x,y,1,1,'.');trainer(forest,x,y,name,'hiker',dir,party,'森の ガオンと しょうぶしよう！');}
+ forest.enc={rate:20,list:[['キノコン',5,7,45],['ハナビィ',5,7,53],['ハッパチョ',7,8,2]]};forest.rareSpecies='ハッパチョ';
+ sign(forest,18,34,['南：森の聖域','森の3人に勝つと 奥へ進める。']);path(forest,16,29,16,37,1);trees(forest);
  link(v,16,0,mountain,14,33,'v5:heardLatett');link(v,16,28,one,12,0,'v5:netGift');link(one,12,31,r,16,0);link(r,16,28,two,14,0,'v5:dex');link(two,14,41,forest,16,0);
+ // Optional rare habitats beyond the first forest. All borders remain solid except exits.
+ const sanctuary=add('mossSanctuary','森の聖域',28,28);sanctuary.spawn={x:14,y:2};
+ path(sanctuary,14,0,14,25);path(sanctuary,14,14,27,14,1);rect(sanctuary,3,4,7,7,'"');rect(sanctuary,18,18,7,7,'"');
+ sanctuary.enc={rate:18,list:[['キノコン',10,14,45],['ハナビィ',11,15,35],['モスゴレム',14,18,20]]};trees(sanctuary);
+ sign(sanctuary,12,3,['奥には とても強い ガオンがいる。','十分に育ててから 探索しよう。']);
+ const makeCave=(id,name,theme,list)=>{const m=add(id,name,28,28,'cave');m.theme=theme;m.spawn={x:14,y:25};rect(m,1,1,26,26,'C');
+  for(const [x,y]of [[5,5],[20,5],[7,16],[20,20],[11,10],[17,8],[16,18]])rect(m,x,y,2,3,'R');
+  m.enc={rate:16,encAll:true,list};return m;};
+ const ruins=makeCave('forgottenRuins','忘れられた遺跡','ruins',[['ヨルネコ',16,21,50],['カゲポン',18,23,35],['カセキン',18,22,15]]);
+ const volcano=makeCave('volcanicDepths','火山の奥','volcano',[['スミビン',25,30,55],['ヒノコマ',23,28,45]]);
+ rect(volcano,4,10,7,3,'W');rect(volcano,18,15,6,3,'W');
+ const abyss=makeCave('shadowDepths','深闇の洞窟','shadow',[['シャドネコ',30,36,45],['カゲポン',28,34,35],['カセキン',28,33,20]]);
+ link(forest,16,37,sanctuary,14,0,'v11:forestCleared');path(forest,16,34,16,37,1);
+ link(sanctuary,27,14,ruins,0,14);link(ruins,14,0,volcano,14,27);link(ruins,27,14,abyss,0,14);
+ sign(ruins,4,14,['北：火山の奥　東：深闇の洞窟','奥ほど 強いガオンが 生息する。']);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }

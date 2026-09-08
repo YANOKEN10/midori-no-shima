@@ -263,12 +263,16 @@ for (const [n, b] of Object.entries(LEGEND)) {
   if (SPECIES[n]) { SPECIES[n].base = b; SPECIES[n].catch = 10; SPECIES[n].exp = 250; }
 }
 
+// Rare species are powerful even before training. Rename preserves prior stats.
+const RARE_BASE = {"コケゴロ": {"hp": 110, "atk": 100, "def": 150, "spc": 80, "sdef": 130, "spd": 40}, "ムラサキビ": {"hp": 80, "atk": 70, "def": 85, "spc": 150, "sdef": 115, "spd": 110}, "ヨウガンヌシ": {"hp": 100, "atk": 140, "def": 120, "spc": 115, "sdef": 95, "spd": 80}, "ヤミノヌシ": {"hp": 120, "atk": 135, "def": 100, "spc": 125, "sdef": 100, "spd": 90}, "オバケシ": {"hp": 75, "atk": 55, "def": 65, "spc": 125, "sdef": 100, "spd": 100}, "ユウレイン": {"hp": 90, "atk": 65, "def": 80, "spc": 140, "sdef": 110, "spd": 105}, "ボウレイ": {"hp": 105, "atk": 80, "def": 95, "spc": 155, "sdef": 120, "spd": 110}, "シオマント": {"hp": 69, "atk": 113, "def": 81, "spd": 88, "spc": 64, "sdef": 64}, "ミナモリス": {"hp": 69, "atk": 60, "def": 72, "spd": 88, "spc": 127, "sdef": 127}};
+for(const [name,base] of Object.entries(RARE_BASE))SPECIES[name].base=base;
+for(const name of ['コケゴロ','ムラサキビ','ヨウガンヌシ','ヤミノヌシ','オバケシ']){SPECIES[name].catch=name==='オバケシ'?8:4;SPECIES[name].exp=280;}
 // Six permanent base stats and deterministic species-specific training rewards.
 export const STAT_KEYS = ["hp", "atk", "def", "spc", "sdef", "spd"];
 export const STAT_LABELS = {hp:"HP",atk:"こうげき",def:"ぼうぎょ",spc:"とくこう",sdef:"とくぼう",spd:"すばやさ"};
 const evolutionTargets = new Set(Object.values(SPECIES).map(s=>s.evo?.to).filter(Boolean));
 for (const [name, sp] of Object.entries(SPECIES)) {
-  sp.base.sdef = sp.base.spc;
+  sp.base.sdef ??= sp.base.spc;
   const best = Math.max(...STAT_KEYS.map(k=>sp.base[k]));
   const candidates = STAT_KEYS.filter(k=>sp.base[k]===best);
   const key = candidates[sp.no % candidates.length];
