@@ -27,7 +27,7 @@ await press('Escape');await choose('やめる');await drain();
 console.log('Capture, dex once, one-tile hospital entrance/exit, full recovery, shop purchase passed');
 // Exercise all nine trainer battles; high-level test partner keeps this integration test bounded.
 await p.evaluate(async()=>{const {newMove}=await import('/src/data/moves.js');VM.State.save.party=[VM.makeMon('リーフィン',60)];VM.State.save.party[0].moves=[newMove('たいあたり')];window.__random=Math.random;Math.random=()=>0;});
-const trainers=await p.evaluate(async()=>{const {MAPS}=await import('/src/data/maps.js?v=20260907-chapter1');return ['route2','natureforest'].flatMap(id=>MAPS[id].npcs.map((n,i)=>n.trainer?{id,i}:null).filter(Boolean))});assert.equal(trainers.length,9);
+const trainers=await p.evaluate(async()=>{const {MAPS}=await import('/src/data/maps.js?v=20260908-npcs-v7');return ['route2','natureforest'].flatMap(id=>MAPS[id].npcs.map((n,i)=>n.trainer?{id,i}:null).filter(Boolean))});assert.equal(trainers.length,9);
 for(const t of trainers){await p.evaluate(t=>{VM.world.enter(t.id,NaN,NaN,'up');VM.world.busy=true;VM.world.runNpc(VM.world.npcs[t.i]).finally(()=>VM.world.busy=false)},t);await drain();for(let i=0;i<10&&await p.evaluate(()=>VM.battle.active);i++){await choose('たたかう');const d=await p.evaluate(()=>window.__dialog);await choose(d.items[0]);await drain();}assert.ok(await p.evaluate(t=>VM.State.save.flags['beat:'+t.id+':'+t.i],t));}
 await p.evaluate(()=>{Math.random=window.__random});console.log('All 6 route trainers and 3 forest trainers can be defeated');
 // Guaranteed master capture, including a difficult healthy target, under adverse RNG.

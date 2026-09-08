@@ -1,4 +1,4 @@
-import { drawNpc } from './npcArt.js';
+import { drawNpc } from './npcArt.js?v=20260908-npcs-v7';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -13,7 +13,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260907-chapter1";
+import { MAPS } from "./data/maps.js?v=20260908-npcs-v7";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -21,12 +21,12 @@ import {
   G as State, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260907-chapter1";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260908-npcs-v7";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260907-chapter1";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260908-npcs-v7";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -1026,12 +1026,9 @@ export const world = {
         const n = p.n;
         if(n.artMon){const im=battleArt(n.artMon);if(im)G.drawScaled(im,n.x*T-camX-16,n.y*T-camY-32,64,64);continue;}
         const dirn = n.dir || "down";
-        const personKey = ({ boy:"Boy", girl:"Girl", prof:"Prof", oldman:"Oldman", nurse:"Nurse", clerk:"Clerk",
-          sailor:"Sailor", hiker:"Hiker", leader1:"Leader1", leader2:"Leader2", rival:"Rival", philoa:"Leader1" })[n.look];
         const newPerson = G.isColor() && drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0));
-        const generatedPerson = G.isColor() && personKey && environmentTile("person" + personKey);
         const nfi = n.moving ? n.walkFrame : 0;
-        const img2 = generatedPerson || (G.isColor()
+        const img2 = (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))
           : G.makeArt(framesFor(n.look)[dirn][nfi], 1, "n" + n.look + dirn + nfi, n.look));
         // NPCs use the same 32 x 48 on-screen frame and foot anchor as the hero.
