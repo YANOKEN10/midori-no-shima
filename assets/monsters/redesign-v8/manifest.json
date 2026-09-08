@@ -1,0 +1,1310 @@
+{
+  "version": "gaon-redesign-v8",
+  "preserved": [
+    "コケゴロ",
+    "タキビィ",
+    "オオヒノオ",
+    "スミビン",
+    "ヨウガンヌシ",
+    "アワミィ",
+    "ヌシガエル",
+    "ピリット",
+    "ドリルモグ",
+    "イワッコ",
+    "モグポン",
+    "カセキン",
+    "イシゴロ",
+    "ドロヌマ",
+    "チョウマユ",
+    "ヨルネコ",
+    "シャドネコ",
+    "カゲポン",
+    "ボウレイ",
+    "ムラサキビ",
+    "ヤミノヌシ",
+    "トリッピ",
+    "マルミィ",
+    "パンダン",
+    "ディーナ"
+  ],
+  "groups": [
+    {
+      "atlas": 1,
+      "species": [
+        {
+          "name": "リーフィン",
+          "no": 1,
+          "evo": {
+            "lv": 16,
+            "to": "リーフォード"
+          },
+          "preserve": false,
+          "design": "ivory pea-sized round seed mouse, one mint leaf ear, coral seed cheeks, tiny feet"
+        },
+        {
+          "name": "リーフォード",
+          "no": 2,
+          "evo": {
+            "lv": 32,
+            "to": "フォレスタ"
+          },
+          "preserve": false,
+          "design": "slender cream hare with two long fern ears, coral seed pendant, springing hind legs"
+        },
+        {
+          "name": "フォレスタ",
+          "no": 3,
+          "preserve": false,
+          "design": "tall elegant white four-legged antelope, enormous branching fern antlers, coral seeds, no wings"
+        },
+        {
+          "name": "ヒノコマ",
+          "no": 4,
+          "evo": {
+            "lv": 16,
+            "to": "ボウエン"
+          },
+          "preserve": false,
+          "design": "small charcoal pear-shaped ember chick, apricot head tuft, short shovel beak"
+        },
+        {
+          "name": "ボウエン",
+          "no": 5,
+          "evo": {
+            "lv": 32,
+            "to": "エンブレイズ"
+          },
+          "preserve": false,
+          "design": "rangy black adolescent runner bird with copper crest and long orange ankles"
+        },
+        {
+          "name": "エンブレイズ",
+          "no": 6,
+          "preserve": false,
+          "design": "athletic two-legged charcoal secretary bird warrior, long ivory tail feathers and copper flame gauntlets, no dragon"
+        },
+        {
+          "name": "アワミィ",
+          "no": 7,
+          "evo": {
+            "lv": 16,
+            "to": "ウズマリン"
+          },
+          "preserve": true,
+          "design": "small pale blue bubble tadpole, round glasslike belly, two tiny fins, yellow dot eyes"
+        },
+        {
+          "name": "ウズマリン",
+          "no": 8,
+          "evo": {
+            "lv": 32,
+            "to": "タイダルオ"
+          },
+          "preserve": false,
+          "design": "turquoise amphibious otter with wide flipper arms and yellow spiral belly, low horizontal body"
+        },
+        {
+          "name": "タイダルオ",
+          "no": 9,
+          "preserve": false,
+          "design": "broad navy manta ray leviathan, ivory belly, curling turquoise spiral fins, yellow sensory whiskers"
+        },
+        {
+          "name": "ネズミン",
+          "no": 10,
+          "evo": {
+            "lv": 20,
+            "to": "デカネズ"
+          },
+          "preserve": false,
+          "design": "tiny warm gray squat dormouse, oversized circular ears, raspberry tail pompom"
+        },
+        {
+          "name": "デカネズ",
+          "no": 11,
+          "preserve": false,
+          "design": "stocky taupe capybara with raspberry cheek tufts, broad rectangular muzzle and short legs"
+        },
+        {
+          "name": "トリッピ",
+          "no": 12,
+          "evo": {
+            "lv": 20,
+            "to": "ソラハネ"
+          },
+          "preserve": true,
+          "design": "tiny cream pigeon chick, violet eyebrow feathers and fan-shaped short tail"
+        }
+      ]
+    },
+    {
+      "atlas": 2,
+      "species": [
+        {
+          "name": "ソラハネ",
+          "no": 13,
+          "preserve": false,
+          "design": "aerodynamic violet-white long-winged swift, split ribbon tail, streamlined beak"
+        },
+        {
+          "name": "ムシコロ",
+          "no": 14,
+          "evo": {
+            "lv": 12,
+            "to": "ギガビート"
+          },
+          "preserve": false,
+          "design": "lime bean-shaped grub with three burgundy shell spots and six stub legs"
+        },
+        {
+          "name": "ギガビート",
+          "no": 15,
+          "preserve": false,
+          "design": "broad burgundy armored stag beetle with crescent gold mandibles, six legs, no humanoid torso"
+        },
+        {
+          "name": "ピリット",
+          "no": 16,
+          "evo": {
+            "lv": 22,
+            "to": "ライボルト"
+          },
+          "preserve": true,
+          "design": "tiny turquoise spring-legged jerboa with peach chest, blue coil tail, no lightning tail"
+        },
+        {
+          "name": "ライボルト",
+          "no": 17,
+          "preserve": false,
+          "design": "upright lean turquoise kangaroo, black spring forearms, peach chest, tall bent ears"
+        },
+        {
+          "name": "ツチノコ",
+          "no": 18,
+          "evo": {
+            "lv": 24,
+            "to": "ドリルモグ"
+          },
+          "preserve": false,
+          "design": "short ochre burrowing legless snake, pink shovel nose, chunky segmented belly"
+        },
+        {
+          "name": "ドリルモグ",
+          "no": 19,
+          "preserve": true,
+          "design": "low lavender mole with copper corkscrew claws and blindfoldlike earth mask"
+        },
+        {
+          "name": "イシゴロ",
+          "no": 20,
+          "preserve": true,
+          "design": "asymmetric cream limestone hermit crab, one giant slate claw, mineral geode shell"
+        },
+        {
+          "name": "ヨルネコ",
+          "no": 21,
+          "evo": {
+            "lv": 28,
+            "to": "シャドネコ"
+          },
+          "preserve": true,
+          "design": "small midnight indigo cat, moon-shaped ivory ear patches, narrow long tail"
+        },
+        {
+          "name": "シャドネコ",
+          "no": 22,
+          "preserve": true,
+          "design": "long-legged indigo lynx, ivory crescent shoulder ruff, two long forked whiskers"
+        },
+        {
+          "name": "ヌシガエル",
+          "no": 23,
+          "preserve": true,
+          "design": "wide squat terracotta bullfrog, turquoise vocal sacs, huge flat webbed feet"
+        },
+        {
+          "name": "タネコロ",
+          "no": 24,
+          "evo": {
+            "lv": 14,
+            "to": "ツルマキ"
+          },
+          "preserve": false,
+          "design": "small golden acorn curled into a ball, two maroon root feet, tiny sprout"
+        }
+      ]
+    },
+    {
+      "atlas": 3,
+      "species": [
+        {
+          "name": "ツルマキ",
+          "no": 25,
+          "evo": {
+            "lv": 32,
+            "to": "ジャングド"
+          },
+          "preserve": false,
+          "design": "golden acorn snail with spiraling burgundy vine shell and four root whiskers"
+        },
+        {
+          "name": "ジャングド",
+          "no": 26,
+          "preserve": false,
+          "design": "massive six-legged ochre walking seedpod fortress with braided burgundy root legs, no dragon"
+        },
+        {
+          "name": "ハナビィ",
+          "no": 27,
+          "evo": {
+            "lv": 16,
+            "to": "フラワン"
+          },
+          "preserve": false,
+          "design": "pink flower bud hovering over teardrop ivory bulb, small petal hands"
+        },
+        {
+          "name": "フラワン",
+          "no": 28,
+          "evo": {
+            "lv": 33,
+            "to": "ブルームナ"
+          },
+          "preserve": false,
+          "design": "slender pink orchid dancer, four ribbon petals, tiny ivory pointed legs"
+        },
+        {
+          "name": "ブルームナ",
+          "no": 29,
+          "preserve": false,
+          "design": "grand magenta lotus jellyfish floating with many flowing cream root tendrils, no humanoid face"
+        },
+        {
+          "name": "キノコン",
+          "no": 30,
+          "evo": {
+            "lv": 18,
+            "to": "マイタケン"
+          },
+          "preserve": false,
+          "design": "tiny blue-gray mushroom crab, wide orange cap, two pincers and dot eyes"
+        },
+        {
+          "name": "マイタケン",
+          "no": 31,
+          "evo": {
+            "lv": 34,
+            "to": "キノガミ"
+          },
+          "preserve": false,
+          "design": "broad cobalt mushroom tortoise with overlapping orange shelf caps, four low stout legs"
+        },
+        {
+          "name": "キノガミ",
+          "no": 32,
+          "preserve": false,
+          "design": "huge low cobalt mycelium whale floating, broad layered orange shelf crown, white spore tendrils"
+        },
+        {
+          "name": "ウリボン",
+          "no": 33,
+          "evo": {
+            "lv": 24,
+            "to": "ドスウリ"
+          },
+          "preserve": false,
+          "design": "small chocolate-striped boar piglet with a yellow pear-shaped snout and pale grass whiskers"
+        },
+        {
+          "name": "ドスウリ",
+          "no": 34,
+          "preserve": false,
+          "design": "muscular deep brown boar with large curling yellow tusks, pale wheat mane, barrel body"
+        },
+        {
+          "name": "モスゴレム",
+          "no": 36,
+          "preserve": false,
+          "design": "broad squat moss-covered stone tortoise, layered dark olive boulder shell and four immense knuckle legs, cream mineral seams, evolved companion to existing Kokegoro"
+        },
+        {
+          "name": "サボチク",
+          "no": 37,
+          "preserve": false,
+          "design": "upright flat turquoise prickly pear creature, three paddle lobes, coral flowers and tiny boots"
+        }
+      ]
+    },
+    {
+      "atlas": 4,
+      "species": [
+        {
+          "name": "ハッパチョ",
+          "no": 38,
+          "preserve": false,
+          "design": "wide lemon-and-raspberry leaf mimic moth, scalloped square wings and a tiny thin body"
+        },
+        {
+          "name": "ネムノハ",
+          "no": 39,
+          "preserve": false,
+          "design": "soft lavender sleeping sloth hanging from its own curled green fern tail"
+        },
+        {
+          "name": "ボヤッコ",
+          "no": 40,
+          "evo": {
+            "lv": 16,
+            "to": "メラボヤ"
+          },
+          "preserve": false,
+          "design": "small ivory candle-wax blob with four red wax feet and a blue flame wick"
+        },
+        {
+          "name": "メラボヤ",
+          "no": 41,
+          "evo": {
+            "lv": 34,
+            "to": "バクエンオ"
+          },
+          "preserve": false,
+          "design": "upright dripping ivory wax lantern creature, red claw-like candleholders, bright blue central flame"
+        },
+        {
+          "name": "バクエンオ",
+          "no": 42,
+          "preserve": false,
+          "design": "massive floating ivory candelabrum idol with seven blue flames and crimson wax ribbons, no animal legs"
+        },
+        {
+          "name": "ワンヒノ",
+          "no": 43,
+          "evo": {
+            "lv": 17,
+            "to": "ホノワン"
+          },
+          "preserve": false,
+          "design": "small russet floppy-eared puppy, cream breadlike muzzle, smoky gray tail"
+        },
+        {
+          "name": "ホノワン",
+          "no": 44,
+          "evo": {
+            "lv": 35,
+            "to": "グレンケン"
+          },
+          "preserve": false,
+          "design": "lean rust-red adolescent hunting dog with ash-gray plume tail and cream collar"
+        },
+        {
+          "name": "グレンケン",
+          "no": 45,
+          "preserve": false,
+          "design": "regal tall russet sighthound with flowing ash-gray mane and cream flame curls, no wings"
+        },
+        {
+          "name": "タキビィ",
+          "no": 46,
+          "evo": {
+            "lv": 15,
+            "to": "カガリビ"
+          },
+          "preserve": true,
+          "design": "small orange firefly coal nugget, two twig antennae and thin black tripod legs"
+        },
+        {
+          "name": "カガリビ",
+          "no": 47,
+          "evo": {
+            "lv": 31,
+            "to": "オオヒノオ"
+          },
+          "preserve": false,
+          "design": "angular amber campfire insect, long jointed black stilt legs, glowing triangular thorax"
+        },
+        {
+          "name": "オオヒノオ",
+          "no": 48,
+          "preserve": true,
+          "design": "tall black four-legged brazier creature with amber glasslike body and flame chimney neck"
+        },
+        {
+          "name": "マグマゴ",
+          "no": 49,
+          "evo": {
+            "lv": 30,
+            "to": "マグマゴレム"
+          },
+          "preserve": false,
+          "design": "tiny dark plum volcanic armadillo, orange molten cracks, short pointed nose"
+        }
+      ]
+    },
+    {
+      "atlas": 5,
+      "species": [
+        {
+          "name": "マグマゴレム",
+          "no": 50,
+          "preserve": false,
+          "design": "enormous plated plum volcanic ankylosaur, orange fissures and a heavy spherical magma club tail"
+        },
+        {
+          "name": "ヒバナリ",
+          "no": 51,
+          "evo": {
+            "lv": 26,
+            "to": "ライカエン"
+          },
+          "preserve": false,
+          "design": "slim crimson hummingbird with bright turquoise throat, needle beak and spark fan wings"
+        },
+        {
+          "name": "ライカエン",
+          "no": 52,
+          "preserve": false,
+          "design": "long-winged crimson thunder kite bird with turquoise forked crest and long glowing streamer tails"
+        },
+        {
+          "name": "フェニクス",
+          "no": 53,
+          "preserve": false,
+          "design": "slender white-and-coral crane phoenix, circular open halo tail and black long legs"
+        },
+        {
+          "name": "スミビン",
+          "no": 54,
+          "preserve": true,
+          "design": "round soot-black hedgehog, warm pink glowing nose, short golden ember quills"
+        },
+        {
+          "name": "ヨウガンヌシ",
+          "no": 55,
+          "preserve": true,
+          "design": "wide flat obsidian salamander with four pale orange paddle limbs and molten throat sac"
+        },
+        {
+          "name": "シズクン",
+          "no": 56,
+          "evo": {
+            "lv": 16,
+            "to": "ミナモン"
+          },
+          "preserve": false,
+          "design": "tiny round pale aqua raindrop seal, mustard whiskers, little paired flippers"
+        },
+        {
+          "name": "ミナモン",
+          "no": 57,
+          "evo": {
+            "lv": 33,
+            "to": "オオウミオ"
+          },
+          "preserve": false,
+          "design": "long ivory-aqua adolescent sea lion, mustard collar and asymmetric spiral whiskers"
+        },
+        {
+          "name": "オオウミオ",
+          "no": 58,
+          "preserve": false,
+          "design": "enormous ivory-aqua walrus king with mustard spiral tusks and huge folded flippers"
+        },
+        {
+          "name": "サカナビ",
+          "no": 59,
+          "evo": {
+            "lv": 17,
+            "to": "スイスイオ"
+          },
+          "preserve": false,
+          "design": "tiny salmon pink flying fish, transparent blue sail fins and big pearl eye"
+        },
+        {
+          "name": "スイスイオ",
+          "no": 60,
+          "evo": {
+            "lv": 35,
+            "to": "リュウグウ"
+          },
+          "preserve": false,
+          "design": "long silver-pink ribbonfish, blue fan fins, curved slender body"
+        },
+        {
+          "name": "リュウグウ",
+          "no": 61,
+          "preserve": false,
+          "design": "elegant pearl-pink sea serpent, cobalt sail crest and flowing amber whiskers, no wings"
+        }
+      ]
+    },
+    {
+      "atlas": 6,
+      "species": [
+        {
+          "name": "カニポン",
+          "no": 62,
+          "evo": {
+            "lv": 18,
+            "to": "ハサミガニ"
+          },
+          "preserve": false,
+          "design": "small peach fiddler crab, one blue oversized mitten claw, narrow stalk eyes"
+        },
+        {
+          "name": "ハサミガニ",
+          "no": 63,
+          "evo": {
+            "lv": 34,
+            "to": "オオハサミ"
+          },
+          "preserve": false,
+          "design": "low steel-blue crab, two long peach crescent pincers, broad flat triangular shell"
+        },
+        {
+          "name": "オオハサミ",
+          "no": 64,
+          "preserve": false,
+          "design": "massive cobalt horseshoe crab with peach shield shell and six bladed paddle legs"
+        },
+        {
+          "name": "クラゲミ",
+          "no": 65,
+          "evo": {
+            "lv": 25,
+            "to": "ラゲドン"
+          },
+          "preserve": false,
+          "design": "tiny lavender umbrella jellyfish, teal bulb core, four thick curling tentacles"
+        },
+        {
+          "name": "ラゲドン",
+          "no": 66,
+          "preserve": false,
+          "design": "wide midnight jellyfish with luminous lavender dome and eight long teal ribbon arms"
+        },
+        {
+          "name": "コオリン",
+          "no": 67,
+          "evo": {
+            "lv": 27,
+            "to": "ヒョウガン"
+          },
+          "preserve": false,
+          "design": "small silver-blue ice cube penguin chick, round orange feet and tiny beak"
+        },
+        {
+          "name": "ヒョウガン",
+          "no": 68,
+          "preserve": false,
+          "design": "large silver emperor penguin, angular blue icicle shoulder cape, orange crescent beak"
+        },
+        {
+          "name": "シャチマル",
+          "no": 69,
+          "preserve": false,
+          "design": "sleek black-and-white orca with lavender markings and a high crescent dorsal fin"
+        },
+        {
+          "name": "タツノコ",
+          "no": 70,
+          "preserve": false,
+          "design": "small gold seahorse with ruby leaf fins, angular curled tail and long tube snout"
+        },
+        {
+          "name": "ウズシオヌシ",
+          "no": 71,
+          "preserve": false,
+          "design": "circular indigo nautilus whirlpool creature with a huge pearly spiral shell and red tentacles"
+        },
+        {
+          "name": "ビリタマ",
+          "no": 72,
+          "evo": {
+            "lv": 15,
+            "to": "ビリボール"
+          },
+          "preserve": false,
+          "design": "small orange hollow electric ring with a cream central eye and two short black wire feet"
+        },
+        {
+          "name": "ビリボール",
+          "no": 73,
+          "evo": {
+            "lv": 32,
+            "to": "サンダマ"
+          },
+          "preserve": false,
+          "design": "two nested orange electric hoops surrounding a floating cream eye, four plug-ended black cables"
+        }
+      ]
+    },
+    {
+      "atlas": 7,
+      "species": [
+        {
+          "name": "サンダマ",
+          "no": 74,
+          "preserve": false,
+          "design": "large floating gyroscope creature of three orange metal rings around white lightning core, no legs"
+        },
+        {
+          "name": "ネコデン",
+          "no": 75,
+          "evo": {
+            "lv": 18,
+            "to": "デンネコ"
+          },
+          "preserve": false,
+          "design": "small peach kitten with emerald ear interiors, whiskers like coiled wire, round paws"
+        },
+        {
+          "name": "デンネコ",
+          "no": 76,
+          "evo": {
+            "lv": 34,
+            "to": "ライガミ"
+          },
+          "preserve": false,
+          "design": "lean peach serval with long emerald ear plumes and a looped black cable tail"
+        },
+        {
+          "name": "ライガミ",
+          "no": 77,
+          "preserve": false,
+          "design": "powerful peach snow leopard with emerald thunder-cloud mane and three black ringed tails"
+        },
+        {
+          "name": "ハネデン",
+          "no": 78,
+          "evo": {
+            "lv": 16,
+            "to": "ソラデン"
+          },
+          "preserve": false,
+          "design": "tiny white lemon-crested swallow with violet triangular wings"
+        },
+        {
+          "name": "ソラデン",
+          "no": 79,
+          "evo": {
+            "lv": 33,
+            "to": "カミナリオ"
+          },
+          "preserve": false,
+          "design": "slender white violet-winged frigatebird, inflated lemon throat sac and long forked tail"
+        },
+        {
+          "name": "カミナリオ",
+          "no": 80,
+          "preserve": false,
+          "design": "huge white storm albatross with violet swept wings and a bright lemon zigzag crest"
+        },
+        {
+          "name": "プラグン",
+          "no": 81,
+          "evo": {
+            "lv": 26,
+            "to": "コンセン"
+          },
+          "preserve": false,
+          "design": "small dark blue porcelain plug creature with red socket eyes and gold prongs for feet"
+        },
+        {
+          "name": "コンセン",
+          "no": 82,
+          "preserve": false,
+          "design": "broad upright dark blue ceramic power block, red dial face, two gold cable arms and stub feet"
+        },
+        {
+          "name": "ジリジリ",
+          "no": 83,
+          "evo": {
+            "lv": 24,
+            "to": "バチバチ"
+          },
+          "preserve": false,
+          "design": "small scarlet cicada nymph, turquoise transparent abdomen, six little black legs"
+        },
+        {
+          "name": "バチバチ",
+          "no": 84,
+          "preserve": false,
+          "design": "large scarlet cicada with turquoise stained-glass rectangular wings and thick black antennae"
+        },
+        {
+          "name": "イナヅマル",
+          "no": 85,
+          "preserve": false,
+          "design": "thin white lightning eel hovering in an S curve, gold spinal plates and bright magenta eyes"
+        }
+      ]
+    },
+    {
+      "atlas": 8,
+      "species": [
+        {
+          "name": "デンチュウ",
+          "no": 86,
+          "preserve": false,
+          "design": "tall narrow charcoal electric pole owl, stacked porcelain rings, turquoise conductor wings"
+        },
+        {
+          "name": "ライメイ",
+          "no": 87,
+          "preserve": false,
+          "design": "black triangular floating thundercloud stingray with neon peach veins and long needle tail"
+        },
+        {
+          "name": "ツチマル",
+          "no": 88,
+          "evo": {
+            "lv": 16,
+            "to": "ドロゴン"
+          },
+          "preserve": false,
+          "design": "tiny pink mud dumpling, broad flat tan nose, two little root feet"
+        },
+        {
+          "name": "ドロゴン",
+          "no": 89,
+          "evo": {
+            "lv": 33,
+            "to": "ダイチオウ"
+          },
+          "preserve": false,
+          "design": "wide pink mudskipper with tan shovel fins and dark chocolate belly"
+        },
+        {
+          "name": "ダイチオウ",
+          "no": 90,
+          "preserve": false,
+          "design": "massive low pink-brown hippopotamus with terraced earthen back, tusk-like cream reeds"
+        },
+        {
+          "name": "イワッコ",
+          "no": 91,
+          "evo": {
+            "lv": 18,
+            "to": "ガンセキ"
+          },
+          "preserve": true,
+          "design": "small rust-orange pebble creature, pointed faceted head and three triangular feet"
+        },
+        {
+          "name": "ガンセキ",
+          "no": 92,
+          "evo": {
+            "lv": 35,
+            "to": "ガンゴレム"
+          },
+          "preserve": false,
+          "design": "angular rust-orange stone pangolin, overlapping slate plates and a pointed drill tail"
+        },
+        {
+          "name": "ガンゴレム",
+          "no": 93,
+          "preserve": false,
+          "design": "massive upright slate-and-rust rock mantis, long hexagonal forearms and three jointed legs"
+        },
+        {
+          "name": "スナムシ",
+          "no": 94,
+          "evo": {
+            "lv": 17,
+            "to": "サバクムシ"
+          },
+          "preserve": false,
+          "design": "small mint sand flea with golden shell, tiny jumping legs"
+        },
+        {
+          "name": "サバクムシ",
+          "no": 95,
+          "evo": {
+            "lv": 34,
+            "to": "サンドキング"
+          },
+          "preserve": false,
+          "design": "long mint-gold sand centipede, six triangular shield segments and shovel head"
+        },
+        {
+          "name": "サンドキング",
+          "no": 96,
+          "preserve": false,
+          "design": "giant low mint-gold desert scorpion, broad fan tail instead of sting, eight armored legs"
+        },
+        {
+          "name": "モグポン",
+          "no": 97,
+          "evo": {
+            "lv": 25,
+            "to": "モグドリル"
+          },
+          "preserve": true,
+          "design": "tiny cream star-nosed mole, oversized chocolate mittens and narrow ruby nose petals"
+        }
+      ]
+    },
+    {
+      "atlas": 9,
+      "species": [
+        {
+          "name": "モグドリル",
+          "no": 98,
+          "preserve": false,
+          "design": "burly cream excavator mole with long chocolate forearms and ruby drill claws"
+        },
+        {
+          "name": "カセキン",
+          "no": 99,
+          "evo": {
+            "lv": 30,
+            "to": "カセキガミ"
+          },
+          "preserve": true,
+          "design": "tiny mauve fossil ammonite, ivory spiral shell and curious black eyes"
+        },
+        {
+          "name": "カセキガミ",
+          "no": 100,
+          "preserve": false,
+          "design": "floating mauve fossil ribcage creature enclosing an ivory spiral heart, long curled skeletal tail"
+        },
+        {
+          "name": "ドロヌマ",
+          "no": 101,
+          "preserve": true,
+          "design": "flat olive mud pancake creature, four long black frog legs, ivory eyeballs on stalks"
+        },
+        {
+          "name": "オニイワ",
+          "no": 102,
+          "preserve": false,
+          "design": "tall narrow red sandstone totem with two asymmetrical ivory horn arches, tiny stone feet"
+        },
+        {
+          "name": "ジシンヌシ",
+          "no": 103,
+          "preserve": false,
+          "design": "enormous ochre earthworm with stone armored head and segmented broad shovel mouth, no limbs"
+        },
+        {
+          "name": "ムシリン",
+          "no": 104,
+          "evo": {
+            "lv": 14,
+            "to": "カブトン"
+          },
+          "preserve": false,
+          "design": "small white grublike rhinoceros beetle larva, lilac helmet and pink little feet"
+        },
+        {
+          "name": "カブトン",
+          "no": 105,
+          "evo": {
+            "lv": 30,
+            "to": "オオカブト"
+          },
+          "preserve": false,
+          "design": "round lilac rhino beetle, single white shovel horn and six coral claws"
+        },
+        {
+          "name": "オオカブト",
+          "no": 106,
+          "preserve": false,
+          "design": "large upright lilac-white armored rhino beetle knight, two enormous branching horns, wide wing shields"
+        },
+        {
+          "name": "チョウマユ",
+          "no": 107,
+          "evo": {
+            "lv": 15,
+            "to": "ハネチョウ"
+          },
+          "preserve": true,
+          "design": "tiny peach hanging silk cocoon, teal curled leaf hood and little sleepy eyes"
+        },
+        {
+          "name": "ハネチョウ",
+          "no": 108,
+          "evo": {
+            "lv": 31,
+            "to": "ゴクラクチョ"
+          },
+          "preserve": false,
+          "design": "peach-and-teal butterfly with long thin body and round asymmetrical wing spots"
+        },
+        {
+          "name": "ゴクラクチョ",
+          "no": 109,
+          "preserve": false,
+          "design": "grand teal-and-peach swallowtail butterfly, extraordinarily broad lace wings and thin ribbon tails"
+        }
+      ]
+    },
+    {
+      "atlas": 10,
+      "species": [
+        {
+          "name": "クモッコ",
+          "no": 110,
+          "evo": {
+            "lv": 17,
+            "to": "アミグモ"
+          },
+          "preserve": false,
+          "design": "small cobalt jumping spider, four giant coral front paws and four small back legs"
+        },
+        {
+          "name": "アミグモ",
+          "no": 111,
+          "evo": {
+            "lv": 34,
+            "to": "オオグモン"
+          },
+          "preserve": false,
+          "design": "cobalt orb spider, coral kite-shaped abdomen, thin jointed legs and silver silk loops"
+        },
+        {
+          "name": "オオグモン",
+          "no": 112,
+          "preserve": false,
+          "design": "large broad cobalt tarantula, coral zigzag knee armor, eight thick low legs, silver silk spinner"
+        },
+        {
+          "name": "アリンコ",
+          "no": 113,
+          "evo": {
+            "lv": 24,
+            "to": "アリガタ"
+          },
+          "preserve": false,
+          "design": "tiny pearl-red ant with oversized triangular ivory head, thin black waist and six legs"
+        },
+        {
+          "name": "アリガタ",
+          "no": 114,
+          "preserve": false,
+          "design": "tall red leafcutter ant warrior, ivory crescent mandibles and shield-like leaf abdomen"
+        },
+        {
+          "name": "ホタリン",
+          "no": 115,
+          "evo": {
+            "lv": 26,
+            "to": "ホタルオー"
+          },
+          "preserve": false,
+          "design": "tiny seafoam firefly, orange glowing lantern tail, black oval wings"
+        },
+        {
+          "name": "ホタルオー",
+          "no": 116,
+          "preserve": false,
+          "design": "long seafoam firefly dragonfly, four black translucent wings and three bright orange lantern tail segments"
+        },
+        {
+          "name": "カマキリン",
+          "no": 117,
+          "preserve": false,
+          "design": "slender cream orchid mantis with rose scythe arms and extremely long folded legs"
+        },
+        {
+          "name": "スズメバチン",
+          "no": 118,
+          "preserve": false,
+          "design": "compact black-and-cyan wasp with orange hollow drill abdomen, four clear triangular wings"
+        },
+        {
+          "name": "ダンゴロン",
+          "no": 119,
+          "preserve": false,
+          "design": "wide rust red pillbug with an enormous ivory ribbed spherical shell and many tiny navy legs"
+        },
+        {
+          "name": "カゲポン",
+          "no": 120,
+          "evo": {
+            "lv": 16,
+            "to": "シャドウン"
+          },
+          "preserve": true,
+          "design": "small asymmetrical navy shadow drop, one peach eye, two mitten hands and no feet"
+        },
+        {
+          "name": "シャドウン",
+          "no": 121,
+          "evo": {
+            "lv": 33,
+            "to": "ヤミオウ"
+          },
+          "preserve": false,
+          "design": "long navy shadow ribbon creature with two peach crescent eyes and four floating glove-like hands"
+        }
+      ]
+    },
+    {
+      "atlas": 11,
+      "species": [
+        {
+          "name": "ヤミオウ",
+          "no": 122,
+          "preserve": false,
+          "design": "immense floating navy cloak phantom, hollow peach lantern face, long separated angular cloak panels"
+        },
+        {
+          "name": "オバケシ",
+          "no": 123,
+          "evo": {
+            "lv": 18,
+            "to": "ユウレイン"
+          },
+          "preserve": false,
+          "design": "tiny cream ghost handkerchief with blue stitched smile, three wispy corners"
+        },
+        {
+          "name": "ユウレイン",
+          "no": 124,
+          "evo": {
+            "lv": 35,
+            "to": "ボウレイ"
+          },
+          "preserve": false,
+          "design": "slender floating cream ghost bell, long blue sleeves and a spiral wisp tail, hollow face"
+        },
+        {
+          "name": "ボウレイ",
+          "no": 125,
+          "preserve": true,
+          "design": "tall cream spectral parasol, blue ribbed canopy, three hanging bell tassels, no human body"
+        },
+        {
+          "name": "ヨルドリ",
+          "no": 126,
+          "evo": {
+            "lv": 17,
+            "to": "ミミズク"
+          },
+          "preserve": false,
+          "design": "tiny dusty rose night bird with charcoal round mask and short feather horns"
+        },
+        {
+          "name": "ミミズク",
+          "no": 127,
+          "evo": {
+            "lv": 34,
+            "to": "ヤミフクロウ"
+          },
+          "preserve": false,
+          "design": "round dusty rose owl with enormous charcoal semicircle eyebrows and cream spotted belly"
+        },
+        {
+          "name": "ヤミフクロウ",
+          "no": 128,
+          "preserve": false,
+          "design": "tall slim dusty rose eagle owl, long charcoal cape wings and luminous ivory face disc"
+        },
+        {
+          "name": "ドクロン",
+          "no": 129,
+          "evo": {
+            "lv": 28,
+            "to": "ドクロガミ"
+          },
+          "preserve": false,
+          "design": "small ivory skull hermit with violet smoke tail and two gold bony pincers"
+        },
+        {
+          "name": "ドクロガミ",
+          "no": 130,
+          "preserve": false,
+          "design": "large ivory skeletal lantern carried by six gold spiderlike ribs with violet ghost flame inside"
+        },
+        {
+          "name": "クロネズ",
+          "no": 131,
+          "evo": {
+            "lv": 24,
+            "to": "ヤミネズ"
+          },
+          "preserve": false,
+          "design": "tiny teal rat with red round ears, smoky dark-gray tail, low angular snout"
+        },
+        {
+          "name": "ヤミネズ",
+          "no": 132,
+          "preserve": false,
+          "design": "rangy teal rat with crimson sail-like ear membranes and a long segmented smoky tail"
+        },
+        {
+          "name": "ムラサキビ",
+          "no": 133,
+          "preserve": true,
+          "design": "floating asymmetric plum-and-lime will-o-wisp flame, three separate small flame satellites"
+        }
+      ]
+    },
+    {
+      "atlas": 12,
+      "species": [
+        {
+          "name": "ヨルグモ",
+          "no": 134,
+          "preserve": false,
+          "design": "pale silver spindly spider with a dark crimson crescent abdomen and long hairlike legs"
+        },
+        {
+          "name": "ヤミノヌシ",
+          "no": 135,
+          "preserve": true,
+          "design": "enormous flat black anglerfish phantom hovering, ivory lantern lure, magenta fin membranes"
+        },
+        {
+          "name": "マルミィ",
+          "no": 136,
+          "evo": {
+            "lv": 16,
+            "to": "マルモコ"
+          },
+          "preserve": true,
+          "design": "tiny round buttercream hamster with pale blue freckles and peach feet"
+        },
+        {
+          "name": "マルモコ",
+          "no": 137,
+          "evo": {
+            "lv": 33,
+            "to": "マルガンテ"
+          },
+          "preserve": false,
+          "design": "squishy oval buttercream wombat, pale blue cheek pillows and peach paddle feet"
+        },
+        {
+          "name": "マルガンテ",
+          "no": 138,
+          "preserve": false,
+          "design": "enormous seated buttercream tapir with a long drooping pale blue nose, peach ears, tiny heavy legs"
+        },
+        {
+          "name": "ウサポン",
+          "no": 139,
+          "evo": {
+            "lv": 17,
+            "to": "ダッシュサ"
+          },
+          "preserve": false,
+          "design": "small mauve rabbit with orange paw pads, short rounded ears, white racing stripe"
+        },
+        {
+          "name": "ダッシュサ",
+          "no": 140,
+          "evo": {
+            "lv": 34,
+            "to": "ソニックウサ"
+          },
+          "preserve": false,
+          "design": "lean mauve jackrabbit, long swept-back ears, white leg stripes, orange ankle tufts"
+        },
+        {
+          "name": "ソニックウサ",
+          "no": 141,
+          "preserve": false,
+          "design": "very slender mauve hare sprinter with crescent swept ears, long orange hind-leg plumes and white chest"
+        },
+        {
+          "name": "ヒツジン",
+          "no": 142,
+          "evo": {
+            "lv": 18,
+            "to": "モコヒツジ"
+          },
+          "preserve": false,
+          "design": "small warm brown lamb, fluffy cream ring fleece, turquoise tiny horn buds"
+        },
+        {
+          "name": "モコヒツジ",
+          "no": 143,
+          "evo": {
+            "lv": 35,
+            "to": "オオモコ"
+          },
+          "preserve": false,
+          "design": "broad brown sheep, geometric cream stacked wool rolls, turquoise spiraling horns"
+        },
+        {
+          "name": "オオモコ",
+          "no": 144,
+          "preserve": false,
+          "design": "towering brown musk ox, huge cream hanging wool curtain and turquoise curled horns, four short legs"
+        },
+        {
+          "name": "タヌポン",
+          "no": 145,
+          "evo": {
+            "lv": 26,
+            "to": "バケダヌキ"
+          },
+          "preserve": false,
+          "design": "small cinnamon raccoon, turquoise eye mask, broad cream ringed tail"
+        }
+      ]
+    },
+    {
+      "atlas": 13,
+      "species": [
+        {
+          "name": "バケダヌキ",
+          "no": 146,
+          "preserve": false,
+          "design": "standing cinnamon raccoon trickster with a broad turquoise fan tail and cream leaf collar"
+        },
+        {
+          "name": "コイヌン",
+          "no": 147,
+          "evo": {
+            "lv": 25,
+            "to": "ダイイヌ"
+          },
+          "preserve": false,
+          "design": "tiny slate-blue long-eared puppy, apricot eyebrows and enormous soft paws"
+        },
+        {
+          "name": "ダイイヌ",
+          "no": 148,
+          "preserve": false,
+          "design": "huge slate-blue shaggy mountain rescue dog, apricot moustache and cream scarf-like neck fur"
+        },
+        {
+          "name": "パンダン",
+          "no": 149,
+          "preserve": true,
+          "design": "round black-and-ivory red-panda-like climber, amber ear tufts, long fluffy striped tail"
+        },
+        {
+          "name": "カバリン",
+          "no": 150,
+          "preserve": false,
+          "design": "broad squat lavender hippo, mint nostrils and shell-shaped ears, ivory lower jaw"
+        },
+        {
+          "name": "ラテット",
+          "no": 151,
+          "preserve": false,
+          "design": "Royal mountain lion with deep cobalt blue body, azure blue mane, silver-white muzzle and chest; no wings."
+        },
+        {
+          "name": "ディーナ",
+          "no": 152,
+          "preserve": true,
+          "design": "legendary elegant peacock, slim black-plum body, very long silver legs, enormous rainbow crescent fan tail with turquoise coral gold eye patterns, swept silver crest"
+        },
+        {
+          "name": "メロロン",
+          "no": 153,
+          "preserve": false,
+          "design": "legendary huge plump lake seal, pearl pink body, midnight teal flippers, flowing ivory whiskers and translucent blue crescent collar, gentle face"
+        }
+      ]
+    }
+  ],
+  "promptsFile": "docs/gaon-redesign-prompts.json"
+}

@@ -3,7 +3,7 @@ import { G as State, flag, setFlag, addItem, hasItem, seeMon, healParty } from '
 import { saveLocal, saveCloud } from './save.js';
 import { cloud } from './cloud.js';
 import { beep } from './audio.js';
-import { wait } from './battle.js?v=20260908-npcs-v7';
+import { wait } from './battle.js?v=20260908-gaon-v8';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export async function chapterNpc(world,n){
  if(n.script==='v5:mother'){

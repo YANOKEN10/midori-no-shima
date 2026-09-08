@@ -1,3 +1,4 @@
+import { battleArt } from './data/battleart.js';
 // ============================================================
 //  はじまり（タイトル → ログイン → ぼうけん）
 // ============================================================
@@ -8,14 +9,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260908-npcs-v7";
-import { battle, startBattle } from "./battle.js?v=20260908-npcs-v7";
+import { world, bgmFor } from "./world.js?v=20260908-gaon-v8";
+import { battle, startBattle } from "./battle.js?v=20260908-gaon-v8";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260908-npcs-v7";
-import { drawTitleBackground } from "./revampArt.js?v=20260908-npcs-v7";
+import { START } from "./data/maps.js?v=20260908-gaon-v8";
+import { drawTitleBackground } from "./revampArt.js?v=20260908-gaon-v8";
 
 let scene = null;
 let last = 0;
@@ -123,7 +124,8 @@ const title = {
       G.ctx.globalAlpha = 0.35;
       G.rect(46 + i * 88, 224 + bob * 0.4, 44, 6, 3);
       G.ctx.globalAlpha = 1;
-      G.draw(G.makeMonArt(MONART[n], 1, "t" + n, set, acc, MONPAL[n]), 44 + i * 88, 176 + bob);
+      const current=battleArt(n);
+      if(current)G.drawScaled(current,44+i*88,176+bob,64,64);else G.draw(G.makeMonArt(MONART[n],1,"t"+n,set,acc,MONPAL[n]),44+i*88,176+bob);
     });
 
     G.use("ui");

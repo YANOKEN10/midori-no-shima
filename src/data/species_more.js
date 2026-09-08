@@ -448,7 +448,7 @@ export const MORE = [
 /* ================= でんせつの ガオン ================= */
 ["ラテット", "ノーマル", "じめん", "atk", 9, null, null,
   { body: "lion", crest: "crown", ear: "cat", eye: "angry", mouth: "fang", pat: "band" },
-  "やまの ぬし。金の たてがみを もつ ガオンの おうじゃ。"],
+  "やまの ぬし。青い たてがみを もつ ガオンの おうじゃ。"],
 ["ディーナ", "でんき", "ノーマル", "spd", 9, null, null,
   { body: "peacock", crest: "antenna", eye: "big", mouth: "beak", pat: "dots" },
   "にじいろの おびれを ひろげる。かぜより はやいという。"],
