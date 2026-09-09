@@ -7,8 +7,13 @@ import { newMove, move } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
 
-const SPECIES_ALIASES = {"シャチマル": "シオマント", "タツノコ": "ミナモリス"};
+const SPECIES_ALIASES = {"シャチマル":"シオマント","タツノコ":"ミナモリス","モスゴレム":"コケトロッコ","サボチク":"スナボンネ","ハッパチョ":"リボネム","デンチュウ":"デンデマリ","イシゴロ":"スナコロネ","スズメバチン":"ハナヤリ","ダンゴロン":"クルミグル","ヨルグモ":"ホシミノ","パンダン":"フクモッチ","カバリン":"フワクジ"};
 export const MAX_PARTY = 6;
+function companionId(){return globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);}
+export function followingMon(){const f=G.save.following;if(f?.enabled===false)return null;return f?.id?G.save.party.find(m=>m.companionId===f.id)||null:G.save.party[0]||null;}
+export function chooseFollower(mon){if(!G.save.party.includes(mon))return false;mon.companionId ||= companionId();G.save.following={enabled:true,id:mon.companionId};return true;}
+export function stopFollowing(){G.save.following={enabled:false,id:null};}
+
 
 export function rnd(n) { return Math.floor(Math.random() * n); }
 export function chance(p) { return Math.random() < p; }
@@ -23,7 +28,7 @@ export function makeMon(spName, lv, opt) {
   const o = opt || {};
   const iv = Object.fromEntries(STAT_KEYS.map(k=>[k,clampStat(o.iv?.[k] ?? rnd(32),31)]));
   const m = {
-    sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv, ev: normalizeEV(o.ev), statVersion: 2,
+    companionId: companionId(), sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv, ev: normalizeEV(o.ev), statVersion: 2,
     moves: [], status: "", hp: 0,
   };
   // レベルまでに おぼえる わざの うち あたらしい 4つ
@@ -43,6 +48,7 @@ function normalizeEV(input) {
   return Object.fromEntries(STAT_KEYS.map(k=>{const n=Math.min(left,clampStat(input?.[k],EV_STAT_MAX));left-=n;return [k,n];}));
 }
 export function normalizeMonStats(m) {
+  m.companionId ||= companionId();
   const old=m.statVersion!==2, iv=m.iv||{};
   m.iv=Object.fromEntries(STAT_KEYS.map(k=>{
     const value=iv[k] ?? (k==='sdef'?iv.spc:0) ?? 0;

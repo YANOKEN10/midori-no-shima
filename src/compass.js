@@ -1,7 +1,7 @@
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260909-world-v12";
+import { MAPS } from "./data/maps.js?v=20260909-follow-v14";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [

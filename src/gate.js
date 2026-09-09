@@ -151,7 +151,7 @@ export function showForm(spec) {
     show(f.el === "who" ? "who" : f.el === "name" ? "name" : f.el === "pw" ? "pw" : "mail", true);
     setLabel(f.el === "who" ? "who" : f.el === "name" ? "name" : f.el === "pw" ? "pw" : "mail", f.label);
     el[f.el].value = f.value || "";
-    if (f.placeholder != null) el[f.el].placeholder = f.placeholder;
+    el[f.el].placeholder = f.placeholder ?? ((f.el === "who" || f.el === "name") ? "ポンキチ" : "");
     if (f.type) el[f.el].type = f.type;
   }
   el.go.textContent = spec.submit || "けってい";

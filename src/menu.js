@@ -12,7 +12,7 @@ import { move as moveData } from "./data/moves.js";
 import { item as itemData, SHOP_LIST } from "./data/items.js";
 import {
   G as State, species, palOf, accentOf, maxHp, statOf, normalizeMonStats, evTotal, monName, fainted, healFull,
-  bagList, useItem, addItem, dexCount, hasItem, lagNetMultiplier,
+  followingMon, chooseFollower, stopFollowing, bagList, useItem, addItem, dexCount, hasItem, lagNetMultiplier,
 } from "./state.js";
 import { saveLocal, saveCloud, loadCloud, applySave, describeSave, compatible } from "./save.js";
 import { cloud } from "./cloud.js";
@@ -24,16 +24,23 @@ import { compassEnabled, compassSummary, nextObjective, setCompassEnabled } from
 /* ============ メインメニュー ============ */
 export async function openMenu() {
   for (;;) {
-    const items = ["ガオン", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
-    const i = await ui.choice(items, { x: 176, y: 8, w: 136, rows: 7 });
-    if (i < 0 || i === 6) return;
+    const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
+    const i = await ui.choice(items, { x: 156, y: 8, w: 156, rows: 8 });
+    if (i < 0 || i === 7) return;
     if (i === 0) await partyMenu();
-    else if (i === 1) await bagMenu();
-    else if (i === 2) { if (hasItem("ガオンずかん")) await dexMenu(); else await ui.say(["ガオンずかんは まだ持っていない。"]); }
-    else if (i === 3) await trainerCard();
-    else if (i === 4) await reportMenu();
-    else if (i === 5) await settingsMenu();
+    else if (i === 1) await followerMenu();
+    else if (i === 2) await bagMenu();
+    else if (i === 3) { if (hasItem("ガオンずかん")) await dexMenu(); else await ui.say(["ガオンずかんは まだ持っていない。"]); }
+    else if (i === 4) await trainerCard();
+    else if (i === 5) await reportMenu();
+    else if (i === 6) await settingsMenu();
   }
+}
+
+export async function followerMenu(selected) {
+ const choice=await ui.choice(["えらぶ","やめる","もどる"],{x:156,y:136,w:156});
+ if(choice===0){let mon=selected;if(!mon){if(!State.save.party.length){await ui.say(["ガオンを もっていない。"]);return;}const i=await ui.choice(State.save.party.map(m=>monName(m)+" Lv"+m.lv),{x:8,y:8,w:304,rows:6});if(i<0)return;mon=State.save.party[i];}if(chooseFollower(mon)){saveLocal();beep("ok");await ui.say([monName(mon)+"と いっしょに あるこう！"]);}}
+ else if(choice===1){stopFollowing();saveLocal();await ui.say(["つれあるきを やめた。"]);}
 }
 
 /* ============ てもち ============ */
@@ -52,11 +59,12 @@ export async function partyMenu(forItem) {
     if (i < 0) return -1;
     if (forItem) return i;
 
-    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "もどる"], { x: 176, y: 150, w: 136 });
+    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "つれあるき", "もどる"], { x: 148, y: 112, w: 164 });
     if (what === 0) await showStatus(p[i]);
     else if (what === 1) {
       const j = await ui.choice(partyLabels(), { x: 8, y: 8, w: 304, rows: 6 });
       if (j >= 0 && j !== i) { const t = p[i]; p[i] = p[j]; p[j] = t; beep("ok"); }
+    } else if (what === 3) { await followerMenu(p[i]);
     } else if (what === 2) {
       const r = await showForm({
         title: "なまえを つける",
@@ -74,22 +82,11 @@ export async function partyMenu(forItem) {
 
 export async function showStatus(m) {
   normalizeMonStats(m);
-  let page=0;
   const sp = species(m.sp);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
-    if(page===1){
-      G.window9(4,4,312,276);
-      G.textFit(monName(m)+" の のうりょく",18,16,284,3,17);
-      G.text("能力",18,52,3,13);G.textRight("種族値",158,52,3,13);G.textRight("個体値",224,52,3,13);G.textRight("努力値",300,52,3,13);
-      STAT_KEYS.forEach((key,i)=>{const y=80+i*25;G.text(STAT_LABELS[key],18,y,3,13);G.textRight(sp.base[key],154,y,3,14);G.textRight(m.iv[key],220,y,3,14);G.textRight(m.ev[key],296,y,3,14);});
-      G.text("努力値 合計 "+evTotal(m)+" / 510",18,228,3,13);
-      G.text("個体値0〜31 / 努力値 各252まで",18,245,3,11);
-      G.text("← → きりかえ   A・B もどる",18,260,3,10);
-      return;
-    }
     G.window9(4, 4, 312, 156);
     const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp), accentOf(sp), MONPAL[m.sp]);
     const current=battleArt(m.sp);
@@ -111,24 +108,16 @@ export async function showStatus(m) {
       G.text(d.type, 166, y + 1, 3, 13);
       G.textRight(mv.pp + "/" + mv.max, 304, y + 1, 3, 13);
     });
-    G.text("← → 個体値・努力値",18,266,3,10);
-  }, {onPage:()=>{page=1-page;}});
+    G.text("A・B もどる",18,266,3,10);
+  });
 }
 
 /* ============ どうぐ ============ */
 export async function bagMenu() {
+  let category=0,start=0;
   for (;;) {
-    const list = bagList("normal");
-    const keys = bagList("key");
-    const labels = list.map((x) => x.name + " ×" + x.n)
-      .concat(keys.map((x) => "★" + x.name));
-    labels.push("とじる");
-    const i = await ui.choice(labels, { x: 8, y: 8, w: 304, rows: 7 });
-    if (i < 0 || i === labels.length - 1) return;
-
-    const all = list.concat(keys);
-    const it = all[i];
-    if (!it) return;
+    const it=await ui.itemList(bagList("normal").concat(bagList("key")),{pockets:true,category,start});
+    if(!it)return;category=it.category;start=it.index;
     const d = itemData(it.name);
     const desc = it.name === "ラグネット"
       ? [d.desc, "エンブレム " + State.save.badges.length + "こ／捕獲力 " + lagNetMultiplier().toFixed(2) + "倍"]
@@ -218,12 +207,16 @@ export async function dexMenu() {
   }
 }
 
-async function dexEntry(n) {
+export async function dexEntry(n) {
   const sp = SPECIES[n];
+  let page=0;const pages=1+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
+    if(page>0){G.window9(4,4,312,276);G.textFit(n+" の おぼえるわざ",18,16,284,3,16);
+     sp.learn.slice((page-1)*7,page*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
+     G.text("← → ページ "+page+"/"+(pages-1)+"　A・B もどる",18,262,3,10);return;}
     G.window9(4, 4, 312, 160);
     const current=battleArt(n);
     if(current)G.drawScaled(current,4,24,128,128);else G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp), accentOf(sp), MONPAL[n]),4,24);
@@ -232,9 +225,10 @@ async function dexEntry(n) {
     G.textFit("タイプ/" + sp.types.join("・"), 140, 74, 162, 3, 14);
     G.text(State.save.dexOwn[n] ? "つかまえた" : "みつけた", 140, 96, 3, 14);
     G.window9(4, 170, 312, 110);
-    const lines = G.wrap(sp.dex, 276, 16).slice(0, 4);
+    const lines = G.wrap(sp.dex, 276, 16).slice(0, 3);
     lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
-  });
+    G.text("← → おぼえるわざ",18,262,3,11);
+  },{onPage:dir=>{page=(page+(dir===-1?-1:1)+pages)%pages;}});
 }
 
 /* ============ トレーナーカード ============ */
@@ -407,23 +401,22 @@ export async function shopMenu() {
 
 async function buyMenu() {
   for (;;) {
-    const labels = SHOP_LIST.map((n) => n + "  " + itemData(n).price + "円");
-    labels.push("やめる");
-    const i = await ui.choice(labels, { x: 8, y: 8, w: 304, rows: 7 });
-    if (i < 0 || i >= SHOP_LIST.length) return;
-    const name = SHOP_LIST[i];
-    const price = itemData(name).price;
-    await ui.say([itemData(name).desc, "もちきん " + State.save.money + "円"]);
-    const counts = ["1こ", "2こ", "3こ", "5こ", "10こ", "やめる"];
-    const ci = await ui.choice(counts, { x: 200, y: 100, w: 110 });
-    if (ci < 0 || ci === 5) continue;
-    const n = [1, 2, 3, 5, 10][ci];
+    const chosen=await ui.itemList(SHOP_LIST.map(name=>({name,n:(bagList('normal').find(e=>e.name===name)?.n||0)})),{mode:'buy',money:State.save.money});
+    if(!chosen)return;
+    const name=chosen.name,price=itemData(name).price;
+    const max=Math.floor(State.save.money/price);
+    if(max<1){await ui.say(['おかねが たりません。']);continue;}
+    const quantities=[1,2,3,5,10].filter(n=>n<=max);
+    const ci=await ui.choice(quantities.map(n=>n+'こ  '+(n*price)+'円').concat('やめる'),{x:116,y:70,w:196,rows:6});
+    if(ci<0||ci===quantities.length)continue;
+    const n=quantities[ci];
     const total = price * n;
     if (State.save.money < total) { await ui.say(["おかねが たりません。"]); continue; }
     const yes = await ui.ask([name + " ×" + n, "ぜんぶで " + total + "円 です。", "よろしいですか？"]);
     if (!yes) continue;
     State.save.money -= total;
     addItem(name, n);
+    saveLocal();
     beep("buy");
     await ui.say(["ありがとう ございました！"]);
   }
@@ -433,16 +426,15 @@ async function sellMenu() {
   for (;;) {
     const list = bagList("normal");
     if (!list.length) { await ui.say(["うれる ものが ありません。"]); return; }
-    const labels = list.map((x) => x.name + " ×" + x.n);
-    labels.push("やめる");
-    const i = await ui.choice(labels, { x: 8, y: 8, w: 304, rows: 7 });
-    if (i < 0 || i >= list.length) return;
-    const name = list[i].name;
+    const chosen=await ui.itemList(list,{mode:'sell',money:State.save.money});
+    if(!chosen)return;
+    const name=chosen.name;
     const price = Math.floor(itemData(name).price / 2);
     const yes = await ui.ask([name + "を " + price + "円で ひきとります。", "よろしいですか？"]);
     if (!yes) continue;
     useItem(name);
     State.save.money += price;
+    saveLocal();
     beep("buy");
     await ui.say(["ありがとう ございました！"]);
   }

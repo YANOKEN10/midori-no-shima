@@ -27,7 +27,7 @@ const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-run
   return {count,v9,kokegoroLevel:m.lv,kokegoroEvolution:r.evolve,otherEvolution:cr.evolve};
  },rows);assert.equal(data.count,306);assert.equal(data.v9,50);
  await p.locator('#search').fill('コケゴロ');assert.equal(await p.locator('article:visible').count(),1);assert.equal(await p.locator('.family:visible').count(),0);await p.screenshot({path:'artifacts/v9-kokegoro.png'});
- await p.locator('#search').fill('モスゴレム');assert.equal(await p.locator('article:visible').count(),1);
+ await p.locator('#search').fill('コケトロッコ');assert.equal(await p.locator('article:visible').count(),1);
  if(base.includes('127.0.0.1')){
   await p.goto(base+'/?v4test=route1');await p.waitForFunction(()=>window.VM);await p.waitForTimeout(800);await p.evaluate(()=>{VM.State.save.party=[VM.makeMon('コケゴロ',30)];VM.State.save.battleTerrain='grass';VM.startBattle({wild:VM.makeMon('タキビィ',20)});});await p.waitForTimeout(500);await p.screenshot({path:'artifacts/v9-battle.png'});
  }

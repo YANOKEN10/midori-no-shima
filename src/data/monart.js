@@ -36,7 +36,7 @@ const BASE = {
   ツチノコ:     ["s", { body: "puppy", ear: "round", eye: "closed", mouth: "line", pat: "belly" }],
   ドリルモグ:   ["m", { body: "beast", crest: "spike", ear: "round", eye: "closed", mouth: "fang", pat: "back" }],
 
-  イシゴロ:     ["l", { body: "rock", eye: "dot", mouth: "none", pat: "spot" }],
+  スナコロネ:     ["l", { body: "rock", eye: "dot", mouth: "none", pat: "spot" }],
 
   ヨルネコ:     ["s", { body: "puppy", ear: "cat", tail: "long", eye: "glow", mouth: "fang", pat: "band" }],
   シャドネコ:   ["m", { body: "beast", ear: "cat", crest: "spike", tail: "long", eye: "glow", mouth: "fang", pat: "stripe" }],

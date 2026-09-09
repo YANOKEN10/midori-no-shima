@@ -1,3 +1,4 @@
+import {drawItemList,visibleItems} from './itemScreens.js';
 // ============================================================
 //  メッセージわく と メニュー
 //   ぜんぶ「まつ」ことが できます（await ui.say(...) のように つかう）
@@ -59,6 +60,7 @@ export const ui = {
     });
   },
 
+  itemList(items,opt={}) {return new Promise(resolve=>stack.push({kind:'itemList',items,pockets:!!opt.pockets,category:opt.category||0,i:opt.start||0,mode:opt.mode,money:opt.money||0,resolve}));},
   async ask(lines, yes, no) {
     if (lines && lines.length) await this.say(lines);
     const i = await this.choice([yes || "はい", no || "いいえ"], { x: 196, y: 118, w: 112 });
@@ -82,7 +84,14 @@ export const ui = {
     if (!w) return;
     if (w.kind === "say") updateSay(w, dt);
     else if (w.kind === "choice") updateChoice(w);
-    else if (w.kind === "custom") { if(w.onPage && (In.hit("left") || In.hit("right"))) { w.onPage(); beep("blip"); } if (In.hit("a") || In.hit("b")) { beep("back"); close(w, true); } }
+    else if(w.kind==='itemList'){
+      const pocketDir=w.pockets?(In.repeat('left',now,350,220)?-1:In.repeat('right',now,350,220)?1:0):0;
+      if(pocketDir){w.category=(w.category+pocketDir+3)%3;w.i=0;beep('blip');}
+      const list=visibleItems(w),n=list.length;w.i=Math.min(w.i,Math.max(0,n-1));
+      if(n&&In.repeat('down',now)){w.i=(w.i+1)%n;beep('blip');}if(n&&In.repeat('up',now)){w.i=(w.i+n-1)%n;beep('blip');}
+      if(In.hit('b')){beep('back');close(w,null);}else if(n&&In.hit('a')){beep('ok');close(w,{...list[w.i],category:w.category,index:w.i});}
+    }
+    else if (w.kind === "custom") { const pageDir=w.onPage?(In.repeat("left",now,350,220)?-1:In.repeat("right",now,350,220)?1:0):0; if(pageDir){w.onPage(pageDir);beep("blip");} if (In.hit("a") || In.hit("b")) { beep("back"); close(w, true); } }
   },
 
   draw() {
@@ -90,6 +99,7 @@ export const ui = {
     for (const w of stack) {
       if (w.kind === "say") drawSay(w);
       else if (w.kind === "choice") drawChoice(w);
+      else if(w.kind==="itemList") drawItemList(w);
       else if (w.kind === "custom") w.draw();
     }
   },

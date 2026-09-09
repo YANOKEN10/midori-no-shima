@@ -1,0 +1,156 @@
+[
+  {
+    "index": 8,
+    "id": "ranger",
+    "name": "女性レンジャー",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: forest green short jacket, orange bandana, dark braid, hiking boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-f3aab485-20b4-44c2-8a78-00c218edf2d9.png"
+  },
+  {
+    "index": 9,
+    "id": "bugcatcher",
+    "name": "むしとり少年",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: straw sunhat, mint shirt, khaki shorts, small bug net strapped on backpack",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-97de2728-5180-4e0f-af59-90d900ce992d.png"
+  },
+  {
+    "index": 10,
+    "id": "gardener",
+    "name": "花屋の女性",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: pink apron over cream blouse, auburn bob, tiny flower hairpin",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-dd9c4954-8d19-4467-abd5-fdc5d8c75c4c.png"
+  },
+  {
+    "index": 11,
+    "id": "fisher",
+    "name": "釣り人",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: navy fishing vest, teal cap, short gray beard, tan trousers",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-46eaa510-b690-4145-95a3-49c829b49067.png"
+  },
+  {
+    "index": 12,
+    "id": "sailor",
+    "name": "船乗り",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: white sailor cap, blue sailor shirt, orange scarf, broad cheerful face",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-3207b530-f201-4684-9136-1564e988ba7c.png"
+  },
+  {
+    "index": 13,
+    "id": "miner",
+    "name": "鉱夫",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: yellow hardhat with lamp, brown overalls, blue gloves, sturdy boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9d827f1e-16ba-4911-88f0-7dabfe7d4621.png"
+  },
+  {
+    "index": 14,
+    "id": "archaeologist",
+    "name": "考古学者",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: tan safari hat, beige long coat, round glasses, map pouch",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-137bf972-c612-4575-bd0c-1cf059386813.png"
+  },
+  {
+    "index": 15,
+    "id": "snowhiker",
+    "name": "雪山の登山家",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: white fur-trimmed cobalt parka, magenta mittens, snow boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-cbf1eedb-d1da-4a8f-aa97-eefb94096f9c.png"
+  },
+  {
+    "index": 16,
+    "id": "chef",
+    "name": "料理人",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: tall white chef hat, white chef coat, red neckerchief, striped trousers",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-c52166aa-7089-431a-bdb5-772756a1c2cb.png"
+  },
+  {
+    "index": 17,
+    "id": "courier",
+    "name": "配達員",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: red cap and red short jacket, cream shoulder mailbag, navy trousers",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a25c6995-0f28-4ed6-98f7-0a0d82ba7b2e.png"
+  },
+  {
+    "index": 18,
+    "id": "artist",
+    "name": "画家",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: purple beret, teal tunic, yellow neckscarf, little paintbrush belt",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-b02b2403-a360-4aae-a9c2-fbab6d0a5843.png"
+  },
+  {
+    "index": 19,
+    "id": "musician",
+    "name": "音楽家",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: black fedora, burgundy vest, white shirt, small guitar on back",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7f71ed88-cc7d-4a39-815b-060dca2c12e3.png"
+  },
+  {
+    "index": 20,
+    "id": "athlete",
+    "name": "スポーツ少年",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: orange sports headband, white orange jersey, blue shorts, trainers",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d33faa96-cfab-441d-a87f-b7863787450e.png"
+  },
+  {
+    "index": 21,
+    "id": "martial",
+    "name": "格闘家",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: white martial arts gi, black belt, tied black hair, bare feet",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-efd5ed40-485b-4fe0-9094-15542fe82637.png"
+  },
+  {
+    "index": 22,
+    "id": "scholar",
+    "name": "学生",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: navy school blazer, green tie, brown bowl-cut hair, book satchel",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-3616384e-a8aa-453b-bc7a-d272bf55d42a.png"
+  },
+  {
+    "index": 23,
+    "id": "grandma",
+    "name": "おばあさん",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: silver hair in round bun, lavender cardigan, long navy skirt",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-cf4ba39c-393f-4d0b-a757-1e6e24a8e6a6.png"
+  },
+  {
+    "index": 24,
+    "id": "business",
+    "name": "会社員",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: charcoal business suit, yellow tie, black slick hair, briefcase",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0fd7371e-ef69-4cea-b031-ca77568b4dcc.png"
+  },
+  {
+    "index": 25,
+    "id": "cowgirl",
+    "name": "牧場の女性",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: wide brown cowboy hat, checked red shirt, blue jeans, short blonde braids",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7d7abd1d-97cd-4273-b976-81d260a96921.png"
+  },
+  {
+    "index": 26,
+    "id": "breeder",
+    "name": "ガオン飼育員",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: cream animal-eared hoodie, green overalls, purple work boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-cf8adacb-81ea-495b-abb0-029f9be3bdb1.png"
+  },
+  {
+    "index": 27,
+    "id": "explorer",
+    "name": "冒険少女",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: coral hooded cape, white tunic, chestnut twin ponytails, bronze boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4e95f85d-0d24-4234-aa3e-24d41cea7207.png"
+  },
+  {
+    "index": 28,
+    "id": "ace",
+    "name": "エーストレーナー",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: white and violet tailored jacket, silver spiky hair, dark trousers",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-41d50362-7b8a-47aa-be9c-d2625a3a7436.png"
+  },
+  {
+    "index": 29,
+    "id": "dancer",
+    "name": "踊り子",
+    "prompt": "Create one ORIGINAL pixel art RPG NPC sprite sheet matching the supplied hero reference's big head, small body, clear eyes, detailed 16-bit shading and thick crisp outline. This is a different NPC, not the hero. EXACT REGULAR GRID 4 columns x3 rows of equal cells. Columns: front facing camera, left profile, right profile, back facing away. Rows: walking pose left foot forward, idle standing neutral, walking pose right foot forward. SAME character, outfit and proportions in all 12 cells. Clear different leg and arm positions for two walking rows. Center every complete full body in its cell, identical scale and aligned foot baseline, 15% blank padding within every cell, no overlap. No labels, no text, no grid lines. Transparent background with real alpha, NOT drawn checkerboard. Reference only sets style and grid. Character design: turquoise layered short dress, gold bangles, magenta ponytail, ankle boots",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7be3c611-dde2-4de1-ab99-5b151dc92f4b.png"
+  }
+]

@@ -1,0 +1,1650 @@
+{
+  "method": "Built-in image_gen",
+  "layout": "4 columns down/up/right/left, 2 rows A/B; transparent; 80px extracted frames",
+  "template": "Create ONE production-ready pixel-art overworld walking sprite sheet for the SAME Gaon NAME shown in reference images. The references are the approved front and rear character designs, NOT sheet layouts. Preserve this exact species' anatomy, distinctive silhouette, colors, markings, clothing, accessories, face, ears, horns, tail and number of limbs. Do not redesign into a different animal. Make natural body-part animation, never just paste, stretch, shift or rotate the same static pose.\nOutput EXACTLY 8 separate complete sprites in a STRICT 4-column by 2-row grid of equal cells, with clear transparent gutters. Landscape 2:1 canvas preferred. Every cell contains this ONE creature only at identical scale, centered on the same local anchor. No text, no labels, no grid lines, no shadows, no ground, no effects outside sprite, no checkered backdrop. Genuinely transparent alpha background.\nColumns in BOTH rows, left to right:\n1 = FRONT facing DOWN toward viewer, face visible;\n2 = BACK facing UP away from viewer, rear body visible, no front face;\n3 = RIGHT side profile facing screen RIGHT, nose/head toward right;\n4 = LEFT side profile facing screen LEFT, nose/head toward left.\nRow 1 = movement pose A; Row 2 = complementary movement pose B.\nACTION\nUse a slightly elevated orthographic RPG map view, crisp square pixel clusters, dark readable outlines, clean limited palette shading matching reference. At least 12% padding within every cell, entire feet/wings/horns/tail visible. Consistent head/body size and baseline across all 8 frames. Both pose frames in each facing must clearly differ through natural movement of the creature's existing limbs/wings/fins/tail. Do not add nonexistent limbs.",
+  "actions": {
+    "walk": "Two-frame walking cycle: pose A advances left leg(s) and withdraws right leg(s); pose B advances right leg(s) and withdraws left. Existing arms and tail counter-swing naturally. Quadrupeds use alternating diagonal leg pairs; bipeds use two legs. Keep reference anatomy.",
+    "fly": "Two-frame flight cycle: pose A wings clearly lifted and bent upward; pose B wings clearly swept downward and outward. Existing tail and feet counterbalance. Preserve wing shape, color pattern and feather count style.",
+    "swim": "Two-frame swimming cycle: pose A bends tail/fin toward one side; pose B sweeps tail/fin to the opposite side. Fins paddle naturally; keep body volume stable. No added legs or water background.",
+    "crawl": "Two-frame crawling cycle: existing legs alternate or, if a snail, its foot extends then contracts beneath a stable shell. Tentacles tilt slightly opposite between poses. No added legs to legless species.",
+    "slither": "Two-frame slithering cycle: pose A body/tail bends into one natural S-curve; pose B bends into the complementary opposite curve. Head remains anchored, body volume and length stay consistent. No legs added.",
+    "float": "Two-frame hovering cycle: existing arms, tendrils, flames, cloth or fins gently lift/open in pose A and relax/curl in pose B. Preserve exact anatomy and face. Do not merely translate or scale the whole sprite.",
+    "hop": "Two-frame hopping cycle: pose A crouches/compresses naturally with feet tucked, pose B extends body and existing feet for a small hop. Preserve anatomy, proportions and recognizable face."
+  },
+  "species": [
+    {
+      "name": "リーフィン",
+      "no": 1,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/001-leafin.png",
+      "back": "assets/monsters/redesign-v11/back/001-leafin-back.png"
+    },
+    {
+      "name": "リーフォード",
+      "no": 2,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/002-leaford.png",
+      "back": "assets/monsters/redesign-v11/back/002-leaford-back.png"
+    },
+    {
+      "name": "フォレスタ",
+      "no": 3,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/003-foresta.png",
+      "back": "assets/monsters/redesign-v11/back/003-foresta-back.png"
+    },
+    {
+      "name": "ヒノコマ",
+      "no": 4,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/004-hinokoma.png",
+      "back": "assets/monsters/redesign-v8/back/004-hinokoma-back.png"
+    },
+    {
+      "name": "ボウエン",
+      "no": 5,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/005-bowen.png",
+      "back": "assets/monsters/redesign-v8/back/005-bowen-back.png"
+    },
+    {
+      "name": "エンブレイズ",
+      "no": 6,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/006-emblaze.png",
+      "back": "assets/monsters/redesign-v8/back/006-emblaze-back.png"
+    },
+    {
+      "name": "アワミィ",
+      "no": 7,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/007-awamii.png",
+      "back": "assets/monsters/redesign-v11/back/007-awamii-back.png"
+    },
+    {
+      "name": "ウズマリン",
+      "no": 8,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/008-uzumarin.png",
+      "back": "assets/monsters/redesign-v11/back/008-uzumarin-back.png"
+    },
+    {
+      "name": "タイダルオ",
+      "no": 9,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/009-tidalor.png",
+      "back": "assets/monsters/redesign-v11/back/009-tidalor-back.png"
+    },
+    {
+      "name": "ネズミン",
+      "no": 10,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/010-nezumin.png",
+      "back": "assets/monsters/redesign-v8/back/010-nezumin-back.png"
+    },
+    {
+      "name": "デカネズ",
+      "no": 11,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/011-dekanez.png",
+      "back": "assets/monsters/redesign-v8/back/011-dekanez-back.png"
+    },
+    {
+      "name": "トリッピ",
+      "no": 12,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v9/front/012-torippi.png",
+      "back": "assets/monsters/redesign-v9/back/012-torippi-back.png"
+    },
+    {
+      "name": "ソラハネ",
+      "no": 13,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/013-sorahane.png",
+      "back": "assets/monsters/redesign-v8/back/013-sorahane-back.png"
+    },
+    {
+      "name": "ムシコロ",
+      "no": 14,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/014-mushikoro.png",
+      "back": "assets/monsters/redesign-v8/back/014-mushikoro-back.png"
+    },
+    {
+      "name": "ギガビート",
+      "no": 15,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v11/front/015-gigabeet.png",
+      "back": "assets/monsters/redesign-v11/back/015-gigabeet-back.png"
+    },
+    {
+      "name": "ピリット",
+      "no": 16,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/016-pirritto.png",
+      "back": "assets/monsters/redesign-v9/back/016-pirritto-back.png"
+    },
+    {
+      "name": "ライボルト",
+      "no": 17,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/017-raibolt.png",
+      "back": "assets/monsters/redesign-v11/back/017-raibolt-back.png"
+    },
+    {
+      "name": "ツチノコ",
+      "no": 18,
+      "motion": {
+        "kind": "slither",
+        "frameMs": 100
+      },
+      "front": "assets/monsters/redesign-v8/front/018-tsuchinoko.png",
+      "back": "assets/monsters/redesign-v8/back/018-tsuchinoko-back.png"
+    },
+    {
+      "name": "ドリルモグ",
+      "no": 19,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/019-drillmogu.png",
+      "back": "assets/monsters/redesign-v9/back/019-drillmogu-back.png"
+    },
+    {
+      "name": "イシゴロ",
+      "no": 20,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/020-ishigoro.png",
+      "back": "assets/monsters/redesign-v11/back/020-ishigoro-back.png"
+    },
+    {
+      "name": "ヨルネコ",
+      "no": 21,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/021-yoruneko.png",
+      "back": "assets/monsters/redesign-v9/back/021-yoruneko-back.png"
+    },
+    {
+      "name": "シャドネコ",
+      "no": 22,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/022-shadowneko.png",
+      "back": "assets/monsters/redesign-v9/back/022-shadowneko-back.png"
+    },
+    {
+      "name": "ヌシガエル",
+      "no": 23,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/023-nushigaeru.png",
+      "back": "assets/monsters/redesign-v9/back/023-nushigaeru-back.png"
+    },
+    {
+      "name": "タネコロ",
+      "no": 24,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 140
+      },
+      "front": "assets/monsters/redesign-v8/front/024-tanekoro.png",
+      "back": "assets/monsters/redesign-v8/back/024-tanekoro-back.png"
+    },
+    {
+      "name": "ツルマキ",
+      "no": 25,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 140
+      },
+      "front": "assets/monsters/redesign-v8/front/025-tsurumaki.png",
+      "back": "assets/monsters/redesign-v8/back/025-tsurumaki-back.png"
+    },
+    {
+      "name": "ジャングド",
+      "no": 26,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 140
+      },
+      "front": "assets/monsters/redesign-v11/front/026-jangudo.png",
+      "back": "assets/monsters/redesign-v11/back/026-jangudo-back.png"
+    },
+    {
+      "name": "ハナビィ",
+      "no": 27,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/027-hanabii.png",
+      "back": "assets/monsters/redesign-v8/back/027-hanabii-back.png"
+    },
+    {
+      "name": "フラワン",
+      "no": 28,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/028-floweran.png",
+      "back": "assets/monsters/redesign-v8/back/028-floweran-back.png"
+    },
+    {
+      "name": "ブルームナ",
+      "no": 29,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/029-bloomna.png",
+      "back": "assets/monsters/redesign-v11/back/029-bloomna-back.png"
+    },
+    {
+      "name": "キノコン",
+      "no": 30,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/030-kinokon.png",
+      "back": "assets/monsters/redesign-v8/back/030-kinokon-back.png"
+    },
+    {
+      "name": "マイタケン",
+      "no": 31,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/031-maitaken.png",
+      "back": "assets/monsters/redesign-v8/back/031-maitaken-back.png"
+    },
+    {
+      "name": "キノガミ",
+      "no": 32,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/032-kinogami.png",
+      "back": "assets/monsters/redesign-v8/back/032-kinogami-back.png"
+    },
+    {
+      "name": "ウリボン",
+      "no": 33,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/033-uribon.png",
+      "back": "assets/monsters/redesign-v8/back/033-uribon-back.png"
+    },
+    {
+      "name": "ドスウリ",
+      "no": 34,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/034-dosuuri.png",
+      "back": "assets/monsters/redesign-v8/back/034-dosuuri-back.png"
+    },
+    {
+      "name": "コケゴロ",
+      "no": 35,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/035-kokegoro.png",
+      "back": "assets/monsters/redesign-v9/back/035-kokegoro-back.png"
+    },
+    {
+      "name": "モスゴレム",
+      "no": 36,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/036-mossgolem.png",
+      "back": "assets/monsters/redesign-v8/back/036-mossgolem-back.png"
+    },
+    {
+      "name": "サボチク",
+      "no": 37,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/037-sabochiku.png",
+      "back": "assets/monsters/redesign-v8/back/037-sabochiku-back.png"
+    },
+    {
+      "name": "ハッパチョ",
+      "no": 38,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/038-happacho.png",
+      "back": "assets/monsters/redesign-v8/back/038-happacho-back.png"
+    },
+    {
+      "name": "ネムノハ",
+      "no": 39,
+      "motion": {
+        "kind": "slither",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/039-nemunoha.png",
+      "back": "assets/monsters/redesign-v8/back/039-nemunoha-back.png"
+    },
+    {
+      "name": "ボヤッコ",
+      "no": 40,
+      "motion": {
+        "kind": "float",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/040-boyakko.png",
+      "back": "assets/monsters/redesign-v8/back/040-boyakko-back.png"
+    },
+    {
+      "name": "メラボヤ",
+      "no": 41,
+      "motion": {
+        "kind": "float",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/041-meraboya.png",
+      "back": "assets/monsters/redesign-v8/back/041-meraboya-back.png"
+    },
+    {
+      "name": "バクエンオ",
+      "no": 42,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/042-bakuenoh.png",
+      "back": "assets/monsters/redesign-v8/back/042-bakuenoh-back.png"
+    },
+    {
+      "name": "ワンヒノ",
+      "no": 43,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/043-wanhino.png",
+      "back": "assets/monsters/redesign-v8/back/043-wanhino-back.png"
+    },
+    {
+      "name": "ホノワン",
+      "no": 44,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/044-honowan.png",
+      "back": "assets/monsters/redesign-v8/back/044-honowan-back.png"
+    },
+    {
+      "name": "グレンケン",
+      "no": 45,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/045-gurenken.png",
+      "back": "assets/monsters/redesign-v8/back/045-gurenken-back.png"
+    },
+    {
+      "name": "タキビィ",
+      "no": 46,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/046-takibii.png",
+      "back": "assets/monsters/redesign-v9/back/046-takibii-back.png"
+    },
+    {
+      "name": "カガリビ",
+      "no": 47,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/047-kagaribi.png",
+      "back": "assets/monsters/redesign-v11/back/047-kagaribi-back.png"
+    },
+    {
+      "name": "オオヒノオ",
+      "no": 48,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/048-oohinoo.png",
+      "back": "assets/monsters/redesign-v9/back/048-oohinoo-back.png"
+    },
+    {
+      "name": "マグマゴ",
+      "no": 49,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/049-magumago.png",
+      "back": "assets/monsters/redesign-v8/back/049-magumago-back.png"
+    },
+    {
+      "name": "マグマゴレム",
+      "no": 50,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/050-magumagolem.png",
+      "back": "assets/monsters/redesign-v8/back/050-magumagolem-back.png"
+    },
+    {
+      "name": "ヒバナリ",
+      "no": 51,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/051-hibanari.png",
+      "back": "assets/monsters/redesign-v8/back/051-hibanari-back.png"
+    },
+    {
+      "name": "ライカエン",
+      "no": 52,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/052-raikaen.png",
+      "back": "assets/monsters/redesign-v8/back/052-raikaen-back.png"
+    },
+    {
+      "name": "フェニクス",
+      "no": 53,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/053-fenikusu.png",
+      "back": "assets/monsters/redesign-v8/back/053-fenikusu-back.png"
+    },
+    {
+      "name": "スミビン",
+      "no": 54,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/054-sumibin.png",
+      "back": "assets/monsters/redesign-v9/back/054-sumibin-back.png"
+    },
+    {
+      "name": "ヨウガンヌシ",
+      "no": 55,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/055-yogannushi.png",
+      "back": "assets/monsters/redesign-v9/back/055-yogannushi-back.png"
+    },
+    {
+      "name": "シズクン",
+      "no": 56,
+      "motion": {
+        "kind": "swim",
+        "frameMs": 110
+      },
+      "front": "assets/monsters/redesign-v8/front/056-shizukun.png",
+      "back": "assets/monsters/redesign-v8/back/056-shizukun-back.png"
+    },
+    {
+      "name": "ミナモン",
+      "no": 57,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/057-minamon.png",
+      "back": "assets/monsters/redesign-v8/back/057-minamon-back.png"
+    },
+    {
+      "name": "オオウミオ",
+      "no": 58,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/058-ooumio.png",
+      "back": "assets/monsters/redesign-v8/back/058-ooumio-back.png"
+    },
+    {
+      "name": "サカナビ",
+      "no": 59,
+      "motion": {
+        "kind": "swim",
+        "frameMs": 110
+      },
+      "front": "assets/monsters/redesign-v8/front/059-sakanabi.png",
+      "back": "assets/monsters/redesign-v8/back/059-sakanabi-back.png"
+    },
+    {
+      "name": "スイスイオ",
+      "no": 60,
+      "motion": {
+        "kind": "swim",
+        "frameMs": 110
+      },
+      "front": "assets/monsters/redesign-v8/front/060-suisuio.png",
+      "back": "assets/monsters/redesign-v8/back/060-suisuio-back.png"
+    },
+    {
+      "name": "リュウグウ",
+      "no": 61,
+      "motion": {
+        "kind": "swim",
+        "frameMs": 110
+      },
+      "front": "assets/monsters/redesign-v11/front/061-ryuuguu.png",
+      "back": "assets/monsters/redesign-v11/back/061-ryuuguu-back.png"
+    },
+    {
+      "name": "カニポン",
+      "no": 62,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/062-kanipon.png",
+      "back": "assets/monsters/redesign-v8/back/062-kanipon-back.png"
+    },
+    {
+      "name": "ハサミガニ",
+      "no": 63,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 110
+      },
+      "front": "assets/monsters/redesign-v8/front/063-hasamigani.png",
+      "back": "assets/monsters/redesign-v8/back/063-hasamigani-back.png"
+    },
+    {
+      "name": "オオハサミ",
+      "no": 64,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/064-oohasami.png",
+      "back": "assets/monsters/redesign-v8/back/064-oohasami-back.png"
+    },
+    {
+      "name": "クラゲミ",
+      "no": 65,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/065-kuragemi.png",
+      "back": "assets/monsters/redesign-v8/back/065-kuragemi-back.png"
+    },
+    {
+      "name": "ラゲドン",
+      "no": 66,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/066-ragedon.png",
+      "back": "assets/monsters/redesign-v11/back/066-ragedon-back.png"
+    },
+    {
+      "name": "コオリン",
+      "no": 67,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/067-koorin.png",
+      "back": "assets/monsters/redesign-v8/back/067-koorin-back.png"
+    },
+    {
+      "name": "ヒョウガン",
+      "no": 68,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/068-hyougan.png",
+      "back": "assets/monsters/redesign-v11/back/068-hyougan-back.png"
+    },
+    {
+      "name": "シオマント",
+      "no": 69,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/069-shachimar.png",
+      "back": "assets/monsters/redesign-v11/back/069-shachimar-back.png"
+    },
+    {
+      "name": "ミナモリス",
+      "no": 70,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/070-tatsunoko.png",
+      "back": "assets/monsters/redesign-v11/back/070-tatsunoko-back.png"
+    },
+    {
+      "name": "ウズシオヌシ",
+      "no": 71,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/071-uzushionushi.png",
+      "back": "assets/monsters/redesign-v8/back/071-uzushionushi-back.png"
+    },
+    {
+      "name": "ビリタマ",
+      "no": 72,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/072-biritama.png",
+      "back": "assets/monsters/redesign-v8/back/072-biritama-back.png"
+    },
+    {
+      "name": "ビリボール",
+      "no": 73,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/073-biriball.png",
+      "back": "assets/monsters/redesign-v8/back/073-biriball-back.png"
+    },
+    {
+      "name": "サンダマ",
+      "no": 74,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/074-sandama.png",
+      "back": "assets/monsters/redesign-v11/back/074-sandama-back.png"
+    },
+    {
+      "name": "ネコデン",
+      "no": 75,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/075-nekoden.png",
+      "back": "assets/monsters/redesign-v8/back/075-nekoden-back.png"
+    },
+    {
+      "name": "デンネコ",
+      "no": 76,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/076-denneko.png",
+      "back": "assets/monsters/redesign-v8/back/076-denneko-back.png"
+    },
+    {
+      "name": "ライガミ",
+      "no": 77,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/077-raigami.png",
+      "back": "assets/monsters/redesign-v8/back/077-raigami-back.png"
+    },
+    {
+      "name": "ハネデン",
+      "no": 78,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/078-haneden.png",
+      "back": "assets/monsters/redesign-v8/back/078-haneden-back.png"
+    },
+    {
+      "name": "ソラデン",
+      "no": 79,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/079-soraden.png",
+      "back": "assets/monsters/redesign-v8/back/079-soraden-back.png"
+    },
+    {
+      "name": "カミナリオ",
+      "no": 80,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/080-kaminario.png",
+      "back": "assets/monsters/redesign-v8/back/080-kaminario-back.png"
+    },
+    {
+      "name": "プラグン",
+      "no": 81,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/081-puragun.png",
+      "back": "assets/monsters/redesign-v8/back/081-puragun-back.png"
+    },
+    {
+      "name": "コンセン",
+      "no": 82,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/082-konsen.png",
+      "back": "assets/monsters/redesign-v11/back/082-konsen-back.png"
+    },
+    {
+      "name": "ジリジリ",
+      "no": 83,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v11/front/083-jirijiri.png",
+      "back": "assets/monsters/redesign-v11/back/083-jirijiri-back.png"
+    },
+    {
+      "name": "バチバチ",
+      "no": 84,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v11/front/084-bachibachi.png",
+      "back": "assets/monsters/redesign-v11/back/084-bachibachi-back.png"
+    },
+    {
+      "name": "イナヅマル",
+      "no": 85,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/085-inazumaru.png",
+      "back": "assets/monsters/redesign-v11/back/085-inazumaru-back.png"
+    },
+    {
+      "name": "デンチュウ",
+      "no": 86,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/086-denchuu.png",
+      "back": "assets/monsters/redesign-v8/back/086-denchuu-back.png"
+    },
+    {
+      "name": "ライメイ",
+      "no": 87,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v11/front/087-raimei.png",
+      "back": "assets/monsters/redesign-v11/back/087-raimei-back.png"
+    },
+    {
+      "name": "ツチマル",
+      "no": 88,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/088-tsuchimaru.png",
+      "back": "assets/monsters/redesign-v8/back/088-tsuchimaru-back.png"
+    },
+    {
+      "name": "ドロゴン",
+      "no": 89,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/089-dorogon.png",
+      "back": "assets/monsters/redesign-v8/back/089-dorogon-back.png"
+    },
+    {
+      "name": "ダイチオウ",
+      "no": 90,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/090-daichiou.png",
+      "back": "assets/monsters/redesign-v8/back/090-daichiou-back.png"
+    },
+    {
+      "name": "イワッコ",
+      "no": 91,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/091-iwakko.png",
+      "back": "assets/monsters/redesign-v9/back/091-iwakko-back.png"
+    },
+    {
+      "name": "ガンセキ",
+      "no": 92,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/092-ganseki.png",
+      "back": "assets/monsters/redesign-v8/back/092-ganseki-back.png"
+    },
+    {
+      "name": "ガンゴレム",
+      "no": 93,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/093-gangolem.png",
+      "back": "assets/monsters/redesign-v8/back/093-gangolem-back.png"
+    },
+    {
+      "name": "スナムシ",
+      "no": 94,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/094-sunamushi.png",
+      "back": "assets/monsters/redesign-v8/back/094-sunamushi-back.png"
+    },
+    {
+      "name": "サバクムシ",
+      "no": 95,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/095-sabakamushi.png",
+      "back": "assets/monsters/redesign-v8/back/095-sabakamushi-back.png"
+    },
+    {
+      "name": "サンドキング",
+      "no": 96,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/096-sandking.png",
+      "back": "assets/monsters/redesign-v8/back/096-sandking-back.png"
+    },
+    {
+      "name": "モグポン",
+      "no": 97,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/097-mogupon.png",
+      "back": "assets/monsters/redesign-v9/back/097-mogupon-back.png"
+    },
+    {
+      "name": "モグドリル",
+      "no": 98,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/098-mogudrill.png",
+      "back": "assets/monsters/redesign-v11/back/098-mogudrill-back.png"
+    },
+    {
+      "name": "カセキン",
+      "no": 99,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/099-kasekin.png",
+      "back": "assets/monsters/redesign-v9/back/099-kasekin-back.png"
+    },
+    {
+      "name": "カセキガミ",
+      "no": 100,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/100-kasekigami.png",
+      "back": "assets/monsters/redesign-v8/back/100-kasekigami-back.png"
+    },
+    {
+      "name": "ドロヌマ",
+      "no": 101,
+      "motion": {
+        "kind": "hop",
+        "frameMs": 95
+      },
+      "front": "assets/monsters/redesign-v11/front/101-doronuma.png",
+      "back": "assets/monsters/redesign-v11/back/101-doronuma-back.png"
+    },
+    {
+      "name": "オニイワ",
+      "no": 102,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/102-oniiwa.png",
+      "back": "assets/monsters/redesign-v11/back/102-oniiwa-back.png"
+    },
+    {
+      "name": "ジシンヌシ",
+      "no": 103,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/103-jishinnushi.png",
+      "back": "assets/monsters/redesign-v11/back/103-jishinnushi-back.png"
+    },
+    {
+      "name": "ムシリン",
+      "no": 104,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/104-mushirin.png",
+      "back": "assets/monsters/redesign-v8/back/104-mushirin-back.png"
+    },
+    {
+      "name": "カブトン",
+      "no": 105,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/105-kabuton.png",
+      "back": "assets/monsters/redesign-v8/back/105-kabuton-back.png"
+    },
+    {
+      "name": "オオカブト",
+      "no": 106,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/106-ookabuto.png",
+      "back": "assets/monsters/redesign-v8/back/106-ookabuto-back.png"
+    },
+    {
+      "name": "チョウマユ",
+      "no": 107,
+      "motion": {
+        "kind": "float",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v9/front/107-choumayu.png",
+      "back": "assets/monsters/redesign-v9/back/107-choumayu-back.png"
+    },
+    {
+      "name": "ハネチョウ",
+      "no": 108,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/108-hanechou.png",
+      "back": "assets/monsters/redesign-v8/back/108-hanechou-back.png"
+    },
+    {
+      "name": "ゴクラクチョ",
+      "no": 109,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/109-gokurakuchou.png",
+      "back": "assets/monsters/redesign-v8/back/109-gokurakuchou-back.png"
+    },
+    {
+      "name": "クモッコ",
+      "no": 110,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/110-kumokko.png",
+      "back": "assets/monsters/redesign-v8/back/110-kumokko-back.png"
+    },
+    {
+      "name": "アミグモ",
+      "no": 111,
+      "motion": {
+        "kind": "crawl",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/111-amigumo.png",
+      "back": "assets/monsters/redesign-v8/back/111-amigumo-back.png"
+    },
+    {
+      "name": "オオグモン",
+      "no": 112,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/112-oogumon.png",
+      "back": "assets/monsters/redesign-v8/back/112-oogumon-back.png"
+    },
+    {
+      "name": "アリンコ",
+      "no": 113,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/113-arinko.png",
+      "back": "assets/monsters/redesign-v8/back/113-arinko-back.png"
+    },
+    {
+      "name": "アリガタ",
+      "no": 114,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/114-arigata.png",
+      "back": "assets/monsters/redesign-v8/back/114-arigata-back.png"
+    },
+    {
+      "name": "ホタリン",
+      "no": 115,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/115-hotarin.png",
+      "back": "assets/monsters/redesign-v8/back/115-hotarin-back.png"
+    },
+    {
+      "name": "ホタルオー",
+      "no": 116,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/116-hotaruo.png",
+      "back": "assets/monsters/redesign-v8/back/116-hotaruo-back.png"
+    },
+    {
+      "name": "カマキリン",
+      "no": 117,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/117-kamakirin.png",
+      "back": "assets/monsters/redesign-v8/back/117-kamakirin-back.png"
+    },
+    {
+      "name": "スズメバチン",
+      "no": 118,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/118-suzumebachin.png",
+      "back": "assets/monsters/redesign-v8/back/118-suzumebachin-back.png"
+    },
+    {
+      "name": "ダンゴロン",
+      "no": 119,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/119-dangoron.png",
+      "back": "assets/monsters/redesign-v8/back/119-dangoron-back.png"
+    },
+    {
+      "name": "カゲポン",
+      "no": 120,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v9/front/120-kagepon.png",
+      "back": "assets/monsters/redesign-v9/back/120-kagepon-back.png"
+    },
+    {
+      "name": "シャドウン",
+      "no": 121,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/121-shadowun.png",
+      "back": "assets/monsters/redesign-v8/back/121-shadowun-back.png"
+    },
+    {
+      "name": "ヤミオウ",
+      "no": 122,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/122-yamiou.png",
+      "back": "assets/monsters/redesign-v8/back/122-yamiou-back.png"
+    },
+    {
+      "name": "オバケシ",
+      "no": 123,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/123-obakeshi.png",
+      "back": "assets/monsters/redesign-v8/back/123-obakeshi-back.png"
+    },
+    {
+      "name": "ユウレイン",
+      "no": 124,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/124-yuurein.png",
+      "back": "assets/monsters/redesign-v8/back/124-yuurein-back.png"
+    },
+    {
+      "name": "ボウレイ",
+      "no": 125,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v9/front/125-bourei.png",
+      "back": "assets/monsters/redesign-v9/back/125-bourei-back.png"
+    },
+    {
+      "name": "ヨルドリ",
+      "no": 126,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/126-yorudori.png",
+      "back": "assets/monsters/redesign-v8/back/126-yorudori-back.png"
+    },
+    {
+      "name": "ミミズク",
+      "no": 127,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/127-mimizuku.png",
+      "back": "assets/monsters/redesign-v8/back/127-mimizuku-back.png"
+    },
+    {
+      "name": "ヤミフクロウ",
+      "no": 128,
+      "motion": {
+        "kind": "fly",
+        "frameMs": 65
+      },
+      "front": "assets/monsters/redesign-v8/front/128-yamifukurou.png",
+      "back": "assets/monsters/redesign-v8/back/128-yamifukurou-back.png"
+    },
+    {
+      "name": "ドクロン",
+      "no": 129,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/129-dokuron.png",
+      "back": "assets/monsters/redesign-v8/back/129-dokuron-back.png"
+    },
+    {
+      "name": "ドクロガミ",
+      "no": 130,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v8/front/130-dokurogami.png",
+      "back": "assets/monsters/redesign-v8/back/130-dokurogami-back.png"
+    },
+    {
+      "name": "クロネズ",
+      "no": 131,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/131-kuronezu.png",
+      "back": "assets/monsters/redesign-v8/back/131-kuronezu-back.png"
+    },
+    {
+      "name": "ヤミネズ",
+      "no": 132,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/132-yaminezu.png",
+      "back": "assets/monsters/redesign-v8/back/132-yaminezu-back.png"
+    },
+    {
+      "name": "ムラサキビ",
+      "no": 133,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v9/front/133-murasakibi.png",
+      "back": "assets/monsters/redesign-v9/back/133-murasakibi-back.png"
+    },
+    {
+      "name": "ヨルグモ",
+      "no": 134,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/134-yorugumo.png",
+      "back": "assets/monsters/redesign-v8/back/134-yorugumo-back.png"
+    },
+    {
+      "name": "ヤミノヌシ",
+      "no": 135,
+      "motion": {
+        "kind": "float",
+        "frameMs": 135
+      },
+      "front": "assets/monsters/redesign-v9/front/135-yaminonushi.png",
+      "back": "assets/monsters/redesign-v9/back/135-yaminonushi-back.png"
+    },
+    {
+      "name": "マルミィ",
+      "no": 136,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/136-marumii.png",
+      "back": "assets/monsters/redesign-v9/back/136-marumii-back.png"
+    },
+    {
+      "name": "マルモコ",
+      "no": 137,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/137-marumoko.png",
+      "back": "assets/monsters/redesign-v8/back/137-marumoko-back.png"
+    },
+    {
+      "name": "マルガンテ",
+      "no": 138,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/138-marugante.png",
+      "back": "assets/monsters/redesign-v8/back/138-marugante-back.png"
+    },
+    {
+      "name": "ウサポン",
+      "no": 139,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/139-usapon.png",
+      "back": "assets/monsters/redesign-v8/back/139-usapon-back.png"
+    },
+    {
+      "name": "ダッシュサ",
+      "no": 140,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/140-dashusa.png",
+      "back": "assets/monsters/redesign-v8/back/140-dashusa-back.png"
+    },
+    {
+      "name": "ソニックウサ",
+      "no": 141,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/141-sonicusa.png",
+      "back": "assets/monsters/redesign-v8/back/141-sonicusa-back.png"
+    },
+    {
+      "name": "ヒツジン",
+      "no": 142,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/142-hitsujin.png",
+      "back": "assets/monsters/redesign-v8/back/142-hitsujin-back.png"
+    },
+    {
+      "name": "モコヒツジ",
+      "no": 143,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/143-mokohitsuji.png",
+      "back": "assets/monsters/redesign-v8/back/143-mokohitsuji-back.png"
+    },
+    {
+      "name": "オオモコ",
+      "no": 144,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/144-oomoko.png",
+      "back": "assets/monsters/redesign-v8/back/144-oomoko-back.png"
+    },
+    {
+      "name": "タヌポン",
+      "no": 145,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/145-tanupon.png",
+      "back": "assets/monsters/redesign-v8/back/145-tanupon-back.png"
+    },
+    {
+      "name": "バケダヌキ",
+      "no": 146,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/146-bakedanuki.png",
+      "back": "assets/monsters/redesign-v8/back/146-bakedanuki-back.png"
+    },
+    {
+      "name": "コイヌン",
+      "no": 147,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/147-koinun.png",
+      "back": "assets/monsters/redesign-v8/back/147-koinun-back.png"
+    },
+    {
+      "name": "ダイイヌ",
+      "no": 148,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/148-daiinu.png",
+      "back": "assets/monsters/redesign-v8/back/148-daiinu-back.png"
+    },
+    {
+      "name": "パンダン",
+      "no": 149,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/149-pandan.png",
+      "back": "assets/monsters/redesign-v9/back/149-pandan-back.png"
+    },
+    {
+      "name": "カバリン",
+      "no": 150,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v8/front/150-kabarin.png",
+      "back": "assets/monsters/redesign-v8/back/150-kabarin-back.png"
+    },
+    {
+      "name": "ラテット",
+      "no": 151,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/151-ratetto.png",
+      "back": "assets/monsters/redesign-v11/back/151-ratetto-back.png"
+    },
+    {
+      "name": "ディーナ",
+      "no": 152,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v9/front/152-dina.png",
+      "back": "assets/monsters/redesign-v9/back/152-dina-back.png"
+    },
+    {
+      "name": "メロロン",
+      "no": 153,
+      "motion": {
+        "kind": "walk",
+        "frameMs": 85
+      },
+      "front": "assets/monsters/redesign-v11/front/153-meroron.png",
+      "back": "assets/monsters/redesign-v11/back/153-meroron-back.png"
+    }
+  ],
+  "redesigns": [
+    {
+      "no": 24,
+      "old": "タネコロ",
+      "name": "タネコロ",
+      "kind": "crawl",
+      "refNo": 25,
+      "design": "tiny baby garden snail, warm buttery yellow soft body, large curious dark brown eyes on short eye stalks, little blush cheeks, miniature pale coral-pink spiral shell shaped like a new seed bud, two tiny green leaf sprouts atop shell. Clearly the adorable young form of the reference mature red-shelled yellow snail. NO acorn body, no mammal legs."
+    },
+    {
+      "no": 36,
+      "old": "モスゴレム",
+      "name": "コケトロッコ",
+      "kind": "walk",
+      "design": "a friendly low wide living forest minecart creature: hollow charcoal stone trough body full of spring-green moss and tiny cream mushrooms, four chunky wooden wheel-shaped feet that step, large amber eyes on its front stone face, branching fern antennae, copper rails around shell. Non-humanoid, distinctive horizontal cart silhouette."
+    },
+    {
+      "no": 37,
+      "old": "サボチク",
+      "name": "スナボンネ",
+      "kind": "walk",
+      "design": "small desert flower bulb creature, smooth terracotta pear-shaped bulb body, enormous tilted cream hibiscus blossom bonnet with coral center, two turquoise succulent leaf arms, three short root feet, shiny olive eyes and bashful smile. No cactus columns or cactus spines."
+    },
+    {
+      "no": 38,
+      "old": "ハッパチョ",
+      "name": "リボネム",
+      "kind": "fly",
+      "design": "graceful flying maple-seed spirit, mint droplet-shaped body, two enormous translucent ivory maple-seed wing blades with pink veins, tiny sleepy navy face, long curled pale pink ribbon tail. Plant fairy, not butterfly; no insect segmented body."
+    },
+    {
+      "no": 86,
+      "old": "デンチュウ",
+      "name": "デンデマリ",
+      "kind": "float",
+      "design": "playful floating electric lantern creature, teal dodecahedral body with warm amber glowing face panels, brass edging, three curved copper cable tendrils ending in round golden bells, little zigzag ivory lightning crown. No humanoid or beetle anatomy."
+    },
+    {
+      "no": 20,
+      "old": "イシゴロ",
+      "name": "スナコロネ",
+      "kind": "crawl",
+      "design": "adorable sandstone hermit crab creature, rounded cream body, short cinnamon claws and six tiny feet, turquoise mineral eye stalks, large amber tiered spiral canyon shell like a croissant, pale cream stratum stripes. Cuddly approachable face, no pile-of-rocks humanoid silhouette."
+    },
+    {
+      "no": 118,
+      "old": "スズメバチン",
+      "name": "ハナヤリ",
+      "kind": "fly",
+      "design": "sleek orchid dragonfly creature, pearl white and turquoise elongated body, four broad translucent mint wings with rose-pink vein tips, bright golden eyes, graceful pink orchid-bud spear tail, small folded silver legs. Elegant flower dragonfly, no bee stripes or bulky wasp abdomen."
+    },
+    {
+      "no": 119,
+      "old": "ダンゴロン",
+      "name": "クルミグル",
+      "kind": "crawl",
+      "design": "round walnut seed guardian creature, polished chestnut brown spherical shell with carved curling grain, bright jade green soft face peeking from shell seam, three stubby ivory feet, tiny leafy eyebrows, two golden leaf-shaped shell hinges. Cheerful, no insect legs or pillbug plates."
+    },
+    {
+      "no": 134,
+      "old": "ヨルグモ",
+      "name": "ホシミノ",
+      "kind": "float",
+      "design": "mysterious nocturnal cocoon-lantern spirit, long lavender layered silk cocoon, star-shaped midnight hood, warm amber window face with two tiny pearl eyes, six fine silver silk tassels curled underneath, soft indigo and lilac palette, gentle moonlit glow. No spider body or web."
+    },
+    {
+      "no": 149,
+      "old": "パンダン",
+      "name": "フクモッチ",
+      "kind": "fly",
+      "design": "plump adorable ivory sugar glider creature, enormous rounded coral-pink gliding membranes from arms to ankles, soft cocoa face mask, round fluffy ears, glossy violet eyes, long berry-purple plush tail ending in a cream pompom. No panda black-white pattern."
+    },
+    {
+      "no": 150,
+      "old": "カバリン",
+      "name": "フワクジ",
+      "kind": "float",
+      "design": "small floating sky-whale creature, cloud-cream rounded horizontal body, sunset pink belly, big lavender ear-like fins, mint cloud-shaped tail, short pearly spiral horn, huge dark blue gentle eyes with white shine. No hippo legs or hippo snout."
+    },
+    {
+      "no": 91,
+      "old": "イワッコ",
+      "name": "イワッコ",
+      "kind": "walk",
+      "refNo": 92,
+      "design": "cute young form of reference Ganseki: squat warm orange rocky lizard cub, small rounded snout, large dark eyes, four short sturdy legs with ivory claws, three smooth dark gray stone armor plates along its back, tiny triangular stone ears and short thick tail. Juvenile proportions and friendly rounded face. No generic gray pebble blob."
+    },
+    {
+      "no": 5,
+      "old": "ボウエン",
+      "name": "ボウエン",
+      "kind": "walk",
+      "refNo": 4,
+      "design": "adolescent evolution of reference Hinokoma soot-black fire chick, larger but still round soot-black bird body, bright amber breast bib, short strong orange legs, flared ember-orange flame crest, warm golden eyes, two compact wings with fiery red-orange tips, small swept flame tail. Clearly a grown fire chick, no long-legged heron, no humanoid."
+    },
+    {
+      "no": 6,
+      "old": "エンブレイズ",
+      "name": "エンブレイズ",
+      "kind": "fly",
+      "refNo": 4,
+      "design": "majestic final evolution of reference Hinokoma fire chick, powerful broad soot-black phoenix rooster body, huge rounded black wings edged in layered gold and orange living flames, regal flame crown, amber breast and golden eyes, strong orange bird talons, elegant three-plume fiery fan tail. Keep the recognizable cute strong black fire-bird face. No humanoid fighter or thin heron."
+    }
+  ]
+}

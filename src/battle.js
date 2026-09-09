@@ -1,3 +1,4 @@
+import {drawItem} from './itemArt.js';
 import { drawChapterBattle } from "./chapterArt.js";
 // ============================================================
 //  たたかい
@@ -137,8 +138,8 @@ async function chooseAction() {
       const list = bagList("battle").filter((x) => itemData(x.name).kind === "ball");
       if (!list.length) { await ui.say(["ラグネットを もっていない！"]); return { kind: "run" }; }
       if (list.length === 1) return { kind: "item", item: list[0].name };
-      const k = await ui.choice(list.map((x) => x.name + " ×" + x.n), { x: 8, y: 140, w: 240, rows: 4 });
-      if (k >= 0) return { kind: "item", item: list[k].name };
+      const chosen=await ui.itemList(list);
+      if(chosen)return {kind:"item",item:chosen.name};
       continue;
     }
     const i = await ui.choice(["たたかう", "どうぐ", "ガオン", "にげる"], {
@@ -174,10 +175,8 @@ async function chooseMove() {
 async function chooseItem() {
   const list = bagList("battle");
   if (!list.length) { await ui.say(["どうぐを もっていない。"]); return null; }
-  const labels = list.map((x) => (x.name === "ラグネット" ? "ラグネットをつかう" : x.name) + " ×" + x.n);
-  const i = await ui.choice(labels, { x: 8, y: 140, w: 240, rows: 5 });
-  if (i < 0) return null;
-  return list[i].name;
+  const chosen=await ui.itemList(list,{pockets:true});
+  return chosen?.name||null;
 }
 
 async function choosePartyMember() {
@@ -486,9 +485,10 @@ async function throwBall(ballRate, netName) {
     await ui.say(["エンブレムが " + State.save.badges.length + "こ ひかり、",
                   "ラグネットの 捕獲力が " + lagNetMultiplier().toFixed(2) + "倍に なった！"]);
   }
-  B.foe.hidden = true;
+  B.captureNet={name:netName,start:performance.now()};
   beep("ball");
   await wait(400);
+  B.foe.hidden=true;
 
   const max = maxHp(m);
   const statusBonus = m.status === "ねむり" ? 2 : (m.status ? 1.5 : 1);
@@ -516,6 +516,7 @@ async function throwBall(ballRate, netName) {
     if (where === "box") await ui.say(["てもちが いっぱいなので", m.sp + "を ボックスへ おくった。"]);
     return "caught";
   }
+  B.captureNet=null;
   B.foe.hidden = false;
   const msg = ["ああ！ ネットから でてしまった！", "おしい！ あと すこしだったのに！", "ダメだ！ とびだされた！"];
   await ui.say([msg[Math.min(shakes, 2)]]);
@@ -630,6 +631,7 @@ function drawBattle() {
     ellipse(72, 188, 70, 15, 2); ellipse(72, 185, 70, 15, 0);
   }
 
+  if(B.captureNet){const t=Math.min(1,(performance.now()-B.captureNet.start)/400),size=24+72*t,x=62+(248-62)*t,y=158+(80-158)*t-Math.sin(t*Math.PI)*48;drawItem(G.ctx,B.captureNet.name,x-size/2,y-size/2,size);}
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
   const foeSet = palOf(species(B.foe.mon.sp));

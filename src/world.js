@@ -1,5 +1,8 @@
+import {drawItem} from './itemArt.js';
+import {FollowerTrail} from './followerTrail.js';
+import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260909-world-v12';
+import { drawNpc } from './npcArt.js?v=20260909-follow-v14';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -14,20 +17,20 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260909-world-v12";
+import { MAPS } from "./data/maps.js?v=20260909-follow-v14";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
 import {
-  G as State, makeMon, species, monName, maxHp, healFull, healParty,
+  G as State, followingMon, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260909-world-v12";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260909-follow-v14";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260909-world-v12";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260909-follow-v14";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -114,7 +117,7 @@ export const world = {
   ox: 0, oy: 0, moving: false, mx: 0, my: 0,
   walkFrame: 0, walkTimer: 0, hop: 0,
   busy: false, steps: 0, tick: 0,
-  npcs: [],
+  npcs: [], followerTrail: new FollowerTrail(),
 
   enter(mapId, x, y, dir) {
     // しらない ばしょ（ふるい きろく など）なら むらへ もどす
@@ -168,6 +171,7 @@ export const world = {
         this.freeCellX = Math.floor(x); this.freeCellY = Math.floor(y);
       }
     }
+    this.followerTrail.reset(x,y,this.dir);
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
     playBgm(bgmFor(mapId));
@@ -433,7 +437,8 @@ export const world = {
     const dy = this.dir === "up" ? -1 : this.dir === "down" ? 1 : 0;
     const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
 
-    const n = this.npcAt(tx, ty);
+    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>kind==='counter'&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
+    const n = this.npcAt(tx, ty) || (counter ? this.npcAt(tx+dx,ty+dy) : null);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
 
     const it = (this.map.items || []).find((i) => i.x === tx && i.y === ty && !flag(i.flag));
@@ -915,6 +920,8 @@ export const world = {
     if (mw * T < G.W) camX = (mw * T - G.W) / 2;
     if (mh * T + EXTRA < G.H) camY = (mh * T - G.H) / 2;
 
+    if(map.room){camX=96;camY=96;}
+
     // そとの すきま（地図の むこう）は そのばしょに あう 色で うめる
     G.use(map.kind === "cave" ? "cave" : map.kind === "in" ? "floor" : "grass");
     G.clear(map.kind === "cave" ? 3 : map.kind === "in" ? 3 : 2);
@@ -1000,22 +1007,20 @@ export const world = {
     // おちている どうぐ
     for (const it of map.items || []) {
       if (flag(it.flag)) continue;
-      drawBall(it.x * T - camX, it.y * T - camY);
+      if(!drawItem(G.ctx,it.item,it.x*T-camX,it.y*T-camY,32))drawBall(it.x*T-camX,it.y*T-camY);
     }
 
     // ひとたち（うしろに いる人から）
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
-    if (G.isColor() && State.save.party && State.save.party.length) {
-      const back = this.dir === "up" ? [0, 1] : this.dir === "down" ? [0, -1]
-        : this.dir === "left" ? [1, 0] : [-1, 0];
-      people.push({ follower: State.save.party[0], x: this.x + back[0], y: this.y + back[1] });
-    }
-    people.push({ me: true, y: this.y + (this.oy > 0 ? 0.5 : 0) });
+    this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
+    const follower=followingMon(),pose=this.followerTrail.pose;
+    if(G.isColor()&&follower&&pose)people.push({follower,pose,x:pose.x,y:pose.y});
+    people.push({me:true,y:this.y+this.oy/T});
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
       if (p.follower) {
-        const monImg = battleArt(p.follower.sp);
-        if (monImg) G.drawScaled(monImg, p.x * T - camX - 6, p.y * T - camY - 10, 44, 44);
+        drawFollower(G.ctx,p.follower,p.pose,this.tick,p.x*T+16-camX,p.y*T+20-camY);
+        if(map.tileWorld)drawGrassFeet(G.ctx,map,p.x*T,p.y*T,camX,camY);
       } else if (p.me) {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
