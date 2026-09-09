@@ -51,8 +51,8 @@ export function buildChapterOne(){
  for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push(m.id==='hut'?{x:7,y:12,to:'village',tx:13,ty:12}:{x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
  const mountain=add('mountain','山おく',30,34);mountain.spawn={x:14,y:31};path(mountain,14,33,14,24);path(mountain,14,24,6,17);path(mountain,6,17,20,10);path(mountain,20,10,14,4);rect(mountain,11,3,8,5,'.');
  rect(mountain,3,23,5,6,'"');rect(mountain,22,15,5,6,'"');rect(mountain,8,10,3,4,'"');
- // One-tile stair and ladder corridors are part of the actual walkable route.
- rect(mountain,6,18,2,4,'R');rect(mountain,6,18,1,4,'H');rect(mountain,20,11,2,4,'R');rect(mountain,20,11,1,4,'h');
+ // These flat corridors have no elevation change; keep them ordinary two-tile paths.
+ rect(mountain,6,18,2,4,'.');rect(mountain,20,11,2,4,'.');
  for(const [x,y] of [[11,22],[18,22],[23,8],[5,7],[24,27]])mountain.g[y][x]='R';
  npc(mountain,14,4,'ラテット','boy',[],{script:'v5:latett',artMon:'ラテット',hideFlag:'v5:latettSeen'});
  mountain.enc={rate:15,list:[['スナコロネ',3,5,60],['ツチノコ',3,5,40]]};mountain.battleTerrain='grass';trees(mountain);

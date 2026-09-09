@@ -54,7 +54,7 @@ export const ui = {
         i: Math.min(o.start || 0, Math.max(0, items.length - 1)), top: 0,
         cancel: o.cancel !== false,
         rows: o.rows || Math.min(items.length, 4), columns: o.columns === 2 ? 2 : 1,
-        x: o.x, y: o.y, w: o.w, extra: o.extra,
+        x: o.x, y: o.y, w: o.w, extra: o.extra, battle: !!o.battle, details: o.details,
         resolve: resolve,
       });
     });
@@ -191,6 +191,7 @@ function drawSay(w) {
    ところまで 動かします。
 ------------------------------------------------------------------ */
 function boxOf(w) {
+  if(w.battle)return {...BOX,rows:2};
   let widest = 0;
   for (const s of w.items) widest = Math.max(widest, G.textW(s, TEXT_SIZE));
   let width = Math.max(w.w || 0, widest + CH_PAD_L + CH_PAD_R, 96);
@@ -234,6 +235,17 @@ function drawChoice(w) {
   G.use("ui");
   const b = boxOf(w);
   G.window9(b.x, b.y, b.w, b.h);
+  if(w.battle){
+    const cellW=(b.w-24)/2;
+    w.items.forEach((label,i)=>{
+      const x=b.x+12+(i%2)*cellW,y=b.y+12+Math.floor(i/2)*32;
+      if(i===w.i){G.ctx.fillStyle='#d3e8df';G.ctx.fillRect(x,y-2,cellW-4,30);G.text('▶',x+2,y+2,3,10);}
+      const available=cellW-24,size=Math.min(14,14*available/Math.max(1,G.textW(label,14)));
+      G.text(label,x+18,y+(w.details?0:6),3,size);
+      if(w.details)G.text(w.details[i]||'',x+18,y+17,3,10);
+    });
+    return;
+  }
   if(w.columns===2){
     const cellW=(b.w-16)/2;
     w.items.forEach((label,i)=>{const x=b.x+8+(i%2)*cellW,y=b.y+CH_PAD_Y+Math.floor(i/2)*CH_ROW;

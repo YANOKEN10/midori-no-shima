@@ -14,7 +14,7 @@ import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
-  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp, gainEffort, expForLevel, expProgress,
+  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp, gainEffort,
   healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove, lagNetMultiplier,
 } from "./state.js";
 
@@ -41,12 +41,6 @@ export const battle = {
     if (!B) return;
     for (const s of [B.you, B.foe]) {
       if (!s) continue;
-      if (s.expAnim) {
-        const a=s.expAnim;a.elapsed=Math.min(a.duration,a.elapsed+dt);
-        const total=a.from+(a.to-a.from)*a.elapsed/a.duration;
-        let lv=a.level;while(lv<s.mon.lv&&total>=expForLevel(lv+1))lv++;
-        s.expView={lv,exp:total};
-      }
       if (s.shakeX) s.shakeX *= 0.82;
       if (s.flash > 0) s.flash -= dt;
     }
@@ -139,7 +133,7 @@ export async function startBattle(opts) {
 async function chooseAction() {
   for (;;) {
     if (!B.you) {
-      const j = await ui.choice(["ラグネットをつかう", "にげる"], { x: 96, y: 168, w: 216, rows: 2, cancel: false });
+      const j = await ui.choice(["ラグネットをつかう", "にげる"], { rows: 2, columns: 2, battle: true, cancel: false });
       if (j === 1) return { kind: "run" };
       const list = bagList("battle").filter((x) => itemData(x.name).kind === "ball");
       if (!list.length) { await ui.say(["ラグネットを もっていない！"]); return { kind: "run" }; }
@@ -149,7 +143,7 @@ async function chooseAction() {
       continue;
     }
     const i = await ui.choice(["たたかう", "どうぐ", "ガオン", "にげる"], {
-      x: 8, y: 192, w: 304, rows: 2, columns: 2, cancel: false,
+      x: 8, y: 192, w: 304, rows: 2, columns: 2, battle: true, cancel: false,
     });
     if (i === 0) {
       const mv = await chooseMove();
@@ -168,11 +162,9 @@ async function chooseAction() {
 
 async function chooseMove() {
   const m = B.you.mon;
-  const labels = m.moves.map((mv) => {
-    const d = moveData(mv.name);
-    return mv.name + "  " + mv.pp + "/" + mv.max;
-  });
-  const i = await ui.choice(labels, { x: 8, y: 192, w: 304, rows: 2, columns: 2 });
+  const labels = m.moves.map(mv=>mv.name);
+  const details = m.moves.map(mv=>'PP '+mv.pp+' / '+mv.max);
+  const i = await ui.choice(labels, { columns: 2, rows: 2, battle: true, details });
   if (i < 0) return null;
   if (m.moves[i].pp <= 0) { await ui.say(["わざの のこりが ない！"]); return null; }
   return m.moves[i];
@@ -544,13 +536,7 @@ async function onFoeDown() {
   await ui.say([monName(m) + "は " + gain + " けいけんちを もらった！"]);
   gainEffort(m, B.foe.mon.sp);
   State.dirty = true;
-  const priorExp=m.exp, priorLevel=m.lv;
   const res = gainExp(m, gain);
-  if(priorLevel<100){
-    B.you.expAnim={from:priorExp,to:m.exp,level:priorLevel,elapsed:0,duration:700};
-    await wait(760);
-    B.you.expAnim=null;B.you.expView=null;
-  }
   for (const lv of res.levels) {
     beep("levelup");
     await ui.say([monName(m) + "は レベル " + lv + "に あがった！"]);
@@ -678,9 +664,9 @@ function drawBattle() {
 
   // 下の わく（メニューが うかんで 見えないように）
   G.use("ui");
-  G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
+  if(!ui.busy)G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
   // メッセージが 出ていない ときは、なにを するか きく
-  if (!ui.busy && B.you && !B.you.expAnim) {
+  if (!ui.busy && B.you) {
     const m = B.you.mon;
     G.textFit(monName(m) + "は", BOX.x + 18, BOX.y + 18, 150, 3, 16);
     G.text("どうする？", BOX.x + 18, BOX.y + 46, 3, 16);
@@ -712,13 +698,14 @@ function infoBox(x, y, side, mine) {
     G.ctx.fillStyle="#b4bea0";G.ctx.fillRect(x+6,y+6,w-12,1);
   } else G.window9(x, y, w, h);
 
-  // なまえは Lv の ぶんを のこして つめる
-  const lv = "Lv" + (mine && side.expView ? side.expView.lv : m.lv);
-  const lvW = G.textW(lv, 14);
-  G.textFit(monName(m), x + 14, y + (mine ? 8 : 12), w - 36 - lvW, 3, 16);
-  G.textRight(lv, x + w - 14, y + (mine ? 10 : 14), 3, 14);
-
-  const bx = x + 14, by = y + (mine ? 28 : 36), bw = w - 28, bh = mine ? 6 : 8;
+  // Give the name its own full-width line; level and HP never cross it.
+  const name=monName(m),nameWidth=w-24;
+  const nameSize=Math.min(14,14*nameWidth/Math.max(1,G.textW(name,14)));
+  G.text(name,x+12,y+9,3,nameSize);
+  G.textRight('Lv'+m.lv,x+w-12,y+29,3,12);
+  if(m.status)G.text(m.status,x+12,y+30,3,10);
+  else G.text('HP',x+12,y+31,3,10);
+  const bx=x+12,by=y+48,bw=w-24,bh=6;
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
@@ -728,15 +715,5 @@ function infoBox(x, y, side, mine) {
   G.rect(bx, by, Math.round(bw * ratio), bh, 1);
   G.use("ui");
 
-  // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
-  if (m.status) G.text(m.status, x + 14, y + (mine ? 40 : 52), 3, 11);
-  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 14, y + 40, 3, 11);
-  if (mine) {
-    const progress=expProgress(side.expView||m);
-    G.text('EXP',x+14,y+53,3,9);
-    G.textRight(progress.max?'MAX':progress.current+' / '+progress.required,x+w-14,y+53,3,9);
-    G.ctx.fillStyle=G.isColor()?'#38566b':G.PAL[3];G.ctx.fillRect(x+13,y+64,w-26,5);
-    G.ctx.fillStyle=G.isColor()?'#d7e4e7':G.PAL[1];G.ctx.fillRect(x+14,y+65,w-28,3);
-    G.ctx.fillStyle=G.isColor()?'#38aee8':G.PAL[3];G.ctx.fillRect(x+14,y+65,Math.round((w-28)*progress.ratio),3);
-  }
+  if(mine)G.textRight(Math.round(shown)+' / '+maxHp(m),x+w-12,y+58,3,10);
 }
