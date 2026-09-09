@@ -1,0 +1,135 @@
+{
+  "image": "rock-terrain-source.png",
+  "tileSize": 32,
+  "sourceSize": 1254,
+  "sprites": {
+    "outer-west-front": {
+      "rect": [
+        2,
+        2,
+        309,
+        309
+      ]
+    },
+    "rim-horizontal": {
+      "rect": [
+        316,
+        2,
+        309,
+        309
+      ]
+    },
+    "outer-east-front": {
+      "rect": [
+        629,
+        2,
+        309,
+        309
+      ]
+    },
+    "plateau": {
+      "rect": [
+        943,
+        2,
+        309,
+        309
+      ]
+    },
+    "wall-west": {
+      "rect": [
+        2,
+        316,
+        309,
+        309
+      ]
+    },
+    "floor": {
+      "rect": [
+        316,
+        316,
+        309,
+        309
+      ]
+    },
+    "wall-east": {
+      "rect": [
+        629,
+        316,
+        309,
+        309
+      ]
+    },
+    "boulder": {
+      "rect": [
+        943,
+        316,
+        309,
+        309
+      ]
+    },
+    "corner-west-front": {
+      "rect": [
+        2,
+        629,
+        309,
+        309
+      ]
+    },
+    "wall-front": {
+      "rect": [
+        316,
+        629,
+        309,
+        309
+      ]
+    },
+    "corner-east-front": {
+      "rect": [
+        629,
+        629,
+        309,
+        309
+      ]
+    },
+    "boulders": {
+      "rect": [
+        943,
+        629,
+        309,
+        309
+      ]
+    },
+    "stairs": {
+      "rect": [
+        2,
+        943,
+        309,
+        309
+      ]
+    },
+    "ladder": {
+      "rect": [
+        316,
+        943,
+        309,
+        309
+      ]
+    },
+    "inner-west": {
+      "rect": [
+        629,
+        943,
+        309,
+        309
+      ]
+    },
+    "inner-east": {
+      "rect": [
+        943,
+        943,
+        309,
+        309
+      ]
+    }
+  }
+}

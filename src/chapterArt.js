@@ -7,6 +7,42 @@ let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).t
 const cache=new WeakMap();
 export function drawMaterial(ctx,key,x,y,w,h){const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
+// Layered boundary canopy is clipped to blocked forest cells, keeping exits clear.
+function forestCanopy(c,map){
+ if(!map.forestBorder)return;
+ const w=map.rows[0].length,h=map.rows.length;
+ c.save();c.beginPath();
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++)if((x<2||x>=w-2||y<3||y>=h-3)&&map.rows[y][x]==='T')c.rect(x*32,y*32,32,32);
+ c.clip();c.fillStyle='#174f3c';c.fillRect(0,0,w*32,h*32);
+ for(let layer=0;layer<3;layer++){
+  const offset=(layer-2)*23;
+  for(let y=-2;y<h+2;y+=2){
+   drawMaterial(c,'tree',offset,y*32+layer*19,64,96);
+   drawMaterial(c,'tree',(w-2)*32-offset,y*32+layer*19,64,96);
+  }
+  for(let x=-2;x<w+2;x+=2){
+   drawMaterial(c,'tree',x*32+layer*21,offset,64,96);
+   drawMaterial(c,'tree',x*32+layer*21,(h-3)*32-offset,64,96);
+  }
+ }
+ c.restore();
+}
+// Vertical walls use a continuous side rim and staggered rock seams.
+function cliff(c,map,x,y){
+ const w=map.rows[0].length,dx=x*32,dy=y*32;
+ if(x!==0&&x!==w-1){drawMaterial(c,'cliff',dx,dy,32,32);return;}
+ c.save();c.beginPath();c.rect(dx,dy,32,32);c.clip();c.translate(dx,dy);if(x===0){c.translate(32,0);c.scale(-1,1);}
+ c.fillStyle='#624735';c.fillRect(0,0,32,32);
+ for(let row=-1;row<3;row++)for(let col=0;col<3;col++){
+  const px=5+col*11+(row%2?4:0),py=row*16+((y%2)*7);
+  c.fillStyle='#9b7650';c.fillRect(px,py,9,14);
+  c.fillStyle='#bd9462';c.fillRect(px+1,py+1,4,9);
+  c.fillStyle='#78563d';c.fillRect(px+6,py+6,2,7);
+ }
+ c.fillStyle='#245f3a';c.fillRect(0,0,6,32);c.fillStyle='#53a653';c.fillRect(0,0,4,32);
+ for(let py=0;py<32;py+=8){c.fillStyle='#81c766';c.fillRect(0,py,3,5);c.fillStyle='#377e42';c.fillRect(3,py+3,3,4);}
+ c.restore();
+}
 export function drawChapterMap(ctx,map,camX,camY){
  if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
@@ -35,7 +71,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  if(ch==='"')ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R')drawMaterial(c,'rock',dx,dy,32,32);
- if(ch==='X')drawMaterial(c,'cliff',dx,dy,32,32);
+ if(ch==='X')cliff(c,map,x,y);
  if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
  if(ch==='=')drawMaterial(c,'fenceHorizontal',dx,dy,32,32);
  if(ch==='d'){c.fillStyle='#99754b';c.fillRect(dx,dy,32,32);for(let j=0;j<32;j+=8){c.fillStyle='#d8b67c';c.fillRect(dx+2,dy+j,28,5);}}
@@ -47,6 +83,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  const ch=map.rows[y][x];if(!'bBtKP'.includes(ch)||visited.has(x+','+y))continue;let w=1,h=1;while(map.rows[y][x+w]===ch)w++;while(map.rows[y+h]?.slice(x,x+w)===ch.repeat(w))h++;
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
+ forestCanopy(c,map);
  for(const p of map.props||[]){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
  cache.set(map,cv);}

@@ -1,6 +1,6 @@
 const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
-const TITLE_SRC = "../assets/revamp/title-alpine.png";
+const TITLE_SRC = "../assets/revamp/title-ratetto-sunrise-v17.png";
 const WORLD_V4 = {
   "kazenari-valley": "../assets/world-v4/kazenari-valley.png",
   "wind-cabin-interior": "../assets/world-v4/wind-cabin-interior.png",
@@ -307,7 +307,7 @@ export function drawTitleBackground(ctx,w,h) {
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(title,sx,sy,sw,sh,0,0,w,h);
   const grad=ctx.createLinearGradient(0,0,0,150);
-  grad.addColorStop(0,"rgba(4,18,51,.72)");grad.addColorStop(.68,"rgba(4,18,51,.12)");grad.addColorStop(1,"rgba(4,18,51,0)");
+  grad.addColorStop(0,"rgba(4,18,51,.40)");grad.addColorStop(.68,"rgba(4,18,51,.08)");grad.addColorStop(1,"rgba(4,18,51,0)");
   ctx.fillStyle=grad;ctx.fillRect(0,0,w,170);
   return true;
 }

@@ -10,14 +10,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260909-exp-v16";
-import { battle, startBattle } from "./battle.js?v=20260909-exp-v16";
+import { world, bgmFor } from "./world.js?v=20260909-title-scale-v17";
+import { battle, startBattle } from "./battle.js?v=20260909-title-scale-v17";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260909-exp-v16";
-import { drawTitleBackground } from "./revampArt.js?v=20260909-exp-v16";
+import { START } from "./data/maps.js?v=20260909-title-scale-v17";
+import { drawTitleBackground } from "./revampArt.js?v=20260909-title-scale-v17";
 
 let scene = null;
 let last = 0;
@@ -73,12 +73,12 @@ const title = {
       G.ctx.fillStyle = "rgba(4,18,51,.64)";
       G.ctx.strokeStyle = "rgba(126,211,255,.82)";
       G.ctx.lineWidth = 2;
-      G.ctx.fillRect(22, 20, G.W - 44, 80);
-      G.ctx.strokeRect(26, 24, G.W - 52, 72);
+      G.ctx.fillRect(22, 12, G.W - 44, 66);
+      G.ctx.strokeRect(26, 16, G.W - 52, 58);
       G.ctx.restore();
-      outlined("ガオン・ワールド", G.W / 2, 35, 25);
+      outlined("ガオン・ワールド", G.W / 2, 24, 25);
       G.use("ui");
-      G.textCenter("ガオンずかんを 完成させよう", G.W / 2, 76, 0, 13);
+      G.textCenter("ガオンずかんを 完成させよう", G.W / 2, 58, 0, 13);
       if (Math.floor(t / 500) % 2 === 0) {
         G.ctx.fillStyle = "rgba(4,18,51,.75)";
         G.ctx.fillRect(87, 238, 146, 30);
@@ -115,19 +115,9 @@ const title = {
     G.rect((G.W - sw) / 2, 114, sw, 24, 3);
     G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);
 
-    // ガオンが 3びき
-    const names = ["リーフィン", "ヒノコマ", "アワミィ"];
-    names.forEach((n, i) => {
-      const bob = Math.sin(t / 400 + i) * 3;
-      const set = palOf(SPECIES[n]);
-      const acc = accentOf(SPECIES[n]);
-      G.use("grass");
-      G.ctx.globalAlpha = 0.35;
-      G.rect(46 + i * 88, 224 + bob * 0.4, 44, 6, 3);
-      G.ctx.globalAlpha = 1;
-      const current=battleArt(n);
-      if(current)G.drawScaled(current,44+i*88,176+bob,64,64);else G.draw(G.makeMonArt(MONART[n],1,"t"+n,set,acc,MONPAL[n]),44+i*88,176+bob);
-    });
+    // The loading fallback also shows only Ratetto.
+    const current=battleArt('ラテット');
+    if(current)G.drawScaled(current,112,140,96,96);
 
     G.use("ui");
     if (Math.floor(t / 500) % 2 === 0) {

@@ -296,6 +296,10 @@ for (const [name, sp] of Object.entries(SPECIES)) {
   sp.evYield = Object.fromEntries(STAT_KEYS.map(k=>[k,k===key?amount:0]));
 }
 
+// Explicit balance adjustments; keep encounter and training rewards unchanged.
+const BASE_ADJUSTMENTS = {"ヤミノヌシ":{"spd":100,"def":80,"hp":85,"atk":120,"spc":110},"ムラサキビ":{"spd":90,"atk":60,"hp":78,"def":65},"ボウレイ":{"hp":90,"atk":60,"def":70},"シャドネコ":{"atk":100,"spc":90,"sdef":70},"オオカブト":{"spd":80,"spc":60},"ジシンヌシ":{"spd":97,"hp":110,"spc":60},"コケゴロ": {"hp": 120, "atk": 130, "def": 120, "spc": 60}, "オオヒノオ": {"sdef": 120, "spd": 125}, "ヨウガンヌシ": {"def": 90, "spd": 110}, "リュウグウ": {"sdef": 103, "spd": 152}, "ライメイ": {"sdef": 90, "spd": 130}, "オニイワ": {"spd": 70, "def": 91}};
+for(const [name,base] of Object.entries(BASE_ADJUSTMENTS)) Object.assign(SPECIES[name].base,base);
+
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
 // その モンスターを ぬる いろセット
 
