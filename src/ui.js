@@ -53,7 +53,7 @@ export const ui = {
         items: items.map((s) => String(s == null ? "" : s)),
         i: Math.min(o.start || 0, Math.max(0, items.length - 1)), top: 0,
         cancel: o.cancel !== false,
-        rows: o.rows || Math.min(items.length, 4),
+        rows: o.rows || Math.min(items.length, 4), columns: o.columns === 2 ? 2 : 1,
         x: o.x, y: o.y, w: o.w, extra: o.extra,
         resolve: resolve,
       });
@@ -202,7 +202,7 @@ function boxOf(w) {
 
   let y = w.y == null ? 8 : w.y;
   const maxRows = Math.max(1, Math.floor((G.H - 16 - CH_PAD_Y * 2) / CH_ROW));
-  const rows = Math.min(w.items.length, w.rows, maxRows);
+  const rows = Math.min(Math.ceil(w.items.length/(w.columns||1)), w.rows, maxRows);
   const h = CH_PAD_Y * 2 + rows * CH_ROW;
   // 余白と行数を保ったまま、画面の内側へ移動する。
   y = Math.max(8, Math.min(y, G.H - 8 - h));
@@ -212,6 +212,14 @@ function boxOf(w) {
 function updateChoice(w) {
   const b = boxOf(w);
   const n = w.items.length;
+  if(w.columns===2){
+    if(In.repeat('right',now)){w.i=(w.i+1)%n;beep('blip');}
+    if(In.repeat('left',now)){w.i=(w.i+n-1)%n;beep('blip');}
+    if(In.repeat('down',now)||In.repeat('up',now)){const target=w.i<2?w.i+2:w.i-2;if(target<n)w.i=target;beep('blip');}
+    if(In.hit('a')){beep('ok');close(w,w.i);}
+    else if(In.hit('b')&&w.cancel){beep('back');close(w,-1);}
+    return;
+  }
   if (In.repeat("down", now)) { w.i = (w.i + 1) % n; beep("blip"); }
   if (In.repeat("up", now)) { w.i = (w.i + n - 1) % n; beep("blip"); }
   if (w.i < w.top) w.top = w.i;
@@ -226,6 +234,14 @@ function drawChoice(w) {
   G.use("ui");
   const b = boxOf(w);
   G.window9(b.x, b.y, b.w, b.h);
+  if(w.columns===2){
+    const cellW=(b.w-16)/2;
+    w.items.forEach((label,i)=>{const x=b.x+8+(i%2)*cellW,y=b.y+CH_PAD_Y+Math.floor(i/2)*CH_ROW;
+      if(i===w.i)G.text('▶',x+4,y,3,12);
+      G.textFit(label,x+22,y,cellW-28,3,14);
+    });
+    return;
+  }
   const maxW = b.w - CH_PAD_L - CH_PAD_R;
   for (let r = 0; r < b.rows; r++) {
     const i = w.top + r;

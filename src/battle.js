@@ -5,7 +5,7 @@ import { drawChapterBattle } from "./chapterArt.js";
 // ============================================================
 import * as G from "./gfx.js";
 import * as In from "./input.js";
-import { ui, BOX, topRect, overlaps, isSaying } from "./ui.js";
+import { ui, BOX, topRect, overlaps } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { battleArt } from "./data/battleart.js";
@@ -14,7 +14,7 @@ import { effect, effectWord } from "./data/types.js";
 import { move as moveData } from "./data/moves.js";
 import { item as itemData } from "./data/items.js";
 import {
-  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp, gainEffort,
+  G as State, species, palOf, accentOf, makeMon, maxHp, statOf, monName, fainted, gainExp, gainEffort, expForLevel, expProgress,
   healFull, rnd, chance, useItem, bagList, addToParty, ownMon, seeMon, learnMove, lagNetMultiplier,
 } from "./state.js";
 
@@ -41,6 +41,12 @@ export const battle = {
     if (!B) return;
     for (const s of [B.you, B.foe]) {
       if (!s) continue;
+      if (s.expAnim) {
+        const a=s.expAnim;a.elapsed=Math.min(a.duration,a.elapsed+dt);
+        const total=a.from+(a.to-a.from)*a.elapsed/a.duration;
+        let lv=a.level;while(lv<s.mon.lv&&total>=expForLevel(lv+1))lv++;
+        s.expView={lv,exp:total};
+      }
       if (s.shakeX) s.shakeX *= 0.82;
       if (s.flash > 0) s.flash -= dt;
     }
@@ -143,7 +149,7 @@ async function chooseAction() {
       continue;
     }
     const i = await ui.choice(["たたかう", "どうぐ", "ガオン", "にげる"], {
-      x: 160, y: 168, w: 152, rows: 4, cancel: false,
+      x: 8, y: 192, w: 304, rows: 2, columns: 2, cancel: false,
     });
     if (i === 0) {
       const mv = await chooseMove();
@@ -166,7 +172,7 @@ async function chooseMove() {
     const d = moveData(mv.name);
     return mv.name + "  " + mv.pp + "/" + mv.max;
   });
-  const i = await ui.choice(labels, { x: 8, y: 168, w: 220, rows: 4 });
+  const i = await ui.choice(labels, { x: 8, y: 192, w: 304, rows: 2, columns: 2 });
   if (i < 0) return null;
   if (m.moves[i].pp <= 0) { await ui.say(["わざの のこりが ない！"]); return null; }
   return m.moves[i];
@@ -538,7 +544,13 @@ async function onFoeDown() {
   await ui.say([monName(m) + "は " + gain + " けいけんちを もらった！"]);
   gainEffort(m, B.foe.mon.sp);
   State.dirty = true;
+  const priorExp=m.exp, priorLevel=m.lv;
   const res = gainExp(m, gain);
+  if(priorLevel<100){
+    B.you.expAnim={from:priorExp,to:m.exp,level:priorLevel,elapsed:0,duration:700};
+    await wait(760);
+    B.you.expAnim=null;B.you.expView=null;
+  }
   for (const lv of res.levels) {
     beep("levelup");
     await ui.say([monName(m) + "は レベル " + lv + "に あがった！"]);
@@ -668,7 +680,7 @@ function drawBattle() {
   G.use("ui");
   G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
   // メッセージが 出ていない ときは、なにを するか きく
-  if (!isSaying() && B.you) {
+  if (!ui.busy && B.you && !B.you.expAnim) {
     const m = B.you.mon;
     G.textFit(monName(m) + "は", BOX.x + 18, BOX.y + 18, 150, 3, 16);
     G.text("どうする？", BOX.x + 18, BOX.y + 46, 3, 16);
@@ -701,12 +713,12 @@ function infoBox(x, y, side, mine) {
   } else G.window9(x, y, w, h);
 
   // なまえは Lv の ぶんを のこして つめる
-  const lv = "Lv" + m.lv;
+  const lv = "Lv" + (mine && side.expView ? side.expView.lv : m.lv);
   const lvW = G.textW(lv, 14);
-  G.textFit(monName(m), x + 14, y + 12, w - 36 - lvW, 3, 16);
-  G.textRight(lv, x + w - 14, y + 14, 3, 14);
+  G.textFit(monName(m), x + 14, y + (mine ? 8 : 12), w - 36 - lvW, 3, 16);
+  G.textRight(lv, x + w - 14, y + (mine ? 10 : 14), 3, 14);
 
-  const bx = x + 14, by = y + 36, bw = w - 28, bh = 8;
+  const bx = x + 14, by = y + (mine ? 28 : 36), bw = w - 28, bh = mine ? 6 : 8;
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
@@ -717,6 +729,14 @@ function infoBox(x, y, side, mine) {
   G.use("ui");
 
   // いちばん下の 行：じぶんは のこりHP、じょうたいは 左に
-  if (m.status) G.text(m.status, x + 14, y + 52, 3, 11);
-  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 14, y + 52, 3, 11);
+  if (m.status) G.text(m.status, x + 14, y + (mine ? 40 : 52), 3, 11);
+  if (mine) G.textRight(Math.round(shown) + "/" + maxHp(m), x + w - 14, y + 40, 3, 11);
+  if (mine) {
+    const progress=expProgress(side.expView||m);
+    G.text('EXP',x+14,y+53,3,9);
+    G.textRight(progress.max?'MAX':progress.current+' / '+progress.required,x+w-14,y+53,3,9);
+    G.ctx.fillStyle=G.isColor()?'#38566b':G.PAL[3];G.ctx.fillRect(x+13,y+64,w-26,5);
+    G.ctx.fillStyle=G.isColor()?'#d7e4e7':G.PAL[1];G.ctx.fillRect(x+14,y+65,w-28,3);
+    G.ctx.fillStyle=G.isColor()?'#38aee8':G.PAL[3];G.ctx.fillRect(x+14,y+65,Math.round((w-28)*progress.ratio),3);
+  }
 }

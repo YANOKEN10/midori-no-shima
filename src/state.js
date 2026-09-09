@@ -21,6 +21,15 @@ export function pick(list) { return list[rnd(list.length)]; }
 
 /* --- モンスター 1たい ---------------------------------------- */
 export function expForLevel(lv) { return lv * lv * lv; }
+export function expProgress(mon) {
+  const level=Math.max(1,Math.min(100,Math.floor(mon.lv)||1));
+  if(level===100)return {current:0,required:0,ratio:1,max:true};
+  const required=expForLevel(level+1)-expForLevel(level);
+  const total=Number.isFinite(mon.exp)?mon.exp:expForLevel(level);
+  const current=Math.max(0,Math.min(required,Math.floor(total)-expForLevel(level)));
+  return {current,required,ratio:current/required,max:false};
+}
+
 
 export function makeMon(spName, lv, opt) {
   spName=SPECIES_ALIASES[spName]||spName;

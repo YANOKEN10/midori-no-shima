@@ -1,4 +1,4 @@
-import { heroFrame } from "./revampArt.js?v=20260909-avatar-v15";
+import { heroFrame } from "./revampArt.js?v=20260909-exp-v16";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
