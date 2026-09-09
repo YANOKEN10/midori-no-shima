@@ -30,6 +30,7 @@ const tabsBox = el.card.querySelector(".tabs");
 let mode = "login";
 let resolveGate = null;
 let formSpec = null;
+let extraForm = null, extraHost = null;
 
 function group(name) { return el.fields.querySelector('[data-f="' + name + '"]'); }
 function show(name, on) { group(name).style.display = on ? "" : "none"; }
@@ -109,10 +110,12 @@ async function submitAuth() {
 function submitForm() {
   const out = {};
   for (const f of formSpec.fields) out[f.key] = el[f.el].value;
+  Object.assign(out, extraForm?.read?.() || {});
   finish(out);
 }
 
 function finish(value) {
+  extraForm?.dispose?.(); extraHost?.remove(); extraForm = extraHost = null;
   el.gate.classList.remove("show");
   // もじの らんに カーソルが のこると キーが きかなくなるので はずす
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -154,11 +157,12 @@ export function showForm(spec) {
     el[f.el].placeholder = f.placeholder ?? ((f.el === "who" || f.el === "name") ? "ポンキチ" : "");
     if (f.type) el[f.el].type = f.type;
   }
+  if (spec.mount) { extraHost = document.createElement("div"); el.go.before(extraHost); extraForm = spec.mount(extraHost); }
   el.go.textContent = spec.submit || "けってい";
   el.skip.textContent = "やめる";
   message(spec.message || "");
   el.gate.classList.add("show");
-  setTimeout(() => el[spec.fields[0].el].focus(), 60);
+  setTimeout(() => { if (!formSpec) return; (spec.fields[0] ? el[spec.fields[0].el] : extraHost?.querySelector("button"))?.focus(); }, 60);
   return new Promise((res) => { resolveGate = res; });
 }
 

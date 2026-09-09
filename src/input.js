@@ -57,14 +57,14 @@ export function initInput() {
   addEventListener("keydown", (e) => {
     const k = MAP[e.code];
     if (!k) return;
-    if (document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+    if (document.activeElement && (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.closest("#gate"))) return;
     e.preventDefault();
     if (!e.repeat) set(k, true);
   });
   addEventListener("keyup", (e) => {
     const k = MAP[e.code];
     if (!k) return;
-    e.preventDefault();
+    if (!document.activeElement?.closest("#gate")) e.preventDefault();
     set(k, false);
   });
   addEventListener("blur", () => { for (const k of KEYS) down[k] = false; });

@@ -1,3 +1,4 @@
+import { heroFrame } from "./revampArt.js?v=20260909-avatar-v15";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -447,8 +448,10 @@ export { hasProgress };
 function drawLookPreview(look, x, y) {
   G.use("ui");
   G.window9(x, y, 84, 108);
+  const current = heroFrame("down", 1, look);
+  if (look.appearanceVersion && current) { G.ctx.imageSmoothingEnabled=false; G.ctx.drawImage(current,x+10,y+6,64,96); return; }
   const st = { hair: look.hat || look.style || "short", bangs: look.bangs == null ? "seven" : look.bangs,
-               skirt: Boolean(look.skirt), face: look.skirt ? "girl" : "boy" };
+               skirt: Boolean(look.skirt), face: look.gender || (look.skirt ? "girl" : "boy") };
   const f = personFramesRaw(st).down[0];
   G.draw(G.makeColorArt(f, 2, "look" + st.hair + st.bangs + (st.skirt ? "s" : ""), playerColors(look)), x + 10, y + 14);
 }

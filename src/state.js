@@ -129,7 +129,7 @@ export function newGame(playerName) {
     playTime: 0,
     where: { map: START.map, x: START.x, y: START.y, dir: START.dir },
     lastCenter: null,
-    look: { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" },
+    look: { gender: "boy", appearanceVersion: 1, shirt: "#2f6fd0", pants: "#231a14", hair: "#6b4a2b" },
     starter: "",
     rivalStarter: "",
   };

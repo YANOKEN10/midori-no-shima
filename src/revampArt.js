@@ -47,6 +47,8 @@ function image(src) {
   return im;
 }
 const hero = image(HERO_SRC);
+const heroine = image("../assets/people-v13/01.png");
+const dressedFrames = new Map();
 const objects = image(OBJECT_SRC);
 const title = image(TITLE_SRC);
 // モバイルで36枚を一斉取得しない。訪問した地図のみ取得し、失敗は再試行する。
@@ -209,9 +211,36 @@ function buildHeroFrame(dir, step) {
   heroFrames.set(key,out); return out;
 }
 
-export function drawHero(ctx, dir, moving, tick, x, y) {
+// Cache palette variants per direction and walk pose; do not tint skin or outlines.
+export function heroFrame(dir, step, look = {}) {
+  const key=[look.gender,look.hair,look.shirt,dir,step].join(':');
+  if (look.appearanceVersion && dressedFrames.has(key)) return dressedFrames.get(key);
+  let base;
+  if (look.gender === 'girl') {
+    if (!heroine.complete || !heroine.naturalWidth) return null;
+    base=document.createElement('canvas');base.width=32;base.height=48;
+    base.getContext('2d').drawImage(heroine,({down:0,left:1,right:2,up:3}[dir]??0)*32,step*48,32,48,0,0,32,48);
+  } else base=buildHeroFrame(dir,step);
+  if (!base || !look.appearanceVersion) return base;
+  const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);
+  const d=ctx.getImageData(0,0,32,48), px=d.data;
+  const rgb=hex=>/^#[0-9a-f]{6}$/i.test(hex||'')?[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)):null;
+  const hair=rgb(look.hair),shirt=rgb(look.shirt);
+  for(let y=0;y<48;y++)for(let x=0;x<32;x++){
+    const i=(y*32+x)*4,r=px[i],g=px[i+1],b=px[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);
+    if(!px[i+3]||max<32)continue;
+    const isHair=y<25&&r>g*1.12&&g>b*1.06&&r-g<85&&r<190;
+    const isShirt=look.gender==='girl'?y>=26&&r>g*1.5&&r>b*1.35:y>=16&&b>r*1.25&&b>g*1.06;
+    const color=isHair?hair:isShirt?shirt:null;if(!color)continue;
+    const shade=isHair?Math.max(.35,Math.min(1.6,(r*.4+g*.45+b*.15)/75)):Math.max(.3,Math.min(1.5,max/170));
+    for(let j=0;j<3;j++)px[i+j]=Math.min(255,Math.round(color[j]*shade));
+  }
+  ctx.putImageData(d,0,0);dressedFrames.set(key,c);return c;
+}
+
+export function drawHero(ctx, dir, moving, tick, x, y, look) {
   const row = moving ? (Math.floor(tick/150)%2 ? 0 : 2) : 1;
-  const f=buildHeroFrame(dir,row);
+  const f=heroFrame(dir,row,look);
   if(!f) return false;
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(f,Math.round(x),Math.round(y));

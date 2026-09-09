@@ -2,7 +2,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260909-follow-v14';
+import { drawNpc } from './npcArt.js?v=20260909-avatar-v15';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -17,7 +17,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260909-follow-v14";
+import { MAPS } from "./data/maps.js?v=20260909-avatar-v15";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -25,12 +25,12 @@ import {
   G as State, followingMon, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260909-follow-v14";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260909-avatar-v15";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260909-follow-v14";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260909-avatar-v15";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -63,7 +63,7 @@ function matchedNpcFrame(img) {
 function playerStyle() {
   const L = State.save.look || {};
   return { hair: L.hat || L.style || "short", bangs: L.bangs == null ? "seven" : L.bangs,
-           skirt: Boolean(L.skirt), face: L.skirt ? "girl" : "boy" };
+           skirt: Boolean(L.skirt), face: L.gender || (L.skirt ? "girl" : "boy") };
 }
 function playerFrames() { return personFramesRaw(playerStyle()); }
 function framesFor(look) {
@@ -1025,7 +1025,7 @@ export const world = {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
         const heroX = px - camX, heroY = py - camY - 28 + hopY;
-        if (!G.isColor() || !drawHero(G.ctx, this.dir, this.moving, this.tick, heroX, heroY)) {
+        if (!G.isColor() || !drawHero(G.ctx, this.dir, this.moving, this.tick, heroX, heroY, State.save.look)) {
           let img;
           const f = playerFrames()[this.dir][fi];
           if (G.isColor()) img = G.makeColorArt(f, 1, "pc" + this.dir + fi, playerColors(State.save.look));

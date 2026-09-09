@@ -1,3 +1,4 @@
+import { chooseAppearance } from "./characterSetup.js";
 import { battleArt } from './data/battleart.js';
 // ============================================================
 //  はじまり（タイトル → ログイン → ぼうけん）
@@ -9,14 +10,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260909-follow-v14";
-import { battle, startBattle } from "./battle.js?v=20260909-follow-v14";
+import { world, bgmFor } from "./world.js?v=20260909-avatar-v15";
+import { battle, startBattle } from "./battle.js?v=20260909-avatar-v15";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260909-follow-v14";
-import { drawTitleBackground } from "./revampArt.js?v=20260909-follow-v14";
+import { START } from "./data/maps.js?v=20260909-avatar-v15";
+import { drawTitleBackground } from "./revampArt.js?v=20260909-avatar-v15";
 
 let scene = null;
 let last = 0;
@@ -222,11 +223,15 @@ async function mainFlow(local, restored) {
       const r = await showForm({
         title: "きみの なまえは？",
         sub: "ぼうけんの あいだ つかう なまえです。",
-        fields: [{ el: "who", key: "name", label: "なまえ", type: "text", value: State.save.name || "レオ", placeholder: "レオ" }],
-        submit: "この なまえで はじめる",
+        fields: [{ el: "who", key: "name", label: "なまえ", type: "text", value: "", placeholder: "ポンキチ" }],
+        submit: "みためを えらぶ",
       });
-      const name = r && String(r.name || "").trim() ? String(r.name).trim().slice(0, 8) : "レオ";
+      if (!r) continue;
+      const name = String(r.name || "").trim().slice(0, 8) || "ポンキチ";
+      const appearance = await chooseAppearance();
+      if (!appearance) continue;
       loadInto(newGame(name));
+      State.save.look = { ...State.save.look, ...appearance.look };
       saveLocal();
       await ui.say([
         "ようこそ ガオンの せかいへ！",
