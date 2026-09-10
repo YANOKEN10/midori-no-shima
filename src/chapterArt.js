@@ -1,3 +1,4 @@
+import {mountainReady,mountainMaterial,mountainFloor,mountainForest} from './mountainArt.js';
 import {forestCanopy,forestReady,boundaryTree} from './forestArt.js';
 import {paintInterior} from './interiorArt.js';
 // Tile-based rendering of the new material pack. The source atlas is preserved.
@@ -14,6 +15,7 @@ function landscape(c,map,x,y,ch){
  const rural=['village','rods','route1','route2'].includes(map.id);
  if(!wild&&!rural)return false;
  ground(c,'grass',x*32,y*32);
+ if(map.id==='mountain')mountainFloor(c,x*32,y*32);
  if(ch!=='.'||wild)return true;
  const track=(a,b)=>{const t=map.rows[b]?.[a];return t==='.'||t==='D'||t==='S'&&map.signs.some(s=>s.x===a&&s.y===b&&s.ground==='.');};
  const dx=x*32,dy=y*32;
@@ -67,7 +69,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(ch==='"')ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
- if(ch==='R')drawMaterial(c,'rock',dx,dy,32,32);
+ if(ch==='R'){if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}
  if(ch==='X')cliff(c,map,x,y);
  if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
  if(ch==='=')drawMaterial(c,'fenceHorizontal',dx,dy,32,32);
@@ -80,10 +82,10 @@ export function drawChapterMap(ctx,map,camX,camY){
  const ch=map.rows[y][x];if(!'bBtKP'.includes(ch)||visited.has(x+','+y))continue;let w=1,h=1;while(map.rows[y][x+w]===ch)w++;while(map.rows[y+h]?.slice(x,x+w)===ch.repeat(w))h++;
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
- forestCanopy(c,map);
- for(const p of map.props||[]){if(boundaryTree(map,p))continue;drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
+ if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
+ for(const p of map.props||[]){if(boundaryTree(map,p))continue;if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
- if(!map.forestBorder||forestReady())cache.set(map,cv);}
+ if((!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady()))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }

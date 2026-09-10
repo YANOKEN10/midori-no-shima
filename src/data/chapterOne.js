@@ -55,7 +55,7 @@ export function buildChapterOne(){
  rect(mountain,6,18,2,4,'.');rect(mountain,20,11,2,4,'.');
  for(const [x,y] of [[11,22],[18,22],[23,8],[5,7],[24,27]])mountain.g[y][x]='R';
  npc(mountain,14,4,'ラテット','boy',[],{script:'v5:latett',artMon:'ラテット',hideFlag:'v5:latettSeen'});
- mountain.enc={rate:15,list:[['スナコロネ',3,5,60],['ツチノコ',3,5,40]]};mountain.battleTerrain='grass';trees(mountain);
+ mountain.enc={rate:15,list:[['スナコロネ',3,5,59],['ツチノコ',3,5,40],['コケゴロ',8,10,1]]};mountain.battleTerrain='grass';trees(mountain);
  const one=add('route1','1ばんどうろ',26,32);path(one,12,0,12,31);path(one,5,10,18,10);rect(one,3,5,6,7,'"');rect(one,17,15,6,7,'"');rect(one,5,24,5,4,'"');one.enc={rate:17,list:[['ネズミン',2,3,55],['トリッピ',2,4,45]]};sign(one,10,4,['1ばんどうろ','北：ネイチャー　南：ロッズ']);npc(one,15,26,'旅の女の子','girl',['ガオンを持っていなくても','ラグネットを投げて つかまえられるよ。']);trees(one);
  const two=add('route2','2ばんどうろ',30,42);path(two,14,0,14,41);path(two,5,10,24,10);path(two,5,23,24,23);path(two,5,34,24,34);
  rect(two,3,4,7,5,'"');rect(two,20,13,7,6,'"');rect(two,3,27,7,6,'"');rect(two,19,36,8,4,'"');
@@ -88,6 +88,19 @@ export function buildChapterOne(){
  sign(ruins,4,14,['北：火山の奥　東：深闇の洞窟','奥ほど 強いガオンが 生息する。']);
  furnishInteriors(M);
  encloseTowns(M);
+ // Route 1 retains every road, tree, sign and exit; open meadow becomes encounter grass.
+ for(const row of M.route1.g)for(let x=0;x<row.length;x++)if(row[x]===',')row[x]='"';
+ // Larger mossy crags occupy selected forest pockets, away from the existing trail.
+ for(const [x,y,w,h]of [[2,4,3,4],[24,3,3,5],[24,24,3,4],[3,28,3,3]]){
+  const m=M.mountain;let clear=true;
+  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)if(![',','T','R'].includes(m.g[j]?.[i]))clear=false;
+  if(!clear)continue;
+  m.props=m.props.filter(p=>{const overlap=p.x<x+w&&p.x+p.w>x&&p.y<y+h&&p.y+p.h>y;if(!overlap)return true;for(let j=p.y;j<p.y+p.h;j++)for(let i=p.x;i<p.x+p.w;i++)if(m.g[j]?.[i]==='T')m.g[j][i]=',';return false;});
+  prop(m,'mountainCrag',x,y,w,h,'R');
+ }
+ // Dense stands leave the authored trail and encounter clearings open.
+ for(let y=4;y<29;y+=3)for(let x=3;x<26;x+=3)tree(M.mountain,x,y,(x+y)%2?'fir':'tree');
+ M.mountain.props.sort((a,b)=>(a.y+a.h)-(b.y+b.h));
  populatePeople(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;

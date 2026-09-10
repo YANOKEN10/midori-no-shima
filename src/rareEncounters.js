@@ -8,7 +8,7 @@ export const RARE_RULES = [
 ];
 export const EXCLUSIVE_WILD = new Set(RARE_RULES.map(r=>r.name));
 export const EVOLUTION_ONLY = new Set(['ユウレイン','ボウレイ']);
-export function ordinaryEncounters(list=[]){return list.filter(e=>!EXCLUSIVE_WILD.has(e[0])&&!EVOLUTION_ONLY.has(e[0]));}
+export function ordinaryEncounters(list=[],mapId){return list.filter(e=>(!EXCLUSIVE_WILD.has(e[0])||(mapId==='mountain'&&e[0]==='コケゴロ'))&&!EVOLUTION_ONLY.has(e[0]));}
 export function rareAreasUnlocked(save){return !!save.flags?.['v5:dex'] && MAPS.natureforest.npcs.every((n,i)=>!n.trainer||save.flags?.['beat:natureforest:'+i]);}
 export function rareCandidates(mapId){
  const m=MAPS[mapId];if(!m)return [];

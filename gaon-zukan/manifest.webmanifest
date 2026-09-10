@@ -1,0 +1,32 @@
+{
+  "id": "/gaon-zukan/",
+  "name": "ガオン図鑑",
+  "short_name": "ガオン図鑑",
+  "description": "ガオンの姿・進化・おぼえるわざと、わざリスト",
+  "start_url": "/gaon-zukan/",
+  "scope": "/gaon-zukan/",
+  "display": "standalone",
+  "lang": "ja",
+  "background_color": "#e8f1ed",
+  "theme_color": "#183e34",
+  "icons": [
+    {
+      "src": "/gaon-zukan/icons/icon-192-v2.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/gaon-zukan/icons/icon-512-v2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/gaon-zukan/icons/maskable-512-v2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
