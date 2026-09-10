@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>わざリスト｜ガオン図鑑</title><meta name="description" content="ガオン・ワールドのわざ一覧。名前・回数（PP）・威力・命中率・タイプ・分類・効果を確認できます。">
+<meta name="theme-color" content="#183e34"><link rel="canonical" href="https://midori-no-shima.vercel.app/gaon-zukan/moves/"><link rel="stylesheet" href="./style.css"></head>
+<body><header><nav aria-label="ページ移動"><a href="/gaon-zukan/">← ガオン図鑑</a><a href="/">ゲームで遊ぶ</a></nav><div class="heading"><p class="eyebrow">GAON WORLD · わざの図鑑</p><h1>わざリスト</h1><p>どんなわざで、どう戦う？<br>回数や威力、効果を見比べよう。</p></div></header>
+<main><form class="filters" role="search"><label class="query">わざの名前・効果でさがす<input id="query" type="search" placeholder="例：ひのこ、かいふく" autocomplete="off"></label><label>タイプ<select id="type"><option value="">すべてのタイプ</option></select></label><label>分類<select id="category"><option value="">すべての分類</option><option value="phys">ぶつり</option><option value="spec">とくしゅ</option><option value="stat">へんか</option></select></label><label>並び順<select id="sort"><option value="name">名前順</option><option value="power">威力が高い順</option><option value="pp">回数が多い順</option></select></label><button type="reset">条件をクリア</button></form>
+<div class="guide"><p>回数（PP）は、回復せずに使える基本の回数です。<br>威力「—」は直接ダメージを与えないわざです。</p><p id="count" role="status">わざを読み込んでいます…</p></div>
+<div id="list" class="list"></div><p id="empty" hidden>見つかりませんでした。名前や条件を変えてみてください。</p><noscript>わざリストを見るにはJavaScriptを有効にしてください。</noscript></main>
+<footer><a href="/gaon-zukan/">ガオン図鑑にもどる</a><p>ガオン・ワールドのゲーム内データに基づくわざ情報</p></footer><script type="module" src="./list.js"></script></body></html>
