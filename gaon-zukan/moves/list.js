@@ -3,9 +3,9 @@ const categories={phys:'ぶつり',spec:'とくしゅ',stat:'へんか'},colors=
 const normalize=s=>s.normalize('NFKC').toLowerCase().replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-96));
 function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
 try{
- const {MOVES}=await import('/src/data/moves.js');const moves=Object.entries(MOVES);
+ const {MOVES,canonicalMoveName}=await import('/src/data/moves.js');const moves=Object.entries(MOVES);
  for(const t of new Set(moves.map(([,m])=>m.type))){const option=node('option',t);option.value=t;type.append(option);}
- q.value=new URLSearchParams(location.search).get('q')||'';
+ q.value=canonicalMoveName(new URLSearchParams(location.search).get('q')||'');
  function render(){const query=normalize(q.value.trim());const selected=moves.filter(([name,m])=>(!query||normalize(name+' '+m.desc).includes(query))&&(!type.value||m.type===type.value)&&(!cat.value||m.cat===cat.value));selected.sort((a,b)=>(sort.value==='power'?b[1].pow-a[1].pow:sort.value==='pp'?b[1].pp-a[1].pp:0)||a[0].localeCompare(b[0],'ja'));const fragment=document.createDocumentFragment();for(const[name,m]of selected){const card=node('article','','move');card.dataset.name=name;card.style.setProperty('--accent',colors[m.type]||'#738b75');const tags=node('div','','tags');tags.append(node('span',m.type),node('span',categories[m.cat]));card.append(tags,node('h2',name));const stats=node('dl','','stats');for(const[label,value]of [['回数（PP）',m.pp],['威力',m.pow||'—'],['命中率',m.acc+'%']]){const pair=node('div','');pair.append(node('dt',label),node('dd',String(value)));stats.append(pair);}card.append(stats,node('p',m.desc,'description'));if(m.pri)card.append(node('p','優先度：'+(m.pri>0?'+':'')+m.pri,'priority'));fragment.append(card);}list.replaceChildren(fragment);count.textContent=selected.length+' / '+moves.length+' わざ';document.querySelector('#empty').hidden=selected.length!==0;}
  form.addEventListener('submit',e=>e.preventDefault());form.addEventListener('input',render);form.addEventListener('change',render);form.addEventListener('reset',()=>setTimeout(render,0));render();
 }catch(error){count.textContent='わざを読み込めませんでした。ページを再読み込みしてください。';console.error(error);}

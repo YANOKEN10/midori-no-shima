@@ -3,7 +3,7 @@ import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
 // ============================================================
 import { SPECIES, species, palOf, accentOf, STAT_KEYS } from "./data/species.js";
-import { newMove, move } from "./data/moves.js";
+import { newMove, move, canonicalMoveName } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
 
@@ -45,7 +45,7 @@ export function makeMon(spName, lv, opt) {
   const uniq = [];
   for (const name of pool) if (uniq.indexOf(name) < 0) uniq.push(name);
   for (const name of uniq.slice(-4)) m.moves.push(newMove(name));
-  if (!m.moves.length) m.moves.push(newMove("たいあたり"));
+  if (!m.moves.length) m.moves.push(newMove("タックル"));
   m.hp = maxHp(m);
   return m;
 }
@@ -113,6 +113,7 @@ export function gainExp(m, amount) {
 }
 
 export function learnMove(m, name) {
+  name = canonicalMoveName(name);
   if (m.moves.some((x) => x.name === name)) return "already";
   if (m.moves.length < 4) { m.moves.push(newMove(name)); return "ok"; }
   return "full";
@@ -153,7 +154,7 @@ export function loadInto(data) {
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
   G.save.box = G.save.box || [];
-  for(const mon of [...G.save.party,...G.save.box]){mon.sp=SPECIES_ALIASES[mon.sp]||mon.sp;normalizeMonStats(mon);}
+  for(const mon of [...G.save.party,...G.save.box]){mon.sp=SPECIES_ALIASES[mon.sp]||mon.sp;normalizeMonStats(mon);for(const mv of mon.moves||[])mv.name=canonicalMoveName(mv.name);}
   for(const key of ['dexSeen','dexOwn']){
     G.save[key] ||= {};
     for(const [oldName,newName]of Object.entries(SPECIES_ALIASES))if(G.save[key][oldName]){G.save[key][newName]=G.save[key][oldName];delete G.save[key][oldName];}
