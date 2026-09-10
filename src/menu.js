@@ -1,4 +1,4 @@
-import { heroFrame } from "./revampArt.js?v=20260910-forest-battle-v19";
+import { heroFrame } from "./revampArt.js?v=20260910-landscape-v20";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================

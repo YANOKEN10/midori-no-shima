@@ -8,6 +8,22 @@ let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).t
 const cache=new WeakMap();
 export function drawMaterial(ctx,key,x,y,w,h){const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
+// Rural tracks keep the grass texture; connected neighbours share open edges.
+function landscape(c,map,x,y,ch){
+ const wild=['mountain','natureforest','mossSanctuary'].includes(map.id);
+ const rural=['village','rods','route1','route2'].includes(map.id);
+ if(!wild&&!rural)return false;
+ ground(c,'grass',x*32,y*32);
+ if(ch!=='.'||wild)return true;
+ const track=(a,b)=>{const t=map.rows[b]?.[a];return t==='.'||t==='D'||t==='S'&&map.signs.some(s=>s.x===a&&s.y===b&&s.ground==='.');};
+ const dx=x*32,dy=y*32;
+ const l=track(x-1,y)?0:3,r=track(x+1,y)?32:29,t=track(x,y-1)?0:3,b=track(x,y+1)?32:29;
+ c.fillStyle='rgba(174,224,157,.36)';c.fillRect(dx+l,dy+t,r-l,b-t);
+ const il=l?l+1:0,ir=r<32?r-1:32,it=t?t+1:0,ib=b<32?b-1:32;
+ c.fillStyle='rgba(192,232,176,.20)';c.fillRect(dx+il,dy+it,ir-il,ib-it);
+ for(let i=0;i<5;i++){const px=5+(x*7+y*3+i*11)%22,py=5+(x*3+y*13+i*7)%22;c.fillStyle=i%2?'#a1d29b':'#83c593';c.fillRect(dx+px,dy+py,2,1);}
+ return true;
+}
 // Vertical walls use a continuous side rim and staggered rock seams.
 function cliff(c,map,x,y){
  const w=map.rows[0].length,dx=x*32,dy=y*32;
@@ -48,7 +64,7 @@ export function drawChapterMap(ctx,map,camX,camY){
   continue;
  }
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
- const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';ground(c,base,dx,dy);
+ const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(ch==='"')ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R')drawMaterial(c,'rock',dx,dy,32,32);

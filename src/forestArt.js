@@ -1,15 +1,31 @@
-const tree=new Image(),fill=new Image();tree.src=new URL('../assets/world-v19/tree.png',import.meta.url).href;fill.src=new URL('../assets/world-v19/forest.png',import.meta.url).href;
-export const forestReady=()=>tree.complete&&tree.naturalWidth&&fill.complete&&fill.naturalWidth;
+const tree=new Image();tree.src=new URL('../assets/world-v19/tree.png',import.meta.url).href;
+export const forestReady=()=>tree.complete&&tree.naturalWidth;
 export function boundaryTree(map,p){const w=map.rows[0].length,h=map.rows.length;return map.forestBorder&&['tree','fir'].includes(p.art)&&(p.x<2||p.x+p.w>w-2||p.y<3||p.y+p.h>h-3);}
-export function forestCanopy(c,map){
- if(!map.forestBorder)return;const w=map.rows[0].length,h=map.rows.length;c.save();c.beginPath();
- for(let y=0;y<h;y++)for(let x=0;x<w;x++)if((x<2||x>=w-2||y<3||y>=h-3)&&map.rows[y][x]==='T')c.rect(x*32,y*32,32,32);
- c.clip();c.fillStyle='#348047';c.fillRect(0,0,w*32,h*32);
- if(forestReady()){
-  for(let y=0;y<h*32;y+=128)for(let x=0;x<w*32;x+=128)c.drawImage(fill,x,y);
-  // All trees stay upright. The front row exposes trunks toward the clearing.
-  for(let y=-40;y<h*32;y+=56){c.drawImage(tree,4,y,64,80);c.drawImage(tree,(w-2)*32-4,y,64,80);}
-  for(let x=-16;x<w*32;x+=56){c.drawImage(tree,x,16,64,80);c.drawImage(tree,x,(h-3)*32+20,64,80);}
+// Fit complete crowns between openings. Never clip sprites against road tiles.
+export function forestLayout(map){
+ if(!map.forestBorder)return [];
+ const w=map.rows[0].length,h=map.rows.length,out=[];
+ const runs=(n,valid,emit)=>{for(let a=0;a<n;){if(!valid(a)){a++;continue;}let b=a+1;while(b<n&&valid(b))b++;emit(a*32,b*32);a=b;}};
+ const positions=(a,b,size,step)=>{const length=b-a;if(length<size)return [a];const count=Math.max(1,Math.ceil((length-size)/step)+1);return Array.from({length:count},(_,i)=>Math.round(a+(count===1?0:i*(length-size)/(count-1))));};
+ const add=(x,y,width=64)=>out.push({x,y,w:width,h:width*1.25});
+ for(const south of [false,true]){
+  const row=south?h-3:0;
+  runs(w,x=>[0,1,2].every(j=>map.rows[row+j]?.[x]==='T'),(a,b)=>{
+   const size=Math.min(64,b-a);
+   for(const x of positions(a,b,size,52)){
+    if(!south)add(x, -32,size);
+    add(x,row*32+(south?0:16),size);
+   }
+   if(south)for(const x of positions(a,b,size,48))add(x,row*32+48,size);
+  });
  }
- c.restore();
+ for(const right of [false,true]){
+  const col=right?w-2:0;
+  runs(h,y=>y>=3&&y<h-3&&[0,1].every(i=>map.rows[y]?.[col+i]==='T'),(a,b)=>{
+   const size=Math.min(64,(b-a)/1.25);
+   for(const y of positions(a,b,size*1.25,48))add(col*32+(64-size)/2,y,size);
+  });
+ }
+ return out;
 }
+export function forestCanopy(c,map){if(!forestReady())return;for(const p of forestLayout(map))c.drawImage(tree,p.x,p.y,p.w,p.h);}
