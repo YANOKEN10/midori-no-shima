@@ -1,3 +1,4 @@
+import {drawBattlePanel} from './battleSceneArt.js';
 import {drawItemList,visibleItems} from './itemScreens.js';
 // ============================================================
 //  メッセージわく と メニュー
@@ -25,8 +26,10 @@ const CH_PAD_Y = 16;
 
 let stack = [];       // うえに あるものが 入力を うけとる
 let now = 0;
+let battleMode=false;
 
 export const ui = {
+  setBattleMode(value){battleMode=!!value;Object.assign(BOX,battleMode?{x:0,y:208,w:320,h:80}:{x:8,y:196,w:304,h:84});},
   get busy() { return stack.length > 0; },
 
   // --- はなす -------------------------------------------------
@@ -172,13 +175,13 @@ function updateSay(w, dt) {
 function drawSay(w) {
   G.use("ui");
   const cur = curPage(w);
-  G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
+  if(battleMode)drawBattlePanel(G.ctx);else G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
   let left = Math.floor(w.shown);
   for (let i = 0; i < cur.length; i++) {
     const line = cur[i];
     const show = line.slice(0, Math.max(0, left));
     left -= line.length;
-    G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), 3, TEXT_SIZE);
+    G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), battleMode?0:3, TEXT_SIZE);
   }
   const total = cur.join("").length;
   if (w.shown >= total && Math.floor(now / 300) % 2 === 0) {
@@ -234,15 +237,15 @@ function updateChoice(w) {
 function drawChoice(w) {
   G.use("ui");
   const b = boxOf(w);
-  G.window9(b.x, b.y, b.w, b.h);
+  if(w.battle)drawBattlePanel(G.ctx,b.x,b.y,b.w,b.h);else G.window9(b.x, b.y, b.w, b.h);
   if(w.battle){
     const cellW=(b.w-24)/2;
     w.items.forEach((label,i)=>{
       const x=b.x+12+(i%2)*cellW,y=b.y+12+Math.floor(i/2)*32;
-      if(i===w.i){G.ctx.fillStyle='#d3e8df';G.ctx.fillRect(x,y-2,cellW-4,30);G.text('▶',x+2,y+2,3,10);}
+      if(i===w.i){G.ctx.fillStyle='#3b6376';G.ctx.fillRect(x,y-2,cellW-4,30);G.text('▶',x+2,y+2,0,10);}
       const available=cellW-24,size=Math.min(14,14*available/Math.max(1,G.textW(label,14)));
-      G.text(label,x+18,y+(w.details?0:6),3,size);
-      if(w.details)G.text(w.details[i]||'',x+18,y+17,3,10);
+      G.text(label,x+18,y+(w.details?0:6),0,size);
+      if(w.details)G.text(w.details[i]||'',x+18,y+17,0,10);
     });
     return;
   }

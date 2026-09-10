@@ -1,3 +1,4 @@
+import {forestCanopy,forestReady,boundaryTree} from './forestArt.js';
 import {paintInterior} from './interiorArt.js';
 // Tile-based rendering of the new material pack. The source atlas is preserved.
 import { tileFor } from './tiles.js';
@@ -7,26 +8,6 @@ let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).t
 const cache=new WeakMap();
 export function drawMaterial(ctx,key,x,y,w,h){const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
-// Layered boundary canopy is clipped to blocked forest cells, keeping exits clear.
-function forestCanopy(c,map){
- if(!map.forestBorder)return;
- const w=map.rows[0].length,h=map.rows.length;
- c.save();c.beginPath();
- for(let y=0;y<h;y++)for(let x=0;x<w;x++)if((x<2||x>=w-2||y<3||y>=h-3)&&map.rows[y][x]==='T')c.rect(x*32,y*32,32,32);
- c.clip();c.fillStyle='#174f3c';c.fillRect(0,0,w*32,h*32);
- for(let layer=0;layer<3;layer++){
-  const offset=(layer-2)*23;
-  for(let y=-2;y<h+2;y+=2){
-   drawMaterial(c,'tree',offset,y*32+layer*19,64,96);
-   drawMaterial(c,'tree',(w-2)*32-offset,y*32+layer*19,64,96);
-  }
-  for(let x=-2;x<w+2;x+=2){
-   drawMaterial(c,'tree',x*32+layer*21,offset,64,96);
-   drawMaterial(c,'tree',x*32+layer*21,(h-3)*32-offset,64,96);
-  }
- }
- c.restore();
-}
 // Vertical walls use a continuous side rim and staggered rock seams.
 function cliff(c,map,x,y){
  const w=map.rows[0].length,dx=x*32,dy=y*32;
@@ -84,9 +65,9 @@ export function drawChapterMap(ctx,map,camX,camY){
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
  forestCanopy(c,map);
- for(const p of map.props||[]){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
+ for(const p of map.props||[]){if(boundaryTree(map,p))continue;drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
- cache.set(map,cv);}
+ if(!map.forestBorder||forestReady())cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }

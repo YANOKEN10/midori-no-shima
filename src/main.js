@@ -10,14 +10,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260909-title-scale-v17";
-import { battle, startBattle } from "./battle.js?v=20260909-title-scale-v17";
+import { world, bgmFor } from "./world.js?v=20260910-forest-battle-v19";
+import { battle, startBattle } from "./battle.js?v=20260910-forest-battle-v19";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260909-title-scale-v17";
-import { drawTitleBackground } from "./revampArt.js?v=20260909-title-scale-v17";
+import { START } from "./data/maps.js?v=20260910-forest-battle-v19";
+import { drawTitleBackground } from "./revampArt.js?v=20260910-forest-battle-v19";
 
 let scene = null;
 let last = 0;
@@ -88,43 +88,8 @@ const title = {
       ui.draw();
       return;
     }
-    // そら → うみ → くさ の はいけい
-    G.use("sky");
-    G.clear(0);
-    G.rect(0, 96, G.W, 20, 1);
-    G.use("water");
-    G.rect(0, 116, G.W, 40, 1);
-    for (let i = 0; i < 5; i++) {
-      const x = ((t / 30) + i * 70) % (G.W + 40) - 20;
-      G.rect(x, 126 + (i % 2) * 14, 22, 3, 0);
-    }
-    G.use("grass");
-    G.rect(0, 156, G.W, G.H - 156, 1);
-    G.rect(0, 156, G.W, 4, 2);
-
-    // ロゴ（ふちどりを つけて はっきり 見せる）
-    G.use("title");
-    G.rect(20, 30, G.W - 40, 80, 3);
-    G.rect(24, 34, G.W - 48, 72, 2);
-    G.rect(24, 34, G.W - 48, 8, 1);
-    outlined("ガオン", G.W / 2, 42, 32);
-    outlined("ワールド", G.W / 2, 76, 24);
-    G.use("title");
-    const sub = "〜ガオンずかんを 完成させよう〜";
-    const sw = G.textW(sub, 14) + 24;
-    G.rect((G.W - sw) / 2, 114, sw, 24, 3);
-    G.text(sub, (G.W - sw) / 2 + 12, 118, 0, 14);
-
-    // The loading fallback also shows only Ratetto.
-    const current=battleArt('ラテット');
-    if(current)G.drawScaled(current,112,140,96,96);
-
-    G.use("ui");
-    if (Math.floor(t / 500) % 2 === 0) {
-      G.textCenter("PUSH  START", G.W / 2 + 2, 240, 3, 18);
-      G.textCenter("PUSH  START", G.W / 2, 238, 0, 18);
-    }
-    G.textCenter("(c) VORAZ  1998-2026", G.W / 2, 268, 0, 12);
+    // Only a neutral loading surface is shown until the current title is ready.
+    G.ctx.fillStyle='#0b2435';G.ctx.fillRect(0,0,G.W,G.H);
     ui.draw();
   },
 };

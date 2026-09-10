@@ -1,3 +1,4 @@
+import {drawBattleScene,drawTrainerBack,drawBattlePanel} from './battleSceneArt.js';
 import {drawItem} from './itemArt.js';
 import { drawChapterBattle } from "./chapterArt.js";
 // ============================================================
@@ -39,6 +40,7 @@ export const battle = {
   update(dt) {
     ui.update(dt);
     if (!B) return;
+    B.introTime+=dt;
     for (const s of [B.you, B.foe]) {
       if (!s) continue;
       if (s.shakeX) s.shakeX *= 0.82;
@@ -73,11 +75,12 @@ export async function startBattle(opts) {
     foeParty: foeParty, foeIndex: 0,
     you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
     turn: 0, runTries: 0, hpAnim: true, caught: false,
-    intro: 0,
+    intro: 'trainer',introTime:0,
   };
   if (B.you) B.you.showHp = you.hp;
   B.foe.showHp = B.foe.mon.hp;
   battle.active = true;
+  ui.setBattleMode(true);
 
   playBgm(isTrainer ? ((opts.trainer.leader || opts.trainer.champ) ? "boss" : "battle") : "battle");
   seeMon(B.foe.mon.sp);
@@ -85,7 +88,11 @@ export async function startBattle(opts) {
   await wait(260);
   if (isTrainer) await ui.say([opts.trainer.name + "が しょうぶを しかけてきた！"]);
   else await ui.say(["あっ！ やせいの " + B.foe.mon.sp + "が とびだしてきた！"]);
-  if (B.you) await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
+  if (B.you) {
+    await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
+    B.intro='sending';B.introTime=0;await wait(320);
+    B.intro='reveal';B.introTime=0;await wait(300);B.intro='ready';
+  }
   else await ui.say(["まだ ガオンを もっていない。", "ラグネットで つかまえてみよう！"]);
 
   let result = "";
@@ -119,6 +126,7 @@ export async function startBattle(opts) {
   }
 
   battle.active = false;
+  ui.setBattleMode(false);
   lastEvo = B.pendingEvo || null;
   B = null;
   if (result === "win" && isTrainer) {
@@ -612,23 +620,8 @@ function drawBattle() {
 
   // mount2 is a green river sanctuary despite its alpine story location.
   const winterField = /^(sky|route6|cloud)$/.test((State.save.where && State.save.where.map) || "");
-  const battleBackground = G.isColor() && environmentTile(winterField ? "battleBackgroundWinter" : "battleBackground");
-  const battlePlatform = G.isColor() && environmentTile(winterField ? "battlePlatformWinter" : "battlePlatform");
-  const chapterBackground = G.isColor() && drawChapterBattle(G.ctx, State.save.battleTerrain || "grass");
-  if (chapterBackground) { /* Platforms are included in the new background. */ }
-  else if (battleBackground) G.draw(battleBackground, 0, 0);
-  else {
-    G.use("sky"); G.rect(0, 0, G.W, 90, 0); G.rect(0, 78, G.W, 12, 1);
-    G.use("battleBg"); G.rect(0, 90, G.W, 106, 1); G.rect(0, 90, G.W, 3, 2);
-  }
-  if (chapterBackground) { /* No duplicate legacy platforms. */ } else if (battlePlatform) {
-    G.draw(battlePlatform, 178, 112);
-    G.draw(battlePlatform, 2, 168);
-  } else {
-    ellipse(248, 132, 58, 13, 2); ellipse(248, 129, 58, 13, 0);
-    ellipse(72, 188, 70, 15, 2); ellipse(72, 185, 70, 15, 0);
-  }
-
+  if(!drawBattleScene(G.ctx))return;
+  if(B.intro==='trainer'||B.intro==='sending')drawTrainerBack(G.ctx,State.save.look,28-(B.intro==='sending'?Math.min(1,B.introTime/320)*120:0),120);
   if(B.captureNet){const t=Math.min(1,(performance.now()-B.captureNet.start)/400),size=24+72*t,x=62+(248-62)*t,y=158+(80-158)*t-Math.sin(t*Math.PI)*48;drawItem(G.ctx,B.captureNet.name,x-size/2,y-size/2,size);}
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
@@ -639,45 +632,37 @@ function drawBattle() {
 
   if (!B.foe.hidden && foeArt) {
     const generated = battleArt(B.foe.mon.sp);
-    if (generated) G.drawScaled(generated, 184 + (B.foe.shakeX | 0), 4, 128, 128);
-    else {
-      const img = G.makeMonArt(foeArt, 2, "m" + B.foe.mon.sp, foeSet, foeAcc, MONPAL[B.foe.mon.sp]);
-      G.draw(img, 184 + (B.foe.shakeX | 0), 4);
-    }
+    if (generated) G.drawScaled(generated, 200 + (B.foe.shakeX | 0), 44, 88, 88);
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
-      G.ctx.globalAlpha = 0.5; G.rect(184, 4, 128, 128, 0); G.ctx.globalAlpha = 1;
+      G.ctx.globalAlpha = 0.5; G.rect(200, 44, 88, 88, 0); G.ctx.globalAlpha = 1;
     }
   }
-  if (B.you && !B.you.hidden && youArt) {
+  if (B.you && !B.you.hidden && youArt && B.intro!=='trainer' && B.intro!=='sending') {
     const generated = battleArt(B.you.mon.sp, true);
-    if (generated) G.drawScaled(generated, 8 + (B.you.shakeX | 0), 60, 128, 128);
-    else {
-      const img = G.makeMonArt(youArt, 2, "m" + B.you.mon.sp, youSet, youAcc, MONPAL[B.you.mon.sp]);
-      G.draw(img, 8 + (B.you.shakeX | 0), 60);
-    }
+    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=88*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
-      G.ctx.globalAlpha = 0.5; G.rect(8, 60, 128, 128, 0); G.ctx.globalAlpha = 1;
+      G.ctx.globalAlpha = 0.5; G.rect(20, 120, 88, 88, 0); G.ctx.globalAlpha = 1;
     }
   }
 
   // 下の わく（メニューが うかんで 見えないように）
   G.use("ui");
-  if(!ui.busy)G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
+  if(!ui.busy)drawBattlePanel(G.ctx);
   // メッセージが 出ていない ときは、なにを するか きく
   if (!ui.busy && B.you) {
     const m = B.you.mon;
-    G.textFit(monName(m) + "は", BOX.x + 18, BOX.y + 18, 150, 3, 16);
-    G.text("どうする？", BOX.x + 18, BOX.y + 46, 3, 16);
+    G.textFit(monName(m) + "は", BOX.x + 18, BOX.y + 18, 250, 0, 14);
+    G.text("どうする？", BOX.x + 18, BOX.y + 46, 0, 14);
   }
 
   // じょうほうの わくは、メニューと かさなるときは かくす
   const top = topRect();
-  const foeR = { x: 8, y: 12, w: 148, h: 72 };
-  const youR = { x: 164, y: 120, w: 148, h: 72 };
+  const foeR = { x: 10, y: 20, w: 144, h: 44 };
+  const youR = { x: 164, y: 146, w: 146, h: 54 };
   if (!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
-  if (B.you && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
+  if (B.you && B.intro!=='trainer'&&B.intro!=='sending' && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
 }
 
 function ellipse(cx, cy, rx, ry, c) {
@@ -689,7 +674,7 @@ function ellipse(cx, cy, rx, ry, c) {
 
 function infoBox(x, y, side, mine) {
   const m = side.mon;
-  const w = 148, h = 72;
+  const w = mine?146:144, h = mine?54:44;
   G.use("ui");
   if (G.isColor()) {
     G.ctx.fillStyle="#315456";G.ctx.fillRect(x+3,y+3,w,h);
@@ -698,14 +683,11 @@ function infoBox(x, y, side, mine) {
     G.ctx.fillStyle="#b4bea0";G.ctx.fillRect(x+6,y+6,w-12,1);
   } else G.window9(x, y, w, h);
 
-  // Give the name its own full-width line; level and HP never cross it.
-  const name=monName(m),nameWidth=w-24;
-  const nameSize=Math.min(14,14*nameWidth/Math.max(1,G.textW(name,14)));
-  G.text(name,x+12,y+9,3,nameSize);
-  G.textRight('Lv'+m.lv,x+w-12,y+29,3,12);
-  if(m.status)G.text(m.status,x+12,y+30,3,10);
-  else G.text('HP',x+12,y+31,3,10);
-  const bx=x+12,by=y+48,bw=w-24,bh=6;
+  const level='Lv'+m.lv,lvWidth=G.textW(level,11),name=monName(m),nameWidth=w-24-lvWidth;
+  const nameSize=Math.min(12,12*nameWidth/Math.max(1,G.textW(name,12)));
+  G.text(name,x+9,y+9,3,nameSize);G.textRight(level,x+w-9,y+9,3,11);
+  G.text('HP',x+10,y+27,3,10);
+  const bx=x+31,by=y+28,bw=w-41,bh=5;
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
@@ -715,5 +697,6 @@ function infoBox(x, y, side, mine) {
   G.rect(bx, by, Math.round(bw * ratio), bh, 1);
   G.use("ui");
 
-  if(mine)G.textRight(Math.round(shown)+' / '+maxHp(m),x+w-12,y+58,3,10);
+  if(m.status)G.text(m.status,x+10,y+39,3,8);
+  if(mine)G.textRight(Math.round(shown)+' / '+maxHp(m),x+w-10,y+39,3,10);
 }
