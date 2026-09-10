@@ -1,3 +1,4 @@
+import {MOVES, BURST_MOVE_NAMES} from './moves.js';
 // ============================================================
 //  モンスター ずかん（ぜんぶ オリジナルの いきものです）
 //   base : たいりょく・こうげき・ぼうぎょ・すばやさ・とくしゅ
@@ -318,6 +319,13 @@ export function accentOf(spc) {
 
 export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ノーマル"; }
 export function nameByNo(no) { return DEX_ORDER.find((n) => SPECIES[n].no === no) || ""; }
+
+// Strong special attackers learn their own type's burst at level 45.
+export const BURST_LEARN_LEVEL = 45;
+export const BURST_SPECIAL_MIN = 100;
+for(const sp of Object.values(SPECIES))if(sp.base.spc>=BURST_SPECIAL_MIN){
+  for(const name of BURST_MOVE_NAMES)if(sp.types.includes(MOVES[name].type))sp.learn.push([BURST_LEARN_LEVEL,name]);
+}
 
 // A move is learned once, at its earliest level. Also normalizes generated learnsets.
 for(const sp of Object.values(SPECIES)){const seen=new Set();sp.learn=[...sp.learn].sort((a,b)=>a[0]-b[0]).filter(([,name])=>{if(seen.has(name))return false;seen.add(name);return true;});}

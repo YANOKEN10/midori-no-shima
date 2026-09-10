@@ -1,4 +1,4 @@
-import { heroFrame } from "./revampArt.js?v=20260910-move-names-v22";
+import { heroFrame } from "./revampArt.js?v=20260910-burst-moves-v23";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================

@@ -54,6 +54,16 @@ export const MOVES = {
   ムゲン:      { type: "やみ", cat: "stat", pow: 0, acc: 100, pp: 20, fx: { reset: true }, desc: "のうりょくの へんかを もとに もどす。" },
   ダークブレイン:        { type: "やみ", cat: "spec", pow: 80, acc: 100, pp: 10, fx: { dream: true }, desc: "ねむっている あいてにだけ あたる。" },
   ダウンバグ:  { type: "やみ", cat: "stat", pow: 0, acc: 65, pp: 20, fx: { status: "ねむり", chance: 1 }, desc: "あいてを ねむらせる。" },
+
+  ファイアバースト: { type: "ほのお", cat: "spec", pow: 120, acc: 100, pp: 10, desc: "はげしい ほのおを いっきに はなつ。" },
+  リーフバースト: { type: "くさ", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "はっぱに あつめた ちからを はなつ。" },
+  アクアバースト: { type: "みず", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "たいりょうの みずを いっきに はなつ。" },
+  サンダーバースト: { type: "でんき", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "ためこんだ でんきを いっきに はなつ。" },
+  ロックバースト: { type: "じめん", cat: "spec", pow: 120, acc: 100, pp: 10, desc: "だいちの ちからを ばくはつさせる。" },
+  ダークバースト: { type: "やみ", cat: "spec", pow: 120, acc: 100, pp: 10, desc: "こい やみの ちからを いっきに はなつ。" },
+  ホワイトバースト: { type: "ノーマル", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "しろく かがやく エネルギーを はなつ。" },
+  ビーストバースト: { type: "むし", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "むしの ちからを あつめて はなつ。" },
+
 };
 
 export function move(name) {
@@ -102,3 +112,5 @@ export const MOVE_ALIASES = {
   "ねむる": "パワーアップ"
 };
 export const canonicalMoveName=name=>MOVE_ALIASES[name]||name;
+
+export const BURST_MOVE_NAMES = ["ファイアバースト","リーフバースト","アクアバースト","サンダーバースト","ロックバースト","ダークバースト","ホワイトバースト","ビーストバースト"];
