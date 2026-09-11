@@ -79,7 +79,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  if(ch==='R'){if(map.biome){if(!(map.props||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMarineAsset(c,'shoreRock',dx,dy,32,32);}else if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}
  if(ch==='X')cliff(c,map,x,y);
  if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
- if(ch==='=')drawMaterial(c,'fenceHorizontal',dx,dy,32,32);
+ if(ch==='='){const side=(map.daycarePens||[]).some(p=>(x===p.x||x===p.x+p.w-1)&&y>p.y&&y<p.y+p.h-1);drawMaterial(c,side?'fenceVertical':'fenceHorizontal',dx,dy,32,32);}
  if(ch==='d'){c.fillStyle='#99754b';c.fillRect(dx,dy,32,32);for(let j=0;j<32;j+=8){c.fillStyle='#d8b67c';c.fillRect(dx+2,dy+j,28,5);}}
  if(ch==='H')drawMaterial(c,'stairs',dx,dy,32,32);
  if(ch==='h'){c.fillStyle='#503f2c';c.fillRect(dx+5,dy,4,32);c.fillRect(dx+23,dy,4,32);for(let j=3;j<32;j+=8){c.fillStyle='#d4ae70';c.fillRect(dx+5,dy+j,22,4);}}

@@ -19,6 +19,9 @@ export function extendVoyageChapter(M,h){
  person(lounge,19,18,'ヤノケン',0,'voyage:yanoken');person(lounge,16,8,'船の看護師',4,'voyage:heal');
  sign(deck,18,3,['北：ラウンジ・客室','南：下船の案内']);sign(lounge,26,10,['東：客室　南：デッキ','船内の10人とは １日１回バトルできる。']);
  const town=M.resure;prop(town,'daycareHouse',12,3,8,6,'#');town.g[8][16]='D';town.props.at(-1).door={x:16,y:8};path(town,16,9,16,17,1);town.warps.push({x:16,y:8,to:'daycare',tx:10,ty:14,back:{map:'resure',x:16,y:9}});sign(town,20,10,['育て屋 ― マリオ','同じ種類のガオン２匹で 新しい命を育てます。']);
+ // Outdoor paddocks leave the central entrance and shop/hospital paths open.
+ town.daycarePens=[{x:9,y:10,w:6,h:7},{x:18,y:11,w:5,h:6}];
+ for(const pen of town.daycarePens){const{x,y,w,h}=pen;rect(town,x,y,w,h,',');rect(town,x,y,w,1,'=');rect(town,x,y+h-1,w,1,'=');rect(town,x,y,1,h,'=');rect(town,x+w-1,y,1,h,'=');}
  const nursery=add('daycare','マリオの育て屋',22,18,'in');nursery.chapter=3;nursery.biome='nursery';nursery.shipRoom=true;nursery.spawn={x:10,y:14};nursery.g[16][10]='x';nursery.warps.push({x:10,y:16,to:'@back'});
  prop(nursery,'nurseryPen',3,3,6,5,'R');prop(nursery,'nurseryPen',13,3,6,5,'R');prop(nursery,'shipSeats',3,11,5,3,'R');person(nursery,10,8,'マリオ',26,'voyage:daycare');
  town.npcs.find(n=>n.name==='レスレタウンの人').talk=['この町には マリオの育て屋があるよ。','同じ種類を２匹預けて 2000歩歩いてみよう。'];

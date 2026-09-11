@@ -1,5 +1,5 @@
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-voyage-daycare-v28";
+import { heroFrame } from "./revampArt.js?v=20260912-daycare-yard-v29";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================

@@ -1,3 +1,4 @@
+import {daycareResidents,drawDaycareLabels} from './daycareResidents.js';
 import {voyageNpc,refreshVoyageNpcs,tickVoyage} from './voyageStory.js';
 import {drawVoyageOverlay,drawVoyageStatus} from './voyageArt.js';
 import {playThunder} from './audio.js';
@@ -11,7 +12,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-voyage-daycare-v28';
+import { drawNpc } from './npcArt.js?v=20260912-daycare-yard-v29';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -26,7 +27,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-voyage-daycare-v28";
+import { MAPS } from "./data/maps.js?v=20260912-daycare-yard-v29";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -39,7 +40,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-voyage-daycare-v28";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-daycare-yard-v29";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -1039,6 +1040,7 @@ export const world = {
     this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
     const follower=followingMon(),pose=this.followerTrail.pose;
     if(G.isColor()&&follower&&pose)people.push({follower,pose,x:pose.x,y:pose.y});
+    people.push(...daycareResidents(map,State.save,this.tick));
     people.push({me:true,y:this.y+this.oy/T});
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
@@ -1079,6 +1081,7 @@ export const world = {
     }
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
+    drawDaycareLabels(G.ctx,map,State.save,camX,camY);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
     if(this.showName<=0)drawVoyageStatus(G.ctx,map,State.save);
     // まちの なまえ（はいってすぐ）

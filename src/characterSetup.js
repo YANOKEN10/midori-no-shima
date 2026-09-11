@@ -1,6 +1,6 @@
 import { showForm } from './gate.js';
 import { HAIR_COLORS, SHIRT_BASIC, SHIRT_FANCY } from './data/looks.js';
-import { heroFrame } from './revampArt.js?v=20260912-voyage-daycare-v28';
+import { heroFrame } from './revampArt.js?v=20260912-daycare-yard-v29';
 
 export function chooseAppearance() {
   return showForm({title:'きみの みためは？',sub:'すきな みためを えらんでね。',fields:[],submit:'この すがたで はじめる',mount(host){
