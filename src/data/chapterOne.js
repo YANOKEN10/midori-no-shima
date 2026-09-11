@@ -100,6 +100,12 @@ export function buildChapterOne(){
  }
  // Dense stands leave the authored trail and encounter clearings open.
  for(let y=4;y<29;y+=3)for(let x=3;x<26;x+=3)tree(M.mountain,x,y,(x+y)%2?'fir':'tree');
+ // Leave Ratetto's clearing open; all other walkable ground grows tall grass.
+ for(let y=0;y<M.mountain.g.length;y++)for(let x=0;x<M.mountain.g[y].length;x++){
+  const clearing=x>=11&&x<=18&&y>=3&&y<=7;
+  const exit=M.mountain.warps.some(w=>w.x===x&&w.y===y);
+  if(!clearing&&!exit&&[',','.'].includes(M.mountain.g[y][x]))M.mountain.g[y][x]='"';
+ }
  M.mountain.props.sort((a,b)=>(a.y+a.h)-(b.y+b.h));
  populatePeople(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}

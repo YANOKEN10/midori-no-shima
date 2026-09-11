@@ -1,3 +1,4 @@
+import {grassReady,drawBiomeGrass} from './grassArt.js';
 import {mountainReady,mountainMaterial,mountainFloor,mountainForest} from './mountainArt.js';
 import {forestCanopy,forestReady,boundaryTree} from './forestArt.js';
 import {paintInterior} from './interiorArt.js';
@@ -67,7 +68,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  }
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
- if(ch==='"')ground(c,'tallGrass',dx,dy);
+ if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
  if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R'){if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}
  if(ch==='X')cliff(c,map,x,y);
@@ -85,14 +86,14 @@ export function drawChapterMap(ctx,map,camX,camY){
  if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
  for(const p of map.props||[]){if(boundaryTree(map,p))continue;if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
- if((!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady()))cache.set(map,cv);}
+ if((!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }
 export function drawGrassFeet(ctx,map,px,py,camX,camY){
  const left=px,top=py+8,right=px+32,bottom=py+20;
  for(let y=Math.floor(top/32);y<=Math.floor((bottom-1)/32);y++)for(let x=Math.floor(left/32);x<=Math.floor((right-1)/32);x++){
- if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
+ if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
 }
 const battleImages={};
 export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'river':'grass';let im=battleImages[key];if(!im){im=battleImages[key]=new Image();im.src=new URL('../assets/world-v5/battle-'+key+'-simple-v2.png',import.meta.url).href;}if(!im.complete||!im.naturalWidth)return false;

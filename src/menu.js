@@ -1,4 +1,4 @@
-import { heroFrame } from "./revampArt.js?v=20260910-mountain-zukan-v24";
+import { heroFrame } from "./revampArt.js?v=20260911-biome-grass-v25";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================

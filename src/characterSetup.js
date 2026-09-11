@@ -1,6 +1,6 @@
 import { showForm } from './gate.js';
 import { HAIR_COLORS, SHIRT_BASIC, SHIRT_FANCY } from './data/looks.js';
-import { heroFrame } from './revampArt.js?v=20260910-mountain-zukan-v24';
+import { heroFrame } from './revampArt.js?v=20260911-biome-grass-v25';
 
 export function chooseAppearance() {
   return showForm({title:'きみの みためは？',sub:'すきな みためを えらんでね。',fields:[],submit:'この すがたで はじめる',mount(host){

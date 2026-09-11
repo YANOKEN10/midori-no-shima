@@ -1,7 +1,7 @@
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260910-mountain-zukan-v24";
+import { MAPS } from "./data/maps.js?v=20260911-biome-grass-v25";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [

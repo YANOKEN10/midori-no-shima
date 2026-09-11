@@ -1,0 +1,8 @@
+# Grass v25
+
+Generated with the built-in imagegen tool, fresh generation, no reference image. Source: assets/grass-v25/source.png. Runtime alpha sprites: mountain.png and rural.png (32 by 32), extracted by tools/prepareGrassV25.cjs.
+
+Prompt:
+Create one production sprite sheet for a top-down pixel art RPG: exactly two equal square cells side by side, left cell a clump of remote mountain tall grass, right cell a clump of rural meadow tall grass. Transparent background with actual alpha. ONLY grass blades, no square floor tile, no dirt base, no colored background, no ground patch, no border, no labels. Each entire clump fits within its cell with 8% transparent margins on all sides INCLUDING bottom roots. Mountain grass on LEFT: muted dusky forest green, olive sage tips, dark teal-green shadows, palette #254f40 #3d6c4d #568363 #71936b. Narrow wild blades and small fern-like leaves, organically irregular, low saturation, blends into a cool mossy mountain forest floor. Rural grass on RIGHT: softly sunlit natural meadow green, palette #387450 #559164 #7bac7c #90b889, no neon yellow or turquoise. Crisp 16-bit style pixel clusters with clear thick leaf silhouettes, readable as a single grass encounter tuft at 32 by 32 pixels. Side by side equal sizing and consistent overhead RPG perspective. Root bases rounded natural silhouette, no flat cut edge. Fully isolated on transparent background. Wide 2:1 image.
+
+Validation: 463 mountain grass cells, 40-cell Ratetto clearing preserved, exits retained. Both sprites have transparent outer edges. All 15 maps remain connected to their exits and NPCs. Foot overlays use the same biome sprite as the ground pass.
