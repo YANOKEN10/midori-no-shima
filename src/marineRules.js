@@ -1,3 +1,4 @@
+import {markRaimeiRelease} from './powerRules.js';
 // Calendar rules use Japan time even when the browser is elsewhere.
 export const MARINE_EMBLEM='マリンエンブレム';
 export const MERORON_BATTLE={catchRate:3,wildFleeRate:.12};
@@ -22,5 +23,5 @@ export function marineGate(wp,save){
 }
 export function releaseMon(save,collection,index,now=new Date()){
  const list=save[collection];if(!['party','box'].includes(collection)||!list?.[index])return null;
- const m=list[index];if(m.sp==='メロロン')markMeroronDay(save,now);list.splice(index,1);return m;
+ const m=list[index];if(m.sp==='メロロン')markMeroronDay(save,now);if(m.sp==='ライメイ')markRaimeiRelease(save,now);list.splice(index,1);return m;
 }

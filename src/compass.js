@@ -1,7 +1,8 @@
+import {powerTarget} from './powerRules.js';
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260911-marine-story-v26";
+import { MAPS } from "./data/maps.js?v=20260911-power-story-v27";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [
@@ -29,7 +30,7 @@ export function setCompassEnabled(on) {
 export function nextObjective() {
   if (!compassAvailable()) return null;
   if(flag("v5:dex")){
-    if(flag("marine:passed"))return {map:"karat",x:17,y:19,name:"カラットタウンへ"};
+    if(flag("marine:passed"))return powerTarget(State.save);
     return {map:"remoteLake",x:21,y:20,name:"湖のエンブレム・テスト"};
   }
   if (!flag("elderOK")) {
@@ -53,7 +54,7 @@ function destinations(mapId) {
   const map = MAPS[mapId];
   if (!map) return [];
   const out = [];
-  for (const w of map.warps || []) {
+  for (const w of [...(map.warps || []),...(map.travelLinks||[])]) {
     let to = w.to;
     if (to === "@back") to = State.save.backTo && State.save.backTo.map;
     if (to && MAPS[to]) out.push({ to, x: w.x, y: w.y });

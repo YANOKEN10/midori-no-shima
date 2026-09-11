@@ -1,3 +1,4 @@
+import {drawIndustrialTile} from './powerArt.js';
 import {drawMarineAsset,drawMarineTile,marineReady,marineForest} from './marineArt.js';
 import {grassReady,drawBiomeGrass} from './grassArt.js';
 import {mountainReady,mountainMaterial,mountainFloor,mountainForest} from './mountainArt.js';
@@ -51,6 +52,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++){
  const ch=map.rows[y][x],dx=x*32,dy=y*32;
  if(map.kind==='in'){
+  if(map.biome==='industrial'){drawIndustrialTile(c,x,y,ch);if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);continue;}
   c.fillStyle='#c79b65';c.fillRect(dx,dy,32,32);c.fillStyle='#b48a58';c.fillRect(dx,dy+30,32,2);c.fillRect(dx+(y%2?15:0),dy,1,32);
   if(ch==='X'){c.fillStyle='#6e7879';c.fillRect(dx,dy,32,32);c.fillStyle='#bdc7ba';c.fillRect(dx+1,dy+1,30,24);}
   if(ch==='x'){c.fillStyle='#8c514c';c.fillRect(dx,dy,32,32);c.fillStyle='#deb577';c.fillRect(dx+2,dy+3,28,3);}
@@ -71,7 +73,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(drawMarineTile(c,map,x,y,ch))continue;
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
- if(ch==='F')drawMaterial(c,'flowers',dx+3,dy+3,26,26);
+ if(ch==='F'&&!map.powerArt)drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R'){if(map.biome){if(!(map.props||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMarineAsset(c,'shoreRock',dx,dy,32,32);}else if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}
  if(ch==='X')cliff(c,map,x,y);
  if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);

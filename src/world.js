@@ -1,3 +1,7 @@
+import {playThunder} from './audio.js';
+import {powerNpc,refreshPowerNpcs} from './powerStory.js';
+import {powerGate,powerOutage} from './powerRules.js';
+import {drawPowerAtmosphere} from './powerArt.js';
 import {marineNpc,refreshMarineNpcs} from './marineStory.js';
 import {marineGate} from './marineRules.js';
 import {drawMarineAsset,drawMarineAtmosphere} from './marineArt.js';
@@ -5,7 +9,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260911-marine-story-v26';
+import { drawNpc } from './npcArt.js?v=20260911-power-story-v27';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -20,7 +24,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260911-marine-story-v26";
+import { MAPS } from "./data/maps.js?v=20260911-power-story-v27";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -28,12 +32,12 @@ import {
   G as State, followingMon, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260911-marine-story-v26";
+import { startBattle, popEvolution, wait } from "./battle.js";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260911-marine-story-v26";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260911-power-story-v27";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -157,7 +161,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
-    refreshMarineNpcs(this);
+    refreshMarineNpcs(this);refreshPowerNpcs(this);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -183,7 +187,8 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
-    if(!this.busy)refreshMarineNpcs(this);
+    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);}
+    if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
@@ -359,9 +364,9 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
-    const marineLock=marineGate(wp,State.save);
+    const marineLock=marineGate(wp,State.save)||powerGate(wp,State.save);
     if(marineLock){await ui.say(marineLock);this.busy=false;return;}
-    if(wp.requires&&!wp.requires.startsWith("marine:")&&!flag(wp.requires)){
+    if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!flag(wp.requires)){
       const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
@@ -485,6 +490,7 @@ export const world = {
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
     /* --- ものがたりの イベント --- */
+    if(n.script?.startsWith("power:")){await powerNpc(this,n);return;}
     if(n.script?.startsWith("marine:")){await marineNpc(this,n);return;}
     if (n.script?.startsWith("v5:")) { await chapterNpc(this,n); return; }
     if (n.script === "mother") { await this.motherEvent(n); return; }
@@ -1064,6 +1070,7 @@ export const world = {
     }
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
+    drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
     // まちの なまえ（はいってすぐ）
     G.use("ui");
     if (this.showName > 0) {

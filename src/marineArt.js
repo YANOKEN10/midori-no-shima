@@ -1,9 +1,10 @@
+import {drawPowerAsset,powerReady} from './powerArt.js';
 import {forestLayout} from './forestArt.js';
 const names=['marineHouse','marineHall','marineShop','marinePier','ancientTree','shoreRock','ancientAltar','marineChest','sea','lake','reeds'];
 const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new URL('../assets/marine-v26/'+n+'.png',import.meta.url).href;return[n,im];}));
-export const marineReady=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0);
-export function drawMarineAsset(c,key,x,y,w,h){const im=images[key];if(!im)return false;if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
-export function marineForest(c,map){for(const p of forestLayout(map))drawMarineAsset(c,'ancientTree',p.x,p.y,p.w,p.h);}
+export const marineReady=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0)&&powerReady();
+export function drawMarineAsset(c,key,x,y,w,h){const im=images[key];if(!im)return drawPowerAsset(c,key,x,y,w,h);if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
+export function marineForest(c,map){for(const p of forestLayout(map))drawMarineAsset(c,map.biome==='flowers'?'flowerTree':'ancientTree',p.x,p.y,p.w,p.h);}
 export function drawMarineTile(c,map,x,y,ch){
  if(!map.biome)return false;const dx=x*32,dy=y*32;
  if(ch==='W'||ch==='d'){

@@ -13,7 +13,7 @@ export function furnishInteriors(maps){
  m.npcs.forEach((n,i)=>{[n.x,n.y]=room.npcs[i];});
  }
 }
-export function encloseTowns(maps){for(const id of ['village','rods','route1','route2','natureforest','mossSanctuary','mountain','route4','remoteLake','kageri','mountainAltar']){const m=maps[id],w=m.g[0].length,h=m.g.length;const isEdge=p=>p.x<2||p.x+p.w>w-2||p.y<3||p.y+p.h>h-3;
+export function encloseTowns(maps){for(const id of ['village','rods','route1','route2','natureforest','mossSanctuary','mountain','route4','remoteLake','kageri','mountainAltar','route5','karat','route6','raden','route7','karatPort','resurePort','route8','resure']){const m=maps[id],w=m.g[0].length,h=m.g.length;const isEdge=p=>p.x<2||p.x+p.w>w-2||p.y<3||p.y+p.h>h-3;
  for(const p of m.props.filter(p=>['tree','fir'].includes(p.art)&&isEdge(p)))for(let y=p.y;y<p.y+p.h;y++)for(let x=p.x;x<p.x+p.w;x++)if(m.g[y]?.[x]==='T')m.g[y][x]=',';
  m.props=m.props.filter(p=>!(['tree','fir'].includes(p.art)&&isEdge(p)));
  const add=(x,y)=>{for(let j=y;j<y+3;j++)for(let i=x;i<x+2;i++)if(!['X','T',','].includes(m.g[j]?.[i])||[...m.signs,...m.npcs,...m.warps].some(s=>s.x===i&&s.y===j))return;for(let j=y;j<y+3;j++)for(let i=x;i<x+2;i++)m.g[j][i]='T';m.props.push({art:'tree',x,y,w:2,h:3});};

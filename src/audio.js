@@ -144,3 +144,12 @@ export function stopBgm() {
   bgmName = "";
 }
 export function currentBgm() { return bgmName; }
+
+// Soft, low-pass noise gives distant thunder without a harsh full-volume click.
+export function playThunder(){
+ if(!ac||muted)return;const duration=1.5,t=ac.currentTime,buffer=ac.createBuffer(1,Math.floor(ac.sampleRate*duration),ac.sampleRate),data=buffer.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1);
+ const source=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();source.buffer=buffer;filter.type='lowpass';filter.frequency.value=220;
+ gain.gain.setValueAtTime(.001,t);gain.gain.exponentialRampToValueAtTime(.65,t+.08);gain.gain.exponentialRampToValueAtTime(.001,t+duration);
+ source.connect(filter);filter.connect(gain);gain.connect(master);source.start(t);source.stop(t+duration);
+}

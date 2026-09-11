@@ -1,3 +1,4 @@
+import {powerTarget} from './powerRules.js';
 import {G as State,makeMon} from './state.js';
 import {ui} from './ui.js';
 import {startBattle} from './battle.js';
@@ -47,7 +48,7 @@ export async function marineNpc(world,n){
  }
 }
 export function marineObjective(save){
- if(save.flags?.['marine:passed'])return '５番道路から カラットタウンへ';
+ if(save.flags?.['marine:passed'])return powerTarget(save).name;
  if(!save.flags?.['marine:started'])return 'マリンタウンから 湖の中央島へ';
  const n=trialCount(save);return n<4?'湖のカニポンに勝とう '+n+'／４':'中央の島で エビゲルに挑もう';
 }
