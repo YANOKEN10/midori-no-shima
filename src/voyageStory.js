@@ -26,12 +26,12 @@ export function tickVoyage(world){
  const s=State.save;
  let task=null;
  if(world.mapId==='karat'&&s.flags['power:passed']&&!hasShipTicket(s)&&!s.flags['voyage:professorMet'])task=async()=>{
-  const n=world.npcs.find(n=>n.script==='voyage:professor');s.flags['voyage:professorMet']=true;n.noRoam=true;n.dir='down';n.gone=false;
+  const n=world.npcs.find(n=>n.script==='voyage:professor');s.flags['voyage:professorMet']=true;n.noRoam=true;n.dir='down';n.gone=false;world.cameraFocus={x:31,y:15};world.showName=0;
   for(let step=0;step<2;step++){n.moving=true;for(let px=4;px<=32;px+=4){n.oy=px;n.roamProgress=px/32;await wait(30);}n.y++;n.oy=0;}n.moving=false;n.homeX=n.x;n.homeY=n.y;n.noRoam=false;await persist();await professor(world,n);
  };
  else if(SHIP_MAPS.includes(world.mapId)&&voyageDocked(s)&&!s.voyage.arrivalAnnounced)task=async()=>{s.voyage.arrivalAnnounced=true;await persist();beep('ok');await ui.say([s.voyage.to==='resurePort'?'レスレ港に 到着しました。':'カラット港に 到着しました。','デッキの添乗員に話しかけると 下船できます。','船内のバトルを 続けてもかまいません。']);};
  else if(s.daycare&&!daycareRemaining(s)&&!s.daycare.notified)task=async()=>{s.daycare.notified=true;await persist();beep('levelup');await ui.say(['育て屋に預けてから 2000歩歩いた！','マリオのところへ 会いに行こう。']);};
- if(!task)return false;world.busy=true;task().catch(e=>console.error('Voyage event:',e)).finally(()=>world.busy=false);return true;
+ if(!task)return false;world.busy=true;task().catch(e=>console.error('Voyage event:',e)).finally(()=>{world.cameraFocus=null;world.busy=false;});return true;
 }
 async function finish(world,result){
  if(result==='lose'){

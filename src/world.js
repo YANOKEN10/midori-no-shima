@@ -131,6 +131,7 @@ export const world = {
   enter(mapId, x, y, dir) {
     // しらない ばしょ（ふるい きろく など）なら むらへ もどす
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
+    this.cameraFocus = null;
     this.mapId = mapId;
     this.map = MAPS[mapId];
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -934,7 +935,8 @@ export const world = {
     // メッセージわくの ぶんだけ 下に よぶんに スクロールできるように する
     //（そうしないと まちの はしで 主人公が わくに かくれてしまう）
     const EXTRA = map.tileWorld ? 0 : 96;
-    let camX = px - (G.W - T) / 2, camY = py - (G.H - T) / 2 - 24;
+    const focusX=this.cameraFocus?this.cameraFocus.x*T:px,focusY=this.cameraFocus?this.cameraFocus.y*T:py;
+    let camX = focusX - (G.W - T) / 2, camY = focusY - (G.H - T) / 2 - 24;
     camX = Math.max(0, Math.min(mw * T - G.W, camX));
     camY = Math.max(0, Math.min(mh * T - G.H + EXTRA, camY));
     if (mw * T < G.W) camX = (mw * T - G.W) / 2;
