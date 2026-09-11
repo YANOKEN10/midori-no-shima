@@ -70,7 +70,7 @@ export async function startBattle(opts) {
   if (!you && isTrainer) return "lose";
   const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
   B = {
-    isTrainer: isTrainer,
+    isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0,
     you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
@@ -108,6 +108,7 @@ export async function startBattle(opts) {
       const r = await useBattleItem(action.item);
       if (r === "caught") { result = "caught"; break; }
       if (r === "used") await doTurn(null, true);
+      else continue;
     } else if (action.kind === "switch") {
       await switchTo(action.index);
       await doTurn(null, true);
@@ -123,6 +124,7 @@ export async function startBattle(opts) {
       const r = await onYouDown();
       if (r) result = r;
     }
+    if(!result&&!B.isTrainer&&!fainted(B.foe.mon)&&Math.random()<B.wildFleeRate){await ui.say([B.foe.mon.sp+"は 森の奥へ逃げていった！"]);result="fled";}
   }
 
   battle.active = false;
@@ -435,7 +437,7 @@ async function tryRun() {
 async function useBattleItem(name) {
   const d = itemData(name);
   if (d.kind === "ball") {
-    if (B.isTrainer) { await ui.say(["ひとの ガオンを とるなんて だめ！"]); return "no"; }
+    if (B.isTrainer || B.captureDisabled) { await ui.say(["試験や トレーナーのガオンは つかまえられない！"]); return "no"; }
     if (!useItem(name)) { await ui.say(["そのネットは もう残っていない！"]); return "no"; }
     return await throwBall(name === "ラグネット" ? d.rate * lagNetMultiplier() : d.rate, name);
   }
@@ -498,7 +500,7 @@ async function throwBall(ballRate, netName) {
 
   const max = maxHp(m);
   const statusBonus = m.status === "ねむり" ? 2 : (m.status ? 1.5 : 1);
-  let a = ((3 * max - 2 * m.hp) * species(m.sp).catch * ballRate * statusBonus) / (3 * max);
+  let a = ((3 * max - 2 * m.hp) * (B.catchRate??species(m.sp).catch) * ballRate * statusBonus) / (3 * max);
   a = itemData(netName).guaranteed ? 255 : Math.min(255, a);
   const b = 65536 / Math.pow(255 / Math.max(1, a), 0.1875);
 

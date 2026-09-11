@@ -1,4 +1,5 @@
-import { heroFrame } from "./revampArt.js?v=20260911-biome-grass-v25";
+import {releaseMon} from './marineRules.js';
+import { heroFrame } from "./revampArt.js?v=20260911-marine-story-v26";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -28,7 +29,7 @@ export async function openMenu() {
     const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
     const i = await ui.choice(items, { x: 156, y: 8, w: 156, rows: 8 });
     if (i < 0 || i === 7) return;
-    if (i === 0) await partyMenu();
+    if (i === 0) {const section=await ui.choice(["てもち","ボックス","もどる"],{x:8,y:8,w:304,rows:3});if(section===0)await partyMenu();if(section===1)await boxMenu();}
     else if (i === 1) await followerMenu();
     else if (i === 2) await bagMenu();
     else if (i === 3) { if (hasItem("ガオンずかん")) await dexMenu(); else await ui.say(["ガオンずかんは まだ持っていない。"]); }
@@ -60,11 +61,12 @@ export async function partyMenu(forItem) {
     if (i < 0) return -1;
     if (forItem) return i;
 
-    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "つれあるき", "もどる"], { x: 148, y: 112, w: 164 });
+    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "つれあるき", "ガオンをにがす", "もどる"], { x: 148, y: 112, w: 164 });
     if (what === 0) await showStatus(p[i]);
     else if (what === 1) {
       const j = await ui.choice(partyLabels(), { x: 8, y: 8, w: 304, rows: 6 });
       if (j >= 0 && j !== i) { const t = p[i]; p[i] = p[j]; p[j] = t; beep("ok"); }
+    } else if(what===4){await releaseChosen("party",i);
     } else if (what === 3) { await followerMenu(p[i]);
     } else if (what === 2) {
       const r = await showForm({
@@ -594,4 +596,15 @@ async function hairStyleMenu(price) {
     await ui.say(["できあがり！ " + HAIR_STYLES[j].name + "に なった。"]);
     saveLocal();
   }
+}
+
+async function releaseChosen(collection,index){
+ const m=State.save[collection][index];if(!m)return;
+ if(!await ui.ask([monName(m)+'を にがしますか？','このガオンは 手元から いなくなります。']))return;
+ releaseMon(State.save,collection,index);saveLocal();if(cloud.signedIn)await saveCloud(true);await ui.say([monName(m)+'を にがした。']);
+}
+export async function boxMenu(){
+ for(;;){const list=State.save.box;if(!list.length){await ui.say(['ボックスは 空です。']);return;}const i=await ui.choice(list.map(m=>monName(m)+' Lv'+m.lv),{x:8,y:8,w:304,rows:6});if(i<0)return;
+ const action=await ui.choice(['つよさをみる','てもちへ','ガオンをにがす','もどる'],{x:8,y:148,w:304,rows:4});
+ if(action===0)await showStatus(list[i]);if(action===1){if(State.save.party.length>=6)await ui.say(['てもちが いっぱいです。']);else{State.save.party.push(list.splice(i,1)[0]);saveLocal();}}if(action===2)await releaseChosen('box',i);}
 }

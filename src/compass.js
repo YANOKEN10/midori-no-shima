@@ -1,7 +1,7 @@
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260911-biome-grass-v25";
+import { MAPS } from "./data/maps.js?v=20260911-marine-story-v26";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [
@@ -28,6 +28,10 @@ export function setCompassEnabled(on) {
 
 export function nextObjective() {
   if (!compassAvailable()) return null;
+  if(flag("v5:dex")){
+    if(flag("marine:passed"))return {map:"karat",x:17,y:19,name:"カラットタウンへ"};
+    return {map:"remoteLake",x:21,y:20,name:"湖のエンブレム・テスト"};
+  }
   if (!flag("elderOK")) {
     return { map: "elder", x: 4, y: 4, name: "やまの むらの ぞくちょう" };
   }

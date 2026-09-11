@@ -1,8 +1,11 @@
+import {marineNpc,refreshMarineNpcs} from './marineStory.js';
+import {marineGate} from './marineRules.js';
+import {drawMarineAsset,drawMarineAtmosphere} from './marineArt.js';
 import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260911-biome-grass-v25';
+import { drawNpc } from './npcArt.js?v=20260911-marine-story-v26';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -17,7 +20,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260911-biome-grass-v25";
+import { MAPS } from "./data/maps.js?v=20260911-marine-story-v26";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -25,12 +28,12 @@ import {
   G as State, followingMon, makeMon, species, monName, maxHp, healFull, healParty,
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
-import { startBattle, popEvolution, wait } from "./battle.js?v=20260911-biome-grass-v25";
+import { startBattle, popEvolution, wait } from "./battle.js?v=20260911-marine-story-v26";
 import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260911-biome-grass-v25";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260911-marine-story-v26";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -154,6 +157,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
+    refreshMarineNpcs(this);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -179,6 +183,7 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
+    if(!this.busy)refreshMarineNpcs(this);
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
@@ -260,7 +265,7 @@ export const world = {
   updateNpcRoam(dt) {
     const dirs = [[0,-1,"up"],[0,1,"down"],[-1,0,"left"],[1,0,"right"]];
     for (const n of this.npcs) {
-      if (n.gone || n.noRoam || n.artMon) continue;
+      if (n.gone || n.noRoam || (n.artMon&&!n.roamMon)) continue;
       if (n.moving) {
         n.roamProgress = Math.min(1, n.roamProgress + dt / 650);
         n.ox = (n.toX - n.x) * T * n.roamProgress;
@@ -354,7 +359,9 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
-    if(wp.requires&&!flag(wp.requires)){
+    const marineLock=marineGate(wp,State.save);
+    if(marineLock){await ui.say(marineLock);this.busy=false;return;}
+    if(wp.requires&&!wp.requires.startsWith("marine:")&&!flag(wp.requires)){
       const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
@@ -478,6 +485,7 @@ export const world = {
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
     /* --- ものがたりの イベント --- */
+    if(n.script?.startsWith("marine:")){await marineNpc(this,n);return;}
     if (n.script?.startsWith("v5:")) { await chapterNpc(this,n); return; }
     if (n.script === "mother") { await this.motherEvent(n); return; }
     if (n.script === "elder") { await this.elderEvent(n); return; }
@@ -929,6 +937,7 @@ export const world = {
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     const fullBackdrop = map.tileWorld ? drawChapterMap(G.ctx,map,camX,camY) : map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
+    drawMarineAtmosphere(G.ctx,map,camX,camY,this.tick,State.save);
     if (map.fullArt && !fullBackdrop) {
       // 衝突用 X マスクや旧ランドマークを風景として表示しない。
       G.ctx.fillStyle = "#092438";
@@ -1034,7 +1043,8 @@ export const world = {
         }
       } else {
         const n = p.n;
-        if(n.artMon){const im=battleArt(n.artMon);if(im)G.drawScaled(im,n.x*T-camX-16,n.y*T-camY-32,64,64);continue;}
+        if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
+        if(n.artMon){const im=battleArt(n.artMon),size=n.artSize||64;if(im)G.drawScaled(im,n.x*T-camX+(32-size)/2+(n.ox||0),n.y*T-camY+32-size+(n.oy||0),size,size);continue;}
         const dirn = n.dir || "down";
         const newPerson = G.isColor() && drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0));
         const nfi = n.moving ? n.walkFrame : 0;

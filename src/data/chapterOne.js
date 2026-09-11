@@ -1,3 +1,4 @@
+import {extendMarineChapter} from './marineChapter.js';
 import {furnishInteriors,encloseTowns} from './roomLayouts.js';
 import {populatePeople} from './chapterPeople.js';
 // Hand-authored first chapter. One cell is one 32px movement tile.
@@ -86,6 +87,7 @@ export function buildChapterOne(){
  link(forest,16,37,sanctuary,14,0,'v11:forestCleared');path(forest,16,34,16,37,1);
  link(sanctuary,27,14,ruins,0,14);link(ruins,14,0,volcano,14,27);link(ruins,27,14,abyss,0,14);
  sign(ruins,4,14,['北：火山の奥　東：深闇の洞窟','奥ほど 強いガオンが 生息する。']);
+ extendMarineChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  furnishInteriors(M);
  encloseTowns(M);
  // Route 1 retains every road, tree, sign and exit; open meadow becomes encounter grass.
