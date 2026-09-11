@@ -1,5 +1,6 @@
+import {hasShipTicket,SHIP_MAPS} from './voyageRules.js';
 export const KARAT_EMBLEM='カラット・エンブレム';
-export const FERRY_TICKET='れんらくせんチケット';
+export const FERRY_TICKET='船のチケット';
 export const RAIMEI_BATTLE={catchRate:3};
 const DAY=86400000,WEEK=7*DAY,JST=9*3600000;
 export function raimeiWindow(now=new Date()){
@@ -9,7 +10,7 @@ export function raimeiWindow(now=new Date()){
  return {start,end:start+(hour>=17?1:4)*3600000};
 }
 export function raimeiAvailable(save,now=new Date()){
- return !!save.flags?.['power:passed']&&!!raimeiWindow(now)&&now.getTime()>=Number(save.flags?.['power:raimeiAfter']||0)&&![...(save.party||[]),...(save.box||[])].some(m=>m.sp==='ライメイ');
+ return !!save.flags?.['power:passed']&&!!raimeiWindow(now)&&now.getTime()>=Number(save.flags?.['power:raimeiAfter']||0)&&![...(save.party||[]),...(save.box||[]),...(save.daycare?.parents||[]),...(save.daycare?.child?[save.daycare.child]:[])].some(m=>m.sp==='ライメイ');
 }
 export function markRaimeiVisit(save,now=new Date()){
  const window=raimeiWindow(now);if(window){save.flags||={};save.flags['power:raimeiAfter']=window.start+WEEK;}
@@ -38,5 +39,7 @@ export function powerTarget(save){
  if(!f['power:outage'])return {map:'radenInside',x:4,y:3,name:'発電所の 最奥の宝箱へ'};
  if(!f['power:restored'])return {map:'raden',x:25,y:13,name:'外のライメイを 倒そう'};
  if(!f['power:passed'])return {map:'raden',x:19,y:14,name:'ジネルから エンブレムをもらおう'};
- return {map:'resure',x:18,y:19,name:'連絡船で レスレタウンへ'};
+ if(!hasShipTicket(save))return {map:'karat',x:31,y:16,name:'図鑑15種類で スイスはかせから船のチケット'};
+ if(SHIP_MAPS.includes(save.where?.map))return {map:'shipDeck',x:14,y:20,name:'船旅を楽しみ 到着したら下船しよう'};
+ return {map:'daycare',x:10,y:8,name:'レスレタウンの 育て屋マリオに会おう'};
 }

@@ -1,3 +1,4 @@
+import {migrateVoyageSave} from './voyageRules.js';
 import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
 // ============================================================
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
@@ -136,6 +137,9 @@ export function newGame(playerName) {
     badges: [],
     flags: {},
     steps: 0,
+    voyage: null,
+    shipBattles: {},
+    daycare: null,
     playTime: 0,
     where: { map: START.map, x: START.x, y: START.y, dir: START.dir },
     lastCenter: null,
@@ -154,7 +158,7 @@ export function loadInto(data) {
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
   G.save.box = G.save.box || [];
-  for(const mon of [...G.save.party,...G.save.box]){mon.sp=SPECIES_ALIASES[mon.sp]||mon.sp;normalizeMonStats(mon);for(const mv of mon.moves||[])mv.name=canonicalMoveName(mv.name);}
+  for(const mon of [...G.save.party,...G.save.box,...(G.save.daycare?.parents||[]),...(G.save.daycare?.child?[G.save.daycare.child]:[])]){mon.sp=SPECIES_ALIASES[mon.sp]||mon.sp;normalizeMonStats(mon);for(const mv of mon.moves||[])mv.name=canonicalMoveName(mv.name);}
   for(const key of ['dexSeen','dexOwn']){
     G.save[key] ||= {};
     for(const [oldName,newName]of Object.entries(SPECIES_ALIASES))if(G.save[key][oldName]){G.save[key][newName]=G.save[key][oldName];delete G.save[key][oldName];}
@@ -164,6 +168,7 @@ export function loadInto(data) {
   for (const [oldName,newName] of Object.entries(names)) if (G.save.bag[oldName]) { G.save.bag[newName]=(G.save.bag[newName]||0)+G.save.bag[oldName]; delete G.save.bag[oldName]; }
   if (data && data.chapterVersion !== 5) { G.save.where={...START}; G.save.backTo={map:"village",x:13,y:12}; G.save.lastCenter=null; }
   G.save.chapterVersion=5;
+  migrateVoyageSave(G.save);
   normalizeRareSpawns(G.save);
   G.save.look = G.save.look || { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" };
 }

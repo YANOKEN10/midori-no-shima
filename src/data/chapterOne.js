@@ -1,3 +1,4 @@
+import {extendVoyageChapter} from './voyageChapter.js';
 import {extendPowerChapter} from './powerChapter.js';
 import {extendMarineChapter} from './marineChapter.js';
 import {furnishInteriors,encloseTowns} from './roomLayouts.js';
@@ -90,6 +91,7 @@ export function buildChapterOne(){
  sign(ruins,4,14,['北：火山の奥　東：深闇の洞窟','奥ほど 強いガオンが 生息する。']);
  extendMarineChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  extendPowerChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
+ extendVoyageChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  furnishInteriors(M);
  encloseTowns(M);
  // Route 1 retains every road, tree, sign and exit; open meadow becomes encounter grass.

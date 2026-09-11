@@ -1,3 +1,5 @@
+import {voyageNpc,refreshVoyageNpcs,tickVoyage} from './voyageStory.js';
+import {drawVoyageOverlay,drawVoyageStatus} from './voyageArt.js';
 import {playThunder} from './audio.js';
 import {powerNpc,refreshPowerNpcs} from './powerStory.js';
 import {powerGate,powerOutage} from './powerRules.js';
@@ -9,7 +11,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260911-power-story-v27';
+import { drawNpc } from './npcArt.js?v=20260912-voyage-daycare-v28';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -24,7 +26,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260911-power-story-v27";
+import { MAPS } from "./data/maps.js?v=20260912-voyage-daycare-v28";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -37,7 +39,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260911-power-story-v27";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-voyage-daycare-v28";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -161,7 +163,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
-    refreshMarineNpcs(this);refreshPowerNpcs(this);
+    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -187,12 +189,13 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
-    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);}
+    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
+    if(tickVoyage(this))return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
 
@@ -259,6 +262,7 @@ export const world = {
     if (cellX !== this.freeCellX || cellY !== this.freeCellY) {
       this.freeCellX = cellX; this.freeCellY = cellY;
       State.save.steps = (State.save.steps || 0) + 1;
+      if(State.save.daycare)saveLocal();
       const ch = tileAt(this.map, cellX, cellY);
       // 野生ガオンは「濃い草むら (")」に足を踏み入れた時だけ出現する。
       if (ch === '"' && this.map.enc && chance(this.map.enc.rate / 100) && !this.busy) {
@@ -337,6 +341,7 @@ export const world = {
   async afterStep() {
     State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
     State.save.steps = (State.save.steps || 0) + 1;
+    if(State.save.daycare)saveLocal();
 
     // ワープ
     const wp = (this.map.warps || []).find((w) => w.x === this.x && w.y === this.y);
@@ -490,6 +495,7 @@ export const world = {
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
     /* --- ものがたりの イベント --- */
+    if(n.script?.startsWith("voyage:")){await voyageNpc(this,n);return;}
     if(n.script?.startsWith("power:")){await powerNpc(this,n);return;}
     if(n.script?.startsWith("marine:")){await marineNpc(this,n);return;}
     if (n.script?.startsWith("v5:")) { await chapterNpc(this,n); return; }
@@ -944,6 +950,7 @@ export const world = {
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     const fullBackdrop = map.tileWorld ? drawChapterMap(G.ctx,map,camX,camY) : map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
     drawMarineAtmosphere(G.ctx,map,camX,camY,this.tick,State.save);
+    drawVoyageOverlay(G.ctx,map,camX,camY,State.save,this.tick);
     if (map.fullArt && !fullBackdrop) {
       // 衝突用 X マスクや旧ランドマークを風景として表示しない。
       G.ctx.fillStyle = "#092438";
@@ -1071,6 +1078,7 @@ export const world = {
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
+    if(this.showName<=0)drawVoyageStatus(G.ctx,map,State.save);
     // まちの なまえ（はいってすぐ）
     G.use("ui");
     if (this.showName > 0) {

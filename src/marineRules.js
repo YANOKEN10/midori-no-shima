@@ -6,7 +6,7 @@ export function japanClock(now=new Date()){
  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(now).map(p=>[p.type,p.value]));
  return {day:parts.year+'-'+parts.month+'-'+parts.day,hour:Number(parts.hour)};
 }
-export function holdsMeroron(save){return [...(save.party||[]),...(save.box||[])].some(m=>m.sp==='メロロン');}
+export function holdsMeroron(save){return [...(save.party||[]),...(save.box||[]),...(save.daycare?.parents||[]),...(save.daycare?.child?[save.daycare.child]:[])].some(m=>m.sp==='メロロン');}
 export function meroronAvailable(save,now=new Date()){const t=japanClock(now);return new Set(save.badges||[]).size>=4&&t.hour>=17&&!holdsMeroron(save)&&save.flags?.['marine:meroronDay']!==t.day;}
 export function markMeroronDay(save,now=new Date()){save.flags||={};save.flags['marine:meroronDay']=japanClock(now).day;}
 export function trialCount(save){return [0,1,2,3].filter(i=>save.flags?.['marine:crab:'+i]).length;}

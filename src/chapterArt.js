@@ -1,3 +1,4 @@
+import {drawVoyageTile} from './voyageArt.js';
 import {drawIndustrialTile} from './powerArt.js';
 import {drawMarineAsset,drawMarineTile,marineReady,marineForest} from './marineArt.js';
 import {grassReady,drawBiomeGrass} from './grassArt.js';
@@ -52,6 +53,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++){
  const ch=map.rows[y][x],dx=x*32,dy=y*32;
  if(map.kind==='in'){
+  if(map.shipRoom){drawVoyageTile(c,map,x,y,ch);if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);continue;}
   if(map.biome==='industrial'){drawIndustrialTile(c,x,y,ch);if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);continue;}
   c.fillStyle='#c79b65';c.fillRect(dx,dy,32,32);c.fillStyle='#b48a58';c.fillRect(dx,dy+30,32,2);c.fillRect(dx+(y%2?15:0),dy,1,32);
   if(ch==='X'){c.fillStyle='#6e7879';c.fillRect(dx,dy,32,32);c.fillStyle='#bdc7ba';c.fillRect(dx+1,dy+1,30,24);}
@@ -88,7 +90,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
- for(const p of map.props||[]){if(boundaryTree(map,p))continue;if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door&&!map.biome){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
+ for(const p of map.props||[]){if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door&&!map.biome){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
  if((!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!map.biome||marineReady()))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
