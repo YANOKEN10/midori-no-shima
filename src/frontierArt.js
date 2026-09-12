@@ -1,3 +1,5 @@
+import {paintInterior} from './interiorArt.js';
+import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
 import {endAsset,endArtReady,endGround,endWater} from './endgameArt.js';
 import {drawBiomeGrass,grassReady} from './grassArt.js';
 import {mountainMaterial,mountainReady} from './mountainArt.js';
@@ -19,8 +21,11 @@ export function drawFrontierMap(ctx,map,camX,camY,material){if(!map.frontierThem
  if(ch==='"'&&!frontierGrass(c,map,x,y)){material(c,'grass',dx,dy,32,32);for(let i=0;i<8;i++){c.fillStyle=i%2?'#407948':'#99bf62';c.fillRect(dx+(i*7+x*3)%30,dy+(i*11+y*5)%28,3,8);}}
  if(ch==='='){const side=(map.daycarePens||[]).some(p=>(x===p.x||x===p.x+p.w-1)&&y>p.y&&y<p.y+p.h-1);material(c,side?'fenceVertical':'fenceHorizontal',dx,dy,32,32);}if(ch==='S')material(c,'sign',dx,dy,32,32);if(ch==='H'||ch==='x')material(c,'stairs',dx,dy,32,32);
  }
- for(const p of map.props){let key=p.art;if(map.frontierTheme==='snow'&&['tree','fir'].includes(key))key='snowFir';if(key==='shopCounter'){const x=p.x*32,y=p.y*32;c.fillStyle='#4d4036';c.fillRect(x,y,p.w*32,p.h*32);c.fillStyle='#ba9467';c.fillRect(x+3,y+3,p.w*32-6,p.h*32-6);c.fillStyle='#e6ca8e';c.fillRect(x+3,y+3,p.w*32-6,8);c.fillStyle='#3d626b';c.fillRect(x+12,y+17,36,24);c.fillStyle='#dbe9d6';c.font='16px sans-serif';c.fillText('ショップ',x+66,y+40);continue;}if(key==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(!asset(c,key,p.x*32,p.y*32,p.w*32,p.h*32)&&!drawMarineAsset(c,key,p.x*32,p.y*32,p.w*32,p.h*32))material(c,key,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){c.fillStyle='#584333';c.fillRect(p.door.x*32,p.door.y*32,32,32);}}
- if(map.frontierTheme==='rail'&&map.kind==='in'){c.fillStyle='#535f62';for(let x=2;x<map.rows[0].length-2;x++){c.fillRect(x*32,3*32+10,32,3);c.fillRect(x*32,3*32+23,32,3);}}
- if((!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))cache.set(map,cv);
+ for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++)coastTile(c,map,x,y,map.rows[y][x]);
+ paintEnvironment(c,map,material);
+ for(const p of map.props){if(environmentProp(c,p,map))continue;let key=p.art;if(map.frontierTheme==='snow'&&['tree','fir'].includes(key))key='snowFir';if(key==='shopCounter'){const x=p.x*32,y=p.y*32;c.fillStyle='#4d4036';c.fillRect(x,y,p.w*32,p.h*32);c.fillStyle='#ba9467';c.fillRect(x+3,y+3,p.w*32-6,p.h*32-6);c.fillStyle='#e6ca8e';c.fillRect(x+3,y+3,p.w*32-6,8);c.fillStyle='#3d626b';c.fillRect(x+12,y+17,36,24);c.fillStyle='#dbe9d6';c.font='16px sans-serif';c.fillText('ショップ',x+66,y+40);continue;}if(key==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(!asset(c,key,p.x*32,p.y*32,p.w*32,p.h*32)&&!drawMarineAsset(c,key,p.x*32,p.y*32,p.w*32,p.h*32))material(c,key,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){c.fillStyle='#584333';c.fillRect(p.door.x*32,p.door.y*32,32,32);}}
+ if(map.frontierTheme==='rail'&&map.kind==='in'&&!map.environmentArena){c.fillStyle='#535f62';for(let x=2;x<map.rows[0].length-2;x++){c.fillRect(x*32,3*32+10,32,3);c.fillRect(x*32,3*32+23,32,3);}}
+ if(map.room)paintInterior(c,map);
+ if(environmentReady(map)&&(!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))cache.set(map,cv);
  }ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;}
 export function drawFrontierWeather(c,map,tick){if(!['snow','ash'].includes(map.frontierTheme))return;c.save();for(let i=0;i<45;i++){const x=(i*47+Math.sin(tick/1300+i)*8+320)%320,y=(i*29+tick/(map.frontierTheme==='snow'?95:145))%288;c.fillStyle=map.frontierTheme==='snow'?'rgba(255,255,255,.8)':'rgba(215,205,195,.4)';c.fillRect(x,y,2,2);}c.restore();}

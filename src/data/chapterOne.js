@@ -1,3 +1,4 @@
+import {redesignEnvironments} from './environmentLayouts.js';
 import {extendEndgameChapter} from './endgameChapter.js';
 import {extendFrontierChapter} from './frontierChapter.js';
 import {extendVoyageChapter} from './voyageChapter.js';
@@ -123,6 +124,7 @@ export function buildChapterOne(){
  }
  M.mountain.props.sort((a,b)=>(a.y+a.h)-(b.y+b.h));
  populatePeople(M);
+ redesignEnvironments(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }

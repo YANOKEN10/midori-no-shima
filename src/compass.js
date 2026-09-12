@@ -3,7 +3,7 @@ import {powerTarget} from './powerRules.js';
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260912-appearance-v40";
+import { MAPS } from "./data/maps.js?v=20260913-environments-v41";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [

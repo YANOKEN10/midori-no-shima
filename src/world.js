@@ -1,3 +1,4 @@
+import {shopInteriorFor} from './data/environmentLayouts.js';
 import {endNpc,refreshEnd,tickEnd,endStep} from './endgameStory.js';
 import {endGate} from './endgameRules.js';
 import {drawBoat,drawEden,drawEndWeather} from './endgameArt.js';
@@ -19,7 +20,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-appearance-v40';
+import { drawNpc } from './npcArt.js?v=20260913-environments-v41';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -34,7 +35,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-appearance-v40";
+import { MAPS } from "./data/maps.js?v=20260913-environments-v41";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -47,7 +48,7 @@ import { setMenuWorld, openMenu, shopMenu, showStatus, reportMenu, clothesShop, 
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-appearance-v40";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260913-environments-v41";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -144,7 +145,7 @@ export const world = {
     this.coldMs=0;
     if(!(State.save.boating&&State.save.where?.map===mapId&&MAPS[mapId]?.boatWater&&MAPS[mapId]?.rows[y]?.[x]==="W"))State.save.boating=false;
     this.mapId = mapId;
-    this.map = MAPS[mapId];
+    this.map = mapId==='shop'?shopInteriorFor(MAPS[mapId],State.save.backTo?.map||'village'):MAPS[mapId];
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
       x = this.map.spawn?.x ?? 1; y = this.map.spawn?.y ?? 1;
     }
@@ -312,7 +313,8 @@ export const world = {
       const occupied=this.npcs.some(o=>o!==n&&!o.gone&&((o.x===tx&&o.y===ty)||(o.moving&&o.toX===tx&&o.toY===ty)));
       const player=(this.x===tx&&this.y===ty)||(this.moving&&this.mx===tx&&this.my===ty);
       const special=[...(this.map.warps||[]),...(this.map.signs||[])].some(o=>Math.abs(o.x-tx)+Math.abs(o.y-ty)<=1);
-      if (Math.hypot(tx-n.homeX,ty-n.homeY)>2 || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
+      const outsideBounds=n.roamBounds&&(tx<n.roamBounds[0]||ty<n.roamBounds[1]||tx>n.roamBounds[2]||ty>n.roamBounds[3]);
+      if (outsideBounds || Math.hypot(tx-n.homeX,ty-n.homeY)>2 || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
       n.toX=tx;n.toY=ty;n.roamProgress=0;n.moving=true;
     }
   },

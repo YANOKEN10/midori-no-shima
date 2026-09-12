@@ -1,3 +1,4 @@
+import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
 import {drawFrontierMap,frontierGrass} from './frontierArt.js';
 import {drawVoyageTile} from './voyageArt.js';
 import {drawIndustrialTile} from './powerArt.js';
@@ -36,12 +37,12 @@ function cliff(c,map,x,y){
  const w=map.rows[0].length,dx=x*32,dy=y*32;
  if(x!==0&&x!==w-1){drawMaterial(c,'cliff',dx,dy,32,32);return;}
  c.save();c.beginPath();c.rect(dx,dy,32,32);c.clip();c.translate(dx,dy);if(x===0){c.translate(32,0);c.scale(-1,1);}
- c.fillStyle='#624735';c.fillRect(0,0,32,32);
+ c.fillStyle=map.townDesign?'#64766b':'#624735';c.fillRect(0,0,32,32);
  for(let row=-1;row<3;row++)for(let col=0;col<3;col++){
   const px=5+col*11+(row%2?4:0),py=row*16+((y%2)*7);
-  c.fillStyle='#9b7650';c.fillRect(px,py,9,14);
-  c.fillStyle='#bd9462';c.fillRect(px+1,py+1,4,9);
-  c.fillStyle='#78563d';c.fillRect(px+6,py+6,2,7);
+  c.fillStyle=map.townDesign?'#96a28e':'#9b7650';c.fillRect(px,py,9,14);
+  c.fillStyle=map.townDesign?'#bac2a8':'#bd9462';c.fillRect(px+1,py+1,4,9);
+  c.fillStyle=map.townDesign?'#788677':'#78563d';c.fillRect(px+6,py+6,2,7);
  }
  c.fillStyle='#245f3a';c.fillRect(0,0,6,32);c.fillStyle='#53a653';c.fillRect(0,0,4,32);
  for(let py=0;py<32;py+=8){c.fillStyle='#81c766';c.fillRect(0,py,3,5);c.fillStyle='#377e42';c.fillRect(3,py+3,3,4);}
@@ -86,15 +87,17 @@ export function drawChapterMap(ctx,map,camX,camY){
  if(ch==='H')drawMaterial(c,'stairs',dx,dy,32,32);
  if(ch==='h'){c.fillStyle='#503f2c';c.fillRect(dx+5,dy,4,32);c.fillRect(dx+23,dy,4,32);for(let j=3;j<32;j+=8){c.fillStyle='#d4ae70';c.fillRect(dx+5,dy+j,22,4);}}
  }
+ for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++)coastTile(c,map,x,y,map.rows[y][x]);
+ paintEnvironment(c,map,drawMaterial);
  if(map.kind==='in'){
  const visited=new Set();for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++){
  const ch=map.rows[y][x];if(!'bBtKP'.includes(ch)||visited.has(x+','+y))continue;let w=1,h=1;while(map.rows[y][x+w]===ch)w++;while(map.rows[y+h]?.slice(x,x+w)===ch.repeat(w))h++;
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
- for(const p of map.props||[]){if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door&&!map.biome){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
+ for(const p of map.props||[]){if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door&&!map.biome){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
- if((!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!map.biome||marineReady()))cache.set(map,cv);}
+ if(environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!map.biome||marineReady()))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }

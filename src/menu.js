@@ -2,7 +2,7 @@ import {openFriends} from './friends.js';
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-appearance-v40";
+import { heroFrame } from "./revampArt.js?v=20260913-environments-v41";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
