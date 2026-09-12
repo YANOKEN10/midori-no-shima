@@ -66,11 +66,13 @@ export const battle = {
    もどりち: "win" | "lose" | "run" | "caught"
 ============================================================ */
 export async function startBattle(opts) {
-  const you = State.save.party.find((m) => !fainted(m)) || null;
+  const playerParty=opts.playerParty||State.save.party;
+  const you = playerParty.find((m) => !fainted(m)) || null;
   const isTrainer = Boolean(opts.trainer);
   if (!you && isTrainer) return "lose";
   const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
   B = {
+    playerParty, facility:!!opts.facility,
     isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, escapeDisabled:!!opts.escapeDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0,
@@ -133,7 +135,7 @@ export async function startBattle(opts) {
   ui.setBattleMode(false);
   lastEvo = B.pendingEvo || null;
   B = null;
-  if (result === "win" && isTrainer) {
+  if (result === "win" && isTrainer && !opts.facility) {
     const money = opts.trainer.money || 0;
     State.save.money += money;
     await ui.say([opts.trainer.name + "に かった！", "しょうきんとして " + money + "円 てにいれた！"]);
@@ -161,6 +163,7 @@ async function chooseAction() {
       const mv = await chooseMove();
       if (mv) return { kind: "move", move: mv };
     } else if (i === 1) {
+      if(B.facility){await ui.say(["大会では どうぐを使えません。"]);continue;}
       const it = await chooseItem();
       if (it) return { kind: "item", item: it };
     } else if (i === 2) {
@@ -190,7 +193,7 @@ async function chooseItem() {
 }
 
 async function choosePartyMember() {
-  const p = State.save.party;
+  const p = B.playerParty;
   const labels = p.map((m, i) => {
     return (i === p.indexOf(B.you.mon) ? "・" : "　") + monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m) + (m.status ? " " + m.status : "");
   });
@@ -203,7 +206,7 @@ async function choosePartyMember() {
 
 async function switchTo(i) {
   await ui.say(["もどれ！ " + monName(B.you.mon) + "！"]);
-  B.you = fresh(State.save.party[i], true);
+  B.you = fresh(B.playerParty[i], true);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
 }
@@ -468,7 +471,7 @@ async function useBattleItem(name) {
     const idx = await choosePartyMemberForRevive();
     if (idx < 0) return "no";
     useItem(name);
-    const m = State.save.party[idx];
+    const m = B.playerParty[idx];
     m.hp = Math.max(1, Math.floor(maxHp(m) * d.ratio));
     m.status = "";
     beep("heal");
@@ -480,7 +483,7 @@ async function useBattleItem(name) {
 }
 
 async function choosePartyMemberForRevive() {
-  const p = State.save.party;
+  const p = B.playerParty;
   const labels = p.map((m) => monName(m) + " Lv" + m.lv + (fainted(m) ? " ひんし" : " " + m.hp + "/" + maxHp(m)));
   const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6 });
   if (i < 0) return -1;
@@ -542,6 +545,7 @@ async function onFoeDown() {
   await ui.say([label(B.foe) + "は たおれた！"]);
   if (!B.you) return "win";           // てもちが いない ときは けいけんち なし
 
+  if(!B.facility){
   // けいけんち
   const base = species(B.foe.mon.sp).exp;
   const gain = Math.max(1, Math.floor((base * B.foe.mon.lv / 7) * (B.isTrainer ? 1.5 : 1)));
@@ -572,6 +576,7 @@ async function onFoeDown() {
   }
   if (res.evolve) B.pendingEvo = { mon: m, to: res.evolve };
 
+  }
   // つぎの あいて
   if (B.isTrainer && B.foeIndex + 1 < B.foeParty.length) {
     B.foeIndex++;
@@ -589,20 +594,20 @@ async function onYouDown() {
   B.you.hidden = true;
   await wait(400);
   await ui.say([monName(B.you.mon) + "は たおれた！"]);
-  const alive = State.save.party.filter((m) => !fainted(m));
+  const alive = B.playerParty.filter((m) => !fainted(m));
   if (!alive.length) {
     await ui.say(["めのまえが まっくらに なった…"]);
     return "lose";
   }
   const i = await choosePartyMemberForce();
-  B.you = fresh(State.save.party[i], true);
+  B.you = fresh(B.playerParty[i], true);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
   return "";
 }
 
 async function choosePartyMemberForce() {
-  const p = State.save.party;
+  const p = B.playerParty;
   for (;;) {
     const labels = p.map((m) => monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m));
     const i = await ui.choice(labels, { x: 8, y: 118, w: 300, rows: 6, cancel: false });

@@ -1,3 +1,6 @@
+import {endNpc,refreshEnd,tickEnd,endStep} from './endgameStory.js';
+import {endGate} from './endgameRules.js';
+import {drawBoat,drawEden,drawEndWeather} from './endgameArt.js';
 import {frontierNpc,refreshFrontier,tickFrontier} from './frontierStory.js';
 import {frontierGate,rematchAvailable,markRematch,recordBirth} from './frontierRules.js';
 import {drawFrontierWeather} from './frontierArt.js';
@@ -16,7 +19,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-yanoken-v36';
+import { drawNpc } from './npcArt.js?v=20260912-endgame-v37';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -31,7 +34,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-yanoken-v36";
+import { MAPS } from "./data/maps.js?v=20260912-endgame-v37";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -40,11 +43,11 @@ import {
   addItem, addToParty, ownMon, setFlag, flag, rnd, chance, hasItem, useItem,
 } from "./state.js";
 import { startBattle, popEvolution, wait } from "./battle.js";
-import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
+import { setMenuWorld, openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } from "./menu.js";
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-yanoken-v36";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-endgame-v37";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -131,12 +134,15 @@ export const world = {
   ox: 0, oy: 0, moving: false, mx: 0, my: 0,
   walkFrame: 0, walkTimer: 0, hop: 0,
   busy: false, steps: 0, tick: 0,
-  npcs: [], followerTrail: new FollowerTrail(),
+  npcs: [], followerTrail: new FollowerTrail(), humanTrail: new FollowerTrail(),
 
   enter(mapId, x, y, dir) {
+    setMenuWorld(this);
     // しらない ばしょ（ふるい きろく など）なら むらへ もどす
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
     this.cameraFocus = null;
+    this.coldMs=0;
+    if(!(State.save.boating&&State.save.where?.map===mapId&&MAPS[mapId]?.boatWater&&MAPS[mapId]?.rows[y]?.[x]==="W"))State.save.boating=false;
     this.mapId = mapId;
     this.map = MAPS[mapId];
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -146,7 +152,7 @@ export const world = {
       x = this.map.spawn.x; y = this.map.spawn.y;
     }
     // ばんのため：とおれない マスに 出ないよう、ちかくの あるける マスへ
-    if (solid(tileAt(this.map, x, y)) || tileAt(this.map, x, y) === null || landmarkBlocked(this.map, x, y)) {
+    if ((solid(tileAt(this.map, x, y)) && !(State.save.boating&&this.map.boatWater&&tileAt(this.map,x,y)==="W")) || tileAt(this.map, x, y) === null || landmarkBlocked(this.map, x, y)) {
       let found = null;
       for (let r = 1; r <= 4 && !found; r++) {
         for (let dy = -r; dy <= r && !found; dy++) {
@@ -169,7 +175,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
-    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);
+    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -187,7 +193,7 @@ export const world = {
         this.freeCellX = Math.floor(x); this.freeCellY = Math.floor(y);
       }
     }
-    this.followerTrail.reset(x,y,this.dir);
+    this.followerTrail.reset(x,y,this.dir);this.humanTrail.reset(x,y,this.dir);
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
     playBgm(bgmFor(mapId));
@@ -197,10 +203,11 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
-    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);}
+    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
+    if(tickEnd(this,dt))return;
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
     if(tickFrontier(this)||tickVoyage(this))return;
@@ -213,7 +220,7 @@ export const world = {
     }
 
     if (this.moving) {
-      const sp = SPEED * (this.hop ? 1.5 : 1);
+      const sp = SPEED * (this.mapId==="blizzard"?.35+.65*this.y/this.map.rows.length:1) * (this.hop ? 1.5 : 1);
       if (this.dir === "left") this.ox -= sp;
       if (this.dir === "right") this.ox += sp;
       if (this.dir === "up") this.oy -= sp;
@@ -335,19 +342,21 @@ export const world = {
       beep("blip");
       return;
     }
-    if (solid(ch) || landmarkBlocked(this.map, nx, ny)) return;
+    if ((solid(ch)&&!(State.save.boating&&this.map.boatWater&&ch==="W")) || landmarkBlocked(this.map, nx, ny)) return;
     if (this.npcAt(nx, ny)) return;
+    this.previousTile={x:this.x,y:this.y};
     this.mx = nx; this.my = ny;
     this.moving = true;
   },
 
   npcAt(x, y) {
-    return this.npcs.find((n) => !n.gone && (this.map.freeMove
+    return this.npcs.find((n) => !n.gone && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
       ? Math.hypot(n.x - x, n.y - y) < .72
       : (n.x === x && n.y === y) || (n.moving && n.toX === x && n.toY === y)));
   },
 
   async afterStep() {
+    endStep(this,this.previousTile);
     State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
     State.save.steps = (State.save.steps || 0) + 1;
     recordBirth(State.save);
@@ -371,17 +380,17 @@ export const world = {
     // やせいの モンスター
     const ch = tileAt(this.map, this.x, this.y);
     const enc = this.map.enc;
-    if (enc && (ch === '"' || enc.encAll || (this.map.kind === "cave" && ch === "C"))) {
-      if (chance(enc.rate / 100)) await this.wildBattle();
+    if ((State.save.boating&&ch==='W') || enc && (ch === '"' || enc.encAll || (this.map.kind === "cave" && ch === "C"))) {
+      if (chance((enc?.rate||18) / 100)) await this.wildBattle();
     }
   },
 
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
-    const marineLock=frontierGate(wp,State.save)||marineGate(wp,State.save)||powerGate(wp,State.save);
+    const marineLock=endGate(wp,State.save)||frontierGate(wp,State.save)||marineGate(wp,State.save)||powerGate(wp,State.save);
     if(marineLock){await ui.say(marineLock);this.busy=false;return;}
-    if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!wp.requires.startsWith("frontier:")&&!flag(wp.requires)){
+    if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!wp.requires.startsWith("frontier:")&&!wp.requires.startsWith("end:")&&!flag(wp.requires)){
       const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
@@ -460,6 +469,9 @@ export const world = {
 
   /* --- はなす・しらべる --------------------------------------- */
   interact() {
+    const facing=({up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]})[this.dir];
+    const companion=this.npcs.find(n=>n.eden&&!n.gone&&Math.hypot(n.x-this.x-facing[0],n.y-this.y-facing[1])<.8);
+    if(companion&&State.save.flags["end:eden"]){this.busy=true;endNpc(this,companion).finally(()=>this.busy=false);return;}
     const dx = this.dir === "left" ? -1 : this.dir === "right" ? 1 : 0;
     const dy = this.dir === "up" ? -1 : this.dir === "down" ? 1 : 0;
     const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
@@ -494,6 +506,8 @@ export const world = {
   },
 
   async runNpc(n) {
+    if(n.script?.startsWith("end:")){await endNpc(this,n);return;}
+    if(n.script==="v5:professor"&&State.save.dexOwn["ラテット"]){await endNpc(this,{...n,script:"end:professor"});return;}
     // むきを こちらへ
     if (!n.trainer) {
       if (this.dir === "up") n.dir = "down";
@@ -890,8 +904,8 @@ export const world = {
   async wildBattle(rare = null) {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
-    State.save.battleTerrain=this.map.battleTerrain||"grass";
-    const list=ordinaryEncounters(this.map.enc?.list,this.mapId);
+    State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
+    const list=State.save.boating?[["サカナビ",30,40,50],["ミナモリス",35,45,50]]:ordinaryEncounters(this.map.enc?.list,this.mapId);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
@@ -1050,10 +1064,14 @@ export const world = {
     }
 
     // ひとたち（うしろに いる人から）
+    this.humanTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
+    this.followerTrail.distance=State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1;
+    const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
+    if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
     this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
     const follower=followingMon(),pose=this.followerTrail.pose;
-    if(G.isColor()&&follower&&pose)people.push({follower,pose,x:pose.x,y:pose.y});
+    if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
     people.push(...daycareResidents(map,State.save,this.tick));
     people.push({me:true,y:this.y+this.oy/T});
     people.sort((a, b) => a.y - b.y);
@@ -1065,7 +1083,7 @@ export const world = {
         const fi = this.moving ? this.walkFrame : 0;
         const hopY = this.hop ? -Math.abs(Math.sin((this.oy / T) * Math.PI)) * 14 : 0;
         const heroX = px - camX, heroY = py - camY - 28 + hopY;
-        if (!G.isColor() || !drawHero(G.ctx, this.dir, this.moving, this.tick, heroX, heroY, State.save.look)) {
+        if (State.save.boating&&drawBoat(G.ctx,this.dir,heroX,heroY,this.tick)) { } else if (!G.isColor() || !drawHero(G.ctx, this.dir, this.moving, this.tick, heroX, heroY, State.save.look)) {
           let img;
           const f = playerFrames()[this.dir][fi];
           if (G.isColor()) img = G.makeColorArt(f, 1, "pc" + this.dir + fi, playerColors(State.save.look));
@@ -1074,10 +1092,12 @@ export const world = {
         }
       } else {
         const n = p.n;
+        if(n.doorMarker)continue;
+        if(n.itemArt){drawItem(G.ctx,n.itemArt,n.x*T-camX,n.y*T-camY,32);continue;}
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
         if(n.artMon){const im=battleArt(n.artMon),size=n.artSize||64;if(im)G.drawScaled(im,n.x*T-camX+(32-size)/2+(n.ox||0),n.y*T-camY+32-size+(n.oy||0),size,size);continue;}
         const dirn = n.dir || "down";
-        const newPerson = G.isColor() && drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0));
+        const newPerson = G.isColor() && (drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)));
         const nfi = n.moving ? n.walkFrame : 0;
         const img2 = (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))
@@ -1097,7 +1117,7 @@ export const world = {
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawDaycareLabels(G.ctx,map,State.save,camX,camY);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
-    drawFrontierWeather(G.ctx,map,this.tick);
+    drawFrontierWeather(G.ctx,map,this.tick);drawEndWeather(G.ctx,this);
     if(this.showName<=0)drawVoyageStatus(G.ctx,map,State.save);
     // まちの なまえ（はいってすぐ）
     G.use("ui");

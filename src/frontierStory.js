@@ -11,7 +11,7 @@ async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 async function finish(w,result){if(result==='lose')await w.blackout();else await w.checkEvolution();await persist();w.resumeBgm();}
 async function ready(){if(State.save.party.some(m=>m.hp>0))return true;await ui.say(['元気なガオンを 連れてきてね。']);return false;}
 export function refreshFrontier(w){recordBirth(State.save);for(const n of w.npcs)if(n.script==='frontier:volcano')n.gone=State.save.flags['frontier:volcanoWon']&&!volcanoAvailable(State.save);}
-async function walk(w,n,target,adjacent=true){const blocked=(x,y)=>solid(w.map.rows[y]?.[x])||w.map.rows[y]?.[x]==null||w.npcs.some(p=>p!==n&&!p.gone&&Math.round(p.x)===x&&Math.round(p.y)===y)||Math.round(w.x)===x&&Math.round(w.y)===y;const start=[Math.round(n.x),Math.round(n.y)],q=[start],prev=new Map([[start.join(','),null]]);let end;
+export async function walk(w,n,target,adjacent=true){const blocked=(x,y)=>solid(w.map.rows[y]?.[x])||w.map.rows[y]?.[x]==null||w.npcs.some(p=>p!==n&&!p.gone&&Math.round(p.x)===x&&Math.round(p.y)===y)||Math.round(w.x)===x&&Math.round(w.y)===y;const start=[Math.round(n.x),Math.round(n.y)],q=[start],prev=new Map([[start.join(','),null]]);let end;
  for(let i=0;i<q.length;i++){const[x,y]=q[i];if(Math.abs(x-target.x)+Math.abs(y-target.y)<=(adjacent?1:0)){end=x+','+y;break;}for(const[dx,dy]of [[0,1],[1,0],[0,-1],[-1,0]]){const a=x+dx,b=y+dy,k=a+','+b;if(!prev.has(k)&&!blocked(a,b)){prev.set(k,x+','+y);q.push([a,b]);}}}
  if(!end)return;const steps=[];while(prev.get(end)){steps.push(end.split(',').map(Number));end=prev.get(end);}n.noRoam=true;for(const[x,y]of steps.reverse()){n.dir=x>n.x?'right':x<n.x?'left':y>n.y?'down':'up';n.moving=true;for(let px=8;px<=32;px+=8){n.ox=(x-n.x)*px;n.oy=(y-n.y)*px;await wait(22);}n.x=x;n.y=y;n.ox=n.oy=0;}n.moving=false;
 }
@@ -33,7 +33,7 @@ export async function frontierNpc(w,n){const s=State.save,f=s.flags;
   const key=n.dailyId;if(!rematchAvailable(s,key,true)){await ui.say(['今日の勝負は 終わったね。','また明日 バトルしよう！']);return;}
   if(!await ready()||!await ui.ask(['もう一度 バトルしない？','ここでは 毎日１回 勝負できるよ。']))return;markRematch(s,key,true);await persist();const r=await startBattle({trainer:{name:n.name,party:n.dailyTeam,money:650}});await finish(w,r);return;
  }
- if(n.script==='frontier:guard'){await ui.say(new Set(s.badges).size>=5?['エンブレム５個を確認しました。','ギャラクシータウンへ どうぞ。']:['１１番道路は 通行止めです。','エンブレムを５個 集めてください。']);return;}
+ if(n.script==='frontier:guard'){await ui.say(s.badges.includes('ハイラス・エンブレム')?['ハイラスの証を確認しました。','ギャラクシータウンへ どうぞ。']:['１１番道路は 通行止めです。','ハイラス・エンブレムを 集めてください。']);return;}
  if(n.script==='frontier:briefing'){f['frontier:briefed']=true;await persist();await ui.say(f['frontier:volcanoWon']?['ヨウガン山での勝利 おめでとう！','１３番道路から クリアタウンを目指そう。']:['マニケレオの試験は ヨウガン山だ。','ネイチャータウンへ戻り 山おくのさらに奥へ。','灰が舞う道を抜け 山頂のヨウガンヌシに勝とう。','勝ったら ネイチャータウンの町長に報告してね。']);return;}
  if(n.script==='frontier:report'){if(!f['frontier:volcanoWon']){await ui.say(['山おくの先には 灰が舞う道があるよ。','マニケレオの町長から 話を聞いておいで。']);return;}if(!f['frontier:reported']){f['frontier:reported']=true;if(!s.badges.includes(VOLCANO_EMBLEM))s.badges.push(VOLCANO_EMBLEM);s.bag[VOLCANO_EMBLEM]=1;await persist();await ui.say(['山頂のヨウガンヌシに 勝ったんだね！','マニケレオの町長から 預かっていた証だ。','マニケレオ・エンブレムを 手に入れた！']);}else await ui.say(['マニケレオタウンから １３番道路へ進もう。']);return;}
  if(n.script==='frontier:yanoken'){

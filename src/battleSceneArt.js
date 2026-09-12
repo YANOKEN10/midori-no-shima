@@ -1,6 +1,8 @@
+import {G as State} from './state.js';
+import {drawEndBattle} from './endgameArt.js';
 const scene=new Image(),trainers=new Image();scene.src=new URL('../assets/world-v19/battle.png',import.meta.url).href;trainers.src=new URL('../assets/world-v19/trainers.png',import.meta.url).href;
 export const readyBattleArt=()=>scene.complete&&scene.naturalWidth&&trainers.complete&&trainers.naturalWidth;
-export function drawBattleScene(c){c.imageSmoothingEnabled=false;if(!readyBattleArt()){c.fillStyle='#e8f4ec';c.fillRect(0,0,320,288);return false;}c.drawImage(scene,0,0);return true;}
+export function drawBattleScene(c){if(drawEndBattle(c,State.save?.battleTerrain))return true;c.imageSmoothingEnabled=false;if(!readyBattleArt()){c.fillStyle='#e8f4ec';c.fillRect(0,0,320,288);return false;}c.drawImage(scene,0,0);return true;}
 export function drawBattlePanel(c,x=0,y=208,w=320,h=80){c.imageSmoothingEnabled=false;if(scene.complete&&scene.naturalWidth)c.drawImage(scene,0,208,320,80,x,y,w,h);else{c.fillStyle='#294f62';c.fillRect(x,y,w,h);}}
 const cache=new Map();
 export function drawTrainerBack(c,look={},x=28,y=120){

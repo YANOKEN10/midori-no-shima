@@ -1,5 +1,7 @@
+let menuWorld=null;
+export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-yanoken-v36";
+import { heroFrame } from "./revampArt.js?v=20260912-endgame-v37";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -132,6 +134,7 @@ export async function bagMenu() {
       continue;
     }
     if (d.kind === "held") {const i=await partyMenu(true);if(i>=0){const mon=State.save.party[i];if(await ui.ask([monName(mon)+"に "+it.name+"を持たせますか？"])){if(mon.heldItem)addItem(mon.heldItem);useItem(it.name);mon.heldItem=it.name;saveLocal();await ui.say(["持ち物を変更した！"]);}}continue;}
+    if(it.name==="小型ボート"){if(await ui.ask(["小型ボートを使いますか？"]))await useOutside(it.name);return;}
     if (d.kind === "key") continue;
 
     const what = await ui.choice(["つかう", "すてる", "もどる"], { x: 176, y: 150, w: 136 });
@@ -163,6 +166,9 @@ async function leafCompassMenu() {
 }
 
 async function useOutside(name) {
+  if(name==='小型ボート'){const {useBoat}=await import('./endgameStory.js');if(menuWorld)await useBoat(menuWorld);return;}
+  if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expFor}=await import('./state.js');const result=gainExp(m,expFor(m.lv+1)-m.exp);for(const name of result.learned){if(m.moves.some(x=>x.name===name))continue;let idx=m.moves.length;if(idx>=4)idx=await ui.choice([...m.moves.map(x=>x.name),'おぼえない'],{rows:5});if(idx>=0&&idx<4)m.moves[idx]={name,pp:moveData(name).pp,max:moveData(name).pp};}if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
+
   const d = itemData(name);
   if (d.kind === "heal" || d.kind === "cure" || d.kind === "revive") {
     const i = await partyMenu(true);
@@ -213,6 +219,7 @@ export async function dexMenu() {
 }
 
 export async function dexEntry(n) {
+  if(n==="ラテット"&&!State.save.dexOwn[n]){await ui.say(["ラテット", "データ：？？？"]);return;}
   const sp = SPECIES[n];
   let page=0;const pages=1+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
@@ -461,7 +468,7 @@ function drawLookPreview(look, x, y) {
 }
 
 export async function clothesShop(fancy) {
-  const shirts = fancy ? SHIRT_FANCY : SHIRT_BASIC;
+  const shirts = fancy==='island' ? [{name:"サンゴ色のシャツ",color:"#ed8068"},{name:"南国ブルーのシャツ",color:"#159faa"},{name:"ハイビスカスのシャツ",color:"#e8538c"},{name:"白砂色のシャツ",color:"#eaddb8"}] : fancy ? SHIRT_FANCY : SHIRT_BASIC;
   const pants = fancy ? PANTS_FANCY : PANTS_BASIC;
   const skirts = fancy ? SKIRT_FANCY : SKIRT_BASIC;
   const price = fancy ? 1200 : 400;

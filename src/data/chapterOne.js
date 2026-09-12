@@ -1,3 +1,4 @@
+import {extendEndgameChapter} from './endgameChapter.js';
 import {extendFrontierChapter} from './frontierChapter.js';
 import {extendVoyageChapter} from './voyageChapter.js';
 import {extendPowerChapter} from './powerChapter.js';
@@ -99,6 +100,7 @@ export function buildChapterOne(){
  extendPowerChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  extendVoyageChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  extendFrontierChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
+ extendEndgameChapter(M,{add,rect,path,prop,tree,trees,npc,sign,link});
  furnishInteriors(M);
  encloseTowns(M);
  // Route 1 retains every road, tree, sign and exit; open meadow becomes encounter grass.

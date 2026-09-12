@@ -1,0 +1,12 @@
+{
+  "tool": "image_gen built-in",
+  "date": "2026-09-12",
+  "prompts": {
+    "environment.png": "Professional original 16-bit pixel RPG atlas, 4 columns x 4 rows. Snow fir, snow rock, snowy dense grass, snow ground; ice spire, sinister leafless purple tree, haunted streetlamp, dark grass; four-story mansion, tropical palm, cottage, ferry; waterfall cliff, giant tree, champion tower, spectators arena. Isolated objects, transparent alpha, no text.",
+    "eden.png": "Exact 4 columns (down,left,right,up) x 3 rows, transparent background. Rows 1 and 2: orange-haired snow-country trainer Eden in teal fur-lined parka, scarf and boots, standing then walking. Row3 unused boat prototype.",
+    "boat.png": "One wooden rowboat and brown-haired blue-jacket seated adventurer, 2x2 transparent sprite sheet. Down,left,right,up. Rotate the ENTIRE hull and oars. Horizontal hull silhouettes for left and right, vertical hull for up and down. Crisp 16-bit pixel art.",
+    "water-battle.png": "Original 16-bit pixel monster-battle background, no characters/text/UI. Tropical turquoise sea, distant green island and limestone rocks with palms, two subtle oval ripples for battle positions. Lower quarter flat water for dialogue overlay.",
+    "terrain.png": "Seamless terrain atlas exact2x2. Haunted purple dirt with leaves; dark cracked masonry floor; pale cyan glacier ice; lush moss-green meadow. Full quadrants, top-down even lighting, crisp 16-bit textures, no text."
+  },
+  "note": "Generated alpha preserved. Runtime atlas bounds exclude neighboring cells. Boat heading correction regenerated as dedicated four-direction sheet."
+}
