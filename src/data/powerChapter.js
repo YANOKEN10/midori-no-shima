@@ -23,7 +23,7 @@ export function extendPowerChapter(M,h){
  town.spawn={x:2,y:18};link(five,63,18,town,0,18);
  home(town,5,10,'hospital','ガオンびょういん',18);home(town,29,10,'shop','ショップ',18);home(town,6,22,'rodsHome','花職人の家',29);home(town,29,22,'karatSalon','カット屋 ― 髪の長さと色',29);
  const salon=add('karatSalon','カラットタウンのカット屋',16,14,'in');salon.chapter=3;salon.spawn={x:7,y:10};salon.g[12][7]='x';salon.warps.push({x:7,y:12,to:'@back'});
- rect(salon,3,3,10,1,'b');rect(salon,4,5,2,1,'t');rect(salon,10,5,2,1,'t');person(salon,7,5,'カット屋の店主',5,['カット屋へ ようこそ！','髪の長さも 色も 好きなものを選べるよ。'],{salon:true,noRoam:true});
+ rect(salon,3,3,10,1,'b');rect(salon,4,5,2,1,'t');rect(salon,10,5,2,1,'t');person(salon,7,5,'カット屋の店主',5,['カット屋へ ようこそ！','好きな見た目で お出かけしよう。'],{salon:true,noRoam:true});
  flowers(town,12,14,6,4);flowers(town,23,14,4,4,'flowersGold');flowers(town,4,3,12,4);flowers(town,25,3,12,4,'flowersGold');flowers(town,14,22,4,6);flowers(town,23,22,4,6,'flowersGold');flowers(town,4,32,12,4,'flowersGold');flowers(town,25,32,12,4);
  for(const [x,y]of [[15,10],[24,10],[15,30],[24,30]])prop(town,'flowerTree',x,y,2,3);
  person(town,17,19,'試験の案内係',5,[],{script:'power:guide',noRoam:true});person(town,9,19,'花職人',25,['花畑の町 カラットタウンへようこそ。']);person(town,31,30,'町の女の子',1,['北には ソーラーパネルが いっぱい。','発電所の電気で 港の船も動くの。']);

@@ -533,11 +533,9 @@ export async function hairSalon() {
   if(State.save.look.gender!=="girl"){await boyHairSalon();return;}
   const price = 300;
   for (;;) {
-    const which = await ui.choice(["かみの 色を かえる", "かみがたを かえる", "まえがみを かえる", "やめる"],
-      { x: 144, y: 128, w: 168, rows: 4 });
-    if (which < 0 || which === 3) { await ui.say(["また どうぞ！"]); return; }
-    if (which === 1) { await hairStyleMenu(price); continue; }
-    if (which === 2) { await bangsMenu(price); continue; }
+    const which = await ui.choice(["かみの 色を かえる", "やめる"],
+      { x: 144, y: 168, w: 168, rows: 2 });
+    if (which !== 0) { await ui.say(["また どうぞ！"]); return; }
     const labels = HAIR_COLORS.map((x) => x.name + "  " + price + "円");
     labels.push("やめる");
     const j = await ui.choice(labels, {
