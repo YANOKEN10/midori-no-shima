@@ -2,7 +2,7 @@ import {powerTarget} from './powerRules.js';
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260912-daycare-yard-v29";
+import { MAPS } from "./data/maps.js?v=20260912-connected-grass-v30";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [

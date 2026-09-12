@@ -7,6 +7,11 @@ let bgmTimer = 0;
 let bgmName = "";
 let step = 0;
 let muted = false;
+let natureTrack=null;
+function playNatureTrack(){
+ if(!natureTrack){natureTrack=new Audio(new URL('../assets/music-v30/morning-meadow-path.mp3',import.meta.url).href);natureTrack.loop=true;natureTrack.volume=.25;natureTrack.preload='auto';}
+ natureTrack.muted=muted;natureTrack.play().catch(()=>{});
+}
 
 export function initAudio() {
   if (ac) return;
@@ -17,9 +22,10 @@ export function initAudio() {
     master.connect(ac.destination);
   } catch (e) { ac = null; }
 }
-export function resumeAudio() { if (ac && ac.state === "suspended") ac.resume(); }
+export function resumeAudio() { if (ac && ac.state === "suspended") ac.resume();if(bgmName==='natureTown'&&natureTrack?.paused)playNatureTrack(); }
 export function setMuted(v) {
   muted = v;
+  if(natureTrack)natureTrack.muted=v;
   if (master) master.gain.value = v ? 0 : 0.18;
 }
 export function isMuted() { return muted; }
@@ -124,6 +130,7 @@ const BGM = {
 export function playBgm(name) {
   if (bgmName === name) return;
   stopBgm();
+  if(name==='natureTown'){bgmName=name;playNatureTrack();return;}
   if (!BGM[name] || !ac) { bgmName = name; return; }
   bgmName = name;
   step = 0;
@@ -139,6 +146,7 @@ export function playBgm(name) {
 }
 
 export function stopBgm() {
+  if(natureTrack){natureTrack.pause();natureTrack.currentTime=0;}
   if (bgmTimer) clearInterval(bgmTimer);
   bgmTimer = 0;
   bgmName = "";
