@@ -953,7 +953,7 @@ for (const r of ROUTE_DEFS) {
   if (r.rival) {
     npcs.push({
       x: 8, y: 4, dir: "down", look: "philoa", name: "フィロア",
-      trainer: { party: r.rival.party, money: r.rival.money },
+      trainer: { party: r.rival.party, money: r.rival.money, major:true },
       talk: r.rival.talk, win: r.rival.win, after: r.rival.after,
     });
   }

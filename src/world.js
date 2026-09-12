@@ -12,7 +12,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-battle-music-v31';
+import { drawNpc } from './npcArt.js?v=20260912-road-music-v32';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -27,7 +27,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-battle-music-v31";
+import { MAPS } from "./data/maps.js?v=20260912-road-music-v32";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -40,7 +40,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-battle-music-v31";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-road-music-v32";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -825,7 +825,7 @@ export const world = {
       const r = rounds[i];
       await ui.say(["しんこう「" + r.name + "！"]);
       await ui.say(r.talk);
-      const res = await startBattle({ trainer: { party: r.party, money: r.money, name: r.name, leader: null, champ: true } });
+      const res = await startBattle({ tournament:true, trainer: { party: r.party, money: r.money, name: r.name, leader: null, champ: true } });
       if (res === "lose") { await this.tournamentLose(); return; }
       await ui.say(r.win);
       await this.checkEvolution();
@@ -845,6 +845,7 @@ export const world = {
       "　七つの谷を歩いた全部で、しょうぶだ！",
     ]);
     const res = await startBattle({
+      tournament:true,
       trainer: {
         name: "フィロア",
         party: [["スイスイオ", 48], ["ライボルト", 48], ["オオハサミ", 50], ["リュウグウ", 52]],

@@ -7,7 +7,7 @@ let bgmTimer = 0;
 let bgmName = "";
 let step = 0;
 let muted = false;
-const MUSIC_FILES={marineTown:'../assets/music-v31/marine-whispering-grove.mp3',karatTown:'../assets/music-v31/karat-cozy-mountain-village.mp3',natureTown:'../assets/music-v30/morning-meadow-path.mp3',battle:'../assets/music-v31/monster-encounter.mp3',boss:'../assets/music-v31/monster-encounter.mp3',yanokenBattle:'../assets/music-v31/yanoken-warriors-charge.mp3'};
+const MUSIC_FILES={route:'../assets/music-v32/cozy-adventure.mp3',marineTown:'../assets/music-v31/marine-whispering-grove.mp3',karatTown:'../assets/music-v31/karat-cozy-mountain-village.mp3',natureTown:'../assets/music-v30/morning-meadow-path.mp3',battle:'../assets/music-v32/heroic-charge.mp3',boss:'../assets/music-v32/triumph-of-the-champion.mp3',tournament:'../assets/music-v32/the-final-stand.mp3',yanokenBattle:'../assets/music-v31/yanoken-warriors-charge.mp3'};
 const musicTracks=new Map();let activeTrack=null;
 function playFileTrack(name){
  const url=new URL(MUSIC_FILES[name],import.meta.url).href;

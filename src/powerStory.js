@@ -20,7 +20,7 @@ export async function powerNpc(world,n){
   if(f['power:restored']){f['power:passed']=true;if(!s.badges.includes(KARAT_EMBLEM))s.badges.push(KARAT_EMBLEM);s.bag[KARAT_EMBLEM]=1;await persist();beep('levelup');refreshPowerNpcs(world);await ui.say(['見事な試験だった！','カラット・エンブレムを 手に入れた！','カラットタウンへ 戻ってみたまえ。','スイスはかせが 町に来ているそうだ。']);return;}
   if(f['power:director']){await ui.say(powerOutage(s)?['停電の原因は ライメイのようだ。','外にいる ライメイを倒そう！']:['機械室の奥に 宝箱がある。','そこまで たどり着いてみたまえ。','奥の非常口から すぐ外へ出られる。']);return;}
   if(!await canBattle())return;await ui.say(['私は 発電所の所長 ジネルだ。','中へ入る前に 君の力を見せてくれ！']);
-  const result=await startBattle({trainer:{name:'所長 ジネル',party:[['ビリタマ',16],['ビリボール',18],['コンセン',26]],money:1300}});
+  const result=await startBattle({trainer:{name:'所長 ジネル',major:true,party:[['ビリタマ',16],['ビリボール',18],['コンセン',26]],money:1300}});
   if(result==='win'){f['power:director']=true;f['power:briefed']=true;await persist();refreshPowerNpcs(world);await ui.say(['よし 中へ入っていいぞ。','機械室の奥の宝箱を 調べてみたまえ。']);}await finish(world,result);return;
  }
  if(n.script==='power:chest'){
@@ -32,7 +32,7 @@ export async function powerNpc(world,n){
  if(n.script==='power:storyRaimei'){
   if(!powerOutage(s)||!await canBattle())return;
   await ui.say(['激しい雷の中に ライメイがいる！','ライメイの暴走を 止めよう！']);
-  const result=await startBattle({wild:makeMon('ライメイ',20),captureDisabled:true});
+  const result=await startBattle({wild:makeMon('ライメイ',20),captureDisabled:true,emblemTest:true});
   if(result==='win'){f['power:restored']=true;await persist();refreshPowerNpcs(world);await ui.say(['ライメイは 空へ去っていった。','電気が戻り 雨もやんだ！','ジネル所長に 報告しよう。']);}await finish(world,result);return;
  }
  if(n.script==='power:weeklyRaimei'){

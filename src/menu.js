@@ -1,5 +1,5 @@
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-battle-music-v31";
+import { heroFrame } from "./revampArt.js?v=20260912-road-music-v32";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================

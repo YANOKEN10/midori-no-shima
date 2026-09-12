@@ -25,7 +25,7 @@ export async function marineNpc(world,n){
   if(f['marine:crab:'+n.crab])return;
   if(!s.party.some(m=>m.hp>0)){await ui.say(['戦えるガオンを 連れてこよう。']);return;}
   await ui.say(['試験のカニポンが 向かってきた！']);s.battleTerrain='river';
-  const result=await startBattle({wild:makeMon('カニポン',8),captureDisabled:true});
+  const result=await startBattle({wild:makeMon('カニポン',8),captureDisabled:true,emblemTest:true});
   if(result==='win'){f['marine:crab:'+n.crab]=true;await persist();refreshMarineNpcs(world);await ui.say(['カニポンに 勝った！ '+trialCount(s)+'／４',trialCount(s)===4?'中央の島へ 戻ろう。':'残りのカニポンを さがそう。']);}
   if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();return;
  }
