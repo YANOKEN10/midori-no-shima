@@ -1,3 +1,4 @@
+import {recordParkCatch} from './frontierRules.js';
 import {drawBattleScene,drawTrainerBack,drawBattlePanel} from './battleSceneArt.js';
 import {drawItem} from './itemArt.js';
 import { drawChapterBattle } from "./chapterArt.js";
@@ -521,6 +522,7 @@ async function throwBall(ballRate, netName) {
     ownMon(m.sp);
     const firstPartner = State.save.party.length === 0;
     const where = addToParty(m);
+    recordParkCatch(State.save,State.save.where?.map,m.sp);
     if (firstPartner) await ui.say([m.sp + "が 仲間になった！", "次のバトルから「たたかう」で、一緒に戦えるようになった。", "「どうぐ」からラグネットを使い、ほかのガオンも仲間にしよう。"]);
     if (where === "box") await ui.say(["てもちが いっぱいなので", m.sp + "を ボックスへ おくった。"]);
     return "caught";

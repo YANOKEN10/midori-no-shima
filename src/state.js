@@ -72,7 +72,7 @@ function statTerm(m,key) {
   return Math.floor((2*species(m.sp).base[key]+(m.iv[key]||0)+Math.floor((m.ev[key]||0)/4))*m.lv/100);
 }
 export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
-export function statOf(m,key) { return key==='hp'?maxHp(m):statTerm(m,key)+5; }
+export function statOf(m,key) { const value=key==='hp'?maxHp(m):statTerm(m,key)+5;return Math.floor(value*(item(m.heldItem).stat===key?1.1:1)); }
 export function evTotal(m) { return STAT_KEYS.reduce((n,k)=>n+(m.ev?.[k]||0),0); }
 export function gainEffort(m,defeatedSpecies) {
   normalizeMonStats(m);

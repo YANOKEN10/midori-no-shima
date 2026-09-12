@@ -1,3 +1,4 @@
+import {drawFrontierMap,frontierGrass} from './frontierArt.js';
 import {drawVoyageTile} from './voyageArt.js';
 import {drawIndustrialTile} from './powerArt.js';
 import {drawMarineAsset,drawMarineTile,marineReady,marineForest} from './marineArt.js';
@@ -47,6 +48,7 @@ function cliff(c,map,x,y){
  c.restore();
 }
 export function drawChapterMap(ctx,map,camX,camY){
+ if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
  if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
  if(!cv){cv=document.createElement('canvas');cv.width=map.rows[0].length*32;cv.height=map.rows.length*32;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;
@@ -97,9 +99,10 @@ export function drawChapterMap(ctx,map,camX,camY){
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }
 export function drawGrassFeet(ctx,map,px,py,camX,camY){
+
  const left=px,top=py+8,right=px+32,bottom=py+20;
  for(let y=Math.floor(top/32);y<=Math.floor((bottom-1)/32);y++)for(let x=Math.floor(left/32);x<=Math.floor((right-1)/32);x++){
- if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
+ if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!frontierGrass(ctx,map,x,y,x*32-camX,y*32-camY)&&!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
 }
 const battleImages={};
 export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'river':'grass';let im=battleImages[key];if(!im){im=battleImages[key]=new Image();im.src=new URL('../assets/world-v5/battle-'+key+'-simple-v2.png',import.meta.url).href;}if(!im.complete||!im.naturalWidth)return false;

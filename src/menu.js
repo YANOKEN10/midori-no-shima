@@ -1,5 +1,5 @@
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-legend-battles-v34";
+import { heroFrame } from "./revampArt.js?v=20260912-frontier-v35";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -61,8 +61,9 @@ export async function partyMenu(forItem) {
     if (i < 0) return -1;
     if (forItem) return i;
 
-    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "つれあるき", "ガオンをにがす", "もどる"], { x: 148, y: 112, w: 164 });
-    if (what === 0) await showStatus(p[i]);
+    const what = await ui.choice(["つよさを みる", "いれかえる", "なまえを つける", "つれあるき", "ガオンをにがす", "もちもの", "もどる"], { x: 148, y: 112, w: 164 });
+    if(what===5){const mon=p[i];await ui.say(["持ち物："+(mon.heldItem||"なし")]);if(mon.heldItem&&await ui.ask(["持ち物を はずしますか？"])){addItem(mon.heldItem);delete mon.heldItem;saveLocal();}}
+    else if (what === 0) await showStatus(p[i]);
     else if (what === 1) {
       const j = await ui.choice(partyLabels(), { x: 8, y: 8, w: 304, rows: 6 });
       if (j >= 0 && j !== i) { const t = p[i]; p[i] = p[j]; p[j] = t; beep("ok"); }
@@ -130,6 +131,7 @@ export async function bagMenu() {
       await leafCompassMenu();
       continue;
     }
+    if (d.kind === "held") {const i=await partyMenu(true);if(i>=0){const mon=State.save.party[i];if(await ui.ask([monName(mon)+"に "+it.name+"を持たせますか？"])){if(mon.heldItem)addItem(mon.heldItem);useItem(it.name);mon.heldItem=it.name;saveLocal();await ui.say(["持ち物を変更した！"]);}}continue;}
     if (d.kind === "key") continue;
 
     const what = await ui.choice(["つかう", "すてる", "もどる"], { x: 176, y: 150, w: 136 });

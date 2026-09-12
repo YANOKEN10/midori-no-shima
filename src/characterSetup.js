@@ -1,6 +1,6 @@
 import { showForm } from './gate.js';
 import { HAIR_COLORS, SHIRT_BASIC, SHIRT_FANCY } from './data/looks.js';
-import { heroFrame } from './revampArt.js?v=20260912-legend-battles-v34';
+import { heroFrame } from './revampArt.js?v=20260912-frontier-v35';
 
 export function chooseAppearance() {
   return showForm({title:'きみの みためは？',sub:'すきな みためを えらんでね。',fields:[],submit:'この すがたで はじめる',mount(host){

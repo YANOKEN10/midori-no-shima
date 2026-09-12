@@ -1,6 +1,6 @@
 import {drawMarineAsset} from './marineArt.js';
 const images=Object.fromEntries(['mountain','rural'].map(name=>{const im=new Image();im.src=new URL('../assets/grass-v25/'+name+'.png',import.meta.url).href;return[name,im];}));
-export const grassTheme=map=>map.id==='mountain'?'mountain':['village','rods','route1','route2','natureforest','mossSanctuary'].includes(map.id)?'rural':null;
+export const grassTheme=map=>map.grassStyle||(['ranch','coast','flowers','rail'].includes(map.frontierTheme)?'rural':null)|| (map.id==='mountain'?'mountain':['village','rods','route1','route2','natureforest','mossSanctuary'].includes(map.id)?'rural':null);
 export const grassReady=map=>{const theme=grassTheme(map);return !theme||images[theme].complete&&images[theme].naturalWidth>0;};
 // Shared half-tile tufts bridge adjacent grass cells. The same world-space
 // anchors are used by the cached map and the character feet overlay.

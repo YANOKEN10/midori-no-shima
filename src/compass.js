@@ -1,8 +1,9 @@
+import {frontierTarget} from './frontierRules.js';
 import {powerTarget} from './powerRules.js';
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260912-legend-battles-v34";
+import { MAPS } from "./data/maps.js?v=20260912-frontier-v35";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [
@@ -29,6 +30,7 @@ export function setCompassEnabled(on) {
 
 export function nextObjective() {
   if (!compassAvailable()) return null;
+  const frontier=frontierTarget(State.save);if(frontier)return frontier;
   if(flag("v5:dex")){
     if(flag("marine:passed"))return powerTarget(State.save);
     return {map:"remoteLake",x:21,y:20,name:"湖のエンブレム・テスト"};

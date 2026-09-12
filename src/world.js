@@ -1,3 +1,6 @@
+import {frontierNpc,refreshFrontier,tickFrontier} from './frontierStory.js';
+import {frontierGate,rematchAvailable,markRematch,recordBirth} from './frontierRules.js';
+import {drawFrontierWeather} from './frontierArt.js';
 import {npcDialogue} from './npcDialogue.js';
 import {daycareResidents,drawDaycareLabels} from './daycareResidents.js';
 import {voyageNpc,refreshVoyageNpcs,tickVoyage} from './voyageStory.js';
@@ -13,7 +16,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-legend-battles-v34';
+import { drawNpc } from './npcArt.js?v=20260912-frontier-v35';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -28,7 +31,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-legend-battles-v34";
+import { MAPS } from "./data/maps.js?v=20260912-frontier-v35";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -41,7 +44,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-legend-battles-v34";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-frontier-v35";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -166,7 +169,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
-    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);
+    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -194,13 +197,13 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
-    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);}
+    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
-    if(tickVoyage(this))return;
+    if(tickFrontier(this)||tickVoyage(this))return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
 
@@ -267,6 +270,7 @@ export const world = {
     if (cellX !== this.freeCellX || cellY !== this.freeCellY) {
       this.freeCellX = cellX; this.freeCellY = cellY;
       State.save.steps = (State.save.steps || 0) + 1;
+    recordBirth(State.save);
       if(State.save.daycare)saveLocal();
       const ch = tileAt(this.map, cellX, cellY);
       // 野生ガオンは「濃い草むら (")」に足を踏み入れた時だけ出現する。
@@ -346,6 +350,7 @@ export const world = {
   async afterStep() {
     State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
     State.save.steps = (State.save.steps || 0) + 1;
+    recordBirth(State.save);
     if(State.save.daycare)saveLocal();
 
     // ワープ
@@ -374,9 +379,9 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
-    const marineLock=marineGate(wp,State.save)||powerGate(wp,State.save);
+    const marineLock=frontierGate(wp,State.save)||marineGate(wp,State.save)||powerGate(wp,State.save);
     if(marineLock){await ui.say(marineLock);this.busy=false;return;}
-    if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!flag(wp.requires)){
+    if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!wp.requires.startsWith("frontier:")&&!flag(wp.requires)){
       const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
       await ui.say(lines);this.busy=false;return;
     }
@@ -500,6 +505,7 @@ export const world = {
     const beatKey = "beat:" + this.mapId + ":" + n.idx;
 
     /* --- ものがたりの イベント --- */
+    if(n.script?.startsWith("frontier:")){await frontierNpc(this,n);return;}
     if(n.script?.startsWith("voyage:")){await voyageNpc(this,n);return;}
     if(n.script?.startsWith("power:")){await powerNpc(this,n);return;}
     if(n.script?.startsWith("marine:")){await marineNpc(this,n);return;}
@@ -512,13 +518,17 @@ export const world = {
     if (n.script === "entry") { await this.entryEvent(n); return; }
     if (n.script === "tournament") { await this.tournamentEvent(n); return; }
 
-    if (n.trainer && !flag(beatKey)) {
+    const ordinary=n.trainer&&!n.trainer.leader&&!n.trainer.major&&!n.trainer.champ;
+    let rematch=false;
+    if(ordinary&&flag(beatKey)&&rematchAvailable(State.save,beatKey))rematch=await ui.ask([npcDialogue(State.save,this.mapId,n,"after",n.after||["また会えたね！"])[0],"もう一度 バトルしない？"]);
+    if (n.trainer && (!flag(beatKey)||rematch)) {
       if(!State.save.party.length){await ui.say(["まずは 草むらで ガオンをつかまえよう。","仲間ができたら しょうぶしよう！"]);return;}
       State.save.battleTerrain="grass";
       await ui.say(npcDialogue(State.save,this.mapId,n,"talk",n.talk || ["しょうぶだ！"]));
       const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name }) });
       if (res === "lose") { await this.blackout(); return; }
       setFlag(beatKey);
+      if(ordinary)markRematch(State.save,beatKey);
       await ui.say(npcDialogue(State.save,this.mapId,n,"win",n.win || ["やるな！"]));
       if (n.trainer.leader) {
         const em = n.trainer.leader;
@@ -1087,6 +1097,7 @@ export const world = {
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawDaycareLabels(G.ctx,map,State.save,camX,camY);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
+    drawFrontierWeather(G.ctx,map,this.tick);
     if(this.showName<=0)drawVoyageStatus(G.ctx,map,State.save);
     // まちの なまえ（はいってすぐ）
     G.use("ui");
@@ -1197,6 +1208,6 @@ export function bgmFor(mapId) {
   if (m.kind === "cave") return "cave";
   if (m.kind === "in") return "town";
   if (m.kind === "out" && /route/.test(mapId)) return "route";
-  if (mapId === "summit") return "route";
+  if (["summit","ashRoad","resureBeach"].includes(mapId)) return "route";
   return "town";
 }

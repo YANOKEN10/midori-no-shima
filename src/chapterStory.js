@@ -1,3 +1,4 @@
+import {frontierTarget} from './frontierRules.js';
 import {yanokenGreeting} from './npcDialogue.js';
 import {marineObjective} from './marineStory.js';
 import { ui } from './ui.js';
@@ -43,7 +44,7 @@ export async function chapterNpc(world,n){
   await ui.say(yanokenGreeting(State.save));
  }
 }
-export function chapterObjective(){if(!flag('v5:heardLatett'))return '村の女の子に 話を聞こう';if(!flag('v5:latettSeen'))return '北の山おくで ラテットをさがそう';if(!flag('v5:netGift'))return '研究施設の スイスはかせに報告';if(!flag('v5:dex'))return '1ばんどうろを抜け ロッズタウンへ';return marineObjective(State.save);}
+export function chapterObjective(){const next=frontierTarget(State.save);if(next)return next.name;if(!flag('v5:heardLatett'))return '村の女の子に 話を聞こう';if(!flag('v5:latettSeen'))return '北の山おくで ラテットをさがそう';if(!flag('v5:netGift'))return '研究施設の スイスはかせに報告';if(!flag('v5:dex'))return '1ばんどうろを抜け ロッズタウンへ';return marineObjective(State.save);}
 
 export function chapterTravelHint(){
  if(!flag('v5:heardLatett'))return ['遠くへ出かける前に 村を歩いて','みんなに 話しかけてみよう。'];

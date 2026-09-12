@@ -1,3 +1,4 @@
+import {recordBirth} from './frontierRules.js';
 import {SPECIES} from './data/species.js';
 import {MOVES} from './data/moves.js';
 export const SHIP_TICKET='船のチケット',VOYAGE_MS=180000,DAYCARE_STEPS=2000;
@@ -30,6 +31,7 @@ export function depositParents(save,refs,child){
  save.daycare={parents,child,readyAt:(save.steps||0)+DAYCARE_STEPS,notified:false};return null;
 }
 export function reclaimDaycare(save,withBaby){
+ recordBirth(save);
  const job=save.daycare;if(!job||withBaby&&daycareRemaining(save)>0)return null;
  const mons=[...job.parents,...(withBaby?[job.child]:[])];for(const m of mons)(save.party.length<6?save.party:save.box).push(m);
  save.daycare=null;return mons;

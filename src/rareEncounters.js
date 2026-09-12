@@ -3,7 +3,6 @@ export const RARE_RULES = [
  {name:'コケゴロ',map:'mossSanctuary',rate:0.01,min:32,max:36},
  {name:'オバケシ',map:'forgottenRuins',rate:0.03,min:34,max:38},
  {name:'ムラサキビ',map:'forgottenRuins',rate:0.01,min:40,max:45},
- {name:'ヨウガンヌシ',map:'volcanicDepths',rate:0.01,min:45,max:50},
  {name:'ヤミノヌシ',map:'shadowDepths',rate:0.01,min:50,max:55},
 ];
 export const EXCLUSIVE_WILD = new Set(RARE_RULES.map(r=>r.name));
