@@ -14,7 +14,7 @@ function prepareYanoken(){
  const c=document.createElement('canvas');c.width=yanokenSheet.width;c.height=yanokenSheet.height;
  const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(yanokenSheet,0,0);
  const pixels=ctx.getImageData(0,0,c.width,c.height),d=pixels.data,xCount=new Uint32Array(c.width),yCount=new Uint32Array(c.height);
- for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const i=(y*c.width+x)*4;if(d[i]>160&&d[i+1]<120&&d[i+2]>150)d[i+3]=0;if(d[i+3]>=128){xCount[x]++;yCount[y]++;}}
+ for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const i=(y*c.width+x)*4;if(d[i]>d[i+1]+20&&d[i+2]>d[i+1]+20&&d[i+1]<140)d[i+3]=0;if(d[i+3]>=128){xCount[x]++;yCount[y]++;}}
  ctx.putImageData(pixels,0,0);
  // Locate the transparent gutters rather than cutting off boots at nominal grid boundaries.
  const bands=counts=>{const out=[];let start=-1;for(let i=0;i<=counts.length;i++){if(counts[i]>2){if(start<0)start=i;}else if(start>=0){if(i-start>20)out.push([start,i]);start=-1;}}return out;};
