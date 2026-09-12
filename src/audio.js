@@ -7,10 +7,12 @@ let bgmTimer = 0;
 let bgmName = "";
 let step = 0;
 let muted = false;
-let natureTrack=null;
-function playNatureTrack(){
- if(!natureTrack){natureTrack=new Audio(new URL('../assets/music-v30/morning-meadow-path.mp3',import.meta.url).href);natureTrack.loop=true;natureTrack.volume=.25;natureTrack.preload='auto';}
- natureTrack.muted=muted;natureTrack.play().catch(()=>{});
+const MUSIC_FILES={marineTown:'../assets/music-v31/marine-whispering-grove.mp3',karatTown:'../assets/music-v31/karat-cozy-mountain-village.mp3',natureTown:'../assets/music-v30/morning-meadow-path.mp3',battle:'../assets/music-v31/monster-encounter.mp3',boss:'../assets/music-v31/monster-encounter.mp3',yanokenBattle:'../assets/music-v31/yanoken-warriors-charge.mp3'};
+const musicTracks=new Map();let activeTrack=null;
+function playFileTrack(name){
+ const url=new URL(MUSIC_FILES[name],import.meta.url).href;
+ if(!musicTracks.has(url)){const track=new Audio(url);track.loop=true;track.volume=.25;track.preload='auto';musicTracks.set(url,track);}
+ activeTrack=musicTracks.get(url);activeTrack.muted=muted;activeTrack.play().catch(()=>{});
 }
 
 export function initAudio() {
@@ -22,10 +24,10 @@ export function initAudio() {
     master.connect(ac.destination);
   } catch (e) { ac = null; }
 }
-export function resumeAudio() { if (ac && ac.state === "suspended") ac.resume();if(bgmName==='natureTown'&&natureTrack?.paused)playNatureTrack(); }
+export function resumeAudio() { if (ac && ac.state === "suspended") ac.resume();if(activeTrack?.paused&&MUSIC_FILES[bgmName])playFileTrack(bgmName); }
 export function setMuted(v) {
   muted = v;
-  if(natureTrack)natureTrack.muted=v;
+  if(activeTrack)activeTrack.muted=v;
   if (master) master.gain.value = v ? 0 : 0.18;
 }
 export function isMuted() { return muted; }
@@ -130,7 +132,7 @@ const BGM = {
 export function playBgm(name) {
   if (bgmName === name) return;
   stopBgm();
-  if(name==='natureTown'){bgmName=name;playNatureTrack();return;}
+  if(MUSIC_FILES[name]){bgmName=name;playFileTrack(name);return;}
   if (!BGM[name] || !ac) { bgmName = name; return; }
   bgmName = name;
   step = 0;
@@ -146,7 +148,7 @@ export function playBgm(name) {
 }
 
 export function stopBgm() {
-  if(natureTrack){natureTrack.pause();natureTrack.currentTime=0;}
+  if(activeTrack){activeTrack.pause();activeTrack.currentTime=0;activeTrack=null;}
   if (bgmTimer) clearInterval(bgmTimer);
   bgmTimer = 0;
   bgmName = "";

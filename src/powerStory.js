@@ -3,12 +3,12 @@ import {ui} from './ui.js';
 import {startBattle} from './battle.js';
 import {saveLocal,saveCloud} from './save.js';
 import {cloud} from './cloud.js';
-import {playBgm,beep} from './audio.js';
+import {beep} from './audio.js';
 import {KARAT_EMBLEM,RAIMEI_BATTLE,powerOutage,powerVisible,raimeiAvailable,markRaimeiVisit} from './powerRules.js';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export function refreshPowerNpcs(world){for(const n of world.npcs)if(n.script?.startsWith('power:')){n.gone=!powerVisible(n,State.save);if(n.script==='power:director'){n.x=State.save.flags['power:director']?19:17;n.y=14;}}}
 async function canBattle(){if(State.save.party.some(m=>m.hp>0))return true;await ui.say(['戦えるガオンを 連れてこよう。']);return false;}
-async function finish(world,result){if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();playBgm('town');}
+async function finish(world,result){if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();}
 export async function powerNpc(world,n){
  const s=State.save,f=s.flags;
  if(n.script==='power:guide'){

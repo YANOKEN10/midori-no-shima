@@ -4,7 +4,7 @@ import {ui} from './ui.js';
 import {startBattle,wait} from './battle.js';
 import {saveLocal,saveCloud} from './save.js';
 import {cloud} from './cloud.js';
-import {playBgm,beep} from './audio.js';
+import {beep} from './audio.js';
 import {SHIP_TICKET,SHIP_MAPS,VOYAGE_MS,boardingOpen,registeredCount,canReceiveTicket,hasShipTicket,voyageDocked,voyageRemaining,trainerAvailable,markTrainer,daycareRemaining,eligiblePairs,checkParents,eggMoves,depositParents,reclaimDaycare} from './voyageRules.js';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export function refreshVoyageNpcs(world){
@@ -37,7 +37,7 @@ async function finish(world,result){
  if(result==='lose'){
   if(SHIP_MAPS.includes(world.mapId)){healParty();world.enter('shipLounge',16,9,'up');await ui.say(['船の看護師が ガオンを回復してくれた。']);}
   else await world.blackout();
- }else await world.checkEvolution();await persist();playBgm('town');
+ }else await world.checkEvolution();await persist();world.resumeBgm();
 }
 async function ready(){if(State.save.party.some(m=>m.hp>0))return true;await ui.say(['戦えるガオンを 連れてきてね。']);return false;}
 export async function voyageNpc(world,n){

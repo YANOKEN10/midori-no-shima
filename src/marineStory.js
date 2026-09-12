@@ -4,7 +4,7 @@ import {ui} from './ui.js';
 import {startBattle} from './battle.js';
 import {saveLocal,saveCloud} from './save.js';
 import {cloud} from './cloud.js';
-import {playBgm,beep} from './audio.js';
+import {beep} from './audio.js';
 import {MARINE_EMBLEM,MERORON_BATTLE,trialCount,meroronAvailable,markMeroronDay,marineVisible} from './marineRules.js';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export function refreshMarineNpcs(world){for(const n of world.npcs)if(n.script?.startsWith('marine:'))n.gone=!marineVisible(n,State.save);}
@@ -27,7 +27,7 @@ export async function marineNpc(world,n){
   await ui.say(['試験のカニポンが 向かってきた！']);s.battleTerrain='river';
   const result=await startBattle({wild:makeMon('カニポン',8),captureDisabled:true});
   if(result==='win'){f['marine:crab:'+n.crab]=true;await persist();refreshMarineNpcs(world);await ui.say(['カニポンに 勝った！ '+trialCount(s)+'／４',trialCount(s)===4?'中央の島へ 戻ろう。':'残りのカニポンを さがそう。']);}
-  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();playBgm('town');return;
+  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();return;
  }
  if(n.script==='marine:elder'){
   if(f['marine:passed']){await ui.say(['君は 立派なガオンのトレーナーだ！','５番道路から 次の町へ進もう。']);return;}
@@ -36,14 +36,14 @@ export async function marineNpc(world,n){
   await ui.say(['わしは マリンタウンの村長 エビゲル。','４体に勝ったようだな。','最後は わしとのガオンバトルだ！']);s.battleTerrain='river';
   const result=await startBattle({trainer:{name:'村長 エビゲル',party:[['カニポン',8],['サカナビ',10],['ミナモリス',12]],money:720,leader:MARINE_EMBLEM}});
   if(result==='win'){f['marine:passed']=true;if(!s.badges.includes(MARINE_EMBLEM))s.badges.push(MARINE_EMBLEM);s.bag[MARINE_EMBLEM]=1;await persist();beep('levelup');await ui.say(['エンブレム・テスト 合格！','マリンエンブレムを 手に入れた！','５番道路の工事が 終わった。','カラットタウンへ 進めるようになった！']);}
-  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();playBgm('town');return;
+  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();return;
  }
  if(n.script==='marine:meroron'){
   if(!meroronAvailable(s))return;
   markMeroronDay(s);await persist(); // Consume the visit before battle, including reloads and losses.
   s.battleTerrain='grass';const result=await startBattle({wild:makeMon('メロロン',30),...MERORON_BATTLE});
   markMeroronDay(s);await persist();refreshMarineNpcs(world);
-  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();playBgm('town');
+  if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();
   if(result!=='caught')await ui.say(['メロロンは 森の奥に姿を消した。','また明日の夕方に 会えるかもしれない。']);
  }
 }
