@@ -32,7 +32,7 @@ export async function powerNpc(world,n){
  if(n.script==='power:storyRaimei'){
   if(!powerOutage(s)||!await canBattle())return;
   await ui.say(['激しい雷の中に ライメイがいる！','ライメイの暴走を 止めよう！']);
-  const result=await startBattle({wild:makeMon('ライメイ',20),captureDisabled:true,emblemTest:true});
+  const result=await startBattle({wild:makeMon('ライメイ',20),captureDisabled:true,escapeDisabled:true,emblemTest:true});
   if(result==='win'){f['power:restored']=true;await persist();refreshPowerNpcs(world);await ui.say(['ライメイは 空へ去っていった。','電気が戻り 雨もやんだ！','ジネル所長に 報告しよう。']);}await finish(world,result);return;
  }
  if(n.script==='power:weeklyRaimei'){

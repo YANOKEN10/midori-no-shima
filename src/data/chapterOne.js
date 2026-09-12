@@ -52,14 +52,19 @@ export function buildChapterOne(){
  const shop=add('shop','ショップ',16,14,'in');rect(shop,2,2,4,2,'b');rect(shop,10,2,4,2,'b');npc(shop,7,5,'店員','clerk',['いらっしゃいませ！','くすりと ラグネットは こちらです。'],{shop:true,noRoam:true});
  const rh=add('rodsHome','ロッズタウンの家',16,14,'in');rect(rh,3,4,3,2,'t');npc(rh,10,5,'村のひと','oldman',['草むらで会える ガオンは','道路ごとに ちがうんだ。']);
  for(const m of [home,lab,hospital,shop,rh]){m.g[12][7]='x';m.warps.push(m.id==='hut'?{x:7,y:12,to:'village',tx:13,ty:12}:{x:7,y:12,to:'@back'});m.spawn={x:7,y:10};}
- const mountain=add('mountain','山おく',30,34);mountain.spawn={x:14,y:31};path(mountain,14,33,14,24);path(mountain,14,24,6,17);path(mountain,6,17,20,10);path(mountain,20,10,14,4);rect(mountain,11,3,8,5,'.');
- rect(mountain,3,23,5,6,'"');rect(mountain,22,15,5,6,'"');rect(mountain,8,10,3,4,'"');
- // These flat corridors have no elevation change; keep them ordinary two-tile paths.
- rect(mountain,6,18,2,4,'.');rect(mountain,20,11,2,4,'.');
- for(const [x,y] of [[11,22],[18,22],[23,8],[5,7],[24,27]])mountain.g[y][x]='R';
+ const mountain=add('mountain','山おく',30,58);mountain.spawn={x:14,y:55};
+ // A one-tile, grass-free trail winds from the southern entrance to Ratetto.
+ const mountainTrail=[[14,57],[14,48],[6,40],[22,31],[8,22],[20,13],[14,7],[14,4]];
+ for(let i=1;i<mountainTrail.length;i++)path(mountain,...mountainTrail[i-1],...mountainTrail[i],1);
+ rect(mountain,11,3,8,5,'.');
+ for(const [x,y] of [[11,22],[18,25],[23,8],[5,7],[24,47],[4,35],[25,38]])if(mountain.g[y][x]===',')mountain.g[y][x]='R';
  npc(mountain,14,4,'ラテット','boy',[],{script:'v5:latett',artMon:'ラテット',hideFlag:'v5:latettSeen'});
  mountain.enc={rate:15,list:[['スナコロネ',3,5,59],['ツチノコ',3,5,40],['コケゴロ',8,10,1]]};mountain.battleTerrain='grass';trees(mountain);
- const one=add('route1','1ばんどうろ',26,32);path(one,12,0,12,31);path(one,5,10,18,10);rect(one,3,5,6,7,'"');rect(one,17,15,6,7,'"');rect(one,5,24,5,4,'"');one.enc={rate:17,list:[['ネズミン',2,3,55],['トリッピ',2,4,45]]};sign(one,10,4,['1ばんどうろ','北：ネイチャー　南：ロッズ']);npc(one,15,26,'旅の女の子','girl',['ガオンを持っていなくても','ラグネットを投げて つかまえられるよ。']);trees(one);
+ const one=add('route1','1ばんどうろ',26,60);one.spawn={x:12,y:2};
+ const firstRoad=[[12,0],[12,12],[5,20],[18,34],[8,46],[12,59]];
+ for(let i=1;i<firstRoad.length;i++)path(one,...firstRoad[i-1],...firstRoad[i],2);
+ one.enc={rate:17,list:[['ネズミン',2,3,55],['トリッピ',2,4,45]]};
+ sign(one,10,4,['1ばんどうろ','北：ネイチャー　南：ロッズ']);npc(one,15,26,'旅の女の子','girl',['ガオンを持っていなくても','ラグネットを投げて つかまえられるよ。']);trees(one);
  const two=add('route2','2ばんどうろ',30,42);path(two,14,0,14,41);path(two,5,10,24,10);path(two,5,23,24,23);path(two,5,34,24,34);
  rect(two,3,4,7,5,'"');rect(two,20,13,7,6,'"');rect(two,3,27,7,6,'"');rect(two,19,36,8,4,'"');
  // The first trainer sees the main path near the entrance. No trainers exist earlier.
@@ -73,7 +78,7 @@ export function buildChapterOne(){
  for(const [x,y,dir,name,party] of [[12,8,'right','森のトレーナー ミオ',[['キノコン',6]]],[4,20,'right','森のトレーナー ケイ',[['ハナビィ',6],['ムシコロ',5]]],[27,29,'left','森のトレーナー ナオ',[['キノコン',7]]]]){rect(forest,x,y,1,1,'.');trainer(forest,x,y,name,'hiker',dir,party,'森の ガオンと しょうぶしよう！');}
  forest.enc={rate:20,list:[['キノコン',5,7,45],['ハナビィ',5,7,53],['リボネム',7,8,2]]};forest.rareSpecies='リボネム';
  sign(forest,18,34,['南：森の聖域','森の3人に勝つと 奥へ進める。']);path(forest,16,29,16,37,1);trees(forest);
- link(v,16,0,mountain,14,33,'v5:heardLatett');link(v,16,28,one,12,0,'v5:netGift');link(one,12,31,r,16,0);link(r,16,28,two,14,0,'v5:dex');link(two,14,41,forest,16,0);
+ link(v,16,0,mountain,14,57,'v5:heardLatett');link(v,16,28,one,12,0,'v5:netGift');link(one,12,59,r,16,0);link(r,16,28,two,14,0,'v5:dex');link(two,14,41,forest,16,0);
  // Optional rare habitats beyond the first forest. All borders remain solid except exits.
  const sanctuary=add('mossSanctuary','森の聖域',28,28);sanctuary.spawn={x:14,y:2};
  path(sanctuary,14,0,14,25);path(sanctuary,14,14,27,14,1);rect(sanctuary,3,4,7,7,'"');rect(sanctuary,18,18,7,7,'"');
@@ -105,12 +110,12 @@ export function buildChapterOne(){
   prop(m,'mountainCrag',x,y,w,h,'R');
  }
  // Dense stands leave the authored trail and encounter clearings open.
- for(let y=4;y<29;y+=3)for(let x=3;x<26;x+=3)tree(M.mountain,x,y,(x+y)%2?'fir':'tree');
- // Leave Ratetto's clearing open; all other walkable ground grows tall grass.
+ for(let y=4;y<M.mountain.g.length-5;y+=3)for(let x=3;x<26;x+=3)tree(M.mountain,x,y,(x+y)%2?'fir':'tree');
+ // Preserve the narrow trail and clearing; surrounding meadow becomes tall grass.
  for(let y=0;y<M.mountain.g.length;y++)for(let x=0;x<M.mountain.g[y].length;x++){
   const clearing=x>=11&&x<=18&&y>=3&&y<=7;
   const exit=M.mountain.warps.some(w=>w.x===x&&w.y===y);
-  if(!clearing&&!exit&&[',','.'].includes(M.mountain.g[y][x]))M.mountain.g[y][x]='"';
+  if(!clearing&&!exit&&M.mountain.g[y][x]===',')M.mountain.g[y][x]='"';
  }
  M.mountain.props.sort((a,b)=>(a.y+a.h)-(b.y+b.h));
  populatePeople(M);

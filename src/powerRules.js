@@ -1,7 +1,7 @@
 import {hasShipTicket,SHIP_MAPS} from './voyageRules.js';
 export const KARAT_EMBLEM='カラット・エンブレム';
 export const FERRY_TICKET='船のチケット';
-export const RAIMEI_BATTLE={catchRate:3};
+export const RAIMEI_BATTLE={catchRate:3,escapeDisabled:true};
 const DAY=86400000,WEEK=7*DAY,JST=9*3600000;
 export function raimeiWindow(now=new Date()){
  const time=now.getTime(),j=new Date(time+JST),day=j.getUTCDay(),hour=j.getUTCHours();

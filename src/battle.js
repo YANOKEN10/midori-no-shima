@@ -70,7 +70,7 @@ export async function startBattle(opts) {
   if (!you && isTrainer) return "lose";
   const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
   B = {
-    isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
+    isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, escapeDisabled:!!opts.escapeDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0,
     you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
@@ -99,6 +99,7 @@ export async function startBattle(opts) {
   while (!result) {
     const action = await chooseAction();
     if (action.kind === "run") {
+      if (B.escapeDisabled) { await ui.say(["このバトルからは にげられない！"]); continue; }
       if (B.isTrainer) { await ui.say(["トレーナーとの しょうぶからは にげられない！"]); continue; }
       if (await tryRun()) { result = "run"; break; }
       await doTurn(null);

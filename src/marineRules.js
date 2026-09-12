@@ -1,7 +1,7 @@
 import {markRaimeiRelease} from './powerRules.js';
 // Calendar rules use Japan time even when the browser is elsewhere.
 export const MARINE_EMBLEM='マリンエンブレム';
-export const MERORON_BATTLE={catchRate:3,wildFleeRate:.12};
+export const MERORON_BATTLE={catchRate:3,wildFleeRate:.12,escapeDisabled:true};
 export function japanClock(now=new Date()){
  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(now).map(p=>[p.type,p.value]));
  return {day:parts.year+'-'+parts.month+'-'+parts.day,hour:Number(parts.hour)};
