@@ -8,7 +8,7 @@ const labels={battle:'通信バトル',trade:'ガオン交換',coop:'協力ダ�
 const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
 export async function openFriends(){
  if(!cloud.signedIn){await ui.say(['友だちと遊ぶには ログインが必要です。','せってい → アカウントから ログインしてください。']);return;}
- const resume=await cloud.call('/api/friends',{method:'POST',timeoutMs:12000,body:{action:'resume'}});if(!resume.ok){await ui.say([resume.why]);return;}
+ let resume;for(;;){resume=await cloud.call('/api/friends',{method:'POST',timeoutMs:12000,body:{action:'resume'}});if(resume.ok)break;if((!resume.status||resume.status>=500)&&await ui.ask([resume.why,'通信を再確認しますか？']))continue;await ui.say([resume.why]);return;}
  if(resume.data.payload&&(resume.data.room||(resume.data.payload.friendEpoch||0)>(State.save.friendEpoch||0))){applySave(resume.data.payload);cloud.user=resume.data.user;cloud.rev=resume.data.user.rev;}
  if(!resume.data.room){saveLocal();const saved=await cloud.push(snapshot(),false);if(!saved.ok){await ui.say([saved.why,'レポートで記録を確認してから、もう一度お試しください。']);return;}}
  if(!document.getElementById('friend-css')){const css=el('link');css.id='friend-css';css.rel='stylesheet';css.href=new URL('./friends.css',import.meta.url).href;document.head.append(css);}

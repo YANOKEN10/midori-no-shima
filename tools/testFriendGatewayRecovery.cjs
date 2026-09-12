@@ -1,0 +1,3 @@
+const assert=require('node:assert/strict');process.env.FRIEND_GATEWAY_SECRET='test-only';const store=require('../api/_friendStore');let calls=0;
+(async()=>{global.fetch=async()=>{calls++;return calls===1?{ok:false,status:503}:{ok:true,json:async()=>({})}};assert.deepEqual(await store.read([]),{});assert.equal(calls,2);
+calls=0;global.fetch=async()=>{calls++;throw Error('lost response')};await assert.rejects(store.commit({},{}),e=>e.statusCode===503);assert.equal(calls,1,'writes must not be replayed after an uncertain response');calls=0;await assert.rejects(store.read([]),e=>e.statusCode===503);assert.equal(calls,3);console.log('PASS transient reads recover, outage is 503, uncertain commits are never blindly retried');})().catch(e=>{console.error(e);process.exitCode=1});
