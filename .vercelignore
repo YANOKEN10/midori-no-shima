@@ -11,3 +11,6 @@ artifacts
 tools
 docs
 *.ps1
+
+database
+functions

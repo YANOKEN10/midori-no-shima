@@ -27,6 +27,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "DELETE") {
+      if(user._activeRoom){res.status(409).json({error:"room",message:"通信ルームを退出してから記録を消してください。"});return;}
       user.payload = null;
       user.savedAt = 0;
       user.rev = (user.rev | 0) + 1;
@@ -38,6 +39,8 @@ module.exports = async function handler(req, res) {
     if (req.method !== "POST") { res.status(405).json({ error: "method" }); return; }
 
     const b = L.body(req);
+    if(user._activeRoom){res.status(409).json({error:"room",message:"通信ルームを退出してから保存してください。",user:L.publicUser(user),payload:user.payload});return;}
+    if((user.payload?.friendEpoch||0)!==(b.payload?.friendEpoch||0)){res.status(409).json({error:"exchange",message:"通信後の記録を読み込んでください。",user:L.publicUser(user),payload:user.payload});return;}
     if (b.payload == null || typeof b.payload !== "object") {
       res.status(400).json({ error: "payload", message: "きろくの 中身が ありません。" });
       return;

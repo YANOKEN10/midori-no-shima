@@ -1,7 +1,8 @@
+import {openFriends} from './friends.js';
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-battle-v38";
+import { heroFrame } from "./revampArt.js?v=20260912-friends-v39";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -28,9 +29,9 @@ import { compassEnabled, compassSummary, nextObjective, setCompassEnabled } from
 /* ============ メインメニュー ============ */
 export async function openMenu() {
   for (;;) {
-    const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "とじる"];
-    const i = await ui.choice(items, { x: 156, y: 8, w: 156, rows: 8 });
-    if (i < 0 || i === 7) return;
+    const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "友だちと遊ぶ", "とじる"];
+    const i = await ui.choice(items, { x: 156, y: 8, w: 156, rows: 9 });
+    if (i < 0 || i === 8) return;
     if (i === 0) {const section=await ui.choice(["てもち","ボックス","もどる"],{x:8,y:8,w:304,rows:3});if(section===0)await partyMenu();if(section===1)await boxMenu();}
     else if (i === 1) await followerMenu();
     else if (i === 2) await bagMenu();
@@ -38,6 +39,7 @@ export async function openMenu() {
     else if (i === 4) await trainerCard();
     else if (i === 5) await reportMenu();
     else if (i === 6) await settingsMenu();
+    else if (i === 7) await openFriends();
   }
 }
 

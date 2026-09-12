@@ -8,6 +8,7 @@
 // ============================================================
 const crypto = require("crypto");
 const S = require("./_store");
+const F = require("./_friendStore");
 
 const SECRET = process.env.AUTH_SECRET || (process.env.VERCEL ? "" : "voraz-monsters-local-dev-secret-0000");
 const YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -56,12 +57,14 @@ function mailKey(mail) {
   return "vm/e/" + crypto.createHash("sha256").update("vmail1:" + mail).digest("hex") + ".json";
 }
 
-async function readUser(id) { return S.readJson(userKey(id)); }
+async function readUser(id) { return F.enabled()?F.readUser(id,()=>S.readJson(userKey(id))):S.readJson(userKey(id)); }
 async function writeUser(u) {
   u.updated = Date.now();
-  await S.writeJson(userKey(u.id), u);
+  if(F.enabled()) await F.writeUser(u);
+  else await S.writeJson(userKey(u.id), u);
 }
 async function deleteUser(u) {
+  if(F.enabled()) await F.deleteUser(u);
   if (u.email) await S.removeJson(mailKey(u.email));
   await S.removeJson(userKey(u.id));
 }
