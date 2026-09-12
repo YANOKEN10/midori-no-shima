@@ -1,3 +1,5 @@
+import {battleBackgroundFor,prepareBattleBackground} from './battleBackgrounds.js';
+import {MAPS} from './data/maps.js';
 import {recordParkCatch} from './frontierRules.js';
 import {drawBattleScene,drawTrainerBack,drawBattlePanel} from './battleSceneArt.js';
 import {drawItem} from './itemArt.js';
@@ -70,9 +72,11 @@ export async function startBattle(opts) {
   const you = playerParty.find((m) => !fainted(m)) || null;
   const isTrainer = Boolean(opts.trainer);
   if (!you && isTrainer) return "lose";
+  const backgroundKey=battleBackgroundFor(State.save,opts,MAPS[State.save.where?.map]);
+  await prepareBattleBackground(backgroundKey);
   const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
   B = {
-    playerParty, facility:!!opts.facility,
+    backgroundKey, playerParty, facility:!!opts.facility,
     isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, escapeDisabled:!!opts.escapeDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0,
@@ -628,9 +632,7 @@ function drawBattle() {
   G.clear(0);
   if (!B) return;
 
-  // mount2 is a green river sanctuary despite its alpine story location.
-  const winterField = /^(sky|route6|cloud)$/.test((State.save.where && State.save.where.map) || "");
-  if(!drawBattleScene(G.ctx))return;
+  drawBattleScene(G.ctx,B.backgroundKey);
   if(B.intro==='trainer'||B.intro==='sending')drawTrainerBack(G.ctx,State.save.look,28-(B.intro==='sending'?Math.min(1,B.introTime/320)*120:0),120);
   if(B.captureNet){const t=Math.min(1,(performance.now()-B.captureNet.start)/400),size=24+72*t,x=62+(248-62)*t,y=158+(80-158)*t-Math.sin(t*Math.PI)*48;drawItem(G.ctx,B.captureNet.name,x-size/2,y-size/2,size);}
   const foeArt = MONART[B.foe.mon.sp];

@@ -1,0 +1,91 @@
+{
+  "tool": "builtin-imagegen",
+  "date": "2026-09-12",
+  "assets": [
+    {
+      "key": "meadow",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: inland grassy meadow, rolling green hills, wildflowers. No water or ocean. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-aa6de707-be90-4d19-9b20-f0456a8e06b7.png"
+    },
+    {
+      "key": "forest",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: deep inland leafy forest clearing, ancient trunks and shafts of sunlight. No water. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-f00aef13-cd01-4e49-b22d-967ffb4d2874.png"
+    },
+    {
+      "key": "snow",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: snowy mountain trail, snow covered firs and snowy distant peaks. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-f2f7cd8b-bc2f-40c5-b9b6-4ca54f5f4361.png"
+    },
+    {
+      "key": "ice",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: glacier canyon, towering translucent ice walls. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-6785e977-d1ec-4ec4-9360-5cfe5c134bac.png"
+    },
+    {
+      "key": "cave",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: rocky underground cavern, mineral glow. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-d8338a2b-8249-483d-a9db-789775eba58f.png"
+    },
+    {
+      "key": "volcano",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: volcanic caldera, basalt rocks and glowing lava in distance. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-8ad3461e-8895-4554-b52f-5a1f27e2220e.png"
+    },
+    {
+      "key": "ruins",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: haunted ruined mansion interior, cracked floor and stone arches. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-d37f747d-802f-4d40-ad3c-dd4c84ac3990.png"
+    },
+    {
+      "key": "town",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: flower town plaza, charming houses in distance. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-e1c84e7c-a493-4550-9059-4655c888961c.png"
+    },
+    {
+      "key": "interior",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: timber research lodge interior, bookshelves and windows. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-b31bb4b1-ba21-4674-b70e-2b26c41e03e3.png"
+    },
+    {
+      "key": "factory",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: power plant interior, turbines and machinery on distant wall. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-4073ba8c-73e3-4caf-bbaa-eaf7d913322b.png"
+    },
+    {
+      "key": "arena",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: championship arena, distant spectator grandstands and spotlights. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-5233f8c2-66d1-4ae5-a2b3-021c5017569e.png"
+    },
+    {
+      "key": "waterfall",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: majestic waterfall valley, mossy cliffs and ancient forest. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-3e15f382-c179-42cf-b75a-8fef5865fcb1.png"
+    },
+    {
+      "key": "ship",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: passenger ship lounge, wooden floor, ocean through windows. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-04be72d5-9d83-4834-bde4-548a8159a0f3.png"
+    },
+    {
+      "key": "haunted",
+      "prompt": "Create an original professional crisp 16-bit pixel-art monster battle background, landscape 3:2. Setting: eerie outdoor road, twisted trees and old lamps, purple twilight. No characters, creatures, text, interface, borders or logos. Horizon upper third, detailed scenery along top and sides, wide uncluttered low contrast floor below. Subtle oval standing patches lower left and middle right. Beautiful cohesive pixel game art. Only depict the specified environment.",
+      "source": "exec-da6480bc-5525-4e43-9ecc-dfe42c4b27bf.png"
+    },
+    {
+      "key": "coast",
+      "prompt": "Original professional 16-bit pixel-art monster battle BACKGROUND, landscape 3:2. bright grassy meadow, small wildflowers, distant rolling hills. Match a beautiful crisp colorful pixel RPG ocean battle scene. No text, no UI, no characters, no monsters. Horizon in upper third. Wide uncluttered foreground floor for battle sprites, subtle flattened oval standing area near lower-left and middle-right. Keep scenery detail at top and sides; soft low-contrast floor. No borders. Full scene image, not atlas.",
+      "source": "exec-786137e4-7fb6-48f5-84b9-4e9a152b7f89.png"
+    },
+    {
+      "key": "mountain",
+      "prompt": "Original professional 16-bit pixel-art monster battle BACKGROUND, landscape 3:2. remote mountain forest clearing, ancient conifers, mossy boulders and distant mountains. Match a beautiful crisp colorful pixel RPG ocean battle scene. No text, no UI, no characters, no monsters. Horizon in upper third. Wide uncluttered foreground floor for battle sprites, subtle flattened oval standing area near lower-left and middle-right. Keep scenery detail at top and sides; soft low-contrast floor. No borders. Full scene image, not atlas.",
+      "source": "exec-04f2b7f7-7b94-4f68-935f-16400ea4c296.png"
+    },
+    {
+      "key": "lake",
+      "prompt": "Original professional 16-bit pixel-art monster battle BACKGROUND, landscape 3:2. mystical forest lake shore, tranquil lake and a wooden jetty. Match a beautiful crisp colorful pixel RPG ocean battle scene. No text, no UI, no characters, no monsters. Horizon in upper third. Wide uncluttered foreground floor for battle sprites, subtle flattened oval standing area near lower-left and middle-right. Keep scenery detail at top and sides; soft low-contrast floor. No borders. Full scene image, not atlas.",
+      "source": "exec-b0a8e82c-3acb-4d8d-b154-b27631b1a4c7.png"
+    }
+  ]
+}

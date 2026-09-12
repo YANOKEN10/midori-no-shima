@@ -1,7 +1,7 @@
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-endgame-v37";
+import { heroFrame } from "./revampArt.js?v=20260912-battle-v38";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
