@@ -47,7 +47,9 @@ function image(src) {
   return im;
 }
 const hero = image(HERO_SRC);
-const heroine = image("../assets/people-v13/01.png");
+const heroine = image("../assets/character-v40/girl-walk.png");
+const boyHeads = image("../assets/character-v40/boy-hair.png");
+const fittedAtlases=new WeakMap();
 const dressedFrames = new Map();
 const objects = image(OBJECT_SRC);
 const title = image(TITLE_SRC);
@@ -211,26 +213,37 @@ function buildHeroFrame(dir, step) {
   heroFrames.set(key,out); return out;
 }
 
+// Keep a common scale across animation cells so arms swing without resizing the body.
+function atlasFrames(im,headOnly=false){
+ if(!im.complete||!im.naturalWidth)return null;if(fittedAtlases.has(im))return fittedAtlases.get(im);
+ const cw=Math.floor(im.naturalWidth/4),cells=[];let maxW=1,maxH=1;
+ for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+  const bands=headOnly?[0,.32,.625,1]:[0,1/3,2/3,1],sy=Math.floor(im.naturalHeight*bands[row]),ch=Math.floor(im.naturalHeight*bands[row+1])-sy;
+  const src=document.createElement('canvas');src.width=cw;src.height=ch;const cx=src.getContext('2d',{willReadFrequently:true});cx.drawImage(im,col*im.naturalWidth/4,sy,cw,ch,0,0,cw,ch);const pixels=cx.getImageData(0,0,cw,ch),d=pixels.data;if(headOnly){const seen=new Uint8Array(cw*ch),queue=[];const visit=(x,y)=>{if(x<0||y<0||x>=cw||y>=ch)return;const n=y*cw+x;if(seen[n])return;seen[n]=1;const i=n*4,max=Math.max(d[i],d[i+1],d[i+2]),min=Math.min(d[i],d[i+1],d[i+2]);if(!d[i+3]||(max-min<75&&min>110&&max>145)){d[i+3]=0;queue.push([x,y]);}};for(let x=0;x<cw;x++){visit(x,0);visit(x,ch-1);}for(let y=0;y<ch;y++){visit(0,y);visit(cw-1,y);}for(let n=0;n<queue.length;n++){const[x,y]=queue[n];visit(x-1,y);visit(x+1,y);visit(x,y-1);visit(x,y+1);}cx.putImageData(pixels,0,0);}
+  let x0=cw,y0=ch,x1=0,y1=0,skinBottom=-1;for(let y=0;y<ch;y++)for(let x=0;x<cw;x++)if(d[(y*cw+x)*4+3]>100){const k=(y*cw+x)*4;if(d[k]>220&&d[k+1]>145&&d[k+2]>110&&d[k]-d[k+1]>20&&d[k]-d[k+1]<85&&d[k+1]-d[k+2]>20)skinBottom=Math.max(skinBottom,y);x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
+  const w=x1-x0+1,h=y1-y0+1;maxW=Math.max(maxW,w);maxH=Math.max(maxH,h);cells.push({src,x0,y0,w,h,skinBottom});
+ }
+ const scale=Math.min(30/maxW,(headOnly?29:46)/maxH);const result=cells.map(c=>{const cv=document.createElement('canvas');cv.width=32;cv.height=48;const cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;const w=Math.round(c.w*scale),h=Math.round(c.h*scale);cx.drawImage(c.src,c.x0,c.y0,c.w,c.h,Math.round((32-w)/2),headOnly?24-Math.round((c.skinBottom>=0?c.skinBottom-c.y0+1:c.h*.82)*scale):48-h,w,h);return cv;});fittedAtlases.set(im,result);return result;
+}
 // Cache palette variants per direction and walk pose; do not tint skin or outlines.
 export function heroFrame(dir, step, look = {}) {
-  const key=[look.gender,look.hair,look.shirt,dir,step].join(':');
-  if (look.appearanceVersion && dressedFrames.has(key)) return dressedFrames.get(key);
+  const key=[look.gender,look.hair,look.shirt,look.hairLength,dir,step].join(':');
+  if (dressedFrames.has(key)) return dressedFrames.get(key);
   let base;
   if (look.gender === 'girl') {
-    if (!heroine.complete || !heroine.naturalWidth) return null;
-    base=document.createElement('canvas');base.width=32;base.height=48;
-    base.getContext('2d').drawImage(heroine,({down:0,left:1,right:2,up:3}[dir]??0)*32,step*48,32,48,0,0,32,48);
-  } else base=buildHeroFrame(dir,step);
-  if (!base || !look.appearanceVersion) return base;
+    const frames=atlasFrames(heroine);if(!frames)return null;base=frames[step*4+({down:0,left:1,right:2,up:3}[dir]??0)];
+  } else {base=buildHeroFrame(dir,step);if(base&&look.hairLength){const frames=atlasFrames(boyHeads,true);if(!frames)return null;const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);ctx.clearRect(0,0,32,24);const head=frames[({short:0,medium:1,long:2}[look.hairLength]??1)*4+({down:0,left:1,right:2,up:3}[dir]??0)];ctx.drawImage(head,0,0);c.customHead=head;base=c;}}
+  if (!base || (!look.hair && !look.shirt)) return base;
   const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);
-  const d=ctx.getImageData(0,0,32,48), px=d.data;
+  const d=ctx.getImageData(0,0,32,48), px=d.data,headMask=base.customHead?.getContext("2d").getImageData(0,0,32,48).data;
   const rgb=hex=>/^#[0-9a-f]{6}$/i.test(hex||'')?[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)):null;
   const hair=rgb(look.hair),shirt=rgb(look.shirt);
   for(let y=0;y<48;y++)for(let x=0;x<32;x++){
     const i=(y*32+x)*4,r=px[i],g=px[i+1],b=px[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);
     if(!px[i+3]||max<32)continue;
-    const isHair=y<25&&r>g*1.12&&g>b*1.06&&r-g<85&&r<190;
-    const isShirt=look.gender==='girl'?y>=26&&r>g*1.5&&r>b*1.35:y>=16&&b>r*1.25&&b>g*1.06;
+    const faceArea=dir==='down'?x>=10&&x<=21&&y>=15:dir==='left'?x<=16&&y>=15:dir==='right'?x>=16&&y>=15:false;
+    const isHair=y<(look.hairLength==='long'?31:27)&&!faceArea&&r>g*1.12&&r<g*1.95&&g>b*1.12&&r-g<100&&r<220;
+    const isShirt=!headMask?.[i+3]&&(look.gender==='girl'?y>=22&&y<36&&r>g*1.5&&r>b*1.35:y>=23&&b>r*1.18&&b>g*1.02);
     const color=isHair?hair:isShirt?shirt:null;if(!color)continue;
     const shade=isHair?Math.max(.35,Math.min(1.6,(r*.4+g*.45+b*.15)/75)):Math.max(.3,Math.min(1.5,max/170));
     for(let j=0;j<3;j++)px[i+j]=Math.min(255,Math.round(color[j]*shade));
@@ -310,4 +323,9 @@ export function drawTitleBackground(ctx,w,h) {
   grad.addColorStop(0,"rgba(4,18,51,.40)");grad.addColorStop(.68,"rgba(4,18,51,.08)");grad.addColorStop(1,"rgba(4,18,51,0)");
   ctx.fillStyle=grad;ctx.fillRect(0,0,w,170);
   return true;
+}
+
+export function boyHairPortrait(look){
+ if(!look.hairLength||look.gender==='girl')return null;const frame=heroFrame('up',1,look),heads=atlasFrames(boyHeads,true);if(!frame||!heads)return null;
+ const mask=heads[({short:0,medium:1,long:2}[look.hairLength]??1)*4+3],out=document.createElement('canvas');out.width=32;out.height=48;const cx=out.getContext('2d');cx.drawImage(frame,0,0);cx.globalCompositeOperation='destination-in';cx.drawImage(mask,0,0);return out;
 }

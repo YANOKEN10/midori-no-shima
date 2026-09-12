@@ -2,7 +2,7 @@ import {openFriends} from './friends.js';
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260912-friends-v39";
+import { heroFrame } from "./revampArt.js?v=20260912-appearance-v40";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -462,7 +462,7 @@ function drawLookPreview(look, x, y) {
   G.use("ui");
   G.window9(x, y, 84, 108);
   const current = heroFrame("down", 1, look);
-  if (look.appearanceVersion && current) { G.ctx.imageSmoothingEnabled=false; G.ctx.drawImage(current,x+10,y+6,64,96); return; }
+  if (current) { G.ctx.imageSmoothingEnabled=false; G.ctx.drawImage(current,x+10,y+6,64,96); return; }
   const st = { hair: look.hat || look.style || "short", bangs: look.bangs == null ? "seven" : look.bangs,
                skirt: Boolean(look.skirt), face: look.gender || (look.skirt ? "girl" : "boy") };
   const f = personFramesRaw(st).down[0];
@@ -530,6 +530,7 @@ async function hatShop(price) {
 }
 
 export async function hairSalon() {
+  if(State.save.look.gender!=="girl"){await boyHairSalon();return;}
   const price = 300;
   for (;;) {
     const which = await ui.choice(["かみの 色を かえる", "かみがたを かえる", "まえがみを かえる", "やめる"],
@@ -618,4 +619,15 @@ export async function boxMenu(){
  for(;;){const list=State.save.box;if(!list.length){await ui.say(['ボックスは 空です。']);return;}const i=await ui.choice(list.map(m=>monName(m)+' Lv'+m.lv),{x:8,y:8,w:304,rows:6});if(i<0)return;
  const action=await ui.choice(['つよさをみる','てもちへ','ガオンをにがす','もどる'],{x:8,y:148,w:304,rows:4});
  if(action===0)await showStatus(list[i]);if(action===1){if(State.save.party.length>=6)await ui.say(['てもちが いっぱいです。']);else{State.save.party.push(list.splice(i,1)[0]);saveLocal();}}if(action===2)await releaseChosen('box',i);}
+}
+
+async function boyHairSalon(){
+ const lengths=[{name:'みじかい',value:'short'},{name:'ふつう',value:'medium'},{name:'ながい',value:'long'}];
+ for(;;){const action=await ui.choice(['かみの ながさ','かみの いろ','やめる'],{x:130,y:145,w:182,rows:3});if(action<0||action===2)return;
+ const choices=action===0?lengths:HAIR_COLORS.map(c=>({name:c.name,value:c.color}));const key=action===0?'hairLength':'hair';
+ const picked=await ui.choice([...choices.map(c=>c.name+'　300円'),'やめる'],{x:8,y:8,w:216,rows:6,extra:(b,i)=>{const look={...State.save.look};if(choices[i])look[key]=choices[i].value;drawLookPreview(look,228,8);}});
+ if(picked<0||picked>=choices.length)continue;if(State.save.money<300){await ui.say(['おかねが たりません…']);continue;}
+ if(!await ui.ask([choices[picked].name+'　300円','この見た目に しますか？']))continue;
+ State.save.look={...State.save.look,appearanceVersion:1,[key]:choices[picked].value};State.save.money-=300;saveLocal();if(cloud.signedIn)await saveCloud(true);beep('buy');await ui.say(['できあがり！ 新しい髪で お出かけしよう。']);
+ }
 }

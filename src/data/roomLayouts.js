@@ -1,6 +1,7 @@
 // Compact rooms retain the existing entrance coordinates for saved games.
 export function furnishInteriors(maps){
  const layouts={
+ karatSalon:{theme:"shop",npcs:[[7,5]],rug:[6,8,3,3],furniture:[["chair",4,6,1,1],["chair",10,6,1,1],["shelf",3,4,2,1],["shelf",10,4,2,1],["plant",12,10,1,1]],windows:[4,9]},
  marineHall:{theme:'cottage',npcs:[[7,5]],rug:[6,8,4,3],furniture:[['table',4,7,2,2],['books',10,4,3,1],['plant',12,10,1,1]],windows:[4,9]},
  hut:{theme:'home',npcs:[[9,8]],rug:[6,7,4,3],furniture:[['bed',3,5,2,3],['kitchen',3,4,3,1],['books',10,4,3,1],['table',10,8,2,2],['chair',10,10,1,1],['plant',12,10,1,1],['tv',6,4,2,1]],windows:[4,9]},
  rodsHome:{theme:'cottage',npcs:[[9,7]],rug:[6,6,5,3],furniture:[['sofa',3,6,2,2],['table',7,7,2,1],['kitchen',3,4,3,1],['books',10,4,3,1],['bed',11,8,2,3],['plant',3,10,1,1],['chair',7,8,1,1]],windows:[4,9]},

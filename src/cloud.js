@@ -32,18 +32,21 @@ export const cloud = {
     const o = opt || {};
     const h = { "Content-Type": "application/json" };
     if (this.token) h["Authorization"] = "Bearer " + this.token;
-    let r;
+    let r,d=null;
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),o.timeoutMs||30000);
     try {
       r = await fetch(path, {
+        signal: controller.signal,
         method: o.method || "GET",
         headers: h,
         body: o.body ? JSON.stringify(o.body) : undefined,
       });
+      try { d=await r.json(); } catch(e) { if(controller.signal.aborted)throw e; }
     } catch (e) {
       return { ok: false, why: "つながりませんでした。ネットを たしかめてください。" };
     }
-    let d = null;
-    try { d = await r.json(); } catch (e) { d = null; }
+    finally { clearTimeout(timeout); }
     if (!r.ok) {
       if (r.status === 401 && this.user) { this.setToken(""); this.user = null; }
       if (r.status === 404 && !d) return { ok: false, status: 404, why: "クラウドは この ばしょでは つかえません。" };
