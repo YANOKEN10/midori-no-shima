@@ -1,3 +1,4 @@
+import {npcDialogue} from './npcDialogue.js';
 import {daycareResidents,drawDaycareLabels} from './daycareResidents.js';
 import {voyageNpc,refreshVoyageNpcs,tickVoyage} from './voyageStory.js';
 import {drawVoyageOverlay,drawVoyageStatus} from './voyageArt.js';
@@ -12,7 +13,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260912-road-music-v32';
+import { drawNpc } from './npcArt.js?v=20260912-dialogue-v33';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -27,7 +28,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260912-road-music-v32";
+import { MAPS } from "./data/maps.js?v=20260912-dialogue-v33";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -40,7 +41,7 @@ import { openMenu, shopMenu, showStatus, reportMenu, clothesShop, hairSalon } fr
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-road-music-v32";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260912-dialogue-v33";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -514,11 +515,11 @@ export const world = {
     if (n.trainer && !flag(beatKey)) {
       if(!State.save.party.length){await ui.say(["まずは 草むらで ガオンをつかまえよう。","仲間ができたら しょうぶしよう！"]);return;}
       State.save.battleTerrain="grass";
-      await ui.say(n.talk || ["しょうぶだ！"]);
+      await ui.say(npcDialogue(State.save,this.mapId,n,"talk",n.talk || ["しょうぶだ！"]));
       const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name }) });
       if (res === "lose") { await this.blackout(); return; }
       setFlag(beatKey);
-      await ui.say(n.win || ["やるな！"]);
+      await ui.say(npcDialogue(State.save,this.mapId,n,"win",n.win || ["やるな！"]));
       if (n.trainer.leader) {
         const em = n.trainer.leader;
         if (State.save.badges.indexOf(em) < 0) State.save.badges.push(em);
@@ -527,7 +528,7 @@ export const world = {
         await ui.say([State.save.name + "は " + em + "を てにいれた！",
                       "エンブレム " + State.save.badges.length + "こめ！"]);
       }
-      if (n.after) await ui.say(n.after);
+      if (n.after) await ui.say(npcDialogue(State.save,this.mapId,n,"after",n.after));
       await this.checkEvolution();
       saveLocal();
       if (cloud.signedIn) saveCloud(true);
@@ -582,7 +583,7 @@ export const world = {
       return;
     }
 
-    await ui.say((flag(beatKey) && n.after) ? n.after : n.talk);
+    await ui.say(npcDialogue(State.save,this.mapId,n,(flag(beatKey) && n.after) ? "after" : "talk",(flag(beatKey) && n.after) ? n.after : n.talk));
   },
 
   /* ============================================================

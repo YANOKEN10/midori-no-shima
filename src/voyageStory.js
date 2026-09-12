@@ -1,3 +1,4 @@
+import {npcDialogue,yanokenGreeting} from './npcDialogue.js';
 import {G as State,makeMon,healParty,ownMon} from './state.js';
 import {newMove} from './data/moves.js';
 import {ui} from './ui.js';
@@ -57,12 +58,12 @@ export async function voyageNpc(world,n){
  }
  if(n.script==='voyage:heal'){healParty();await persist();beep('heal');await ui.say(['ガオンを 元気にしておいたわ。','船旅を 楽しんでね。']);return;}
  if(n.script==='voyage:trainer'){
-  if(!trainerAvailable(s,n.dailyId)){await ui.say(['今日のバトルは 終わったね。','また明日 勝負しよう！']);return;}
-  if(!await ready()||!await ui.ask(['船旅の仲間と バトルしよう！','わたしとは １日１回 勝負できるよ。']))return;
+  if(!trainerAvailable(s,n.dailyId)){await ui.say([...npcDialogue(s,world.mapId,n,'after',['いい勝負だったね！']),'今日のバトルは 終わったね。','また明日 勝負しよう！']);return;}
+  if(!await ready()||!await ui.ask([...npcDialogue(s,world.mapId,n,'talk',['船旅の仲間と バトルしよう！']),'わたしとは １日１回 勝負できるよ。']))return;
   markTrainer(s,n.dailyId);await persist();const result=await startBattle({trainer:{name:n.name,party:n.dailyTeam,money:420}});await finish(world,result);return;
  }
  if(n.script==='voyage:yanoken'){
-  if(f['voyage:yanokenWon']){await ui.say(['いいバトルだったね！','また新しい町で 会えるといいね。']);return;}
+  if(f['voyage:yanokenWon']){await ui.say(yanokenGreeting(s));return;}
   const count=f['voyage:yanokenTalks']=Math.min(3,(f['voyage:yanokenTalks']||0)+1);await persist();
   if(count===1){await ui.say(['久しぶり！ ヤノケンだよ！','あげた図鑑は 役に立っているかな？']);return;}
   if(count===2){await ui.say(['ぼくも 新しいガオンを 仲間にしたんだ。','船に乗って 旅をしているところだよ。']);return;}

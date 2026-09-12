@@ -2,7 +2,7 @@ import {powerTarget} from './powerRules.js';
 // ============================================================
 //  リーフ・コンパス（つぎの ものがたりの もくてきち）
 // ============================================================
-import { MAPS } from "./data/maps.js?v=20260912-road-music-v32";
+import { MAPS } from "./data/maps.js?v=20260912-dialogue-v33";
 import { G as State, flag, hasItem } from "./state.js";
 
 const EMBLEM_TARGETS = [

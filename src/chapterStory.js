@@ -1,3 +1,4 @@
+import {yanokenGreeting} from './npcDialogue.js';
 import {marineObjective} from './marineStory.js';
 import { ui } from './ui.js';
 import { G as State, flag, setFlag, addItem, hasItem, seeMon, healParty } from './state.js';
@@ -38,8 +39,8 @@ export async function chapterNpc(world,n){
  }
  if(n.script==='v5:dex'){
   if(!flag('v5:netGift')){await ui.say(['ぼくは ヤノケン！','まずは スイスはかせに 会ってきてね。']);return;}
-  if(!flag('v5:dex')){await ui.say(['ぼくは ヤノケン！','この ガオンずかんを あげるよ。']);if(!hasItem('ガオンずかん'))addItem('ガオンずかん');setFlag('v5:dex');beep('levelup');await persist();await ui.say(['ガオンずかんを もらった！','目標は 全部のガオンを 仲間にして','図鑑を 完成させること！','2ばんどうろの先には','ネイチャーのもりが あるよ。']);return;}
-  await ui.say(['道路や森で 会えるガオンはちがうよ。','全部の場所を歩いて 図鑑を完成させよう！']);
+  if(!flag('v5:dex')){await ui.say(['はじめまして！僕はヤノケンです！','キミはガオントレーナーかな？','僕もガオンを育てて研究しているトレーナーなんだ！','僕が作ったものがあるんだけど使ってみてくれない？','ガオンずかんっていうんだけど、見つけたり捕まえたりしたガオンを登録することができるんだ！','よかったら使ってみてね！','また会えたら、今度はバトルしようぜ！']);if(!hasItem('ガオンずかん'))addItem('ガオンずかん');setFlag('v5:dex');beep('levelup');await persist();await ui.say(['ガオンずかんを もらった！']);return;}
+  await ui.say(yanokenGreeting(State.save));
  }
 }
 export function chapterObjective(){if(!flag('v5:heardLatett'))return '村の女の子に 話を聞こう';if(!flag('v5:latettSeen'))return '北の山おくで ラテットをさがそう';if(!flag('v5:netGift'))return '研究施設の スイスはかせに報告';if(!flag('v5:dex'))return '1ばんどうろを抜け ロッズタウンへ';return marineObjective(State.save);}
