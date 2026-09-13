@@ -78,7 +78,7 @@ const title = {
       G.ctx.restore();
       outlined("ガオン・ワールド", G.W / 2, 24, 25);
       G.use("ui");
-      G.textCenter("ガオンずかんを 完成させよう", G.W / 2, 58, 0, 13);
+      G.textCenter("まだ見たことのない世界へ", G.W / 2, 58, 0, 13);
       if (Math.floor(t / 500) % 2 === 0) {
         G.ctx.fillStyle = "rgba(4,18,51,.75)";
         G.ctx.fillRect(87, 238, 146, 30);
