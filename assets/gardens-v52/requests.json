@@ -1,0 +1,15 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "path": "pond.png",
+      "prompt": "Create one production-ready pixel art RECTANGULAR TOWN POND sprite for a top-down 2D Japanese monster RPG. Entire canvas is a perfect horizontal rectangle 5:4 aspect ratio. Water area is rectangular with all four intact 90-degree corners, NOT cross shaped, no missing corners. Bright clear turquoise and blue water, small tasteful light cyan ripple strokes, sandy pale stone shoreline a narrow continuous straight band along all four edges, a little moss on stones, no grass background outside pond, no text, no UI, no creatures. View directly overhead, NO isometric perspective. Low resolution 160x128 pixel art appearance enlarged sharply with nearest-neighbor, clean readable GBA style, limited coherent palette. Pond fills canvas edge to edge; outer edge rectangular, no margins. The shoreline sits entirely inside the canvas, so asset can be tiled into a rectangular five-by-four cell region. Water should feel sunny and inviting, avoid dark realistic water.",
+      "source": "exec-d28fe78a-20d3-437b-b740-8d3eb1fe8105.png"
+    },
+    {
+      "path": "grass.png",
+      "prompt": "Single GAME SPRITE on transparent background: one short dense tuft of fresh green wild meadow grass, top-down Japanese 2D RPG pixel art. Narrow upright curved pointed grass blades, about 12 blades overlapping in three small clumps, lime-green tips, emerald midtones, dark teal roots, crisp stepped pixel edges and very limited palette, recognizable as GRASS, NOT fern fronds, NOT bush, NOT flower or spiky aloe. Compact low silhouette 32 pixels wide 20 pixels tall in a 32x24 logical sprite enlarged nearest-neighbor, whole tuft centered with safe transparent margins. No ground rectangle, no shadow outside tuft, no text, no grid, no multiple variants. Sunny inviting handheld RPG style. Actual transparent background.",
+      "source": "exec-4c46f647-36e6-420c-bc13-d6cb8cb6f8da.png"
+    }
+  ]
+}

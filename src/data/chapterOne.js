@@ -1,3 +1,4 @@
+import {composeGrassPlots} from './grassPlots.js';
 import {addFashionShops} from './fashionShops.js';
 import {refineTownAccess} from './townAccess.js';
 import {refineExploration} from './explorationLayouts.js';
@@ -133,6 +134,7 @@ export function buildChapterOne(){
  refineExploration(M);
  refineTownAccess(M);
  addFashionShops(M);
+ composeGrassPlots(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }

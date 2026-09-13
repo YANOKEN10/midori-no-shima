@@ -37,12 +37,11 @@ function composeGardenTown(m) {
   for(const p of [[3,3,5,2],[9,3,4,1],[20,3,4,2],[29,3,3,2],
     [3,13,2,3],[8,13,4,3],[19,13,7,3],[29,13,3,3],
     [3,18,5,1],[9,18,6,1],[3,21,5,3],[14,20,1,5],[29,18,3,2],[29,24,3,2]])bed(...p);
-  // The southern lawn becomes a pond with clipped corners and a flower border.
+  // The southern lawn becomes a pond with four complete corners and a flower border.
   const pond = m.id==='village'?[9,21,5,4]:[22,21,7,4];
   const [px,py,pw,ph]=pond;
   for(let y=py;y<py+ph;y++)for(let x=px;x<px+pw;x++){
-    if((x===px||x===px+pw-1)&&(y===py||y===py+ph-1))continue;
-    if(m.g[y][x]===','&&!nearPerson(x,y))m.g[y][x]='W';
+    if([',','F'].includes(m.g[y][x]))m.g[y][x]='W';
   }
   bed(px-1,py,1,ph);bed(px,py-1,pw,1);
   if(m.id==='rods'){bed(9,23,6,3);bed(19,19,3,1);}

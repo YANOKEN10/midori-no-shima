@@ -1,6 +1,6 @@
-const roadGrass=new Image();roadGrass.src=new URL('../assets/grass-v43/road.png',import.meta.url).href;
+const roadGrass=new Image();roadGrass.src=new URL('../assets/gardens-v52/grass.png',import.meta.url).href;
 let roadBounds=null;
-export const isRoadGrass=map=>/^route(?:[1-9]|1[0-8])$/.test(map.id)&&!['snow','ash'].includes(map.frontierTheme)&&!['dark','ice','snow'].includes(map.endTheme);
+export const isRoadGrass=map=>(/^route(?:[1-9]|1[0-8])$/.test(map.id)||['mountain','natureforest','mossSanctuary'].includes(map.id))&&!['snow','ash'].includes(map.frontierTheme)&&!['dark','ice','snow'].includes(map.endTheme);
 import {drawMarineAsset} from './marineArt.js';
 const images=Object.fromEntries(['mountain','rural'].map(name=>{const im=new Image();im.src=new URL('../assets/grass-v25/'+name+'.png',import.meta.url).href;return[name,im];}));
 export const grassTheme=map=>map.grassStyle||(['ranch','coast','flowers','rail'].includes(map.frontierTheme)?'rural':null)|| (map.id==='mountain'?'mountain':['village','rods','route1','route2','natureforest','mossSanctuary'].includes(map.id)?'rural':null);
