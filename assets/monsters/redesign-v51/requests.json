@@ -1,0 +1,388 @@
+{
+  "mode": "built-in image_gen",
+  "specs": [
+    {
+      "id": "140",
+      "name": "ラピシア",
+      "source": "exec-9dd76a40-f8bc-458b-aa3e-6655c45e32fe.png",
+      "swapSides": true,
+      "prompt": "Create a revised pixel-art game character design sheet for Rapishia, the intermediate evolution of Mirupyon. Image1 is the baby Mirupyon reference; image2 is the existing Rapishia edit target. Retain cream and pale pink palette, rabbit identity and emerging elegant long ears but RESTORE the baby's cute round cheeks, large warm round purple eyes, tiny smiling mouth, soft fluffy chest and compact rounded paws. Do not make a thin stern fox or wolf. Intermediate size, lovable youthful rabbit, not infant and not intimidating. Production sprite sheet exactly 4 equal columns and 3 equal rows, twelve separate full-body poses on uniform solid magenta #ff00ff, no text no grid no shadows. Columns EXACT front facing down, EXACT back facing up, EXACT right-facing side profile, EXACT left-facing side profile. NO diagonal or three-quarter views anywhere. Rows neutral standing, walking left paws forward/right paws back, walking opposite paws. Obvious alternating stepping and subtly bouncing ears. All twelve same character same scale and foot anchor, generous empty margins. Crisp clean detailed pixel art suitable for 80px frames. Entire body each cell."
+    },
+    {
+      "id": "141",
+      "name": "セレピオン",
+      "source": "exec-1c0ce8c9-6ea7-4cb6-b920-994a52f6fe7f.png",
+      "swapSides": false,
+      "prompt": "Revise Serepion final rabbit evolution to preserve baby Mirupyon cuteness. Reference1 baby Mirupyon identity cute face; reference2 old final Serepion edit target. Keep final evolution graceful long swept rabbit ears and cream ivory fur with lavender/pink accents, a flowing soft chest mane and fluffy tail, but give round friendly purple eyes, round cheeks, tiny sweet smiling rabbit nose and mouth, rounded paws, balanced compact body. Powerful elegant adult magical RABBIT that is still lovable, not thin aggressive wolf, no long wolf snout. Make production pixel-art 4 columns x3 rows sprite sheet on SOLID MAGENTA #ff00ff background no text no grid no shadows. EXACT columns: FRONT looking directly toward viewer; BACK looking directly away; RIGHT PROFILE nose pointing to the right edge; LEFT PROFILE nose pointing to the left edge. Strict cardinal, NO three-quarter or diagonal. EXACT rows: idle; walk strideA one front foot raised and opposite rear foot; walk strideB opposite feet raised. Clearly distinct limbs and subtle ears movement; identical scale character and feet anchor each cell; margins entire body visible. Crisp pixels designed for80px game sprite frame."
+    },
+    {
+      "id": "020",
+      "name": "アビサージ",
+      "prompt": "Create original fantasy Gaon Abisurge: imposing long aquatic dragon, cobalt blue and turquoise serpentine body, pearl segmented belly, silver sweeping horns, fin-shaped ears, luminous cyan flowing dorsal fins and broad forked wave tail. Expressive fierce noble dragon face with rounded muzzle, not an insect. Gyarados inspired majesty but distinct design: smooth sweeping crest not trident, silver curling horns, wave-shaped fins. Serpentine swimming ripples across three movement rows instead of feet. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-bfc139f2-7d2d-4da4-9733-f858bcf4fc41.png",
+      "swapSides": false
+    },
+    {
+      "id": "088",
+      "name": "ポコリズ",
+      "prompt": "Create completely ORIGINAL cute music-rhythm gecko Gaon firststage Pokorizu. QUADRUPED low wide salamander/gecko shape not upright humanoid. Turquoise teal smooth skin, warm coral circular cheek pads, pale cream tummy, huge gentle amber eyes, round fingertips resembling tiny percussion pads, a flat fan shaped coral tail like a ginkgo leaf with teal veins, small rounded head with absolutely NO crest spikes horns or mohawk. Cute smiling broad gecko face. No purple, no lime, no lightning markings, no electric punk lizard resemblance. New silhouette all four feet ground low body. Soft detailed crisp PIXEL ART consistent fantasy game sprites. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-2a154a86-8174-49fa-a80c-2d098d30bc12.png",
+      "swapSides": false,
+      "flipCols": [
+        2
+      ]
+    },
+    {
+      "id": "089",
+      "name": "ビートロン",
+      "prompt": "Create intermediate evolution Beatron of referenced turquoise gecko. Quadruped strong compact gecko with wide charming amber eyes, coral round toe pads, small cream segmented belly. Broader teal shoulders with TWO round coral resonating discs, taller ginkgo-shaped fan tail with three scalloped lobes, slightly bigger rounded head and proud friendly smile. Clearly adolescent between tiny gecko and powerful guardian. Absolutely no mohawk no purple lime no lightning and no humanoid punk posture. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-6a083969-da6c-4b3f-9dcb-b8e062d66f8a.png",
+      "swapSides": false,
+      "flipCols": [
+        2
+      ]
+    },
+    {
+      "id": "090",
+      "name": "グルーヴァ",
+      "prompt": "Create final evolution Groova of referenced turquoise gecko. A powerful QUADRUPED low broad guardian reptile, large strong rounded forepaws with coral circular pads, confident friendly amber eyes, broad rounded head, palecream chest. Teal body with layered smooth bluegreen shoulder armor resembling resonating ceramic drums, huge graceful semicircle fan tail coral and cream with teal veins, and paired coral cheek discs. Broad mature strong body still recognizable gecko cute family identity. No humanoid stance, no mohawk no horns no purple no lime no spikes. Grounded rhythmic walking alternates four legs. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-eb149dea-fcb4-45e8-afb1-8fc516aeac20.png",
+      "swapSides": false,
+      "flipCols": [
+        2
+      ]
+    },
+    {
+      "id": "104",
+      "name": "ムシリン",
+      "prompt": "Create Mushirin baby first stage of referenced original violet rhinoceros beetle Ookabuto. Very cute plump larval beetle, violet rounded armor segments, creamy face and belly, little black friendly eyes and miniature ivory budding forehead horn, short six legs. Recognizable baby shares ivory-violet identity but has tiny horn and very soft proportions. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-00aa9eb2-e791-4363-91ba-de800b4588f9.png",
+      "swapSides": false
+    },
+    {
+      "id": "105",
+      "name": "カブトン",
+      "prompt": "Pixel art sprite sheet of an original friendly purple young rhinoceros beetle Kabuton. Based on the provided mature beetle reference, keep violet shell and ivory branched horn, but make shorter horn and rounder body for intermediate evolution. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-eb6eced2-ace1-4602-aefd-7fb74c760d9a.png",
+      "swapSides": false
+    },
+    {
+      "id": "113",
+      "name": "シズリィ",
+      "prompt": "Create original Gaon Shizury, first stage of elegant beautiful water creature. Cute pearlwhite little aquatic serpentine creature, big gentle teal eyes, pink petal-like ear fins, short coiled body, delicate aquamarine scales on tail and translucent fan tail. Rounded sweet face, small pearl on forehead, no insect traits. Inspired by Milotic's grace but original baby river spirit. Three motion rows vary flowing fins and tail gentle swimming, never change facing. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-bfccc6d8-8481-44cc-bcc5-4d4457d541f6.png",
+      "swapSides": false
+    },
+    {
+      "id": "114",
+      "name": "ルミレーヌ",
+      "prompt": "Create evolved adult form of reference original Gaon Shizury: name Lumireine. Keep pearlwhite body gentle round teal eyes pink petal earfins and pearlforehead gem; develop elongated elegant serpentine body, flowing pink ear fins, turquoise/lavender scales and large lotusflower petal fan tail. Beautiful cute friendly aquatic fantasy creature, graceful without scary expression. All12cells adult sameidentity, swimming fins and tail shift in opposite rhythms rows2/3. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-42337669-44a0-40d6-8a3f-2cd0b92f1d39.png",
+      "swapSides": false
+    },
+    {
+      "id": "117",
+      "name": "ヒカリギリ",
+      "prompt": "Create original humanoid Gaon Hikarigiri, a LIGHT counterpart to referenced Kagenagi dark blue teal ninja creature. Mirror same athletic ninja-like biped silhouette, long sleek head fins, forearm blades and webbed digit feet; NEW pearl white body armor, warm gold and pale cyan accents, graceful sunray crest, flowing small golden fin scarf, confident noble face. Partner/rival identifiable contrast to blue Kagenagi. No weapons held: organic forearm finblades. Full body cardinal walking sheet. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-42b311d1-cfa4-401e-b300-214a50730a71.png",
+      "swapSides": false
+    },
+    {
+      "id": "013",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference image. Preserve its species design proportions colors facial features ears wings and tail. Reference is identity only; redraw all views straight cardinal, NOT the diagonal battle pose. Distinct alternating legs if grounded, raised and lowered wings if bird. Movement must be visible across rows, no duplicated poses. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-782952bf-3ee8-432a-92fd-67a4c49f23ed.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ソラハネ"
+    },
+    {
+      "id": "137",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference image. Preserve its species design proportions colors facial features ears wings and tail. Reference is identity only; redraw all views straight cardinal, NOT the diagonal battle pose. Distinct alternating legs if grounded, raised and lowered wings if bird. Movement must be visible across rows, no duplicated poses. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-0fb5c5a1-16c4-459a-99c4-c8af11155a53.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "マルモコ"
+    },
+    {
+      "id": "138",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference image. Preserve its species design proportions colors facial features ears wings and tail. Reference is identity only; redraw all views straight cardinal, NOT the diagonal battle pose. Distinct alternating legs if grounded, raised and lowered wings if bird. Movement must be visible across rows, no duplicated poses. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-9a0b26b6-d1d8-4842-af75-9c4479a15ca1.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "マルガンテ"
+    },
+    {
+      "id": "127",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference image. Preserve its species design proportions colors facial features ears wings and tail. Reference is identity only; redraw all views straight cardinal, NOT the diagonal battle pose. Distinct alternating legs if grounded, raised and lowered wings if bird. Movement must be visible across rows, no duplicated poses. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-1db222e5-4ff4-44c3-aaaa-f9abd4b4f43a.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ヨイバネ"
+    },
+    {
+      "id": "010",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-1e2c4835-3e37-4402-95c2-f5f8bd71b8b7.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ウロコロ"
+    },
+    {
+      "id": "011",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-c9153542-446f-4d43-b172-3a0849ed4d9d.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ヨロイガル"
+    },
+    {
+      "id": "111",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-f9246e5e-b921-48de-ac47-784981fc9c1a.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "アミグモ"
+    },
+    {
+      "id": "115",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-2ec9d66a-43fb-460f-861b-f4937b0aea1d.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "キラル"
+    },
+    {
+      "id": "116",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-5c757fc5-2e2c-4bea-92ae-1652d18e0a8f.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ルミナイト"
+    },
+    {
+      "id": "098",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-63c81a7c-ad34-402b-bc00-e3945ef3fd62.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "モグドリル"
+    },
+    {
+      "id": "094",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-54c2a1f9-f7d8-4fe4-9568-954712b5c824.png",
+      "walkOnly": true,
+      "swapSides": true,
+      "name": "スナムシ"
+    },
+    {
+      "id": "095",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-7aeec5eb-36f8-48d7-a8c4-b59b3a16b1f7.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "サバクムシ"
+    },
+    {
+      "id": "096",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-1d023c96-da84-4780-b49b-7b1e45c005cb.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "サンドキング"
+    },
+    {
+      "id": "078",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-8d9fe51d-e8a0-491f-be4e-35ac91bb169e.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "チルスパ"
+    },
+    {
+      "id": "079",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-00eb7926-dc8f-45a3-932a-3c331a45a7f6.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ライウィル"
+    },
+    {
+      "id": "080",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-b54d6d31-a271-475a-947b-5741b0f59714.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ヴォルティア"
+    },
+    {
+      "id": "075",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-f908e6b9-da7d-49cb-8918-999444696f0b.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ネコデン"
+    },
+    {
+      "id": "076",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-082442aa-5abf-4b83-87a6-43b86720cc0f.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "デンネコ"
+    },
+    {
+      "id": "077",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-406bd5d0-066b-47c4-9b59-df01f9c10dfe.png",
+      "walkOnly": true,
+      "swapSides": true,
+      "name": "ライガミ"
+    },
+    {
+      "id": "064",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-70563438-0395-406a-8199-2a57d983e4c8.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "オオハサミ"
+    },
+    {
+      "id": "009",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-13e4170c-5c95-4db6-ace8-d0d936cd14d4.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "タイダルオ"
+    },
+    {
+      "id": "043",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-bba9db97-80e9-410e-b176-71356e5903f8.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ワンヒノ"
+    },
+    {
+      "id": "044",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-397003fb-a604-42bd-8a07-45d00ad623d5.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ホノワン"
+    },
+    {
+      "id": "045",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-72919da6-1b31-4b70-bb75-01cbabd6a164.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "グレンケン"
+    },
+    {
+      "id": "033",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-508a7a04-e371-4372-be5f-1704afa09035.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ウリボン"
+    },
+    {
+      "id": "034",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-786fe5a8-d615-48b6-b5a4-c64598176574.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ドスウリ"
+    },
+    {
+      "id": "142",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-caa4580b-65e2-46f8-bebc-8a500a6bfcab.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ドラコル"
+    },
+    {
+      "id": "143",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-fbef9270-149f-41ca-a6ea-f5373c7149b3.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ガルドラン"
+    },
+    {
+      "id": "144",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-bc426487-1100-4cff-b04f-0689c2a497d0.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "ヴァルディオ"
+    },
+    {
+      "id": "145",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-54ae163f-ffa1-4988-b550-01e02d68e056.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "アオルカ"
+    },
+    {
+      "id": "146",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-96a6567c-6f30-4aed-8e5b-179f6ceb0690.png",
+      "walkOnly": true,
+      "swapSides": false,
+      "name": "レイザルト"
+    },
+    {
+      "id": "038",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-d03fcc9b-e9c2-42d8-af34-4630c1fc2e3d.png",
+      "walkOnly": true,
+      "name": "カエデリア"
+    },
+    {
+      "id": "129",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-28074230-c457-4ee0-98da-88dc7c61a66c.png",
+      "walkOnly": true,
+      "name": "ニヤゴ"
+    },
+    {
+      "id": "130",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-c053ba15-4e30-4879-8c3f-d41fd6d18cde.png",
+      "walkOnly": true,
+      "name": "ワルニール"
+    },
+    {
+      "id": "119",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-8a0eb61c-8eb3-4b66-8813-ae787c1a0e16.png",
+      "walkOnly": true,
+      "name": "クロムギア"
+    },
+    {
+      "id": "106",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-f7b1335b-1fd3-44ce-8a03-eb84dd3e573f.png",
+      "walkOnly": true,
+      "name": "オオカブト"
+    },
+    {
+      "id": "139",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-8a8bf512-18b8-4eb8-bc1c-fe963bd55cb3.png",
+      "walkOnly": true,
+      "name": "ミルピョン"
+    },
+    {
+      "id": "118",
+      "prompt": "Create a walking sprite sheet for the EXACT original creature in reference. Preserve design colors proportions features. Identity reference only: redraw precise FRONT, BACK and LEFT/RIGHT profile instead of battle threequarter. Alternate feet clearly across rows; for wings alternate flapping. Keep head axis straight. Production pixel art GAME SPRITE SHEET exactly4 equal columns x3equal rows, twelve full-body poses. Solid magenta background #ff00ff, no lettering, no grid, no shadows. Columns front directly towardviewer, back directlyaway, exactRIGHT profile nosepointsRIGHT, exactLEFTprofile nosepointsLEFT. No diagonal 3quarter. Rows idle, clear walking strideA, clear opposite strideB. Allcells samescale plenty margin all horns and limbs visible. Crisp pixels for80px game frames.",
+      "source": "exec-dcfb2f66-eb76-4076-9fa7-6501348b2388.png",
+      "walkOnly": true,
+      "name": "カゲナギ"
+    }
+  ]
+}

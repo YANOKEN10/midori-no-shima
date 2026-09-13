@@ -1,3 +1,4 @@
+import {V51_DESIGNS,V51_ALIASES,V51_DESCRIPTIONS} from './redesignV51.js';
 // Design changes retain original species numbers, battle data and save compatibility.
 export const REDESIGNS = [
   {
@@ -243,22 +244,26 @@ export const SPECIES_RENAMES = {
   "スナコロネ": "ザンガルド",
   "ライボルト": "ピピピット"
 };
+for(const row of V51_DESIGNS){const at=REDESIGNS.findIndex(s=>s.id===row.id);if(at<0)REDESIGNS.push(row);else Object.assign(REDESIGNS[at],row);if(row.oldName!==row.name)SPECIES_RENAMES[row.oldName]=row.name;}
+Object.assign(SPECIES_RENAMES,V51_ALIASES);
 export const canonicalName = name => SPECIES_RENAMES[name] || name;
-const OLD_NAMES=Object.fromEntries(Object.entries(SPECIES_RENAMES).map(([a,b])=>[b,a]));
+const OLD_NAMES=Object.fromEntries(REDESIGNS.map(s=>[s.name,s.oldName]));
 export const legacyName = name => OLD_NAMES[name] || name;
 export const REVISED_IDS = new Set(REDESIGNS.map(s=>s.id));
 export function applySpeciesRedesign(S){
  for(const [oldName,newName] of Object.entries(SPECIES_RENAMES)){
-  const value=S[oldName];if(!value||S[newName])throw Error("Invalid redesign name: "+oldName);
+  const value=S[oldName]||S[newName];if(!value)throw Error("Invalid redesign name: "+oldName);
   S[newName]=value;delete S[oldName];
   Object.defineProperty(S,oldName,{value,enumerable:false,configurable:true});
  }
  for(const s of Object.values(S))if(s.evo)s.evo.to=canonicalName(s.evo.to);
- for(const[name,text]of Object.entries(REDESIGN_DESCRIPTIONS))S[name].dex=text;
+ for(const[name,text]of Object.entries({...REDESIGN_DESCRIPTIONS,...V51_DESCRIPTIONS}))if(S[canonicalName(name)])S[canonicalName(name)].dex=text;
+ Object.assign(S['カゲナギ'].base,{atk:120,hp:80});
+ Object.assign(S['ワルニール'].base,{spc:130,atk:74,spd:100,sdef:74});
 }
 export function applyArtRedesign(files,view){
- for(const row of REDESIGNS){const url="../../assets/monsters/redesign-v47/"+view+"/"+String(row.id).padStart(3,"0")+".png";files[row.name]=url;if(row.oldName!==row.name){delete files[row.oldName];Object.defineProperty(files,row.oldName,{value:url,enumerable:false});}}
- for(const[oldName,newName]of Object.entries(SPECIES_RENAMES))if(!files[newName]&&files[oldName]){files[newName]=files[oldName];delete files[oldName];}
+ for(const row of REDESIGNS){const url="../../assets/monsters/"+(row.redesign?"redesign-v51/":"redesign-v47/")+view+"/"+String(row.id).padStart(3,"0")+".png";files[row.name]=url;if(row.oldName!==row.name){delete files[row.oldName];Object.defineProperty(files,row.oldName,{value:url,enumerable:false});}}
+ for(const[oldName,newName]of Object.entries(SPECIES_RENAMES)){if(!files[newName]&&files[oldName])files[newName]=files[oldName];if(!files[oldName]&&files[newName])Object.defineProperty(files,oldName,{value:files[newName],enumerable:false});}
 }
 
 export const REDESIGN_DESCRIPTIONS = {
