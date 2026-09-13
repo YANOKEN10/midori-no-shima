@@ -267,6 +267,8 @@ SPECIES["フワクジ"].dex="雲のように 軽い体で 空に浮かぶ。大�
 SPECIES["イワッコ"].dex="小さな オレンジ色の体を 岩のよろいが守る。育つにつれて ガンセキに近づく。";
 SPECIES["ボウエン"].dex="ヒノコマより 大きな羽と足に育つ。胸の火種で 炎のとさかを 燃やしている。";
 SPECIES["エンブレイズ"].dex="黒い大きな翼に 金色の炎をまとう。ヒノコマから育った 誇り高い炎の鳥。";
+import {applySpeciesRedesign} from './redesignV47.js';
+applySpeciesRedesign(SPECIES);
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 
@@ -300,6 +302,9 @@ for (const [name, sp] of Object.entries(SPECIES)) {
 // Explicit balance adjustments; keep encounter and training rewards unchanged.
 const BASE_ADJUSTMENTS = {"ヤミノヌシ":{"spd":100,"def":80,"hp":85,"atk":120,"spc":110},"ムラサキビ":{"spd":90,"atk":60,"hp":78,"def":65},"ボウレイ":{"hp":90,"atk":60,"def":70},"シャドネコ":{"atk":100,"spc":90,"sdef":70},"オオカブト":{"spd":80,"spc":60},"ジシンヌシ":{"spd":97,"hp":110,"spc":60},"コケゴロ": {"hp": 120, "atk": 130, "def": 120, "spc": 60}, "オオヒノオ": {"sdef": 120, "spd": 125}, "ヨウガンヌシ": {"def": 90, "spd": 110}, "リュウグウ": {"sdef": 103, "spd": 152}, "ライメイ": {"sdef": 90, "spd": 130}, "オニイワ": {"spd": 70, "def": 91}};
 for(const [name,base] of Object.entries(BASE_ADJUSTMENTS)) Object.assign(SPECIES[name].base,base);
+
+// Requested base stats; other species data and training yields stay unchanged.
+Object.assign(SPECIES["ギガビート"].base,{atk:130,spd:100});
 
 export function species(name) { return SPECIES[name] || SPECIES["ネズミン"]; }
 // その モンスターを ぬる いろセット

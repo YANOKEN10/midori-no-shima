@@ -156,6 +156,8 @@ const FILES = {
   メロロン: "../../assets/monsters/redesign-v11/front/153-meroron.png",
 };
 
+import {applyArtRedesign,canonicalName} from './redesignV47.js';
+applyArtRedesign(FILES,'front');
 const cache = new Map();
 for (const name of Object.keys(FILES)) {
   const img = new Image();
@@ -320,6 +322,7 @@ const BACK_FILES = {
   ディーナ: "../../assets/monsters/redesign-v9/back/152-dina-back.png",
   メロロン: "../../assets/monsters/redesign-v11/back/153-meroron-back.png",
 };
+applyArtRedesign(BACK_FILES,'back');
 const backCache = new Map();
 for (const name of Object.keys(BACK_FILES)) {
   const img = new Image();
@@ -329,6 +332,7 @@ for (const name of Object.keys(BACK_FILES)) {
 }
 
 export function battleArt(name, back = false) {
+  name=canonicalName(name);
   const img = back ? backCache.get(name) : cache.get(name);
   if (back && !(img && img.complete && img.naturalWidth)) return battleArt(name, false);
   return img && img.complete && img.naturalWidth ? img : null;

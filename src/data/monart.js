@@ -67,6 +67,8 @@ for (const name of Object.keys(PIX)) {
   ART[name] = p.rows;
   PAL[name] = p.pal;
 }
+import {SPECIES_RENAMES} from './redesignV47.js';
+for(const [oldName,newName] of Object.entries(SPECIES_RENAMES)){if(ART[oldName])ART[newName]=ART[oldName];if(PAL[oldName])PAL[newName]=PAL[oldName];}
 export const MONPAL = PAL;
 
 export const MONART = ART;

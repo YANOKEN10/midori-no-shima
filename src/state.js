@@ -9,6 +9,9 @@ import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
 
 const SPECIES_ALIASES = {"シャチマル":"シオマント","タツノコ":"ミナモリス","モスゴレム":"コケトロッコ","サボチク":"スナボンネ","ハッパチョ":"リボネム","デンチュウ":"デンデマリ","イシゴロ":"スナコロネ","スズメバチン":"ハナヤリ","ダンゴロン":"クルミグル","ヨルグモ":"ホシミノ","パンダン":"フクモッチ","カバリン":"フワクジ"};
+import {SPECIES_RENAMES,canonicalName} from './data/redesignV47.js';
+Object.assign(SPECIES_ALIASES,SPECIES_RENAMES);
+for(const key of Object.keys(SPECIES_ALIASES))SPECIES_ALIASES[key]=canonicalName(SPECIES_ALIASES[key]);
 export const MAX_PARTY = 6;
 function companionId(){return globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);}
 export function followingMon(){const f=G.save.following;if(f?.enabled===false)return null;return f?.id?G.save.party.find(m=>m.companionId===f.id)||null:G.save.party[0]||null;}

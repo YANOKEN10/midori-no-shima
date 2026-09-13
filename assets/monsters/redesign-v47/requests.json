@@ -1,0 +1,281 @@
+{
+  "base": "Create a production pixel-art RPG creature sprite sheet on a perfectly flat opaque bright magenta #ff00ff background, used as a chroma key. NO checkerboard, NO white, no background texture. Never use magenta inside the creature. Exactly 4 equal columns and 2 equal rows (8 cells), no gaps, no labels, no grid lines. ONE identical creature in each cell, FULL BODY entirely within its cell with 12% transparent margin. Column order LEFT TO RIGHT: front three-quarter facing viewer-left, rear three-quarter facing away-left, right-facing side, left-facing side. Top row idle pose; bottom row subtle alternate step/wing-flap pose, same size and feet baseline. Every pose must be hand-drawn consistently, not mirrored front as back. Crisp chunky detailed pixel art, dark outlines, 64px sprite look scaled up, limited palette, no antialiasing, no ground/shadow/effects outside body. Designed for Gaon World. ",
+  "specs": [
+    {
+      "id": "013",
+      "name": "ソラハネ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v9/front/012-torippi.png"
+      ],
+      "desc": "The reference is Torippi, the PRE-EVOLUTION style/identity reference, not an edit target. Design its evolved bird Sorahane. Preserve pale cream and warm golden-peach plumage, turquoise/cyan feather tips and little blue crest, orange short beak and feet, friendly round black eyes. Evolve into a confident elegant medium bird with larger layered wings, swept-back cyan tipped crest, cream feather ruff and three long peach tail feathers with blue tips. Clearly the same species family grown up; cute but cool. Avoid purple, black sinister raven, long spear beak. Wings half spread, full silhouette."
+    },
+    {
+      "id": "137",
+      "name": "マルモコ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v9/front/136-marumii.png"
+      ],
+      "desc": "The reference is Marumii, PRE-EVOLUTION style/identity. Design Marumoko, its middle evolution: preserve warm ivory and pale blush-pink fur, large rounded pink-inner ears, dark warm shiny eyes, peach cheeks, little smiling muzzle, plump rodent/bear-like body and small paws. A medium cuddly plush creature with more fluffy cheek tufts, a thick cloudlike neck ruff, cream tummy, sturdy hind paws and fluffy curled tail. Same species as reference, visibly older and fluffy, not a rabbit, no long ears. No clothes or objects."
+    },
+    {
+      "id": "138",
+      "name": "マルガンテ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v9/front/136-marumii.png"
+      ],
+      "desc": "Reference Marumii is the baby form. Create final evolution Marugante: very large round warm ivory fluffy guardian, enormous rounded pink-inner ears, same peach blush cheeks, brown shiny kind eyes and smiling little muzzle. A thick layered cloudlike mane, sturdy wide paws with pink pads, huge curled fluffy tail, broad huggable body. Powerful friendly guardian posture, not a bear with small ears, not a rabbit. Preserve Marumii lineage strongly. Cream/blush/peach palette."
+    },
+    {
+      "id": "127",
+      "name": "ヨイバネ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/126-yorudori.png",
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/128-yamifukurou.png"
+      ],
+      "desc": "Reference1 Yorudori is first evolution; reference2 Yamifukurou is final evolution. Design Yoibane exactly midway: medium adolescent owl with round but elongating plum body, rose-brown face disk starting to become ivory heart mask, dark indigo shoulders and half-length cape-like wings, short rising swept ear tufts, bright golden eyes, gold talons. Retain small owl's curious cuteness while approaching final owl's majestic dark cloak. No crown/no armor. Entirely natural feathers."
+    },
+    {
+      "id": "010",
+      "name": "ウロコロ",
+      "old": "ネズミン",
+      "desc": "Brand-new baby pangolin creature Urokoro, NOT a rodent. Small round compact body with layered warm chestnut keratin scales, cream muzzle and tummy, tiny rounded ears, glossy curious teal eyes, short sturdy foreclaws, thick curled overlapping scale tail. Cute alert quadruped. Natural mammal scales, no stone or metal, no rat incisors. Evolution family palette chestnut, ivory, teal eyes."
+    },
+    {
+      "id": "011",
+      "name": "ヨロイガル",
+      "old": "デカネズ",
+      "desc": "Final evolution Yoroigaru of a chestnut baby pangolin. Powerful athletic armored pangolin, layered sweeping chestnut scales edged in warm bronze, ivory face and underside, same teal eyes, robust digging foreclaws, long protective thick scaled tail curled behind. Cool low forward battle stance, still recognizable friendly mammal, no rat features, no humanoid armor or tools. Same palette chestnut ivory bronze."
+    },
+    {
+      "id": "111",
+      "name": "アミグモ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/110-kumokko.png",
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/112-oogumon.png"
+      ],
+      "desc": "Middle evolution Amigumo between reference1 baby Kumokko and reference2 adult Oogumon. A medium blue spider retaining baby round head and large glossy black eyes; rounded cobalt abdomen, eight moderately elongated jointed legs with coral-red bands and pointed blue feet. Intermediate small red mandibles, one simple pale blue web/diamond motif on abdomen. Cute confident face, stronger stance, no extra arms, no human features, no disconnected webs. Less spiky than adult."
+    },
+    {
+      "id": "113",
+      "name": "ツノコロ",
+      "old": "アリンコ",
+      "desc": "Cute new baby longhorn beetle Tsunokoro. Rounded mint-turquoise wing covers with ivory dots, navy underside, large glossy amber eyes, two long softly curved navy/ivory striped antennae, six short legs and small blunt mandibles. Charming squat insect with confident tiny smile. Real longhorn beetle anatomy stylized for RPG. No ant waist, no weapons, no floating sparkles."
+    },
+    {
+      "id": "114",
+      "name": "ギリザント",
+      "old": "アリガタ",
+      "desc": "GIRIZANTO adult evolution of cute mint-turquoise longhorn beetle. Powerful streamlined longhorn beetle with polished deep teal and mint wing covers, ivory geometric spots, large amber eyes, extremely long angular navy/ivory segmented antennae curved back, six sturdy clawed legs, strong short ivory cutting mandibles. Wing covers slightly opened to show dark smoky underwings. Cool insect warrior silhouette, entirely biological no human armor. Family matches turquoise spotted baby."
+    },
+    {
+      "id": "115",
+      "name": "キラル",
+      "old": "ホタリン",
+      "desc": "Kiraru, adorable small electric glow-moth creature. Small plush navy body, ivory face and chest, big turquoise eyes, two golden rounded antennae, four rounded pale aqua wings with golden glowing teardrop markings, tiny gold feet. Wing shapes look like small luminous leaves. Friendly cheerful face, natural biological glow patches without external effects. Clear simple baby silhouette, not a humanoid fairy."
+    },
+    {
+      "id": "116",
+      "name": "ルミナイト",
+      "old": "ホタルオー",
+      "desc": "LUMINIGHT, majestic evolved electric glow-moth. Same ivory face, navy fluffy body, turquoise eyes and golden antennae as baby Kiraru. Broad elegant pointed aqua and deep blue four-wing silhouette, fine golden lightning vein markings, gold teardrop lamps at wing tips, long navy abdomen with turquoise luminous bands. Cute expressive face but regal powerful flight posture, no human armor, no extraneous electricity or backdrop."
+    },
+    {
+      "id": "106",
+      "name": "オオカブト",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/105-kabuton.png"
+      ],
+      "desc": "Reference is pre-evolution Kabuton, violet beetle with ivory horn. Create spectacular final rhinoceros beetle Ookabuto: powerful low six-legged beetle, metallic midnight violet armor with lavender highlights, huge forward ivory forked main horn plus two smaller upward chest horns, confident cyan eyes, broad armored thorax, dense clawed forelegs, layered back wing cases slightly spread. Biological beetle, not a biped mecha, no antlers. Preserve violet/ivory family. Compact fearless champion silhouette."
+    },
+    {
+      "id": "098",
+      "name": "モグドリル",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v9/front/097-mogupon.png"
+      ],
+      "desc": "Reference Mogupon stays unchanged. Design cooler evolved Mogudrill: brown mole/doglike burrower matching reference round pink nose, small eyes beneath brow fur, floppy short ears, cream muzzle/belly. Strong forward crouch, broad muscular shoulders, very large three ivory digging claws on each forepaw angled like shovel/drill blades, dark umber forearms, swept dirt-colored head tuft, stout tail. Cute determined face, powerful digging silhouette. No literal machinery, no helmet, no giant drill replacing body."
+    },
+    {
+      "id": "094",
+      "name": "スナムシ",
+      "desc": "Redesign desert baby Sunamushi: compact cute turquoise armored sand beetle larva, cream underside, copper-edged segmented plates, large friendly dark eyes, two stubby copper antennae, six tiny dark legs and small shovel front feet. Low rounded body like desert isopod/beetle hybrid, not realistic worm. Palette turquoise teal copper ivory, no beige/yellow body."
+    },
+    {
+      "id": "095",
+      "name": "サバクムシ",
+      "desc": "Middle desert evolution Sabakumushi: medium low turquoise armored burrowing insect, copper-edged interlocking shell segments, cream underside, determined amber eyes, two swept copper horns, six sturdy navy legs, broad shovel forelegs and short segmented tail. Same lineage as cute turquoise sand beetle larva, bulkier but not final giant. Clean sharp biological armor."
+    },
+    {
+      "id": "096",
+      "name": "サンドキング",
+      "desc": "Final desert evolution Sandking: formidable royal burrowing armored insect, massive deep teal segmented carapace with turquoise facets and copper ridges, ivory underside, amber eyes, low forward posture, six thick navy clawed legs with powerful shovel forelegs, a crowned trident-shaped copper horn emerging naturally from carapace, long armored tail. Same turquoise/copper lineage as smaller sand beetles, biologic not robot, regal cool silhouette."
+    },
+    {
+      "id": "078",
+      "name": "チルスパ",
+      "old": "ハネデン",
+      "desc": "Chiruspa, new cute electric songbird baby: round ivory white fluffy body, soft sky-blue crown and tiny wings, little yellow lightning-shaped forelock, glossy dark eyes, tiny charcoal beak, orange feet, short blue tail tipped gold. Extremely charming compact chick, fluffy but readable. No red cheeks, no mouse ears. Electric bird lineage ivory sky blue golden lightning accents."
+    },
+    {
+      "id": "079",
+      "name": "ライウィル",
+      "old": "ソラデン",
+      "desc": "Raiwill, adolescent evolution of ivory/skyblue electric chick Chiruspa. Sleek medium swallow bird, ivory face/chest, cobalt-blue wing feathers, swept golden lightning crest, cyan eyes, small black beak, orange feet, two forked cobalt tail streamers tipped yellow, wings half open. Friendly determined eyes, elegant athletic silhouette, clearly intermediate stage, no monster hardware or effects."
+    },
+    {
+      "id": "080",
+      "name": "ヴォルティア",
+      "old": "カミナリオ",
+      "desc": "Voltiah, majestic final electric bird of ivory skyblue chick and cobalt swallow family. Powerful elegant sky raptor, ivory head/chest, deep cobalt and cyan layered large wings, swept triple golden lightning crest, golden accents only on feather tips, bright turquoise eyes, charcoal hooked short beak, long forked blue tail. Noble confident face, cute enough approachable, large sleek wings not bulky. No effects outside body."
+    },
+    {
+      "id": "075",
+      "name": "ネコデン",
+      "desc": "Redesign Nekoden electric kitten: compact adorable snow-white and charcoal-navy kitten with skycyan lightning eyebrow markings, bright amber eyes, large triangular ears with cyan inner tips, tiny paws, short navy tail with cyan lightning-shaped tuft. Low playful confident stance, soft fluffy chest, organic fur only no plugs or wires."
+    },
+    {
+      "id": "076",
+      "name": "デンネコ",
+      "desc": "Denneko middle evolution electric feline: athletic adolescent lynx, charcoal navy back, white muzzle/chest/paws, cyan lightning stripe down shoulders, amber eyes, pointed ears with cyan tufts, longer lightning-tufted tail, confident forward stance. Same family as white/navy cyan baby kitten, longer limbs and slightly mane-like cheekfur, not adult lion yet. No cables or devices."
+    },
+    {
+      "id": "077",
+      "name": "ライガミ",
+      "desc": "Raigami final electric feline: imposing athletic white-and-midnight-navy lion/lynx, swept layered cyan lightning mane, sharp amber eyes, large muscular shoulders, white face and powerful paws, charcoal back with clean cyan lightning stripes, single long tail ending in cyan spear-shaped fur tuft. Regal cool quadruped silhouette, same kitten/lynx family, natural organic fur no cables."
+    },
+    {
+      "id": "064",
+      "name": "オオハサミ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v8/front/063-hasamigani.png"
+      ],
+      "desc": "Reference Hasamigani is pre-evolution, blue crab with orange claws. Redesign Oohasami as much stronger cooler direct evolution: enormous deep cobalt/navy crab carapace with bright cyan V facial rim, assertive eyes, two huge copper-orange crescent pincers with ivory cutting edges, stout armored crab legs, angular natural shell ridges. Full front broad crab silhouette, recognizably same blue/orange species, not orange horseshoe crab, no humanoid. Powerful balanced pincers."
+    },
+    {
+      "id": "009",
+      "name": "タイダルオ",
+      "refs": [
+        "I:/2026/Claude code/gaon-world/assets/monsters/redesign-v11/front/008-uzumarin.png"
+      ],
+      "desc": "Reference is pre-evolution Uzumarin, blue aquatic fox-dragon. Design refined final Tidalor: graceful regal quadruped water dragon-fox, flowing azure and pearl-white scales/fur, elegant tall neck, calm confident violet-blue eyes, swept back translucent fin ears, long flowing fin mane, muscular slender legs, long elegant tail ending in layered wave-shaped translucent cyan fins. Preserve family blue body ivory chest, mature poised beauty, not overly spiky or bulky, no crown/jewelry, no water background."
+    },
+    {
+      "id": "043",
+      "name": "ワンヒノ",
+      "desc": "Redesign Wanhino fire puppy: adorable round puppy with fluffy ivory coat and warm coral-red ears/back patches, amber eyes, tiny black nose, peach fluffy chest, short curled tail whose fur resembles a tiny golden flame. Big round paws and soft floppy ears. Cheerful playful brave expression. New fire dog lineage ivory coral-red and gold, no black smoke tail."
+    },
+    {
+      "id": "044",
+      "name": "ホノワン",
+      "desc": "Honowan middle fire dog evolution: athletic adolescent dog/wolf with ivory face/chest/legs, coral-red back and upright ears, amber eyes, golden flame-shaped cheek ruff and golden-coral curled bushy tail. More confident lean stance, four strong legs. Same ivory coral gold puppy lineage, cute but cool, no armor, natural fur flame shapes."
+    },
+    {
+      "id": "045",
+      "name": "グレンケン",
+      "desc": "Gurenken final fire dog evolution: magnificent strong quadruped guardian wolf, ivory muzzle and powerful paws, rich coral-red body, flowing layered golden-and-ivory flame mane, keen amber eyes, upright sweeping ears, long magnificent coral/gold flame-shaped tail. Muscular elegant athlete, fiercely loyal approachable expression, same ivory coral gold family. No smoke/black cloud, no external flames or effects."
+    },
+    {
+      "id": "038",
+      "name": "カエデリア",
+      "old": "リボネム",
+      "desc": "Kaederia, completely new cute elegant maple-leaf moth creature, grass/bug. Small cream fluffy body and face, mint-green large curious eyes, soft fern-green antennae, four broad maple-seed-shaped wings in sage green, pale cream and subtle peach veins, tiny orange feet. Cute stylish floating insect, no bizarre skinny ribbon body, no humanoid. Lower wings form short leaf tails, elegant readable botanical silhouette."
+    },
+    {
+      "id": "033",
+      "name": "ウリボン",
+      "desc": "Redesign Uribon for snowy alpine mountains: powerful cute young woolly boar with thick frost-white and slate-blue fur, pale blue-gray stripes along back, icy blue determined eyes, short ivory tusks, stout navy hooves, pink-gray snout and little tufted ears. A compact tough snow boar piglet, shaggy shoulders and belly, no grass in mouth."
+    },
+    {
+      "id": "034",
+      "name": "ドスウリ",
+      "desc": "Dosuuri final snow boar evolution: very powerful large woolly alpine boar with heavy glacier-white mane, slate-blue and charcoal shaggy body, huge upward-curving ivory tusks, icy blue fierce eyes, thick muscular shoulders and short strong navy hooves, gray-pink snout. Same snowy piglet family. Cold-weather fur, majestic charging-ready stance, no snow effects outside body, no green grass."
+    },
+    {
+      "id": "139",
+      "name": "ミルピョン",
+      "old": "ウサポン",
+      "desc": "Milupyon new baby rabbit RPG creature: tiny round ivory white bunny, pale pink ear interiors, silver-gray forehead curl, large warm plum eyes, short soft upward ears, big rounded hind paws and pearl puff tail. Cute elegant calm smiling face, just four limbs, no clothes. Family palette ivory pale pink silver, moonlike soft fur without objects."
+    },
+    {
+      "id": "140",
+      "name": "ラピシア",
+      "old": "ダッシュサ",
+      "desc": "Rapicia middle evolution ivory moon rabbit: sleek medium ivory rabbit, longer swept ears with pale pink inner fur and silver tips, lively plum eyes, silver cheek tufts, strong elongated hind legs, pink pawpads and rounded silver-white tail. Athletic poised half-standing stance, still cute, same ivory pink silver baby rabbit lineage. No clothes."
+    },
+    {
+      "id": "141",
+      "name": "セレピオン",
+      "old": "ソニックウサ",
+      "desc": "Celepion final rabbit evolution: majestic powerful agile ivory white hare, very long swept-back silver-tipped ears with pale pink interiors, confident plum eyes, layered silver-white neck ruff, long muscular hind legs, large pink-padded feet, elegant silver-white tail. Cool poised sprinter, clean streamlined silhouette, recognizable ivory pink silver rabbit family. No humanoid clothing or weapons."
+    },
+    {
+      "id": "142",
+      "name": "ドラコル",
+      "old": "ヒツジン",
+      "desc": "Dracoru brand-new baby dragon, not sheep. Small cute stocky quadruped dragon, deep cobalt body, silver-gray muzzle and belly, little copper horn nubs, amber eyes, sturdy big paws and short thick tail, tiny folded copper wing buds. Powerful potential, cute confident expression. Original dragon family cobalt silver copper, no copied Pokemon design."
+    },
+    {
+      "id": "143",
+      "name": "ガルドラン",
+      "old": "モコヒツジ",
+      "desc": "Galdoran intermediate evolution of cobalt/silver baby dragon: powerful compact quadruped dragon protected by interlocking silver-gray natural shell plates around back and shoulders, cobalt face/legs, copper horn ridges, amber determined eyes, thick copper-tipped tail. Wings developing under folded armored back, strong paws. Original biological armored dragon, not a sheep, not round featureless ball. Family cobalt silver copper."
+    },
+    {
+      "id": "144",
+      "name": "ヴァルディオ",
+      "old": "オオモコ",
+      "desc": "Valdio final evolution cobalt/silver/copper dragon: magnificent muscular quadruped dragon with deep cobalt scales, silver-gray armored chest and face ridges, swept copper horns, huge angular wings with copper membranes and dark blue bones, amber fierce intelligent eyes, strong clawed limbs, long tapering tail. Regal powerful stance, full wings fit cell. Original dragon shape, not a Pokemon copy, no wool or sheep traits."
+    },
+    {
+      "id": "145",
+      "name": "アオルカ",
+      "old": "タヌポン",
+      "desc": "Aoruka, entirely new cute cool small humanoid spectral blade apprentice, no tanuki/animal features. Compact navy and azure natural armor-like body, silver-white faceplate with expressive bright cyan eyes, short swept horn-like blue crest, two short pale cyan crystalline forearm fins shaped like blades, sturdy boots integrated into body, short scarf-like flowing blue neck membrane. Youthful brave silhouette, biological fantasy creature not human in clothes. Blue palette, no purple fire."
+    },
+    {
+      "id": "146",
+      "name": "レイザルト",
+      "old": "バケダヌキ",
+      "desc": "Reizalt adult evolution of navy/azure blade apprentice: tall athletic humanoid fantasy guardian with sleek deep blue natural armor, silver-white narrow faceplate and confident cyan eyes, swept azure crest, long translucent iceblue forearm blade fins, layered blue shoulder plates, flowing split cobalt cape-like back membranes, strong lean legs. Original cool spectral knight creature, not animal/tanuki, no purple flames, no guns, no real human."
+    },
+    {
+      "id": "129",
+      "name": "ニヤゴ",
+      "old": "ドクロン",
+      "desc": "Niyago, adorable cheeky new ghost monster, no skeleton/skull. Squishy round dark teal/navy body, two unequal soft ear tufts, big mischievous warm orange eyes, small off-center grin with one tiny ivory fang, stubby hands and feet, light aqua crescent patch on belly and tiny wisp tail. Friendly prankster mascot, cute popular plush silhouette, no horror gore, no text, no external ghost effects. Not a recognizable existing Pokemon."
+    },
+    {
+      "id": "130",
+      "name": "ワルニール",
+      "old": "ドクロガミ",
+      "desc": "Warniel evolved cheeky ghost mascot: broad round dark navy/teal imp-like ghost with soft swept asymmetric ear tufts, large sly orange eyes, big sideways grin with two small ivory fangs, chunky claw-tipped hands and short feet, aqua crescent chest patch, longer curling wisp tail, aqua tips on crown fur. Confident mischievous cute villain expression, cuddly and cool, no skeleton motifs, original character not copied Pokemon."
+    },
+    {
+      "id": "119",
+      "name": "クロムギア",
+      "old": "クルミグル",
+      "desc": "Chromegear, new powerful machine-like four-legged fantasy creature replacing a walnut bug. Low wide gunmetal and steelblue central body, four articulated heavy legs with broad silver feet, small sharp amber sensor eyes under armored brow, cobalt panels with restrained turquoise circuit seams, central hexagonal pale metal chest plate. Very cool massive stable quadruped tank-like silhouette, original mecha creature, not Metagross copy, no X face, no walnut shell, no guns. Organic game mascot readability."
+    },
+    {
+      "id": "118",
+      "name": "カゲナギ",
+      "old": "ハナヤリ",
+      "desc": "Kagenagi, new sleek cool ninja-like fantasy insect creature. Lean crouching humanoid mantis/frog-inspired silhouette, deep navy body, turquoise forearm blades shaped from natural chitin, ivory face mask with bright gold eyes, long athletic legs with broad gripping feet, flowing teal leaflike neck frill trailing backward like scarf, small swept antennae. Agile stealthy confident pose. Original character, not Greninja copy, no tongue scarf, no weapons held, no wasp flower design."
+    },
+    {
+      "id": "020",
+      "name": "ザンガルド",
+      "old": "スナコロネ",
+      "desc": "Zangard, powerful new red-and-black armored insect guardian, replacing a shell creature completely. Tall athletic biped mantis/lobster-like natural exoskeleton, broad deep scarlet shoulder armor, gunmetal joints, two enormous angular scissor pincer forearms with silver cutting edges, green sharp visor-like eyes, swept backward crimson head crest, sturdy clawed feet and short armored tail. Huge strong imposing arms, cool champion silhouette. Original design not Mega Scizor copy, no copied symbols, no snail shell, no external effects."
+    }
+  ],
+  "renameOnly": {
+    "ライボルト": "ピピピット"
+  },
+  "stats": {
+    "ギガビート": {
+      "atk": 130,
+      "spd": 100
+    }
+  }
+}
