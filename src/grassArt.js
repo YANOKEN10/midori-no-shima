@@ -32,7 +32,7 @@ function drawRoadGrass(c,map,x,y,wx,wy){
  if(!roadBounds){const cv=document.createElement('canvas');cv.width=roadGrass.width;cv.height=roadGrass.height;const ctx=cv.getContext('2d');ctx.drawImage(roadGrass,0,0);const d=ctx.getImageData(0,0,cv.width,cv.height).data;let l=cv.width,t=cv.height,r=0,b=0;for(let yy=0;yy<cv.height;yy++)for(let xx=0;xx<cv.width;xx++)if(d[(yy*cv.width+xx)*4+3]>128){l=Math.min(l,xx);r=Math.max(r,xx);t=Math.min(t,yy);b=Math.max(b,yy);}roadBounds=[l,t,r-l+1,b-t+1];}
  c.save();c.beginPath();c.rect(x,y,32,32);c.clip();c.imageSmoothingEnabled=false;
  const tx=Math.floor(wx/32),ty=Math.floor(wy/32);
- // Low overlapping rows reveal the ground between the broad leaves.
- for(let yy=ty-1;yy<=ty;yy++)for(let xx=tx-1;xx<=tx+1;xx++)if(map.rows[yy]?.[xx]==='"')for(const off of [0,16])c.drawImage(roadGrass,...roadBounds,x+xx*32-wx-1,y+yy*32-wy+off+3,34,18);
+ // Keep both complete tufts inside the tile, including exposed patch edges.
+ for(let yy=ty-1;yy<=ty;yy++)for(let xx=tx-1;xx<=tx+1;xx++)if(map.rows[yy]?.[xx]==='"')for(const off of [0,14])c.drawImage(roadGrass,...roadBounds,x+xx*32-wx,y+yy*32-wy+off,32,18);
  c.restore();return true;
 }
