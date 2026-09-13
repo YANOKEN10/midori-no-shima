@@ -7,7 +7,7 @@ export const marineReady=()=>Object.values(images).every(im=>im.complete&&im.nat
 export function drawMarineAsset(c,key,x,y,w,h){const im=images[key];if(!im)return drawVoyageAsset(c,key,x,y,w,h)||drawPowerAsset(c,key,x,y,w,h);if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
 export function marineForest(c,map){for(const p of forestLayout(map))drawMarineAsset(c,map.biome==='flowers'?'flowerTree':'ancientTree',p.x,p.y,p.w,p.h);}
 export function drawMarineTile(c,map,x,y,ch){
- if(!map.biome)return false;const dx=x*32,dy=y*32;
+ if(!map.biome&&!map.townPond)return false;const dx=x*32,dy=y*32;
  if(ch==='W'||ch==='d'){
   const im=images[map.biome==='coast'?'sea':'lake'];if(im.complete&&im.naturalWidth)c.drawImage(im,(x%4)*32,(y%4)*32,32,32,dx,dy,32,32);
   if(ch==='d'){const deck=images.marinePier;if(deck.complete&&deck.naturalWidth)c.drawImage(deck,8,18,80,28,dx,dy,32,32);

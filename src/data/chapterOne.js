@@ -1,3 +1,4 @@
+import {refineTownAccess} from './townAccess.js';
 import {refineExploration} from './explorationLayouts.js';
 import {organizeMountain} from './mountainLayout.js';
 import {redesignEnvironments} from './environmentLayouts.js';
@@ -129,6 +130,7 @@ export function buildChapterOne(){
  populatePeople(M);
  redesignEnvironments(M);
  refineExploration(M);
+ refineTownAccess(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }
