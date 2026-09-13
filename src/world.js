@@ -20,7 +20,7 @@ import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
 import {drawFollower} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
-import { drawNpc } from './npcArt.js?v=20260913-mountain-audio-v42';
+import { drawNpc } from './npcArt.js?v=20260913-exploration-v43';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
@@ -35,7 +35,7 @@ import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
-import { MAPS } from "./data/maps.js?v=20260913-mountain-audio-v42";
+import { MAPS } from "./data/maps.js?v=20260913-exploration-v43";
 import { personFrames, personFramesRaw, LOOKS, styleOf } from "./data/charart.js";
 import { playerColors, darker } from "./data/looks.js";
 import { MONART } from "./data/monart.js";
@@ -48,7 +48,7 @@ import { setMenuWorld, openMenu, shopMenu, showStatus, reportMenu, clothesShop, 
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260913-mountain-audio-v42";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260913-exploration-v43";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;
@@ -163,6 +163,8 @@ export const world = {
           }
         }
       }
+      // Redesigned rooms may cover an old save position with a wide wall.
+      if(!found&&this.map.explorationDesign){let distance=Infinity;for(let yy=0;yy<this.map.rows.length;yy++)for(let xx=0;xx<this.map.rows[yy].length;xx++){const c=tileAt(this.map,xx,yy),d=Math.abs(xx-x)+Math.abs(yy-y);if(d<distance&&c!==null&&!solid(c)&&c!=='L'&&!landmarkBlocked(this.map,xx,yy)&&!this.map.npcs.some(n=>n.x===xx&&n.y===yy)){found=[xx,yy];distance=d;}}}
       if (found) { x = found[0]; y = found[1]; }
     }
     if (this.map.tileWorld) { x=Math.round(x); y=Math.round(y); }

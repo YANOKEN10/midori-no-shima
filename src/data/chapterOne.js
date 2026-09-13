@@ -1,3 +1,4 @@
+import {refineExploration} from './explorationLayouts.js';
 import {organizeMountain} from './mountainLayout.js';
 import {redesignEnvironments} from './environmentLayouts.js';
 import {extendEndgameChapter} from './endgameChapter.js';
@@ -127,6 +128,7 @@ export function buildChapterOne(){
  organizeMountain(M.mountain);
  populatePeople(M);
  redesignEnvironments(M);
+ refineExploration(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }

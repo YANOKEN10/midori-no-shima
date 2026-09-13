@@ -1,3 +1,4 @@
+import {battleLabel,battleCells} from './battleUi.js';
 import {drawBattlePanel} from './battleSceneArt.js';
 import {drawItemList,visibleItems} from './itemScreens.js';
 // ============================================================
@@ -181,7 +182,8 @@ function drawSay(w) {
     const line = cur[i];
     const show = line.slice(0, Math.max(0, left));
     left -= line.length;
-    G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), battleMode?0:3, TEXT_SIZE);
+    if(battleMode)battleLabel(G.ctx,show,BOX.x+PAD,BOX.y+27+i*26,{size:16,maxWidth:sayWidth()});
+    else G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), 3, TEXT_SIZE);
   }
   const total = cur.join("").length;
   if (w.shown >= total && Math.floor(now / 300) % 2 === 0) {
@@ -239,13 +241,14 @@ function drawChoice(w) {
   const b = boxOf(w);
   if(w.battle)drawBattlePanel(G.ctx,b.x,b.y,b.w,b.h);else G.window9(b.x, b.y, b.w, b.h);
   if(w.battle){
-    const cellW=(b.w-24)/2;
+    const cells=battleCells(b);
     w.items.forEach((label,i)=>{
-      const x=b.x+12+(i%2)*cellW,y=b.y+12+Math.floor(i/2)*32;
-      if(i===w.i){G.ctx.fillStyle='#3b6376';G.ctx.fillRect(x,y-2,cellW-4,30);G.text('▶',x+2,y+2,0,10);}
-      const available=cellW-24,size=Math.min(14,14*available/Math.max(1,G.textW(label,14)));
-      G.text(label,x+18,y+(w.details?0:6),0,size);
-      if(w.details)G.text(w.details[i]||'',x+18,y+17,0,10);
+      const cell=cells[i];if(!cell)return;const{x,y,w:cw,h}=cell;
+      if(i===w.i){G.ctx.fillStyle='#386b83';G.ctx.fillRect(x,y,cw,h);G.ctx.fillStyle='#70d5f4';G.ctx.fillRect(x,y,2,h);
+        G.ctx.beginPath();G.ctx.moveTo(x+7,y+h/2-4);G.ctx.lineTo(x+12,y+h/2);G.ctx.lineTo(x+7,y+h/2+4);G.ctx.fillStyle='#f1fbff';G.ctx.fill();}
+      const available=cw-25,size=Math.min(14,14*available/Math.max(1,G.textW(label,14)));
+      battleLabel(G.ctx,label,x+19,y+(w.details?8:h/2),{size,maxWidth:available});
+      if(w.details)battleLabel(G.ctx,w.details[i]||'',x+19,y+21,{size:9});
     });
     return;
   }

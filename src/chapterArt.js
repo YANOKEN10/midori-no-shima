@@ -22,7 +22,7 @@ function landscape(c,map,x,y,ch){
  if(!wild&&!rural)return false;
  ground(c,'grass',x*32,y*32);
  if(map.id==='mountain'||['lake','ancient'].includes(map.biome))mountainFloor(c,x*32,y*32);
- if(map.id==='mountain'&&ch==='.')mountainTrail(c,map,x,y);
+ if((wild||map.explorationDesign)&&ch==='.') {mountainTrail(c,map,x,y);return true;}
  if(ch!=='.'||wild)return true;
  const track=(a,b)=>{const t=map.rows[b]?.[a];return t==='.'||t==='D'||t==='S'&&map.signs.some(s=>s.x===a&&s.y===b&&s.ground==='.');};
  const dx=x*32,dy=y*32;

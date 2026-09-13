@@ -29,7 +29,19 @@ function yanokenFrame(n,step){
  if(yanokenFrames.has(key))return yanokenFrames.get(key);
  const [x,x1]=sheet.cols[col],[y,y1]=sheet.rows[row],w=x1-x,h=y1-y;
  const cell=document.createElement('canvas');cell.width=w;cell.height=h;cell.getContext('2d').drawImage(sheet.canvas,x,y,w,h,0,0,w,h);
- const fitted=matchHeroHeight(cell);yanokenFrames.set(key,fitted);return fitted;
+ // Keep the original face, hairstyle and clothing pixels. Match the hero's
+ // large-head field proportions instead of only matching total height.
+ const pixels=cell.getContext('2d').getImageData(0,0,w,h).data;
+ let left=w,right=0,top=h,bottom=0;
+ for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++)if(pixels[(yy*w+xx)*4+3]>=128){left=Math.min(left,xx);right=Math.max(right,xx);top=Math.min(top,yy);bottom=Math.max(bottom,yy);}
+ const width=right-left+1,height=bottom-top+1,headH=Math.round(height*(col===3?.37:.39)),headW=Math.round(width*26/headH);
+ const fitted=document.createElement('canvas');fitted.width=Math.max(36,Math.ceil(headW/2)*2);fitted.height=48;
+ const ctx=fitted.getContext('2d');ctx.imageSmoothingEnabled=false;
+ ctx.drawImage(cell,left,top+headH,width,height-headH,Math.round((fitted.width-26)/2),27,26,21);
+ // Uniform scaling on the face avoids changing its proportions; only the
+ // body receives the compact field-sprite proportions used by the hero.
+ ctx.drawImage(cell,left,top,width,headH,Math.round((fitted.width-headW)/2),2,headW,26);
+ yanokenFrames.set(key,fitted);return fitted;
 }
 export function npcFrame(n,step=1){if(isYanoken(n))return yanokenFrame(n,step);if(Number.isInteger(n.winterVariant))return winterFrame(n);const variant=Number.isInteger(n.variant)?n.variant:n.script==='v5:mother'?7:({boy:0,girl:1,prof:2,oldman:3,nurse:4,clerk:5,hiker:6,sailor:12})[n.look]??0;const im=atlases[variant];if(!im?.complete||!im.naturalWidth)return null;const col=({down:0,left:1,right:2,up:3})[n.dir]??0,key=variant+':'+col+':'+step;if(cache.has(key))return cache.get(key);const c=document.createElement('canvas');c.width=32;c.height=48;c.getContext('2d').drawImage(im,col*32,step*48,32,48,0,0,32,48);const fitted=matchHeroHeight(c);cache.set(key,fitted);return fitted;}
 export function drawNpc(ctx,n,tick,x,y){const step=n.moving?[0,1,2,1][Math.floor((n.roamProgress||Math.max(Math.abs(n.ox||0),Math.abs(n.oy||0))/32)*4)%4]:1,frame=npcFrame(n,step);if(!frame)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(frame,Math.round(x+16-frame.width/2),Math.round(y));return true;}

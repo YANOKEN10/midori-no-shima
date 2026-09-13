@@ -1,3 +1,4 @@
+import {explorationWall,ruinFloor} from './explorationArt.js';
 import {paintInterior} from './interiorArt.js';
 import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
 import {endAsset,endArtReady,endGround,endWater} from './endgameArt.js';
@@ -16,6 +17,8 @@ export function drawFrontierMap(ctx,map,camX,camY,material){if(!map.frontierThem
  if(theme==='rail'&&map.kind==='in'){c.fillStyle=(x+y)%2?'#b7b9b1':'#bec0b7';c.fillRect(dx,dy,32,32);c.fillStyle='#8d9695';c.fillRect(dx,dy+31,32,1);c.fillRect(dx+31,dy,1,32);if(y===6){c.fillStyle='#d7ba65';c.fillRect(dx,dy+4,32,5);}}
  if(ch==='.'||ch==='D'){c.fillStyle=theme==='snow'?'#eef5f7':map.endTheme==='dark'?'#575368':theme==='ash'?'#8d8172':theme==='coast'?'#f4dfa3':'#a3c695';const near=(a,b)=>['.','D'].includes(map.rows[b]?.[a]);const l=near(x-1,y)?0:3,t=near(x,y-1)?0:3,r=near(x+1,y)?32:29,b=near(x,y+1)?32:29;c.fillRect(dx+l,dy+t,r-l,b-t);}
  if(map.endTheme&&!['W','R','T'].includes(ch))endGround(c,map,ch,dx,dy);
+ ruinFloor(c,map,x,y,ch);
+ if(explorationWall(c,map,x,y))continue;
  if(ch==='W'){c.fillStyle=theme==='ash'&&!map.endTheme?'#ef642c':'#5299b9';c.fillRect(dx,dy,32,32);c.fillStyle=theme==='ash'&&!map.endTheme?'#ffa849':'#88c5d4';c.fillRect(dx+4,dy+12,20,2);if(map.endTheme)endWater(c,dx,dy);}
  if('RT X'.includes(ch)&&ch!==' '&&!map.props.some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h)){if(map.id==='momi'&&ch==='R'){asset(c,'eRock',dx,dy,32,32);}else if(map.endTheme==='nature'&&ch==='R'){c.fillStyle='#486b56';c.fillRect(dx,dy,32,32);endGround(c,map,ch,dx,dy);if(map.rows[y+1]?.[x]!=='R')material(c,'cliff',dx,dy,32,32);}else if(map.endTheme==='dark'&&ch==='R'){c.fillStyle='#242638';c.fillRect(dx,dy,32,32);c.strokeStyle='#494656';c.strokeRect(dx+1,dy+1,30,30);}else if(theme==='ash'&&ch==='R'){c.fillStyle='#423733';c.fillRect(dx,dy,32,32);material(c,'cliff',dx,dy,32,32);c.fillStyle='rgba(47,28,27,.22)';c.fillRect(dx,dy,32,32);}else if(map.endTheme==='ice')asset(c,'eIce',dx,dy,32,32);else if(theme==='snow')asset(c,map.endTheme?'eRock':ch==='T'?'snowFir':'snowRock',dx,dy,32,32);else if(theme==='ash')asset(c,'lavaRock',dx,dy,32,32);else material(c,'rock',dx,dy,32,32);}
  if(ch==='"'&&!frontierGrass(c,map,x,y)){material(c,'grass',dx,dy,32,32);for(let i=0;i<8;i++){c.fillStyle=i%2?'#407948':'#99bf62';c.fillRect(dx+(i*7+x*3)%30,dy+(i*11+y*5)%28,3,8);}}
@@ -26,6 +29,6 @@ export function drawFrontierMap(ctx,map,camX,camY,material){if(!map.frontierThem
  for(const p of map.props){if(environmentProp(c,p,map))continue;let key=p.art;if(map.frontierTheme==='snow'&&['tree','fir'].includes(key))key='snowFir';if(key==='shopCounter'){const x=p.x*32,y=p.y*32;c.fillStyle='#4d4036';c.fillRect(x,y,p.w*32,p.h*32);c.fillStyle='#ba9467';c.fillRect(x+3,y+3,p.w*32-6,p.h*32-6);c.fillStyle='#e6ca8e';c.fillRect(x+3,y+3,p.w*32-6,8);c.fillStyle='#3d626b';c.fillRect(x+12,y+17,36,24);c.fillStyle='#dbe9d6';c.font='16px sans-serif';c.fillText('ショップ',x+66,y+40);continue;}if(key==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(!asset(c,key,p.x*32,p.y*32,p.w*32,p.h*32)&&!drawMarineAsset(c,key,p.x*32,p.y*32,p.w*32,p.h*32))material(c,key,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){c.fillStyle='#584333';c.fillRect(p.door.x*32,p.door.y*32,32,32);}}
  if(map.frontierTheme==='rail'&&map.kind==='in'&&!map.environmentArena){c.fillStyle='#535f62';for(let x=2;x<map.rows[0].length-2;x++){c.fillRect(x*32,3*32+10,32,3);c.fillRect(x*32,3*32+23,32,3);}}
  if(map.room)paintInterior(c,map);
- if(environmentReady(map)&&(!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))cache.set(map,cv);
+ if(grassReady(map)&&environmentReady(map)&&(!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))cache.set(map,cv);
  }ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;}
 export function drawFrontierWeather(c,map,tick){if(!['snow','ash'].includes(map.frontierTheme))return;c.save();for(let i=0;i<45;i++){const x=(i*47+Math.sin(tick/1300+i)*8+320)%320,y=(i*29+tick/(map.frontierTheme==='snow'?95:145))%288;c.fillStyle=map.frontierTheme==='snow'?'rgba(255,255,255,.8)':'rgba(215,205,195,.4)';c.fillRect(x,y,2,2);}c.restore();}

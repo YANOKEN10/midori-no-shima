@@ -1,3 +1,4 @@
+import {battleLabel} from './battleUi.js';
 import {battleBackgroundFor,prepareBattleBackground} from './battleBackgrounds.js';
 import {MAPS} from './data/maps.js';
 import {recordParkCatch} from './frontierRules.js';
@@ -695,20 +696,24 @@ function infoBox(x, y, side, mine) {
     G.ctx.fillStyle="#b4bea0";G.ctx.fillRect(x+6,y+6,w-12,1);
   } else G.window9(x, y, w, h);
 
-  const level='Lv'+m.lv,lvWidth=G.textW(level,11),name=monName(m),nameWidth=w-24-lvWidth;
+  const level='Lv.'+m.lv,lvWidth=35,name=monName(m),nameWidth=w-24-lvWidth;
   const nameSize=Math.min(12,12*nameWidth/Math.max(1,G.textW(name,12)));
-  G.text(name,x+9,y+9,3,nameSize);G.textRight(level,x+w-9,y+9,3,11);
-  G.text('HP',x+10,y+27,3,10);
+  battleLabel(G.ctx,name,x+9,y+16,{size:nameSize,color:'#234957',maxWidth:nameWidth});
+  G.ctx.fillStyle='#d9e9ef';G.ctx.fillRect(x+w-44,y+9,36,13);
+  battleLabel(G.ctx,level,x+w-11,y+15,{size:9,color:'#25566c',align:'right',numeric:true});
+  battleLabel(G.ctx,'HP',x+10,y+30,{size:10,color:'#2276a0',numeric:true});
   const bx=x+31,by=y+28,bw=w-41,bh=5;
   const shown = side.showHp == null ? m.hp : side.showHp;
   const ratio = Math.max(0, Math.min(1, shown / maxHp(m)));
   G.rect(bx - 2, by - 2, bw + 4, bh + 4, 3);
   G.rect(bx, by, bw, bh, 1);
-  // のこりで 色が かわる（みどり → きいろ → あか）
-  G.use(ratio > 0.5 ? "くさ" : ratio > 0.2 ? "でんき" : "ほのお");
-  G.rect(bx, by, Math.round(bw * ratio), bh, 1);
+  // Blue gauge in every HP range; a pale edge keeps small remaining HP visible.
+  const fill=Math.round(bw*ratio);
+  G.ctx.fillStyle='#258ddd';G.ctx.fillRect(bx,by,fill,bh);
+  G.ctx.fillStyle='#77d6ff';G.ctx.fillRect(bx,by,fill,2);
+
   G.use("ui");
 
   if(m.status)G.text(m.status,x+10,y+39,3,8);
-  if(mine)G.textRight(Math.round(shown)+' / '+maxHp(m),x+w-10,y+39,3,10);
+  if(mine)battleLabel(G.ctx,Math.round(shown)+' / '+maxHp(m),x+w-10,y+44,{size:11,color:'#234957',align:'right',numeric:true});
 }
