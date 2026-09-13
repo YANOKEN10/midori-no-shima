@@ -1,8 +1,9 @@
+import {FASHION_TOWNS,FASHION_ITEMS,fashionStock,itemLook,equipFashion} from './data/fashion.js';
 import {openFriends} from './friends.js';
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260913-town-v49";
+import { heroFrame } from "./revampArt.js?v=20260913-fashion-v50";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -29,9 +30,9 @@ import { compassEnabled, compassSummary, nextObjective, setCompassEnabled } from
 /* ============ メインメニュー ============ */
 export async function openMenu() {
   for (;;) {
-    const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "友だちと遊ぶ", "とじる"];
+    const items = ["ガオン", "つれあるき", "どうぐ", "ずかん", State.save.name, "レポート", "せってい", "友だちと遊ぶ", "きがえる", "とじる"];
     const i = await ui.choice(items, { x: 156, y: 8, w: 156, rows: 9 });
-    if (i < 0 || i === 8) return;
+    if (i < 0 || i === 9) return;
     if (i === 0) {const section=await ui.choice(["てもち","ボックス","もどる"],{x:8,y:8,w:304,rows:3});if(section===0)await partyMenu();if(section===1)await boxMenu();}
     else if (i === 1) await followerMenu();
     else if (i === 2) await bagMenu();
@@ -40,6 +41,7 @@ export async function openMenu() {
     else if (i === 5) await reportMenu();
     else if (i === 6) await settingsMenu();
     else if (i === 7) await openFriends();
+    else if (i === 8) await wardrobeMenu();
   }
 }
 
@@ -469,64 +471,32 @@ function drawLookPreview(look, x, y) {
   G.draw(G.makeColorArt(f, 2, "look" + st.hair + st.bangs + (st.skirt ? "s" : ""), playerColors(look)), x + 10, y + 14);
 }
 
-export async function clothesShop(fancy) {
-  const shirts = fancy==='island' ? [{name:"サンゴ色のシャツ",color:"#ed8068"},{name:"南国ブルーのシャツ",color:"#159faa"},{name:"ハイビスカスのシャツ",color:"#e8538c"},{name:"白砂色のシャツ",color:"#eaddb8"}] : fancy ? SHIRT_FANCY : SHIRT_BASIC;
-  const pants = fancy ? PANTS_FANCY : PANTS_BASIC;
-  const skirts = fancy ? SKIRT_FANCY : SKIRT_BASIC;
-  const price = fancy ? 1200 : 400;
-  for (;;) {
-    const i = await ui.choice(["うわぎを かう", "ズボンを かう", "スカートを かう", "ぼうしを かう", "やめる"],
-      { x: 148, y: 128, w: 164, rows: 5 });
-    if (i < 0 || i === 4) { await ui.say(["また どうぞ！"]); return; }
-    if (i === 3) { await hatShop(price); continue; }
-    const list = i === 0 ? shirts : i === 1 ? pants : skirts;
-    const key = i === 0 ? "shirt" : "pants";
-    const skirt = (i === 2);
-    const labels = list.map((x) => x.name + "  " + price + "円");
-    const j = await ui.choice(labels, {
-      x: 8, y: 8, w: 216, rows: 6,
-      extra: (b, idx) => {
-        const look = Object.assign({}, State.save.look);
-        look[key] = list[idx].color;
-        if (i !== 0) look.skirt = skirt;
-        drawLookPreview(look, 228, 8);
-      },
-    });
-    if (j < 0) continue;
-    if (State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
-    const yes = await ui.ask([list[j].name + "　" + price + "円", "これに しますか？"]);
-    if (!yes) continue;
-    State.save.money -= price;
-    const add = { [key]: list[j].color };
-    if (i !== 0) add.skirt = skirt;
-    State.save.look = Object.assign({}, State.save.look, add);
-    beep("buy");
-    await ui.say([list[j].name + "に きがえた！"]);
-    saveLocal();
+export async function clothesShop(town) {
+  const id=FASHION_TOWNS[town]?town:FASHION_TOWNS[State.save.backTo?.map]?State.save.backTo.map:'village';
+  const stock=fashionStock(id),categories=[['hat','ぼうし'],['shirt','うわぎ'],['pants','ズボン'],['shoes','くつ']];
+  for(;;){
+    const i=await ui.choice([...categories.map(c=>c[1]+'を えらぶ'),'買った服に きがえる','やめる'],{x:8,y:8,w:304,rows:6});
+    if(i<0||i===5)return;if(i===4){await wardrobeMenu();continue;}
+    const list=stock.filter(item=>item.slot===categories[i][0]);
+    const j=await ui.choice(list.map(item=>item.name+' '+((State.save.wardrobe||[]).includes(item.id)?'購入済み':item.price+'円')),{x:8,y:8,w:216,rows:5,extra:(b,idx)=>{if(list[idx])drawLookPreview(itemLook(State.save.look,list[idx]),228,8);}});
+    if(j<0)continue;const item=list[j],owned=(State.save.wardrobe||[]).includes(item.id);
+    if(!owned&&State.save.money<item.price){await ui.say(['おかねが たりません…']);continue;}
+    if(!await ui.ask([item.name,owned?'この服に きがえますか？':item.price+'円で 買ってきがえますか？']))continue;
+    const result=equipFashion(State.save,item.id,{buy:true});
+    if(result.ok){saveLocal();beep('buy');await ui.say([item.name+'に きがえた！']);}
   }
 }
-
-/* --- ぼうしを えらぶ --- */
-async function hatShop(price) {
-  for (;;) {
-    const labels = HAT_STYLES.map((x, i) => x.name + (i === 0 ? "" : "  " + price + "円"));
-    labels.push("やめる");
-    const j = await ui.choice(labels, {
-      x: 8, y: 8, w: 216, rows: 5,
-      extra: (b, idx) => {
-        const look = Object.assign({}, State.save.look);
-        if (HAT_STYLES[idx]) look.hat = HAT_STYLES[idx].style;
-        drawLookPreview(look, 228, 8);
-      },
-    });
-    if (j < 0 || j >= HAT_STYLES.length) return;
-    if (j > 0 && State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
-    if (j > 0) State.save.money -= price;
-    State.save.look = Object.assign({}, State.save.look, { hat: HAT_STYLES[j].style });
-    beep("buy");
-    await ui.say([HAT_STYLES[j].name + (j === 0 ? "。" : "を かぶった！")]);
-    saveLocal();
-  }
+export async function wardrobeMenu(){
+ for(;;){
+  const items=FASHION_ITEMS.filter(item=>(State.save.wardrobe||[]).includes(item.id));
+  const labels=[...items.map(item=>item.name),'ぼうしを ぬぐ','はじめの ふくに もどす','もどる'];
+  const i=await ui.choice(labels,{x:8,y:8,w:216,rows:6,extra:(b,idx)=>drawLookPreview(items[idx]?itemLook(State.save.look,items[idx]):State.save.look,228,8)});
+  if(i<0||i===items.length+2)return;
+  if(i<items.length)equipFashion(State.save,items[i].id);
+  else if(i===items.length){State.save.look.hat='';if(State.save.equippedClothes)delete State.save.equippedClothes.hat;}
+  else{const original=State.save.startingLook||{shirt:'#2f6fd0',pants:'#231a14'};for(const key of ['shirt','pants','shoes','hat','hatColor','hatStyle','hatAccent','shirtStyle','shirtAccent','pantsStyle','pantsAccent','shoesStyle','shoesAccent','skirt']){delete State.save.look[key];if(original[key]!=null)State.save.look[key]=original[key];}State.save.equippedClothes={};}
+  saveLocal();beep('ok');await ui.say(['きがえました！']);
+ }
 }
 
 export async function hairSalon() {

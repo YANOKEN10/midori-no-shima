@@ -1,3 +1,4 @@
+import {dressHero} from './fashionArt.js';
 const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
 const TITLE_SRC = "../assets/revamp/title-ratetto-sunrise-v17.png";
@@ -227,13 +228,13 @@ function atlasFrames(im,headOnly=false){
 }
 // Cache palette variants per direction and walk pose; do not tint skin or outlines.
 export function heroFrame(dir, step, look = {}) {
-  const key=[look.gender,look.hair,look.shirt,look.hairLength,dir,step].join(':');
+  const key=[JSON.stringify(look),dir,step].join(':');
   if (dressedFrames.has(key)) return dressedFrames.get(key);
   let base;
   if (look.gender === 'girl') {
     const frames=atlasFrames(heroine);if(!frames)return null;base=frames[step*4+({down:0,left:1,right:2,up:3}[dir]??0)];
   } else {base=buildHeroFrame(dir,step);if(base&&look.hairLength){const frames=atlasFrames(boyHeads,true);if(!frames)return null;const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);ctx.clearRect(0,0,32,24);const head=frames[({short:0,medium:1,long:2}[look.hairLength]??1)*4+({down:0,left:1,right:2,up:3}[dir]??0)];ctx.drawImage(head,0,0);c.customHead=head;base=c;}}
-  if (!base || (!look.hair && !look.shirt)) return base;
+  if (!base || (!Object.keys(look).length)) return base;
   const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);
   const d=ctx.getImageData(0,0,32,48), px=d.data,headMask=base.customHead?.getContext("2d").getImageData(0,0,32,48).data;
   const rgb=hex=>/^#[0-9a-f]{6}$/i.test(hex||'')?[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)):null;
@@ -242,13 +243,15 @@ export function heroFrame(dir, step, look = {}) {
     const i=(y*32+x)*4,r=px[i],g=px[i+1],b=px[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);
     if(!px[i+3]||max<32)continue;
     const faceArea=dir==='down'?x>=10&&x<=21&&y>=15:dir==='left'?x<=16&&y>=15:dir==='right'?x>=16&&y>=15:false;
-    const isHair=y<(look.hairLength==='long'?31:27)&&!faceArea&&r>g*1.12&&r<g*1.95&&g>b*1.12&&r-g<100&&r<220;
+    const hairTone=r>=g*.96&&r<g*2.1&&g>=b*1.05&&r-g<110;
+    const hairShine=y<15&&max-min<45&&min>100;
+    const isHair=y<(look.hairLength==='long'?31:27)&&!faceArea&&(hairTone||hairShine);
     const isShirt=!headMask?.[i+3]&&(look.gender==='girl'?y>=22&&y<36&&r>g*1.5&&r>b*1.35:y>=23&&b>r*1.18&&b>g*1.02);
     const color=isHair?hair:isShirt?shirt:null;if(!color)continue;
     const shade=isHair?Math.max(.35,Math.min(1.6,(r*.4+g*.45+b*.15)/75)):Math.max(.3,Math.min(1.5,max/170));
-    for(let j=0;j<3;j++)px[i+j]=Math.min(255,Math.round(color[j]*shade));
+    for(let j=0;j<3;j++){const light=Math.max(0,(max-155)/100)*.32;px[i+j]=isHair?Math.min(255,Math.round(color[j]*Math.min(1,shade)*(1-light)+255*light)):Math.min(255,Math.round(color[j]*shade));}
   }
-  ctx.putImageData(d,0,0);dressedFrames.set(key,c);return c;
+  ctx.putImageData(d,0,0);dressHero(c,base,look,dir);if(dressedFrames.size>512)dressedFrames.clear();dressedFrames.set(key,c);return c;
 }
 
 export function drawHero(ctx, dir, moving, tick, x, y, look) {

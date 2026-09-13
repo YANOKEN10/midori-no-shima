@@ -1,3 +1,4 @@
+import {addFashionShops} from './fashionShops.js';
 import {refineTownAccess} from './townAccess.js';
 import {refineExploration} from './explorationLayouts.js';
 import {organizeMountain} from './mountainLayout.js';
@@ -131,6 +132,7 @@ export function buildChapterOne(){
  redesignEnvironments(M);
  refineExploration(M);
  refineTownAccess(M);
+ addFashionShops(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }
