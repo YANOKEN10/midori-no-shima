@@ -4,7 +4,7 @@ import {drawVoyageTile} from './voyageArt.js';
 import {drawIndustrialTile} from './powerArt.js';
 import {drawMarineAsset,drawMarineTile,marineReady,marineForest} from './marineArt.js';
 import {grassReady,drawBiomeGrass} from './grassArt.js';
-import {mountainReady,mountainMaterial,mountainFloor,mountainForest} from './mountainArt.js';
+import {mountainReady,mountainMaterial,mountainFloor,mountainForest,mountainTrail} from './mountainArt.js';
 import {forestCanopy,forestReady,boundaryTree} from './forestArt.js';
 import {paintInterior} from './interiorArt.js';
 // Tile-based rendering of the new material pack. The source atlas is preserved.
@@ -22,6 +22,7 @@ function landscape(c,map,x,y,ch){
  if(!wild&&!rural)return false;
  ground(c,'grass',x*32,y*32);
  if(map.id==='mountain'||['lake','ancient'].includes(map.biome))mountainFloor(c,x*32,y*32);
+ if(map.id==='mountain'&&ch==='.')mountainTrail(c,map,x,y);
  if(ch!=='.'||wild)return true;
  const track=(a,b)=>{const t=map.rows[b]?.[a];return t==='.'||t==='D'||t==='S'&&map.signs.some(s=>s.x===a&&s.y===b&&s.ground==='.');};
  const dx=x*32,dy=y*32;
@@ -77,6 +78,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(drawMarineTile(c,map,x,y,ch))continue;
+ if(map.id==='mountain'&&(ch==='T'||ch==='R'))drawBiomeGrass(c,map,dx,dy);
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
  if(ch==='F'&&!map.powerArt)drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R'){if(map.biome){if(!(map.props||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMarineAsset(c,'shoreRock',dx,dy,32,32);}else if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}

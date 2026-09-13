@@ -10,14 +10,14 @@ import { initAudio, resumeAudio, playBgm, beep, setMuted } from "./audio.js";
 import { MONART, MONPAL } from "./data/monart.js";
 import { SPECIES, palOf, accentOf } from "./data/species.js";
 import { G as State, loadInto, newGame, makeMon } from "./state.js";
-import { world, bgmFor } from "./world.js?v=20260913-environments-v41";
+import { world, bgmFor } from "./world.js?v=20260913-mountain-audio-v42";
 import { battle, startBattle } from "./battle.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
 import { loadLocal, saveLocal, saveCloud, loadCloud, applySave, describeSave, clearLocal, compatible } from "./save.js";
 import { accountMenu } from "./menu.js";
-import { START } from "./data/maps.js?v=20260913-environments-v41";
-import { drawTitleBackground } from "./revampArt.js?v=20260913-environments-v41";
+import { START } from "./data/maps.js?v=20260913-mountain-audio-v42";
+import { drawTitleBackground } from "./revampArt.js?v=20260913-mountain-audio-v42";
 
 let scene = null;
 let last = 0;
@@ -229,8 +229,11 @@ whoami.addEventListener("click", async () => {
   updateWho();
 });
 
-addEventListener("pointerdown", () => { initAudio(); resumeAudio(); }, { once: true });
-addEventListener("keydown", () => { initAudio(); resumeAudio(); }, { once: true });
+// Keep recovery attached: the first gesture can precede BGM loading, and mobile
+// browsers can suspend both audio systems again after a background interruption.
+for(const event of ['pointerdown','touchend','keydown'])addEventListener(event,()=>resumeAudio(true),{capture:true,passive:true});
+for(const event of ['pageshow','focus','online'])addEventListener(event,()=>resumeAudio());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudio();});
 addEventListener("beforeunload", () => { if (State.save.party.length) saveLocal(); });
 
 boot();
