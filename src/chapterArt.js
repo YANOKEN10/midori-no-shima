@@ -1,3 +1,4 @@
+import {drawRoad,roadReady,roadStyle} from './roadArt.js';
 import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
 import {drawFrontierMap,frontierGrass} from './frontierArt.js';
 import {drawVoyageTile} from './voyageArt.js';
@@ -77,7 +78,8 @@ export function drawChapterMap(ctx,map,camX,camY){
  }
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
- if(drawMarineTile(c,map,x,y,ch))continue;
+ if(drawMarineTile(c,map,x,y,ch)){drawRoad(c,map,x,y);continue;}
+ if(ch==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
  if(map.id==='mountain'&&(ch==='T'||ch==='R'))drawBiomeGrass(c,map,dx,dy);
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
  if(ch==='F'&&!map.powerArt)drawMaterial(c,'flowers',dx+3,dy+3,26,26);
@@ -99,7 +101,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
  for(const p of map.props||[]){if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door&&!map.biome){const x=p.door.x*32,y=p.door.y*32;c.fillStyle='#453629';c.fillRect(x,y,32,32);c.fillStyle='#936542';c.fillRect(x+3,y+3,26,29);c.fillStyle='#654429';c.fillRect(x+6,y+5,20,20);c.fillStyle='#f2d074';c.fillRect(x+23,y+17,3,3);}}
  if(map.room)paintInterior(c,map);
- if(environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!map.biome||marineReady()))cache.set(map,cv);}
+ if(roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!map.biome||marineReady()))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }
