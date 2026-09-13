@@ -14,7 +14,7 @@ function rect(m,x,y,w,h,ch){for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)if(m.g[j
 function path(m,ax,ay,bx,by,width=2){rect(m,Math.min(ax,bx),ay,Math.abs(bx-ax)+width,width,'.');rect(m,bx,Math.min(ay,by),width,Math.abs(by-ay)+width,'.');}
 function prop(m,art,x,y,w,h,ch='T'){rect(m,x,y,w,h,ch);m.props.push({art,x,y,w,h});}
 function tree(m,x,y,art='tree'){if(m.npcs.some(n=>n.x>=x&&n.x<x+2&&n.y>=y&&n.y<y+3))return;if(m.g.slice(y,y+3).length===3&&m.g.slice(y,y+3).every(r=>r.slice(x,x+2).length===2&&r.slice(x,x+2).every(c=>c===',')))prop(m,art,x,y,2,3);}
-function trees(m){for(let y=1;y<m.g.length-3;y+=4)for(let x=1;x<m.g[0].length-2;x+=3)if((x*7+y*11)%5!==0)tree(m,x,y,(x+y)%2?'fir':'tree');}
+function trees(m){for(let y=1;y<m.g.length-3;y+=3)for(let x=1;x<m.g[0].length-2;x+=2)tree(m,x,y,'tree');}
 function npc(m,x,y,name,look,talk,extra={}){m.npcs.push({x,y,name,look,dir:'down',noRoam:false,talk,...extra});}
 function sign(m,x,y,text){const ground=m.g[y][x];rect(m,x,y,1,1,'S');m.signs.push({x,y,ground,text:Array.isArray(text)?text:[text]});}
 function building(m,x,y,art,to,label){prop(m,art,x,y,5,5,'#');const dx=x+2,dy=y+4;m.g[dy][dx]='D';m.props.at(-1).door={x:dx,y:dy};m.props.at(-1).label=label;m.warps.push({x:dx,y:dy,to,tx:7,ty:10,back:{map:m.id,x:dx,y:dy+1}});if(dy<16)path(m,dx,dy+1,dx,16,1);else{path(m,16,16,16,dy+1,2);path(m,16,dy+1,dx,dy+1,1);}}

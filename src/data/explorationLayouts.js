@@ -32,6 +32,8 @@ export function refineExploration(M){
   m.props.sort((a,b)=>a.y+a.h-b.y-b.h);
  }
  compactTownGardens(M);
+ // One tree family per map, including later decorative additions.
+ for(const m of Object.values(M))for(const p of m.props)if(['tree','fir'].includes(p.art))p.art=m.id==='mountain'?'fir':m.frontierTheme==='snow'?'snowFir':'tree';
  for(let floor=1;floor<=4;floor++)redesignRuins(M['dark'+floor],floor);
 }
 function redesignRuins(m,floor){

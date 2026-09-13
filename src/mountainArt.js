@@ -12,4 +12,4 @@ export function mountainTrail(c,map,x,y){
  c.fillStyle='#a29a72';c.fillRect(x*32+(l?l+1:0),y*32+(t?t+1:0),r-l-(l?1:0)-(r<32?1:0),b-t-(t?1:0)-(b<32?1:0));
  for(let i=0;i<8;i++){const px=5+(x*7+y*3+i*11)%22,py=5+(x*3+y*13+i*7)%22;c.fillStyle=i%2?'#b3aa80':'#8e8b64';c.fillRect(x*32+px,y*32+py,2,1);}
 }
-export function mountainForest(c,map){if(!mountainReady())return;for(const p of forestLayout(map))mountainMaterial(c,Math.floor(p.x/64)%3===0?'tree':'fir',p.x,p.y,p.w,p.h);}
+export function mountainForest(c,map){if(!mountainReady())return;for(const p of forestLayout(map))mountainMaterial(c,'fir',p.x,p.y,p.w,p.h);}
