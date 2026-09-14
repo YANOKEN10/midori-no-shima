@@ -239,13 +239,18 @@ export function heroFrame(dir, step, look = {}) {
   const d=ctx.getImageData(0,0,32,48), px=d.data,headMask=base.customHead?.getContext("2d").getImageData(0,0,32,48).data;
   const rgb=hex=>/^#[0-9a-f]{6}$/i.test(hex||'')?[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)):null;
   const hair=rgb(look.hair),shirt=rgb(look.shirt);
+  const hairMask=new Uint8Array(32*48),queue=[];
+  const candidate=(x,y)=>{if(x<0||x>=32||y<0||y>=(headMask?48:27))return false;const i=(y*32+x)*4,r=px[i],g=px[i+1],b=px[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);const skin=y>=14&&r>165&&g>95&&b>55&&r>g*1.12&&g>b*1.12;return px[i+3]&&max>=32&&!skin&&((r>=g*.94&&g>=b*.95&&r-g<120)||(r>g*1.1&&r>b*1.1&&r<170)||(y<15&&max-min<50&&min>100));};
+  for(let y=0;y<48;y++)for(let x=0;x<32;x++)if((y<15||headMask?.[(y*32+x)*4+3])&&candidate(x,y)){hairMask[y*32+x]=1;queue.push([x,y]);}
+  for(let j=0;j<queue.length;j++){const[x,y]=queue[j];for(const[dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=x+dx,yy=y+dy;if(candidate(xx,yy)&&!hairMask[yy*32+xx]){hairMask[yy*32+xx]=1;queue.push([xx,yy]);}}}
+
   for(let y=0;y<48;y++)for(let x=0;x<32;x++){
     const i=(y*32+x)*4,r=px[i],g=px[i+1],b=px[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);
     if(!px[i+3]||max<32)continue;
     const faceArea=dir==='down'?x>=10&&x<=21&&y>=15:dir==='left'?x<=16&&y>=15:dir==='right'?x>=16&&y>=15:false;
     const hairTone=r>=g*.96&&r<g*2.1&&g>=b*1.05&&r-g<110;
     const hairShine=y<15&&max-min<45&&min>100;
-    const isHair=y<(look.hairLength==='long'?31:27)&&!faceArea&&(hairTone||hairShine);
+    const isHair=!!hairMask[y*32+x];
     const isShirt=!headMask?.[i+3]&&(look.gender==='girl'?y>=22&&y<36&&r>g*1.5&&r>b*1.35:y>=23&&b>r*1.18&&b>g*1.02);
     const color=isHair?hair:isShirt?shirt:null;if(!color)continue;
     const shade=isHair?Math.max(.35,Math.min(1.6,(r*.4+g*.45+b*.15)/75)):Math.max(.3,Math.min(1.5,max/170));

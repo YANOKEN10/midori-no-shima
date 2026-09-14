@@ -4,7 +4,7 @@ export const mountainReady=()=>Object.values(images).every(im=>im.complete&&im.n
 export function mountainMaterial(c,key,x,y,w,h){const im=images[key];if(im?.complete&&im.naturalWidth)c.drawImage(im,x,y,w,h);}
 // One moss palette under both tree roots and encounter grass, with no bright
 // rectangular meadow cutouts beneath each tree.
-export function mountainFloor(c,x,y){c.fillStyle='#426b50';c.fillRect(x,y,32,32);for(let i=0;i<7;i++){const dx=(x*3+y+i*13)%29,dy=(x+y*3+i*7)%29;c.fillStyle=i%2?'#4d7657':'#396448';c.fillRect(x+dx,y+dy,3,1);}}
+export function mountainFloor(c,x,y){c.fillStyle='#426b50';c.fillRect(x,y,32,32);let seed=((x+7919)*374761393^(y+104729)*668265263)>>>0;const rand=n=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed%n;};for(let i=0;i<10;i++){const dx=2+rand(27),dy=3+rand(26);c.fillStyle=i%3?'#507a57':'#365e46';c.fillRect(x+dx,y+dy,3,1);if(i<5){c.fillRect(x+dx+1,y+dy-2,1,2);c.fillRect(x+dx-1,y+dy-1,1,1);}}if(rand(4)===0){const dx=3+rand(22),dy=3+rand(22);c.fillStyle='#66836a';c.fillRect(x+dx,y+dy,3,2);c.fillStyle='#8b9b7b';c.fillRect(x+dx,y+dy,2,1);}for(let i=0;i<3;i++){const dx=rand(29),dy=rand(29);c.fillStyle='#487253';c.fillRect(x+dx,y+dy,4,2);}}
 export function mountainTrail(c,map,x,y){
  const near=(dx,dy)=>map.rows[y+dy]?.[x+dx]==='.';
  const l=near(-1,0)?0:2,r=near(1,0)?32:30,t=near(0,-1)?0:2,b=near(0,1)?32:30;

@@ -1,3 +1,4 @@
+import {drawRoomStaff} from './roomAssets.js';
 import {shopInteriorFor} from './data/environmentLayouts.js';
 import {endNpc,refreshEnd,tickEnd,endStep} from './endgameStory.js';
 import {endGate} from './endgameRules.js';
@@ -1101,7 +1102,7 @@ export const world = {
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
         if(n.artMon){const im=battleArt(n.artMon),size=n.artSize||64;if(im)G.drawScaled(im,n.x*T-camX+(32-size)/2+(n.ox||0),n.y*T-camY+32-size+(n.oy||0),size,size);continue;}
         const dirn = n.dir || "down";
-        const newPerson = G.isColor() && (drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)));
+        const newPerson = G.isColor() && (drawRoomStaff(G.ctx,this.map,n,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)));
         const nfi = n.moving ? n.walkFrame : 0;
         const img2 = (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))

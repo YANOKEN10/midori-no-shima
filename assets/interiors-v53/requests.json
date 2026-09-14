@@ -1,0 +1,21 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "file": "shop.png",
+      "prompt": "Pixel art GAME ASSET sheet for a cozy Japanese monster RPG shop, matching clean colorful handheld RPG interiors. Exactly two rows and two columns, four isolated objects in generous equal cells on actual transparent background. Top left: wide horizontal three-tier merchandise shelf filled with colorful small potion bottles and boxes, front visible, wood and pale teal frame. Top right: long cashier counter, cream countertop, teal wood front panels, one small cash register at its left end. Bottom left: tall narrow merchandise shelf seen from its side with shelves and bottles clearly visible, facing LEFT, vertical orientation. Bottom right: friendly adult shop clerk, short chestnut hair, teal apron over cream shirt, full body facing directly forward, chibi proportions. All 4 isolated objects fully contained within their cells with generous padding, no labels or lettering. Crisp low-resolution pixel edges, no realistic textures, no perspective floor, no shadows outside objects. Asset sheet will be split evenly into four cells; no object may touch a cell boundary.",
+      "source": "exec-f833e546-3814-4832-ad54-3a1d8ef4be54.png"
+    },
+    {
+      "file": "hospital.png",
+      "prompt": "Edit this game asset sheet. Preserve exactly the four objects, their positions, full transparent background, pixel art rendering, cell spacing and silhouettes except nurse hat. Redesign the color identity to be distinct from Pokemon healing centers: reception counter deep forest teal panels and light honey oak countertop, soft brass trim, absolutely no coral/red/pink. Healing station forest teal and ivory casing, pale amber and turquoise lights, brass trim; no red. Waiting sofa muted lavender upholstery and honey oak frame. Staff woman: dark navy-blue hair (NOT pink), lavender jacket with cream long apron, dark teal shoes, small golden leaf-shaped brooch, NO medical cross. Remove her nurse cap entirely; replace it with a small gold leaf hair clip. Friendly adult chibi NPC remains facing forward. Keep all assets separate and fully visible, do not change object locations or add text. True transparent background.",
+      "source": "exec-1115daf4-b4dd-4f95-ba80-d4265d138c30.png",
+      "note": "回復装置セルは使用しない。受付・ソファ・スタッフのみ使用。"
+    },
+    {
+      "file": "ward.png",
+      "prompt": "Single isolated pixel-art game asset: a cozy GAON creature hospital REST ROOM alcove, top-down Japanese RPG view, wide horizontal 4:3 silhouette. Open south-facing front so player can see inside. Low cream partition walls across back and two sides with deep teal skirting and light honey oak trim. Inside two small soft floor beds for fantasy pets, lavender cushions and cream pillows, folded blanket, low bedside shelf with water bowls and one potted plant. Calm welcoming veterinary guest room. No creatures, no humans, no machines, NO capsule, no glass cylinder, no technology, no medical crosses, no text. Clear readable chunky pixel-art at a logical128x96 resolution enlarged nearest-neighbor. Entire single room asset visible, safe transparent margin, actual transparent background outside the three walls. Front is OPEN with a clear little entry between beds. Match teal, ivory, honey oak and muted lavender original RPG hospital furnishings.",
+      "source": "exec-024a4f3a-6ec6-4a67-9c2d-5e88e3b74bd4.png"
+    }
+  ]
+}

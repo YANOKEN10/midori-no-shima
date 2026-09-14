@@ -6,7 +6,7 @@ export function furnishInteriors(maps){
  hut:{theme:'home',npcs:[[9,8]],rug:[6,7,4,3],furniture:[['bed',3,5,2,3],['kitchen',3,4,3,1],['books',10,4,3,1],['table',10,8,2,2],['chair',10,10,1,1],['plant',12,10,1,1],['tv',6,4,2,1]],windows:[4,9]},
  rodsHome:{theme:'cottage',npcs:[[9,7]],rug:[6,6,5,3],furniture:[['sofa',3,6,2,2],['table',7,7,2,1],['kitchen',3,4,3,1],['books',10,4,3,1],['bed',11,8,2,3],['plant',3,10,1,1],['chair',7,8,1,1]],windows:[4,9]},
  lab:{theme:'lab',npcs:[[8,6],[11,9]],rug:[6,8,4,3],furniture:[['computer',3,4,3,1],['books',10,4,3,1],['machine',3,6,2,2],['labtable',5,6,2,1],['tank',11,6,2,2],['plant',3,10,1,1],['computer',4,9,2,1]],windows:[6,9]},
- hospital:{theme:'hospital',bounds:[1,3,14,8],npcs:[[7,4]],rug:[6,7,4,4],furniture:[['healer',2,3,3,2],['counter',6,5,4,1],['bed',12,3,2,3],['bed',12,7,2,3],['sofa',2,6,3,1],['plant',1,9,1,1],['computer',10,3,2,1]],windows:[2,11]},
+ hospital:{theme:'hospital',bounds:[1,3,14,8],npcs:[[7,4]],rug:[6,7,4,4],furniture:[['ward',2,3,4,3],['counter',6,5,4,1],['books',12,3,2,2],['sofa',11,9,3,1],['table',12,7,2,1],['plant',1,9,1,1],['computer',10,3,2,1]],windows:[2,11]},
  shop:{theme:'shop',bounds:[1,3,14,8],npcs:[[7,4]],rug:[6,7,4,4],furniture:[['shelf',2,3,3,2],['shelf',11,3,3,2],['counter',6,5,4,1],['shelfRight',2,7,1,3],['shelfLeft',13,7,1,3],['plant',1,6,1,1]],windows:[2,11]}
  };
  for(const [id,room]of Object.entries(layouts)){const m=maps[id];m.room=room;m.props=[];const [bx,by,bw,bh]=room.bounds||[3,4,10,7];m.g=m.g.map((row,y)=>row.map((_,x)=>x>=bx&&x<bx+bw&&y>=by&&y<by+bh?'f':'X'));m.g[11][7]='x';for(const exit of m.warps)if(exit.x===7&&exit.y===12)exit.y=11;

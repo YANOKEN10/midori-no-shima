@@ -1,5 +1,5 @@
 import {furnitureArt,shopStyle} from './decorArt.js';
-const THEMES={home:['#d9b47d','#b58257','#f2d8a3','#9e514e'],cottage:['#c1ae89','#947458','#e3d9b6','#467c73'],lab:['#d2dce1','#9eaeb9','#e9f3e5','#49808d'],hospital:['#e5e9df','#b1bfb6','#f7eee7','#c87779'],shop:['#d6bd8e','#ac865c','#e7dcc1','#4b8194']};
+const THEMES={home:['#d9b47d','#b58257','#f2d8a3','#9e514e'],cottage:['#c1ae89','#947458','#e3d9b6','#467c73'],lab:['#d2dce1','#9eaeb9','#e9f3e5','#49808d'],hospital:['#f1dfa3','#d6c58a','#fff3cb','#477d78'],shop:['#d6bd8e','#ac865c','#e7dcc1','#4b8194']};
 export function paintInterior(c,map){const r=map.room;if(!r)return;const [floor,line,wall,accent]=r.shopTown?shopStyle(r).slice(1):THEMES[r.theme];const box=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
  const [bx,by,bw,bh]=r.bounds||[3,4,10,7],left=bx*32,top=by*32,right=(bx+bw)*32,bottom=(by+bh)*32;
  box(0,0,map.rows[0].length*32,map.rows.length*32,'#172d36');box(left-6,top-38,bw*32+12,bh*32+44,'#53676a');box(left,top,bw*32,bh*32,floor);
