@@ -50,7 +50,7 @@ import { setMenuWorld, openMenu, shopMenu, showStatus, reportMenu, clothesShop, 
 import { saveLocal, saveCloud } from "./save.js";
 import { cloud } from "./cloud.js";
 import { compassEnabled, compassWaypoint } from "./compass.js";
-import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260913-fashion-v50";
+import { drawTerrain, drawHero, drawRevampObject, drawRevampTree, drawTileDetail, drawWorldBackdrop } from "./revampArt.js?v=20260914-hero-v55";
 
 const SPEED = 4;            // 1フレームに すすむ ドット
 const T = G.TILE;

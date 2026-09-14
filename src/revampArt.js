@@ -1,5 +1,5 @@
+import {generatedBoyFrame} from './heroVariants.js';
 import {dressHero} from './fashionArt.js';
-const HERO_SRC = "../assets/revamp-v2/hero-source.png";
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
 const TITLE_SRC = "../assets/revamp/title-ratetto-sunrise-v17.png";
 const WORLD_V4 = {
@@ -47,9 +47,7 @@ function image(src) {
   im.src = new URL(src, import.meta.url).href;
   return im;
 }
-const hero = image(HERO_SRC);
 const heroine = image("../assets/character-v40/girl-walk.png");
-const boyHeads = image("../assets/character-v40/boy-hair.png");
 const fittedAtlases=new WeakMap();
 const dressedFrames = new Map();
 const objects = image(OBJECT_SRC);
@@ -75,7 +73,6 @@ function backdropFor(key) {
   }
   return entry.im;
 }
-const heroFrames = new Map();
 const terrainTextures = new Map();
 const objectFrames = new Map();
 
@@ -186,34 +183,6 @@ function clearBorderMatte(data, width, height) {
   }
 }
 
-function buildHeroFrame(dir, step) {
-  if (!hero.complete || !hero.naturalWidth) return null;
-  const key=dir+":"+step;
-  if (heroFrames.has(key)) return heroFrames.get(key);
-  const col={down:0,left:1,right:2,up:3}[dir] ?? 0;
-  const row=step;
-  const cw=Math.floor(hero.naturalWidth/4), ch=Math.floor(hero.naturalHeight/3);
-  const src=document.createElement("canvas"); src.width=cw; src.height=ch;
-  const sc=src.getContext("2d",{willReadFrequently:true}); sc.drawImage(hero,col*cw,row*ch,cw,ch,0,0,cw,ch);
-  const data=sc.getImageData(0,0,cw,ch);
-  clearBorderMatte(data.data, cw, ch);
-  let minX=cw,minY=ch,maxX=0,maxY=0;
-  for(let y=0;y<ch;y++) for(let x=0;x<cw;x++) {
-    const i=(y*cw+x)*4,r=data.data[i],g=data.data[i+1],b=data.data[i+2];
-    const mag=r>110&&b>110&&g<Math.max(r,b)*.72;
-    const gutter=r>248&&g>248&&b>248;
-    if(mag||gutter) data.data[i+3]=0;
-    else if(data.data[i+3]) { minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y); }
-  }
-  sc.putImageData(data,0,0);
-  const out=document.createElement("canvas"); out.width=32; out.height=48;
-  const oc=out.getContext("2d"); oc.imageSmoothingEnabled=false;
-  const bw=Math.max(1,maxX-minX+1), bh=Math.max(1,maxY-minY+1);
-  const scale=Math.min(30/bw,46/bh), dw=Math.max(1,Math.round(bw*scale)), dh=Math.max(1,Math.round(bh*scale));
-  oc.drawImage(src,minX,minY,bw,bh,Math.floor((32-dw)/2),48-dh,dw,dh);
-  heroFrames.set(key,out); return out;
-}
-
 // Keep a common scale across animation cells so arms swing without resizing the body.
 function atlasFrames(im,headOnly=false){
  if(!im.complete||!im.naturalWidth)return null;if(fittedAtlases.has(im))return fittedAtlases.get(im);
@@ -230,10 +199,14 @@ function atlasFrames(im,headOnly=false){
 export function heroFrame(dir, step, look = {}) {
   const key=[JSON.stringify(look),dir,step].join(':');
   if (dressedFrames.has(key)) return dressedFrames.get(key);
-  let base;
-  if (look.gender === 'girl') {
-    const frames=atlasFrames(heroine);if(!frames)return null;base=frames[step*4+({down:0,left:1,right:2,up:3}[dir]??0)];
-  } else {base=buildHeroFrame(dir,step);if(base&&look.hairLength){const frames=atlasFrames(boyHeads,true);if(!frames)return null;const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);ctx.clearRect(0,0,32,24);const head=frames[({short:0,medium:1,long:2}[look.hairLength]??1)*4+({down:0,left:1,right:2,up:3}[dir]??0)];ctx.drawImage(head,0,0);c.customHead=head;base=c;}}
+  if(look.gender!=='girl'){
+    const base=generatedBoyFrame(dir,step,look);if(!base)return null;
+    const out=document.createElement('canvas');out.width=32;out.height=48;
+    out.getContext('2d').drawImage(base,0,0);dressHero(out,base,look,dir);
+    if(dressedFrames.size>512)dressedFrames.clear();dressedFrames.set(key,out);return out;
+  }
+  const frames=atlasFrames(heroine);if(!frames)return null;
+  const base=frames[step*4+({down:0,left:1,right:2,up:3}[dir]??0)];
   if (!base || (!Object.keys(look).length)) return base;
   const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d');ctx.drawImage(base,0,0);
   const d=ctx.getImageData(0,0,32,48), px=d.data,headMask=base.customHead?.getContext("2d").getImageData(0,0,32,48).data;
@@ -334,6 +307,7 @@ export function drawTitleBackground(ctx,w,h) {
 }
 
 export function boyHairPortrait(look){
- if(!look.hairLength||look.gender==='girl')return null;const frame=heroFrame('up',1,look),heads=atlasFrames(boyHeads,true);if(!frame||!heads)return null;
- const mask=heads[({short:0,medium:1,long:2}[look.hairLength]??1)*4+3],out=document.createElement('canvas');out.width=32;out.height=48;const cx=out.getContext('2d');cx.drawImage(frame,0,0);cx.globalCompositeOperation='destination-in';cx.drawImage(mask,0,0);return out;
+ if(look.gender==='girl')return null;const frame=heroFrame('up',1,look);if(!frame)return null;
+ const out=document.createElement('canvas');out.width=32;out.height=48;
+ const cx=out.getContext('2d');cx.drawImage(frame,0,0);cx.clearRect(0,look.hairLength==='long'?29:24,32,48);return out;
 }

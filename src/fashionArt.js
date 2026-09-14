@@ -4,7 +4,7 @@ export function dressHero(canvas,base,look,dir){
  const c=canvas.getContext('2d'),d=c.getImageData(0,0,32,48),src=base.getContext('2d').getImageData(0,0,32,48).data;
  for(let y=23;y<48;y++)for(let x=0;x<32;x++){
   const i=(y*32+x)*4,r=src[i],g=src[i+1],b=src[i+2],hi=Math.max(r,g,b),lo=Math.min(r,g,b);
-  if(!src[i+3]||hi<35)continue;
+  if(!src[i+3]||hi<35||base.protectedHead?.[y*32+x])continue;
   const skin=r>g*1.12&&g>b*1.12&&r>175&&g>115;
   const shirt=y<35&&!skin&&(look.gender==='girl'?r>g*1.4&&r>b*1.25:(b>r*1.15||hi-lo<38&&lo>110));
   const pants=y>=35&&y<42&&!skin&&(b>=r*.9&&b>g*.9||hi-lo<35);

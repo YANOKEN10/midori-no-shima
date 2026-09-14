@@ -1,0 +1,33 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "assets/revamp-v2/hero-source.png",
+  "headReference": "assets/character-v40/boy-hair.png",
+  "generated": [
+    {
+      "name": "silver",
+      "prompt": "Edit the attached original game protagonist sprite sheet. Create a silver-haired color variant. Preserve exactly the same character identity, face with healthy warm peach skin, blue eyes, blue scarf, white shirt sleeves, vest, pants, brown boots and bag, silhouette, proportions, poses, clean pixel art, and the exact 4-column by 3-row layout of all 12 full-body sprites. Columns front, left, right, back. Rows walking A, idle, walking B. Change ONLY the hair from brown to silver: bright silvery highlights, cool light gray main locks, slate gray shadows, dark blue-gray outlines. No brown remaining anywhere in the HAIR; brown leather accessories must remain brown. Skin must not become gray or white. No new head pasted on, no ghosting or double outlines, no text. Transparent background, each sprite fully contained in its original cell with the same center and baseline. Return the whole 12-frame sheet."
+    },
+    {
+      "name": "blue",
+      "prompt": "Edit this original game protagonist sprite sheet into a blue-haired variant. Preserve its character identity, healthy warm peach skin, blue eyes, blue scarf, white sleeves, vest, pants, brown leather bag and boots, silhouette and 12 poses. Exact 4 columns (front,left,right,back), 3 rows (walk A,idle,walk B). Change ONLY hair: deep cobalt blue base, soft sky blue highlights, midnight blue shadows. Skin remains natural warm peach, never blue. No brown in hair, retain brown leather. No overlaid replacement head, no double outlines. Full body sprites, clean pixel-art game sprite style, transparent background, equal aligned cells, no labels or text. Match original scale and poses precisely."
+    },
+    {
+      "name": "black",
+      "prompt": "Edit attached original protagonist sprite sheet: change ONLY hair to raven black with subtle charcoal and blue-gray highlights. Preserve warm peach skin, blue eyes, exact clothes and brown leather bag/boots, all 12 full body poses in same 4 columns front/left/right/back and 3 rows walk A/idle/walk B. No black tint on face, no extra head layers. Clean pixel art, consistent character anatomy and cell placement, transparent background, no text. Hair black must be readable, not flat featureless silhouette."
+    },
+    {
+      "name": "gold",
+      "prompt": "Edit attached original game hero sheet. Change ONLY brown hair to golden blond hair, honey-gold shadows, soft cream highlights, no brown patches in hair. Preserve exact original protagonist identity, warm peach skin, blue eyes, blue scarf and vest, white sleeves, pants and brown leather boots/bag. Same 12 full-body poses arranged 4 columns front,left,right,back by 3 rows walking A,idle,walking B. Consistent scale and baseline in each equal cell. Transparent background, clean readable pixel-art sprite sheet, no labels, no added heads, no skin recoloring."
+    },
+    {
+      "name": "red",
+      "prompt": "Edit this original hero sprite sheet into a crimson red-haired color variant. Change ONLY hair to rich red/crimson, coral-red highlights, burgundy shadows. Preserve the identical character face, warm healthy peach skin, blue eyes, blue scarf/vest, white sleeves, dark pants, brown leather boots and bag. No red tint on skin. All 12 full-body sprites in exact 4 columns front,left,right,back and 3 rows walk A,idle,walk B, equal cells and consistent size. Clean readable game pixel art, transparent background, no labels, no pasted heads, no ghosting. Original hairstyle and original poses unchanged."
+    },
+    {
+      "name": "heads",
+      "prompt": "Edit attached protagonist HEAD sprite sheet, exact 4 columns front,left,right,back by 3 rows short hair,medium hair,long hair. Preserve each face, blue eyes, healthy warm peach skin, ears, neck and each hairstyle silhouette precisely. Change ALL brown HAIR to silvery white, cool light gray locks and slate blue-gray shadows. Skin must remain warm peach; preserve blue eyes and their white highlights, do not tint skin gray. Hair not gold or brown anywhere. Keep clean pixel art, exact layout and equal cells, 12 complete heads, transparent background, no text. These are replacement game head assets for the same boy, no torso or extra accessories."
+    }
+  ],
+  "processing": "Border-connected matte removal, alpha cleanup, equal-scale 32x48 cell extraction. No skin recoloring in preprocessing.",
+  "runtime": "Five directly generated color variants for original hairstyle. Remaining 50-color palette selections and alternate hairstyles use neutral hair pixels in generated silver masters, excluding warm skin, saturated eyes and adjacent eye highlights. Clothing cannot recolor protected head pixels."
+}

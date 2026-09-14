@@ -1,6 +1,6 @@
 import { showForm } from './gate.js';
 import { APPEARANCE_COLORS } from './data/fashion.js';
-import { heroFrame } from './revampArt.js?v=20260913-fashion-v50';
+import { heroFrame } from './revampArt.js?v=20260914-hero-v55';
 
 export function chooseAppearance() {
   return showForm({title:'きみの みためは？',sub:'すきな みためを えらんでね。',fields:[],submit:'この すがたで はじめる',mount(host){

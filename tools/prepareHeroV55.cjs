@@ -1,0 +1,18 @@
+const fs=require('fs');
+const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=process.cwd()+'/';
+const dir=root+'assets/hero-variants-v55/';
+(async()=>{const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});try{const page=await browser.newPage();await page.goto('http://127.0.0.1:5182/');for(const name of ['silver','blue','black','gold','red','heads']){if(!fs.existsSync(dir+name+'-source.png'))continue;const result=await page.evaluate(async name=>{
+const im=new Image();im.src='/assets/hero-variants-v55/'+name+'-source.png';await im.decode();const cells=[];let maxW=1,maxH=1;
+for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+ const bands=name==='heads'?[0,.32,.625,1]:[0,1/3,2/3,1];const x=Math.round(col*im.width/4),y=Math.round(bands[row]*im.height),w=Math.round((col+1)*im.width/4)-x,h=Math.round(bands[row+1]*im.height)-y;
+ const cv=document.createElement('canvas');cv.width=w;cv.height=h;const c=cv.getContext('2d');c.drawImage(im,x,y,w,h,0,0,w,h);const data=c.getImageData(0,0,w,h),d=data.data,seen=new Uint8Array(w*h),q=[];
+ const visit=n=>{if(n<0||n>=w*h||seen[n])return;seen[n]=1;const i=n*4,r=d[i],g=d[i+1],b=d[i+2];if(d[i+3]<100||(Math.max(r,g,b)-Math.min(r,g,b)<23&&Math.min(r,g,b)>145)){d[i+3]=0;q.push(n);}};
+ for(let xx=0;xx<w;xx++){visit(xx);visit((h-1)*w+xx);}for(let yy=0;yy<h;yy++){visit(yy*w);visit(yy*w+w-1);}for(let n=0;n<q.length;n++){const p=q[n];if(p%w)visit(p-1);if(p%w<w-1)visit(p+1);visit(p-w);visit(p+w);}
+ let x0=w,y0=h,x1=-1,y1=-1;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){const a=d[(yy*w+xx)*4+3];if(a>150){x0=Math.min(x0,xx);x1=Math.max(x1,xx);y0=Math.min(y0,yy);y1=Math.max(y1,yy);}else d[(yy*w+xx)*4+3]=0;}
+ let skinBottom=y1; if(name==='heads'){skinBottom=-1;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){const i=(yy*w+xx)*4;if(d[i+3]>150&&d[i]>220&&d[i+1]>145&&d[i+2]>90&&d[i]>d[i+1]+20&&d[i+1]>d[i+2]+20)skinBottom=Math.max(skinBottom,yy);}if(skinBottom<0)skinBottom=y0+(y1-y0+1)*.82-1;}
+ c.putImageData(data,0,0);const bw=x1-x0+1,bh=y1-y0+1;maxW=Math.max(maxW,bw);maxH=Math.max(maxH,bh);cells.push({cv,x0,y0,bw,bh,skinBottom});
+}
+const out=document.createElement('canvas');out.width=128;out.height=144;const c=out.getContext('2d');c.imageSmoothingEnabled=false;const s=Math.min(30/maxW,(name==='heads'?29:46)/maxH);cells.forEach((v,i)=>{const w=Math.round(v.bw*s),h=Math.round(v.bh*s),dy=name==='heads'?24-Math.round((v.skinBottom-v.y0+1)*s):48-h;c.drawImage(v.cv,v.x0,v.y0,v.bw,v.bh,(i%4)*32+Math.round((32-w)/2),Math.floor(i/4)*48+dy,w,h);});return out.toDataURL();},name);fs.writeFileSync(dir+name+'.png',Buffer.from(result.split(',')[1],'base64'));console.log(name+' normalized');}
+const montage=await page.evaluate(async()=>{const {heroFrame}=await import('/src/revampArt.js');await new Promise(r=>setTimeout(r,1500));const cv=document.createElement('canvas');cv.width=1536;cv.height=800;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;c.fillStyle='#739b8c';c.fillRect(0,0,cv.width,cv.height);const names=['silver','blue','black','gold','red'];for(let j=0;j<names.length;j++){const im=new Image();im.src='/assets/hero-variants-v55/'+names[j]+'.png';try{await im.decode();c.drawImage(im,j*256,0,256,288);}catch{}}
+for(let row=0;row<4;row++)for(let col=0;col<4;col++){const f=heroFrame(['down','left','right','up'][col],1,{hairLength:[undefined,'short','medium','long'][row]});if(f)c.drawImage(f,col*192,300+row*120,80,120);}return cv.toDataURL();});fs.writeFileSync(root+'artifacts/hero-v55-prep.png',Buffer.from(montage.split(',')[1],'base64'));}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1});
