@@ -1,3 +1,4 @@
+import {areaBgm,musicArea} from './musicPolicy.js';
 import {drawRoomStaff} from './roomAssets.js';
 import {shopInteriorFor} from './data/environmentLayouts.js';
 import {endNpc,refreshEnd,tickEnd,endStep} from './endgameStory.js';
@@ -145,6 +146,7 @@ export const world = {
     this.cameraFocus = null;
     this.coldMs=0;
     if(!(State.save.boating&&State.save.where?.map===mapId&&MAPS[mapId]?.boatWater&&MAPS[mapId]?.rows[y]?.[x]==="W"))State.save.boating=false;
+    State.save.bgmArea = musicArea(MAPS,mapId,State.save);
     this.mapId = mapId;
     this.map = mapId==='shop'?shopInteriorFor(MAPS[mapId],State.save.backTo?.map||'village'):MAPS[mapId];
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -1224,15 +1226,5 @@ function edgeTile(map, x, y) {
 }
 
 export function bgmFor(mapId) {
-  const m = MAPS[mapId];
-  if (!m) return "town";
-  const host=['hut','lab','hospital','shop','marineHall'].includes(mapId)?State.save.backTo?.map:mapId;
-  const townMusic={village:'natureTown',marine:'marineTown',karat:'karatTown'};
-  if(townMusic[host])return townMusic[host];
-  if (mapId === "center") return "center";
-  if (m.kind === "cave") return "cave";
-  if (m.kind === "in") return "town";
-  if (m.kind === "out" && /route/.test(mapId)) return "route";
-  if (["summit","ashRoad","resureBeach"].includes(mapId)) return "route";
-  return "town";
+  return areaBgm(MAPS,mapId,State.save);
 }
