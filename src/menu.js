@@ -1,4 +1,4 @@
-import {habitatNames} from './habitats.js';
+import {habitatEntries,habitatRateLabel} from './habitats.js';
 import {FASHION_TOWNS,FASHION_ITEMS,fashionStock,itemLook,equipFashion} from './data/fashion.js';
 import {openFriends} from './friends.js';
 let menuWorld=null;
@@ -226,15 +226,18 @@ export async function dexMenu() {
 export async function dexEntry(n) {
   if(n==="ラテット"&&!State.save.dexOwn[n]){await ui.say(["ラテット", "データ：？？？"]);return;}
   const sp = SPECIES[n];
-  const places=habitatNames(n),habitatLines=places.length?places:['野生の出現場所なし'];
-  const habitatPages=Math.ceil(habitatLines.length/7);
+  const places=habitatEntries(n);
+  const habitatPages=Math.max(1,Math.ceil(places.length/3));
   let page=0;const pages=1+habitatPages+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
     if(page>0&&page<=habitatPages){G.window9(4,4,312,276);G.textFit(n+' の 生息地',18,16,284,3,16);
-      habitatLines.slice((page-1)*7,page*7).forEach((name,i)=>G.textFit(name,18,48+i*28,284,3,14));
+      if(!places.length)G.text('野生の出現場所なし',18,48,3,14);
+      places.slice((page-1)*3,page*3).forEach((entry,i)=>{G.textFit(entry.mapName,18,48+i*56,284,3,14);G.textFit(habitatRateLabel(entry),18,70+i*56,284,3,12);});
+      G.text('通常・水上：遭遇したときの割合',18,226,3,11);
+      G.text('1歩ごとの確率ではありません',18,242,3,11);
       G.text('← → ページ '+page+'/'+(pages-1)+'　A・B もどる',18,262,3,10);return;}
     if(page>0){G.window9(4,4,312,276);G.textFit(n+" の おぼえるわざ",18,16,284,3,16);
      sp.learn.slice((page-habitatPages-1)*7,(page-habitatPages)*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
