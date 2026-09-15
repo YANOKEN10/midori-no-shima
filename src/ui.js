@@ -30,6 +30,7 @@ let now = 0;
 let battleMode=false;
 
 export const ui = {
+  speaker:null,
   setBattleMode(value){battleMode=!!value;Object.assign(BOX,battleMode?{x:0,y:208,w:320,h:80}:{x:8,y:196,w:304,h:84});},
   get busy() { return stack.length > 0; },
 
@@ -42,7 +43,7 @@ export const ui = {
     return new Promise((resolve) => {
       if (!arr.length) { resolve(true); return; }
       stack.push({
-        kind: "say", lines: arr, page: 0, shown: 0,
+        kind: "say", speaker:o.speaker===undefined?this.speaker:o.speaker, lines: arr, page: 0, shown: 0,
         speed: o.speed || 1.6, resolve: resolve,
       });
     });
@@ -177,6 +178,7 @@ function drawSay(w) {
   G.use("ui");
   const cur = curPage(w);
   if(battleMode)drawBattlePanel(G.ctx);else G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
+  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,12)+24);G.window9(BOX.x+4,BOX.y-25,width,26);G.textFit(w.speaker,BOX.x+16,BOX.y-20,width-24,3,12);}
   let left = Math.floor(w.shown);
   for (let i = 0; i < cur.length; i++) {
     const line = cur[i];

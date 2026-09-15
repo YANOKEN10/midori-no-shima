@@ -226,7 +226,7 @@ export const world = {
     }
 
     if (this.moving) {
-      const sp = SPEED * (this.mapId==="blizzard"?.35+.65*this.y/this.map.rows.length:1) * (this.hop ? 1.5 : 1);
+      const sp = SPEED * Math.min(dt,50)/(1000/60) * (this.mapId==="blizzard"?.35+.65*this.y/this.map.rows.length:1) * (this.hop ? 1.5 : 1);
       if (this.dir === "left") this.ox -= sp;
       if (this.dir === "right") this.ox += sp;
       if (this.dir === "up") this.oy -= sp;
@@ -240,7 +240,8 @@ export const world = {
         this.ox = this.oy = 0;
         this.moving = false;
         this.hop = 0;
-        this.afterStep();
+        const stepMap=this.mapId;
+        this.afterStep().then(()=>{if(this.busy||ui.busy||this.mapId!==stepMap)return;const d=['up','down','left','right'].find(d=>In.isDown(d));if(d){this.dir=d;this.tryStep(d);}});
       }
       return;
     }
@@ -330,7 +331,7 @@ export const world = {
       const ch = tileAt(this.map, Math.floor(x + ox), Math.floor(y + oy));
       if (ch == null || solid(ch) || ch === "L") return false;
     }
-    return !this.npcs.some((n) => !n.gone && Math.hypot(n.x - x, n.y - y) < .58);
+    return !this.npcs.some((n) => !n.gone && !n.residentPet && Math.hypot(n.x - x, n.y - y) < .58);
   },
 
   /* --- あるく ------------------------------------------------- */
@@ -357,7 +358,7 @@ export const world = {
   },
 
   npcAt(x, y) {
-    return this.npcs.find((n) => !n.gone && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
+    return this.npcs.find((n) => !n.gone && !n.residentPet && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
       ? Math.hypot(n.x - x, n.y - y) < .72
       : (n.x === x && n.y === y) || (n.moving && n.toX === x && n.toY === y)));
   },
@@ -512,7 +513,8 @@ export const world = {
     saveLocal();
   },
 
-  async runNpc(n) {
+  async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{return await this.runNpcContent(n);}finally{ui.speaker=old;}},
+  async runNpcContent(n) {
     if(n.script?.startsWith("end:")){await endNpc(this,n);return;}
     if(n.script==="v5:professor"&&State.save.dexOwn["ラテット"]){await endNpc(this,{...n,script:"end:professor"});return;}
     // むきを こちらへ
@@ -1100,6 +1102,7 @@ export const world = {
       } else {
         const n = p.n;
         if(n.doorMarker)continue;
+        if(n.residentPet){drawFollower(G.ctx,{sp:n.artMon},{dir:n.dir,moving:n.moving},this.tick,n.x*T+(n.ox||0)+16-camX,n.y*T+(n.oy||0)+28-camY);continue;}
         if(n.itemArt){drawItem(G.ctx,n.itemArt,n.x*T-camX,n.y*T-camY,32);continue;}
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
         if(n.artMon){const im=battleArt(n.artMon),size=n.artSize||64;if(im)G.drawScaled(im,n.x*T-camX+(32-size)/2+(n.ox||0),n.y*T-camY+32-size+(n.oy||0),size,size);continue;}
@@ -1121,6 +1124,7 @@ export const world = {
       }
     }
 
+    for(const pet of map.residentFollowers||[]){const owner=this.npcs[pet.owner];if(!owner||owner.gone)continue;owner.petTrail ||= new FollowerTrail();if(!owner.petTrail.points)owner.petTrail.reset(owner.x,owner.y,owner.dir);owner.petTrail.record(owner.x+(owner.ox||0)/T,owner.y+(owner.oy||0)/T,owner.dir);const pose=owner.petTrail.pose;if(pose)drawFollower(G.ctx,{sp:pet.sp},pose,this.tick,pose.x*T+16-camX,pose.y*T+28-camY);}
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawDaycareLabels(G.ctx,map,State.save,camX,camY);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);

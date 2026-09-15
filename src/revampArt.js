@@ -233,7 +233,7 @@ export function heroFrame(dir, step, look = {}) {
 }
 
 export function drawHero(ctx, dir, moving, tick, x, y, look) {
-  const row = moving ? (Math.floor(tick/150)%2 ? 0 : 2) : 1;
+  const row = moving ? [0,1,2,1][Math.floor(tick/90)%4] : 1;
   const f=heroFrame(dir,row,look);
   if(!f) return false;
   ctx.imageSmoothingEnabled=false;

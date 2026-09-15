@@ -30,7 +30,7 @@ export function redesignEnvironments(maps){
 
 export function shopInteriorFor(base,town='village'){
  const furniture=base.room.furniture.map(f=>[...f]);
- for(const f of furniture){if(['clearTown','galaxy','manikereo'].includes(town)&&f[0]==='shelfRight')f[1]=4;if(['clearTown','galaxy','manikereo'].includes(town)&&f[0]==='shelfLeft')f[1]=11;if(['marine','karatPort','resurePort'].includes(town)&&f[0]==='shelfLeft'){f[0]='shelf';f[1]=11;f[2]=8;f[3]=3;f[4]=2;}}
+ for(const f of furniture){if(['marine','karatPort','resurePort'].includes(town)&&f[0]==='shelfLeft'){f[0]='shelf';f[1]=11;f[2]=8;f[3]=3;f[4]=2;}}
  if(['karat','leafTown'].includes(town))furniture.push(['plant',12,6,1,1]);
  const rows=base.rows.map(row=>[...row].map(ch=>ch==='t'?'f':ch));for(const[k,x,y,w,h]of furniture)for(let yy=y;yy<y+h;yy++)for(let xx=x;xx<x+w;xx++)rows[yy][xx]='t';
  return {...base,rows:rows.map(r=>r.join('')),room:{...base.room,shopTown:town,furniture}};
