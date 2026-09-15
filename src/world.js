@@ -978,7 +978,7 @@ export const world = {
     if (mw * T < G.W) camX = (mw * T - G.W) / 2;
     if (mh * T + EXTRA < G.H) camY = (mh * T - G.H) / 2;
 
-    if(map.room){camX=96;camY=96;}
+    // Interiors use the same player-following camera as the surrounding maps.
 
     // そとの すきま（地図の むこう）は そのばしょに あう 色で うめる
     G.use(map.kind === "cave" ? "cave" : map.kind === "in" ? "floor" : "grass");

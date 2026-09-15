@@ -1,0 +1,5 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Create one game-ready pixel-art sprite: a small rustic wooden roadside sign on a single wooden post, matching the warm brown wooden sign in the reference screenshot. Reference is style/context only; output ONLY the sign, no game screen. Front-facing slightly top-down 2D RPG perspective. Blank rectangular board, simple wood grain, dark brown outline, readable silhouette at 32x32 pixels. Entire sign including post fully visible, centered with 8% transparent padding. Crucial: genuinely transparent background, NO ground, NO grass, NO beige square, NO base plate, NO opaque backdrop, no text. Crisp limited palette pixel art, not realistic.",
+  "reference": "C:/Users/voraz/Downloads/IMG_3766.PNG"
+}

@@ -1,3 +1,4 @@
+import {drawSign,signReady} from './signArt.js';
 import {drawRoad,roadReady,roadStyle} from './roadArt.js';
 import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
 import {drawFrontierMap,frontierGrass} from './frontierArt.js';
@@ -14,7 +15,7 @@ import * as G from './gfx.js';
 const atlasImage=new Image();atlasImage.src=new URL('../assets/world-v5/swiss-atlas-v1.png',import.meta.url).href;
 let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).then(r=>r.json()).then(d=>{atlas=d;}).catch(e=>console.error('Tile atlas:',e));
 const cache=new WeakMap();
-export function drawMaterial(ctx,key,x,y,w,h){const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
+export function drawMaterial(ctx,key,x,y,w,h){if(key==='sign')return drawSign(ctx,x,y,w,h);const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
 // Rural tracks keep the grass texture; connected neighbours share open edges.
 function landscape(c,map,x,y,ch){
@@ -51,6 +52,7 @@ function cliff(c,map,x,y){
  c.restore();
 }
 export function drawChapterMap(ctx,map,camX,camY){
+ if(!signReady()){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
  if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
  if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
@@ -79,7 +81,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(drawMarineTile(c,map,x,y,ch)){drawRoad(c,map,x,y);continue;}
- if(ch==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
+ if(groundCh==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
  
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
  if(ch==='F'&&!map.powerArt)drawMaterial(c,'flowers',dx+3,dy+3,26,26);

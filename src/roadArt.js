@@ -3,8 +3,8 @@ const textures=new Map();
 export const roadStyle=m=>m.kind==='out'&&m.id!=='mountain'&&!['snow','ash'].includes(m.frontierTheme)&&!['dark','ice','snow'].includes(m.endTheme)?(['rods','karat','galaxy','clearTown','belerio'].includes(m.id)?'stone':'sand'):null;
 export const roadReady=m=>!roadStyle(m)||(atlas.complete&&atlas.naturalWidth>0);
 export function drawRoad(c,m,x,y){
- const style=roadStyle(m);if(!style||m.rows[y]?.[x]!=='.')return false;
- const near=(dx,dy)=>['.','D','d','H'].includes(m.rows[y+dy]?.[x+dx]);
+ const style=roadStyle(m);const isRoad=(a,b)=>['.','D','d','H'].includes(m.rows[b]?.[a])||(m.rows[b]?.[a]==='S'&&m.signs?.some(s=>s.x===a&&s.y===b&&s.ground==='.'));if(!style||!isRoad(x,y))return false;
+ const near=(dx,dy)=>isRoad(x+dx,y+dy);
  const l=near(-1,0),r=near(1,0),t=near(0,-1),b=near(0,1),px=x*32,py=y*32;
  c.save();c.beginPath();
  // Small stepped turf edges, continuous through straight roads and junctions.
