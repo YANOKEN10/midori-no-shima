@@ -1,3 +1,4 @@
+import {habitatNames} from './habitats.js';
 import {FASHION_TOWNS,FASHION_ITEMS,fashionStock,itemLook,equipFashion} from './data/fashion.js';
 import {openFriends} from './friends.js';
 let menuWorld=null;
@@ -225,13 +226,18 @@ export async function dexMenu() {
 export async function dexEntry(n) {
   if(n==="ラテット"&&!State.save.dexOwn[n]){await ui.say(["ラテット", "データ：？？？"]);return;}
   const sp = SPECIES[n];
-  let page=0;const pages=1+Math.ceil(sp.learn.length/7);
+  const places=habitatNames(n),habitatLines=places.length?places:['野生の出現場所なし'];
+  const habitatPages=Math.ceil(habitatLines.length/7);
+  let page=0;const pages=1+habitatPages+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
+    if(page>0&&page<=habitatPages){G.window9(4,4,312,276);G.textFit(n+' の 生息地',18,16,284,3,16);
+      habitatLines.slice((page-1)*7,page*7).forEach((name,i)=>G.textFit(name,18,48+i*28,284,3,14));
+      G.text('← → ページ '+page+'/'+(pages-1)+'　A・B もどる',18,262,3,10);return;}
     if(page>0){G.window9(4,4,312,276);G.textFit(n+" の おぼえるわざ",18,16,284,3,16);
-     sp.learn.slice((page-1)*7,page*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
+     sp.learn.slice((page-habitatPages-1)*7,(page-habitatPages)*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
      G.text("← → ページ "+page+"/"+(pages-1)+"　A・B もどる",18,262,3,10);return;}
     G.window9(4, 4, 312, 160);
     const current=battleArt(n);
@@ -243,7 +249,7 @@ export async function dexEntry(n) {
     G.window9(4, 170, 312, 110);
     const lines = G.wrap(sp.dex, 276, 16).slice(0, 3);
     lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
-    G.text("← → おぼえるわざ",18,262,3,11);
+    G.text("← → 生息地・おぼえるわざ",18,262,3,11);
   },{onPage:dir=>{page=(page+(dir===-1?-1:1)+pages)%pages;}});
 }
 
