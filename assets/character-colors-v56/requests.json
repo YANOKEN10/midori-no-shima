@@ -1,0 +1,45 @@
+{
+  "tool": "built-in image_gen",
+  "entries": [
+    {
+      "name": "boy-forest",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-62246a19-74c8-42e4-becf-e3de52d7788c.png",
+      "prompt": "Edit the original boy protagonist sprite sheet. Change ONLY clothing colors: forest green scarf and vest, ivory shirt sleeves, beige khaki pants, dark brown leather boots and bag, warm gold trim. Keep the original brown hair unchanged, identical blue eyes and warm peach skin, same face, physique, hairstyle, and original outfit construction. EXACT 12 full body sprites: 4 columns front,left,right,back; 3 rows walk A,idle,walk B. Keep pose, consistent size, cell alignment and baselines. Crisp game pixel art with natural shadows and highlights, no flat tint or color spilling onto skin. Transparent background, no labels. All 12 sprites fully visible and separated."
+    },
+    {
+      "name": "boy-crimson",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e3190936-c607-4d2f-8a6b-d9068d0a28dd.png",
+      "prompt": "Edit attached original boy protagonist sheet, change ONLY clothing colors: crimson red scarf and vest with warm gold edging, ivory sleeves, charcoal gray trousers, dark brown boots and leather shoulder bag. Brown hair, blue eyes and warm natural peach skin unchanged. Preserve initial character identity, original hairstyle, anatomy and original outfit construction. Exactly same 12 full body poses: 4 columns front/left/right/back, 3 rows walk A/idle/walk B, equal cells, same scale and baselines. Clean game pixel art with clear colored fabric highlights and shadows, no red spill on skin or hair, no text, transparent background. Each sprite separated, unclipped."
+    },
+    {
+      "name": "boy-ivory",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-8105273d-5703-4802-b392-8cdb456e2003.png",
+      "prompt": "Edit original boy protagonist sheet by changing ONLY outfit colors: navy scarf, ivory white vest with fine gold edging, soft pale blue sleeves, slate blue-gray trousers, dark brown boots/bag. Preserve original brown hair, blue eyes, warm peach skin, character face and anatomy exactly. Same outfit shapes and all 12 full-body sprites in 4 columns front,left,right,back and 3 rows walking A,idle,walking B. Crisp readable game pixel art. Natural fabric highlights, no white tint on skin, no hair recolor. Transparent background, identical aligned cells and consistent sprite size, no text, no cropping."
+    },
+    {
+      "name": "girl-silver-navy",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1fe317b8-e4e7-4fca-a8bf-4f0eecb9cbdd.png",
+      "prompt": "Edit the attached ORIGINAL GIRL protagonist game sprite sheet. Preserve her exact face, blue eyes, warm peach skin, ponytail hairstyle shape and hair tie, jacket and shorts outfit construction, bag and boots, anatomy and all poses. Change only colors: silver hair with cool gray shadows and pale highlights, navy blue jacket, ivory undershirt, slate gray shorts, brown boots and shoulder bag. Never gray-tint skin, eyes or exposed legs. EXACT 12 sprites: four columns front,left,right,back and three rows walking A,idle,walking B. Consistent pixel art matching original, equal cell layout and consistent size/baseline. All full body, generous transparent margins, no text, transparent background."
+    },
+    {
+      "name": "girl-blue-ivory",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-774889b9-7b18-404d-9265-212307f42867.png",
+      "prompt": "Edit the original GIRL game protagonist sprite sheet. Only change colors: cobalt blue ponytail hair with sky-blue highlights and navy shadows, ivory white jacket with subtle blue piping, dark navy undershirt, blue denim shorts, original brown bag and boots. Keep exact face identity, blue eyes, healthy warm peach skin and exposed legs unchanged. Preserve original ponytail silhouette, hair tie, outfit cuts, scale, poses and clean pixel-art style. Exact same 12 full-body sprites in 4 columns front,left,right,back and 3 rows walk A,idle,walk B. Transparent background, even cells, no text, no clipping. Do not tint skin blue or white."
+    },
+    {
+      "name": "girl-black-lavender",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-10c4adb8-00cd-4d93-8b49-c6ff6aca1206.png",
+      "prompt": "Edit attached original GIRL protagonist sprite sheet. Change ONLY colors to raven black hair with blue-gray highlights, lavender purple jacket, ivory undershirt, charcoal shorts, brown leather boots and shoulder bag. Retain original warm peach skin on face,hands,legs, blue eyes, face identity, ponytail hairstyle and tie, outfit shapes and all exact poses. True pixel-art game sprites like original. Same 4 columns front,left,right,back x 3 rows walk A,idle,walk B; all 12 full-body sprites, consistent scale and alignment in equal cells. Transparent background, no labels, no clipping, no clothing tint on skin."
+    },
+    {
+      "name": "girl-gold-green",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e41a9ca7-c4ed-4520-a90f-bb6003fe084b.png",
+      "prompt": "Edit original girl protagonist sprite sheet, changing ONLY colors: golden blonde ponytail with honey-gold shadows and pale gold highlights, forest green jacket, cream undershirt, beige khaki shorts, original brown boots and bag. Same original face, blue eyes, warm peach face/hands/legs, ponytail shape, outfit construction, body proportions and 12 poses. Exact 4 columns front,left,right,back and 3 rows walk A,idle,walk B; all full body, even transparent margins, identical cell scale. Maintain original clean pixel art aesthetic. No yellow tint on skin, no text, transparent background."
+    },
+    {
+      "name": "girl-red-teal",
+      "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0bfba7c5-4705-4f0a-80a3-f325e6c2c6ae.png",
+      "prompt": "Edit attached original girl protagonist sprite sheet. Change ONLY colors: rich crimson red ponytail hair with coral highlights and burgundy shadows; deep teal jacket, cream undershirt, charcoal shorts, brown boots and bag. Preserve exact original face identity, blue eyes, natural warm peach skin on face/hands/legs, ponytail silhouette, original clothing construction and every pose. All 12 full body pixel-art sprites, exact 4 columns front,left,right,back x 3 rows walking A,idle,walking B. Equal cell layout with identical scale/baseline and transparent margins. No red tint on skin, no text, transparent background, no cropped sprites."
+    }
+  ]
+}
