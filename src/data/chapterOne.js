@@ -1,3 +1,4 @@
+import {refineMaps61} from './dungeonLayouts61.js';
 import {addTownLife} from './townLife.js';
 import {composeGrassPlots} from './grassPlots.js';
 import {addFashionShops} from './fashionShops.js';
@@ -140,6 +141,7 @@ export function buildChapterOne(){
   if(m.room?.rug){const [x,y,w,h]=m.room.rug,nw=Math.min(w,3),nh=Math.min(h,2);m.room.rug=[x+(w-nw)/2,y+(h-nh)/2,nw,nh];}
   for(const p of m.props||[]){if(p.art!=='chaletClinic'||!p.door)continue;const old={...p.door},nx=p.x+p.w-1;const wp=m.warps.find(w=>w.x===old.x&&w.y===old.y);if(!wp)continue;m.g[old.y][old.x]='#';m.g[old.y][nx]='D';for(let x=Math.min(old.x,nx);x<=Math.max(old.x,nx);x++)m.g[old.y+1][x]='.';p.door.x=nx;wp.x=nx;if(wp.back)wp.back.x=nx;}
  }
+ refineMaps61(M);
  addTownLife(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;

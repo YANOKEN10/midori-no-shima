@@ -1,3 +1,4 @@
+import {drawForest61,drawJungleFeet61} from './jungleArt61.js';
 const cottage=new Image();cottage.src=new URL('../assets/house-v60/chalet.png',import.meta.url).href;
 import {drawSign,signReady} from './signArt.js';
 import {drawRoad,roadReady,roadStyle} from './roadArt.js';
@@ -54,6 +55,7 @@ function cliff(c,map,x,y){
 }
 export function drawChapterMap(ctx,map,camX,camY){
  if(!signReady()||!cottage.complete||!cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
+ if(drawForest61(ctx,map,camX,camY,drawMaterial))return true;
  if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
  if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
@@ -73,7 +75,17 @@ export function drawChapterMap(ctx,map,camX,camY){
   c.fillStyle=colors[0];c.fillRect(dx,dy,32,32);c.fillStyle=colors[1];
   if(map.theme==='ruins'){c.fillRect(dx+2,dy+3,27,1);c.fillRect(dx+4,dy+6,1,19);c.fillRect(dx+18,dy+24,9,2);}
   else{const n=(x*17+y*31)%23;c.fillRect(dx+3+n%6,dy+5+n%9,7,2);c.fillRect(dx+8+n%7,dy+6+n%9,2,6);c.fillRect(dx+21,dy+22,3,2);c.fillRect(dx+5,dy+26,2,1);}
-  if(ch==='X'||ch==='R')drawMaterial(c,'rock',dx,dy,32,32);
+  if(ch==='X'||ch==='R'){
+   if(map.maze61){
+    const ruin=map.theme==='ruins',solid=(xx,yy)=>['R','X'].includes(map.rows[yy]?.[xx]);
+    c.fillStyle=ruin?'#6b6878':'#344252';c.fillRect(dx,dy,32,32);
+    c.fillStyle=ruin?'#858293':'#435267';
+    for(let yy=0;yy<32;yy+=16){c.fillRect(dx+1,dy+yy+1,30,2);c.fillRect(dx+((y*2+yy/16)%2?8:23),dy+yy+3,1,12);}
+    if(!solid(x,y+1)){c.fillStyle=ruin?'#343342':'#19232f';c.fillRect(dx,dy+21,32,11);c.fillStyle=ruin?'#a09aab':'#647083';c.fillRect(dx,dy+20,32,2);}
+    if(!solid(x-1,y)){c.fillStyle='#242d36';c.fillRect(dx,dy,2,32);}
+    if(!solid(x+1,y)){c.fillStyle='#242d36';c.fillRect(dx+30,dy,2,32);}
+   }else drawMaterial(c,'rock',dx,dy,32,32);
+  }
   if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
   if(ch==='W'){c.fillStyle='#a52f1c';c.fillRect(dx,dy,32,32);c.fillStyle='#ffb347';c.fillRect(dx+2,dy+8,19,3);c.fillRect(dx+12,dy+23,18,3);}
   if(ch==='.')ground(c,'path',dx,dy);
@@ -112,7 +124,7 @@ export function drawGrassFeet(ctx,map,px,py,camX,camY){
 
  const left=px,top=py+8,right=px+32,bottom=py+20;
  for(let y=Math.floor(top/32);y<=Math.floor((bottom-1)/32);y++)for(let x=Math.floor(left/32);x<=Math.floor((right-1)/32);x++){
- if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!frontierGrass(ctx,map,x,y,x*32-camX,y*32-camY)&&!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
+ if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!drawJungleFeet61(ctx,map,x*32-camX,y*32-camY)&&!frontierGrass(ctx,map,x,y,x*32-camX,y*32-camY)&&!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
 }
 const battleImages={};
 export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'river':'grass';let im=battleImages[key];if(!im){im=battleImages[key]=new Image();im.src=new URL('../assets/world-v5/battle-'+key+'-simple-v2.png',import.meta.url).href;}if(!im.complete||!im.naturalWidth)return false;
