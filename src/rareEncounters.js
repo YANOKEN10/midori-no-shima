@@ -1,10 +1,12 @@
+import {scheduledPool} from './scheduledEncounters62.js';
 import { MAPS } from './data/maps.js';
 export const RARE_RULES = [
  {name:'コケゴロ',map:'mossSanctuary',rate:0.01,min:32,max:36},
+ {name:'ジシンヌシ',map:'mountain',rate:0.01,min:40,max:45,spots:3},
 ];
 export const EXCLUSIVE_WILD = new Set(RARE_RULES.map(r=>r.name));
 export const EVOLUTION_ONLY = new Set(['ユウレイン','ボウレイ']);
-export function ordinaryEncounters(list=[],mapId){return list.filter(e=>(!EXCLUSIVE_WILD.has(e[0])||(mapId==='mountain'&&e[0]==='コケゴロ'))&&!EVOLUTION_ONLY.has(e[0]));}
+export function ordinaryEncounters(list=[],mapId,now=new Date(),mode='clock'){return scheduledPool(list.filter(e=>(!EXCLUSIVE_WILD.has(e[0])||(mapId==='mountain'&&e[0]==='コケゴロ'))&&!EVOLUTION_ONLY.has(e[0])),mapId,now,mode);}
 export function rareAreasUnlocked(save){return !!save.flags?.['v5:dex'] && MAPS.natureforest.npcs.every((n,i)=>!n.trainer||save.flags?.['beat:natureforest:'+i]);}
 export function rareCandidates(mapId){
  const m=MAPS[mapId];if(!m)return [];
@@ -20,16 +22,17 @@ export function createRareSpawns(seed=Math.floor(Math.random()*4294967296),exist
  let value=seed>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};
  const spots={},used=new Set();
  for(const rule of RARE_RULES){const options=rareCandidates(rule.map).filter(p=>!used.has(p.map+':'+p.x+':'+p.y));if(!options.length)throw Error('No reachable rare habitat: '+rule.map);
-  const old=existing?.[rule.name];const valid=old&&options.find(p=>p.map===old.map&&p.x===old.x&&p.y===old.y);
-  const picked=options[Math.floor(random()*options.length)];spots[rule.name]=valid||picked;used.add(spots[rule.name].map+':'+spots[rule.name].x+':'+spots[rule.name].y);
+  const old=existing?.[rule.name],prior=Array.isArray(old)?old:old?[old]:[],chosen=[];
+  for(let i=0;i<(rule.spots||1);i++){const pool=options.filter(p=>!chosen.some(q=>q.x===p.x&&q.y===p.y));const valid=prior[i]&&pool.find(p=>p.map===prior[i].map&&p.x===prior[i].x&&p.y===prior[i].y);const picked=valid||pool[Math.floor(random()*pool.length)];if(!picked)throw Error('Insufficient rare tiles');chosen.push(picked);used.add(picked.map+':'+picked.x+':'+picked.y);}
+  spots[rule.name]=rule.spots?chosen:chosen[0];
  }
- return {version:1,seed:seed>>>0,spots};
+ return {version:2,seed:seed>>>0,spots};
 }
 export function normalizeRareSpawns(save){
  const old=save.rareSpawns;save.rareSpawns=createRareSpawns(Number.isInteger(old?.seed)?old.seed:undefined,old?.spots);return save.rareSpawns;
 }
 export function rollRareEncounter(save,mapId,x,y,random=Math.random){
  if(!rareAreasUnlocked(save))return null;
- for(const rule of RARE_RULES){const p=save.rareSpawns?.spots?.[rule.name];if(p&&p.map===mapId&&p.x===x&&p.y===y&&random()<rule.rate)return rule;}
+ for(const rule of RARE_RULES){const points=save.rareSpawns?.spots?.[rule.name],spots=Array.isArray(points)?points:points?[points]:[];if(spots.some(p=>p.map===mapId&&p.x===x&&p.y===y)&&random()<rule.rate)return rule;}
  return null;
 }

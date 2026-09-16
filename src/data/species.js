@@ -64,26 +64,26 @@ export const SPECIES = {
   },
 
   ネズミン: {
-    no: 10, types: ["ノーマル"], base: { hp: 30, atk: 56, def: 35, spd: 72, spc: 25 },
+    no: 10, types: ["ひかり"], base: { hp: 30, atk: 56, def: 35, spd: 72, spc: 25 },
     catch: 255, exp: 57, evo: { lv: 20, to: "デカネズ" },
     learn: [[1, "タックル"], [1, "しっぽふり"], [7, "かみつく"], [14, "スピードブロー"], [23, "ダブルカット"], [30, "マックスアタック"]],
     dex: "どこにでも いる。まえばで かたい きのみも かじって われる。",
   },
   デカネズ: {
-    no: 11, types: ["ノーマル"], base: { hp: 55, atk: 81, def: 60, spd: 97, spc: 50 },
+    no: 11, types: ["ひかり"], base: { hp: 55, atk: 81, def: 60, spd: 97, spc: 50 },
     catch: 127, exp: 116,
     learn: [[1, "タックル"], [1, "かみつく"], [24, "ダブルカット"], [32, "スピードブロー"], [40, "マックスアタック"]],
     dex: "なわばりを あらす ものには ようしゃしない。はしる はやさは ぴかいち。",
   },
 
   トリッピ: {
-    no: 12, types: ["ノーマル"], base: { hp: 40, atk: 45, def: 40, spd: 56, spc: 35 },
+    no: 12, types: ["ひかり"], base: { hp: 40, atk: 45, def: 40, spd: 56, spc: 35 },
     catch: 255, exp: 55, evo: { lv: 20, to: "ソラハネ" },
     learn: [[1, "タックル"], [1, "ボイス"], [9, "サンドスモッグ"], [17, "スピードブロー"], [25, "ダブルカット"], [33, "マックスアタック"]],
     dex: "まだ とおくまでは とべない。はねを ばたつかせて すなを まきあげる。",
   },
   ソラハネ: {
-    no: 13, types: ["ノーマル"], base: { hp: 63, atk: 70, def: 55, spd: 91, spc: 50 },
+    no: 13, types: ["ひかり"], base: { hp: 63, atk: 70, def: 55, spd: 91, spc: 50 },
     catch: 120, exp: 113,
     learn: [[1, "スピードブロー"], [1, "サンドスモッグ"], [26, "ダブルカット"], [35, "かみつく"], [44, "マックスアタック"]],
     dex: "そらの たかい ところを まわりながら えものを さがしている。",
@@ -195,7 +195,7 @@ function statsFor(name, role, stage, isFinal) {
 }
 
 const POOL = {
-  "ノーマル": { weak: "タックル", mid: "かみつく", strong: "マックスアタック", status: "ボイス", extra: "ダブルカット" },
+  "ひかり": { weak: "タックル", mid: "かみつく", strong: "マックスアタック", status: "ボイス", extra: "ダブルカット" },
   "くさ":     { weak: "つるのムチ", mid: "はっぱカッター", strong: "ソーラーリーフ", status: "やどりぎ", extra: "こうごうせい" },
   "ほのお":   { weak: "ファイア", mid: "ひばしら", strong: "ファイアブラスト", status: "いかく", extra: "もえるつばさ" },
   "みず":     { weak: "ウォーターブロー", mid: "アクアピストル", strong: "ウォーターレーザー", status: "ブロック", extra: "アクアマシンガン" },
@@ -207,7 +207,7 @@ const POOL = {
 const ROLE_MOVE = { atk: "ダブルカット", spc: "ボイス", def: "ブロック", spd: "スピードブロー", bal: "かみつく", hp: "パワーアップ" };
 
 function learnFor(type, role, stage) {
-  const P = POOL[type] || POOL["ノーマル"];
+  const P = POOL[type] || POOL["ひかり"];
   const s = stage === 1 ? 0 : stage === 2 ? 2 : stage === 3 ? 5 : 1;
   const list = [
     [1, "タックル"],
@@ -300,7 +300,7 @@ for (const [name, sp] of Object.entries(SPECIES)) {
 }
 
 // Explicit balance adjustments; keep encounter and training rewards unchanged.
-const BASE_ADJUSTMENTS = {"ヤミノヌシ":{"spd":100,"def":80,"hp":85,"atk":120,"spc":110},"ムラサキビ":{"spd":90,"atk":60,"hp":78,"def":65},"ボウレイ":{"hp":90,"atk":60,"def":70},"シャドネコ":{"atk":100,"spc":90,"sdef":70},"オオカブト":{"spd":80,"spc":60},"ジシンヌシ":{"spd":97,"hp":110,"spc":60},"コケゴロ": {"hp": 120, "atk": 130, "def": 120, "spc": 60}, "オオヒノオ": {"sdef": 120, "spd": 125}, "ヨウガンヌシ": {"def": 90, "spd": 110}, "リュウグウ": {"sdef": 103, "spd": 152}, "ライメイ": {"sdef": 90, "spd": 130}, "オニイワ": {"spd": 70, "def": 91}};
+const BASE_ADJUSTMENTS = {"ハナビィ":{"hp":50,"atk":25,"def":40,"spc":60,"sdef":50,"spd":30},"フラワン":{"hp":70,"atk":35,"def":55,"spc":90,"sdef":75,"spd":42},"タネコロ":{"atk":40,"def":55,"spc":40,"sdef":55,"spd":20},"ツルマキ":{"atk":60,"def":75,"spc":60,"sdef":75,"spd":30},"ジャングド":{"atk":80,"def":100,"spc":80,"sdef":100,"spd":40},"ブルームナ":{"hp":90,"atk":50,"def":70,"spc":120},"ヤミノヌシ":{"spd":100,"def":80,"hp":85,"atk":120,"spc":110},"ムラサキビ":{"spd":90,"atk":60,"hp":78,"def":65},"ボウレイ":{"hp":90,"atk":60,"def":70},"シャドネコ":{"atk":100,"spc":90,"sdef":70},"オオカブト":{"spd":80,"spc":60},"ジシンヌシ":{"spd":97,"hp":110,"spc":60},"コケゴロ": {"hp": 120, "atk": 130, "def": 120, "spc": 60}, "オオヒノオ": {"sdef": 120, "spd": 125}, "ヨウガンヌシ": {"def": 90, "spd": 110}, "リュウグウ": {"sdef": 103, "spd": 152}, "ライメイ": {"sdef": 90, "spd": 130}, "オニイワ": {"spd": 70, "def": 91}};
 for(const [name,base] of Object.entries(BASE_ADJUSTMENTS)) Object.assign(SPECIES[name].base,base);
 
 // Requested base stats; other species data and training yields stay unchanged.
@@ -312,7 +312,7 @@ export function species(name) { return SPECIES[name] || SPECIES["ネズミン"];
 // そえいろ：からだの 本いろ とは べつに、つの・はね・しっぽ に つかう いろ。
 // 2つめの タイプが あれば その いろ、なければ タイプごとの きまった あいて。
 const ACCENT_OF = {
-  "ノーマル": "ほのお", "くさ": "ほのお", "ほのお": "でんき", "みず": "でんき",
+  "ひかり": "ほのお", "くさ": "ほのお", "ほのお": "でんき", "みず": "でんき",
   "でんき": "みず", "じめん": "くさ", "むし": "でんき", "やみ": "でんき",
 };
 export function accentOf(spc) {
@@ -322,7 +322,7 @@ export function accentOf(spc) {
   return ACCENT_OF[t[0]] || "ほのお";
 }
 
-export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ノーマル"; }
+export function palOf(sp) { return (sp && (sp.pal || (sp.types && sp.types[0]))) || "ひかり"; }
 export function nameByNo(no) { return DEX_ORDER.find((n) => SPECIES[n].no === no) || ""; }
 
 // Strong special attackers learn their own type's burst at level 45.

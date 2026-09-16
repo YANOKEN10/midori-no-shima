@@ -1,5 +1,5 @@
 const q=document.querySelector('#query'),type=document.querySelector('#type'),cat=document.querySelector('#category'),sort=document.querySelector('#sort'),list=document.querySelector('#list'),count=document.querySelector('#count'),form=document.querySelector('form');
-const categories={phys:'ぶつり',spec:'とくしゅ',stat:'へんか'},colors={'くさ':'#568f51','ほのお':'#b65c3c','みず':'#4485ac','でんき':'#ad8828','じめん':'#937051','むし':'#7f903c','やみ':'#79618b','ノーマル':'#7d8c80'};
+const categories={phys:'ぶつり',spec:'とくしゅ',stat:'へんか'},colors={'くさ':'#568f51','ほのお':'#b65c3c','みず':'#4485ac','でんき':'#ad8828','じめん':'#937051','むし':'#7f903c','やみ':'#79618b','ひかり':'#7d8c80'};
 const normalize=s=>s.normalize('NFKC').toLowerCase().replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-96));
 function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
 try{

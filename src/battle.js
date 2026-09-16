@@ -1,3 +1,4 @@
+import {trainerLevel} from './postgame62.js';
 import {battleLabel} from './battleUi.js';
 import {battleBackgroundFor,prepareBattleBackground} from './battleBackgrounds.js';
 import {MAPS} from './data/maps.js';
@@ -75,7 +76,7 @@ export async function startBattle(opts) {
   if (!you && isTrainer) return "lose";
   const backgroundKey=battleBackgroundFor(State.save,opts,MAPS[State.save.where?.map]);
   await prepareBattleBackground(backgroundKey);
-  const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], p[1])) : [opts.wild];
+  const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], trainerLevel(p[1],State.save))) : [opts.wild];
   B = {
     backgroundKey, playerParty, facility:!!opts.facility,
     isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, escapeDisabled:!!opts.escapeDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
@@ -133,7 +134,7 @@ export async function startBattle(opts) {
       const r = await onYouDown();
       if (r) result = r;
     }
-    if(!result&&!B.isTrainer&&!fainted(B.foe.mon)&&Math.random()<B.wildFleeRate){await ui.say([B.foe.mon.sp+"は 森の奥へ逃げていった！"]);result="fled";}
+    if(!result&&!B.isTrainer&&!fainted(B.foe.mon)&&Math.random()<B.wildFleeRate){await ui.say([B.foe.mon.sp+"は すばやく逃げていった！"]);result="fled";}
   }
 
   battle.active = false;
@@ -640,7 +641,7 @@ function drawBattle() {
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
   const foeSet = palOf(species(B.foe.mon.sp));
   const foeAcc = accentOf(species(B.foe.mon.sp));
-  const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ノーマル";
+  const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ひかり";
   const youAcc = B.you ? accentOf(species(B.you.mon.sp)) : "ほのお";
 
   if (!B.foe.hidden && foeArt) {

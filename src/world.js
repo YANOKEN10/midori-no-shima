@@ -1,3 +1,5 @@
+import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
+import {postgameCleared,refreshPostgame} from './postgame62.js';
 import {areaBgm,musicArea} from './musicPolicy.js';
 import {drawRoomStaff} from './roomAssets.js';
 import {shopInteriorFor} from './data/environmentLayouts.js';
@@ -181,7 +183,7 @@ export const world = {
       idx: i, gone: Boolean(n.hideFlag && flag(n.hideFlag)), ox: 0, oy: 0, homeX: n.x, homeY: n.y,
       roamWait: 900 + i * 370, moving: false, walkFrame: 0,
     }));
-    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);
+    refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);refreshPostgame(this,State.save);
     // Saved tile origins can overlap a wall with the walking footprint.
     // Validate using exactly the same collision test as movement, including NPCs.
     if (this.map.freeMove && !this.canFreeStand(x, y)) {
@@ -209,7 +211,7 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
-    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);}
+    if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);refreshPostgame(this,State.save);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
@@ -515,6 +517,14 @@ export const world = {
 
   async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{return await this.runNpcContent(n);}finally{ui.speaker=old;}},
   async runNpcContent(n) {
+    if(n.script==='post:deena'){
+      if(!postgameCleared(State.save)||flag('post:deenaCaught'))return;
+      if(!await ui.ask(['Lv.80の ディーナに 挑みますか？']))return;
+      const result=await startBattle({wild:makeMon('ディーナ',80)});
+      if(result==='caught'){setFlag('post:deenaCaught');n.gone=true;}
+      if(result==='lose'){await this.blackout();return;}
+      await this.checkEvolution();playBgm(bgmFor(this.mapId));saveLocal();return;
+    }
     if(n.script?.startsWith("end:")){await endNpc(this,n);return;}
     if(n.script==="v5:professor"&&State.save.dexOwn["ラテット"]){await endNpc(this,{...n,script:"end:professor"});return;}
     // むきを こちらへ
@@ -914,13 +924,13 @@ export const world = {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const list=State.save.boating?[["サカナビ",30,40,50],["ミナモリス",35,45,50]]:ordinaryEncounters(this.map.enc?.list,this.mapId);
+    const list=State.save.boating?waterEncounters(this.mapId):ordinaryEncounters(this.map.enc?.list,this.mapId);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
     const lv = chosen[1] + rnd(chosen[2] - chosen[1] + 1);
     const mon = makeMon(chosen[0], lv);
-    const res = await startBattle({ wild: mon });
+    const res = await startBattle({ wild: mon, ...scheduledBattleOptions(mon.sp) });
     if (res === "lose") { await this.blackout(); this.busy = false; return; }
     await this.checkEvolution();
     playBgm(bgmFor(this.mapId));

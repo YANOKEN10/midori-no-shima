@@ -142,6 +142,10 @@ export function buildChapterOne(){
   for(const p of m.props||[]){if(p.art!=='chaletClinic'||!p.door)continue;const old={...p.door},nx=p.x+p.w-1;const wp=m.warps.find(w=>w.x===old.x&&w.y===old.y);if(!wp)continue;m.g[old.y][old.x]='#';m.g[old.y][nx]='D';for(let x=Math.min(old.x,nx);x<=Math.max(old.x,nx);x++)m.g[old.y+1][x]='.';p.door.x=nx;wp.x=nx;if(wp.back)wp.back.x=nx;}
  }
  refineMaps61(M);
+ const deenaMap=M.leafTown;let deenaSpot=null;
+ for(let y=13;y<25&&!deenaSpot;y++)for(let x=15;x<25&&!deenaSpot;x++)if([',','.'].includes(deenaMap.g[y]?.[x])&&!deenaMap.npcs.some(n=>Math.abs(n.x-x)+Math.abs(n.y-y)<3)&&[[1,0],[-1,0],[0,1],[0,-1]].every(([dx,dy])=>[',','.'].includes(deenaMap.g[y+dy]?.[x+dx])))deenaSpot={x,y};
+ if(!deenaSpot)throw Error('No safe Deena clearing');
+ deenaMap.npcs.push({...deenaSpot,name:'ディーナ',artMon:'ディーナ',script:'post:deena',noRoam:true,dir:'down',talk:['ディーナが 静かに こちらを見ている。']});
  addTownLife(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;

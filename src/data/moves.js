@@ -4,18 +4,18 @@
 //   fx  : おまけの こうか
 // ============================================================
 export const MOVES = {
-  タックル:      { type: "ノーマル", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "からだごと ぶつかる。" },
-  ひっかく:        { type: "ノーマル", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "つめで ひっかく。" },
-  スピードブロー:  { type: "ノーマル", cat: "phys", pow: 40, acc: 100, pp: 30, pri: 1, desc: "かならず 先に うごける。" },
-  れんぞくパンチ:  { type: "ノーマル", cat: "phys", pow: 18, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つづけて たたく。" },
-  マックスアタック:  { type: "ノーマル", cat: "phys", pow: 100, acc: 90, pp: 10, fx: { recoil: 0.25 }, desc: "つよいが じぶんも きずつく。" },
-  かみつく:        { type: "ノーマル", cat: "phys", pow: 55, acc: 100, pp: 25, fx: { flinch: 0.2 }, desc: "たまに ひるませる。" },
-  ボイス:        { type: "ノーマル", cat: "stat", pow: 0, acc: 100, pp: 40, fx: { foe: { atk: -1 } }, desc: "あいての こうげきを さげる。" },
-  しっぽふり:      { type: "ノーマル", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
-  いかく:    { type: "ノーマル", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
-  ブロック:      { type: "ノーマル", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { self: { def: 1 } }, desc: "じぶんの ぼうぎょを あげる。" },
-  ダブルカット:      { type: "ノーマル", cat: "phys", pow: 15, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つく。" },
-  パワーアップ:          { type: "ノーマル", cat: "stat", pow: 0, acc: 100, pp: 10, fx: { rest: true }, desc: "ねむって たいりょくを ぜんかい。" },
+  タックル:      { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "からだごと ぶつかる。" },
+  ひっかく:        { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "つめで ひっかく。" },
+  スピードブロー:  { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 30, pri: 1, desc: "かならず 先に うごける。" },
+  れんぞくパンチ:  { type: "ひかり", cat: "phys", pow: 18, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つづけて たたく。" },
+  マックスアタック:  { type: "ひかり", cat: "phys", pow: 100, acc: 90, pp: 10, fx: { recoil: 0.25 }, desc: "つよいが じぶんも きずつく。" },
+  かみつく:        { type: "ひかり", cat: "phys", pow: 55, acc: 100, pp: 25, fx: { flinch: 0.2 }, desc: "たまに ひるませる。" },
+  ボイス:        { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 40, fx: { foe: { atk: -1 } }, desc: "あいての こうげきを さげる。" },
+  しっぽふり:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
+  いかく:    { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
+  ブロック:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { self: { def: 1 } }, desc: "じぶんの ぼうぎょを あげる。" },
+  ダブルカット:      { type: "ひかり", cat: "phys", pow: 15, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つく。" },
+  パワーアップ:          { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 10, fx: { rest: true }, desc: "ねむって たいりょくを ぜんかい。" },
 
   はっぱカッター:  { type: "くさ", cat: "spec", pow: 55, acc: 95, pp: 25, fx: { crit: 2 }, desc: "きゅうしょに あたりやすい。" },
   つるのムチ:      { type: "くさ", cat: "phys", pow: 45, acc: 100, pp: 25, desc: "つるで たたく。" },
@@ -61,14 +61,14 @@ export const MOVES = {
   サンダーバースト: { type: "でんき", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "ためこんだ でんきを いっきに はなつ。" },
   ロックバースト: { type: "じめん", cat: "spec", pow: 120, acc: 100, pp: 10, desc: "だいちの ちからを ばくはつさせる。" },
   ダークバースト: { type: "やみ", cat: "spec", pow: 120, acc: 100, pp: 10, desc: "こい やみの ちからを いっきに はなつ。" },
-  ホワイトバースト: { type: "ノーマル", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "しろく かがやく エネルギーを はなつ。" },
+  ホワイトバースト: { type: "ひかり", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "しろく かがやく エネルギーを はなつ。" },
   ビーストバースト: { type: "むし", cat: "spec", pow: 100, acc: 100, pp: 10, desc: "むしの ちからを あつめて はなつ。" },
 
 };
 
 export function move(name) {
   const m = MOVES[canonicalMoveName(name)];
-  if (!m) return { type: "ノーマル", cat: "phys", pow: 40, acc: 100, pp: 20, desc: "" };
+  if (!m) return { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 20, desc: "" };
   return m;
 }
 export function newMove(name) {
