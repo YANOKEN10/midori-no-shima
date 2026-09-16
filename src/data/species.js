@@ -269,6 +269,8 @@ SPECIES["ボウエン"].dex="ヒノコマより 大きな羽と足に育つ。�
 SPECIES["エンブレイズ"].dex="黒い大きな翼に 金色の炎をまとう。ヒノコマから育った 誇り高い炎の鳥。";
 import {applySpeciesRedesign} from './redesignV47.js';
 applySpeciesRedesign(SPECIES);
+import {addEvolutions63} from './redesignV63.js';
+addEvolutions63(SPECIES);
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 
@@ -295,7 +297,7 @@ for (const [name, sp] of Object.entries(SPECIES)) {
   const best = Math.max(...STAT_KEYS.map(k=>sp.base[k]));
   const candidates = STAT_KEYS.filter(k=>sp.base[k]===best);
   const key = candidates[sp.no % candidates.length];
-  const amount = sp.no>=151 ? 3 : evolutionTargets.has(name) ? (sp.evo ? 2 : 3) : (sp.evo ? 1 : 2);
+  const amount = (sp.no>=151&&sp.no<=153) ? 3 : evolutionTargets.has(name) ? (sp.evo ? 2 : 3) : (sp.evo ? 1 : 2);
   sp.evYield = Object.fromEntries(STAT_KEYS.map(k=>[k,k===key?amount:0]));
 }
 
