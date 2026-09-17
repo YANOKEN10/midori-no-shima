@@ -1,7 +1,7 @@
 (async()=>{
 const $=s=>document.querySelector(s),scene=$('#scene'),view=$('#viewport'),status=$('#status');
 try{
-const [data,svg]=await Promise.all([fetch('data.json?v=64').then(r=>{if(!r.ok)throw Error('地図データ');return r.json()}),fetch('map.svg?v=64').then(r=>{if(!r.ok)throw Error('地図画像');return r.text()})]);scene.innerHTML=svg;
+const [data,svg]=await Promise.all([fetch('data.json?v=65').then(r=>{if(!r.ok)throw Error('地図データ');return r.json()}),fetch('map.svg?v=65').then(r=>{if(!r.ok)throw Error('地図画像');return r.text()})]);scene.innerHTML=svg;
 const nodes=new Map(data.maps.map(n=>[n.id,n])),edges=data.edges;let current='village',scale=.8,tx=0,ty=0;
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 const normalize=s=>s.normalize('NFKC').replace(/\s/g,'').toLowerCase();

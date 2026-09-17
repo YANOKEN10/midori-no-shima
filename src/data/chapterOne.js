@@ -1,3 +1,4 @@
+import {refineAlpineRoutes65} from './alpineRoutes65.js';
 import {refineMaps61} from './dungeonLayouts61.js';
 import {addTownLife} from './townLife.js';
 import {composeGrassPlots} from './grassPlots.js';
@@ -147,6 +148,7 @@ export function buildChapterOne(){
  if(!deenaSpot)throw Error('No safe Deena clearing');
  deenaMap.npcs.push({...deenaSpot,name:'ディーナ',artMon:'ディーナ',script:'post:deena',noRoam:true,dir:'down',talk:['ディーナが 静かに こちらを見ている。']});
  addTownLife(M);
+ refineAlpineRoutes65(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
  return M;
 }

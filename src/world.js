@@ -589,7 +589,7 @@ export const world = {
         await wait(600);
         await ui.say(["おまたせしました！", "みんな げんきに なりました。"]);
         const b = State.save.backTo;
-        if (b) State.save.lastCenter = { map: b.map, x: b.x, y: b.y };
+        if (b && !n.restStop) State.save.lastCenter = { map: b.map, x: b.x, y: b.y };
         saveLocal();
         if (cloud.signedIn) saveCloud(true);
       }

@@ -1,3 +1,4 @@
+import {alpineReady65,drawAlpineProp65} from './alpineArt65.js';
 import {drawForest61,drawJungleFeet61} from './jungleArt61.js';
 const cottage=new Image();cottage.src=new URL('../assets/house-v60/chalet.png',import.meta.url).href;
 import {drawSign,signReady} from './signArt.js';
@@ -25,7 +26,7 @@ function landscape(c,map,x,y,ch){
  const rural=['village','rods','route1','route2'].includes(map.id);
  if(!wild&&!rural)return false;
  ground(c,'grass',x*32,y*32);
- if(map.id==='mountain'||['lake','ancient'].includes(map.biome))mountainFloor(c,x*32,y*32);
+ if(!map.alpineRoute65&&(map.id==='mountain'||['lake','ancient'].includes(map.biome)))mountainFloor(c,x*32,y*32);
  if((wild||map.explorationDesign)&&ch==='.') {mountainTrail(c,map,x,y);return true;}
  if(ch!=='.'||wild)return true;
  const track=(a,b)=>{const t=map.rows[b]?.[a];return t==='.'||t==='D'||t==='S'&&map.signs.some(s=>s.x===a&&s.y===b&&s.ground==='.');};
@@ -93,7 +94,7 @@ export function drawChapterMap(ctx,map,camX,camY){
  }
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
  const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
- if(drawMarineTile(c,map,x,y,ch)){drawRoad(c,map,x,y);continue;}
+ if(drawMarineTile(c,map,x,y,ch)){if(!(map.alpineRoute65&&ch==='d'))drawRoad(c,map,x,y);continue;}
  if(groundCh==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
  
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
@@ -114,9 +115,9 @@ export function drawChapterMap(ctx,map,camX,camY){
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
- for(const p of map.props||[]){if(p.fashionShop){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
+ for(const p of map.props||[]){if(drawAlpineProp65(c,p,map,drawMaterial))continue;if(p.fashionShop){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
  if(map.room)paintInterior(c,map);
- if(roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!(map.biome||map.townPond)||marineReady()))cache.set(map,cv);}
+ if(alpineReady65(map)&&roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!(map.biome||map.townPond)||marineReady()))cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }
