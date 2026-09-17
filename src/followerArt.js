@@ -8,7 +8,8 @@ import {FOLLOWER_SIZES} from './data/followerSizes.js';
 // Species-specific field scale: compress large bodies without flattening their differences.
 const fieldSizeOverrides={10:26,11:38,20:40,117:42,154:24,155:32,156:44};
 export const followerSize=name=>{const authored=FOLLOWER_SIZES[legacyName(name)]??32;return fieldSizeOverrides[SPECIES[name]?.no]??Math.round(authored<=32?authored:32+(authored-32)*.6);};
-export const followerDistance=name=>Math.max(1.1,(followerSize(name)*.925+6)/32);
+// Vertical sprites intentionally overlap in depth; horizontal silhouettes stay separate.
+export const followerDistance=(name,dir='right')=>Math.max(.9,(followerSize(name)*.65+5)/32)*(['up','down'].includes(dir)?.86:1);
 const sheets=new Map(),frames=new Map();
 export function followerSheet(name){const no=SPECIES[name]?.no;if(!no)return null;if(!sheets.has(no)){const im=new Image();im.src=new URL('../assets/'+(V63_IDS.has(no)?'followers-v63/':WALK_V51_IDS.has(no)?'followers-v52/':REVISED_IDS.has(no)?'followers-v47/':'followers-v14/')+String(no).padStart(3,'0')+'.png',import.meta.url).href;sheets.set(no,im);}return sheets.get(no);}
 export async function loadFollowerSheet(name){const im=followerSheet(name);if(!im)return false;try{await im.decode();return true;}catch{return false;}}

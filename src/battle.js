@@ -241,7 +241,7 @@ async function doTurn(playerMove, skipPlayer) {
     if (fainted(def.mon)) break;
   }
 
-  // ターンの おわり（どく・やけど・やどりぎ）
+  // ターンの おわり（どく・やけど・エネスポンジ）
   for (const s of [B.you, B.foe]) {
       if (!s) continue;
     if (fainted(s.mon)) continue;
@@ -257,7 +257,7 @@ async function doTurn(playerMove, skipPlayer) {
       const d = Math.max(1, Math.floor(maxHp(s.mon) / 16));
       s.mon.hp = Math.max(0, s.mon.hp - d);
       other.mon.hp = Math.min(maxHp(other.mon), other.mon.hp + d);
-      await ui.say([label(s) + "は やどりぎに たいりょくを すわれた！"]);
+      await ui.say([label(s) + "は エネスポンジに たいりょくを すわれた！"]);
       await wait(220);
     }
   }

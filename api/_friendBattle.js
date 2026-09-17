@@ -1,11 +1,12 @@
 const C=require('./_friendCatalog.json');
 // Old save names remain accepted without duplicating the 153-species catalog.
 for(const[oldName,newName]of Object.entries(C.aliases||{}))if(!C.species[oldName]&&C.species[newName])Object.defineProperty(C.species,oldName,{value:C.species[newName],enumerable:false});
+for(const [oldName,newName]of Object.entries(C.moveAliases||{}))if(!C.moves[oldName]&&C.moves[newName])Object.defineProperty(C.moves,oldName,{value:C.moves[newName],enumerable:false});
 const clone=x=>JSON.parse(JSON.stringify(x));
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,Math.floor(Number(x)||0)));
 const stage=n=>[.25,.28,.33,.4,.5,.66,1,1.5,2,2.5,3,3.5,4][clamp(n,-6,6)+6];
 function stats(m,key){const sp=C.species[m.sp];let n=Math.floor((2*sp.base[key]+clamp(m.iv?.[key],0,31)+Math.floor(clamp(m.ev?.[key],0,252)/4))*m.lv/100)+(key==='hp'?m.lv+10:5);if(C.items?.[m.heldItem]?.stat===key)n=Math.floor(n*1.1);return n;}
-function combatMon(input,level){if(!input||!C.species[input.sp])throw Error('ガオンが見つかりません');const m=clone(input);m.sp=C.aliases?.[m.sp]||m.sp;m.lv=level||clamp(m.lv,1,100);m.maxHp=stats(m,'hp');m.hp=m.maxHp;m.status='';m.st={};m.sleep=0;m.leech=false;m.flinch=false;m.moves=(m.moves||[]).filter(x=>C.moves[x.name]).slice(0,4).map(x=>({name:x.name,pp:C.moves[x.name].pp,max:C.moves[x.name].pp}));if(!m.moves.length)m.moves=[{name:'タックル',pp:35,max:35}];return m;}
+function combatMon(input,level){if(!input||!C.species[input.sp])throw Error('ガオンが見つかりません');const m=clone(input);m.sp=C.aliases?.[m.sp]||m.sp;m.lv=level||clamp(m.lv,1,100);m.maxHp=stats(m,'hp');m.hp=m.maxHp;m.status='';m.st={};m.sleep=0;m.leech=false;m.flinch=false;m.moves=(m.moves||[]).map(x=>({...x,name:C.moveAliases?.[x.name]||x.name})).filter(x=>C.moves[x.name]).slice(0,4).map(x=>({name:x.name,pp:C.moves[x.name].pp,max:C.moves[x.name].pp}));if(!m.moves.length)m.moves=[{name:'タックル',pp:35,max:35}];return m;}
 function teamFromSave(save,ids,rule){if(!Array.isArray(ids)||new Set(ids).size!==ids.length)throw Error('ガオンを重複せず選んでください');const party=save.party||[],size=rule==='level50'?3:party.length;if(ids.length!==size||!size)throw Error(rule==='level50'?'3匹を選んでください':'手持ち全員を選んでください');return ids.map(id=>{const m=party.find(x=>x.companionId===id);if(!m)throw Error('手持ちのガオンを選んでください');return combatMon(m,rule==='level50'?50:undefined)});}
 function begin(sides,coop=false){return {sides:clone(sides).map((s,i)=>({...s,group:s.group??i,active:0})),turn:1,pending:{},logs:['バトル開始！'],finished:false,winner:null,coop};}
 function current(side){return side.team[side.active]}

@@ -1,3 +1,4 @@
+import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
 import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
 import {postgameCleared,refreshPostgame} from './postgame62.js';
 import {areaBgm,musicArea} from './musicPolicy.js';
@@ -1088,10 +1089,11 @@ export const world = {
 
     // ひとたち（うしろに いる人から）
     this.humanTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
-    const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1,trailingMon?followerDistance(trailingMon.sp):1);
+    const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:.7,trailingMon?followerDistance(trailingMon.sp,this.dir):1);
     const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
     if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
+    if(!(State.save.flags['end:eden']&&!State.save.flags['end:momiWon']))this.followerTrail.face(this.x+this.ox/T,this.y+this.oy/T,this.dir,(x,y)=>this.canFreeStand(x,y));
     this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
     const follower=followingMon(),pose=this.followerTrail.pose;
     if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
@@ -1140,9 +1142,11 @@ export const world = {
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawDaycareLabels(G.ctx,map,State.save,camX,camY);
+    const environmentNow=new Date(),environmentOptions={storyStorm:map.id==='raden'&&powerOutage(State.save)};
+    drawRealtimeEnvironment(G.ctx,map,this.tick,environmentNow,environmentOptions);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
-    drawFrontierWeather(G.ctx,map,this.tick);drawEndWeather(G.ctx,this);
-    if(this.showName<=0)drawVoyageStatus(G.ctx,map,State.save);
+    if(map.kind==='out'&&map.frontierTheme==='ash')drawFrontierWeather(G.ctx,map,this.tick);drawEndWeather(G.ctx,this);
+    if(this.showName<=0){drawClockWeather(G.ctx,map,environmentNow,environmentOptions);drawVoyageStatus(G.ctx,map,State.save);}
     // まちの なまえ（はいってすぐ）
     G.use("ui");
     if (this.showName > 0) {
