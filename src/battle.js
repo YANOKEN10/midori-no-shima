@@ -646,7 +646,7 @@ function drawBattle() {
 
   if (!B.foe.hidden && foeArt) {
     const generated = battleArt(B.foe.mon.sp);
-    if (generated) G.drawScaled(generated, 200 + (B.foe.shakeX | 0), 44, 88, 88);
+    if (generated) {const size=species(B.foe.mon.sp).no===20?112:88;G.drawScaled(generated,244-size/2+(B.foe.shakeX|0),132-size,size,size);}
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(200, 44, 88, 88, 0); G.ctx.globalAlpha = 1;
@@ -654,7 +654,7 @@ function drawBattle() {
   }
   if (B.you && !B.you.hidden && youArt && B.intro!=='trainer' && B.intro!=='sending') {
     const generated = battleArt(B.you.mon.sp, true);
-    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=88*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
+    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=(species(B.you.mon.sp).no===20?112:88)*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(20, 120, 88, 88, 0); G.ctx.globalAlpha = 1;

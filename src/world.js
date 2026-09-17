@@ -22,7 +22,7 @@ import {marineGate} from './marineRules.js';
 import {drawMarineAsset,drawMarineAtmosphere} from './marineArt.js';
 import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
-import {drawFollower} from './followerArt.js';
+import {drawFollower,followerSize} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
 import { drawNpc } from './npcArt.js?v=20260913-fashion-v50';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
@@ -315,14 +315,18 @@ export const world = {
       if (n.roamWait > 0) continue;
       n.roamWait=700+Math.random()*2000;
       if (Math.random()<.3) continue;
-      const d=dirs[Math.floor(Math.random()*dirs.length)];
+      const owner=n.followOwner!==undefined?this.npcs[n.followOwner]:null;
+      if(owner&&Math.hypot(owner.x-n.x,owner.y-n.y)<=2.2)continue;
+      let nextDirection=null;
+      if(owner){const queue=[{x:n.x,y:n.y,first:null}],seen=new Set([n.x+','+n.y]);for(let i=0;i<queue.length&&!nextDirection;i++){const at=queue[i];if(at.first&&Math.hypot(at.x-owner.x,at.y-owner.y)<=2.2){nextDirection=at.first;break;}for(const d of dirs){const x=at.x+d[0],y=at.y+d[1],key=x+','+y,ch=tileAt(this.map,x,y);if(seen.has(key)||ch==null||solid(ch)||ch==='L'||landmarkBlocked(this.map,x,y)||this.npcs.some(o=>o!==n&&!o.gone&&((o.x===x&&o.y===y)||(o.moving&&o.toX===x&&o.toY===y)))||Math.hypot(this.x-x,this.y-y)<.85||(this.map.warps||[]).some(w=>Math.abs(w.x-x)+Math.abs(w.y-y)<=1))continue;seen.add(key);queue.push({x,y,first:at.first||d});}}if(!nextDirection)continue;}
+      const d=nextDirection||dirs[Math.floor(Math.random()*dirs.length)];
       const tx=n.x+d[0],ty=n.y+d[1],ch=tileAt(this.map,tx,ty);
       n.dir=d[2];
       const occupied=this.npcs.some(o=>o!==n&&!o.gone&&((o.x===tx&&o.y===ty)||(o.moving&&o.toX===tx&&o.toY===ty)));
-      const player=(this.x===tx&&this.y===ty)||(this.moving&&this.mx===tx&&this.my===ty);
+      const player=Math.hypot(this.x+(this.ox||0)/T-tx,this.y+(this.oy||0)/T-ty)<.85||(this.moving&&this.mx===tx&&this.my===ty);
       const special=[...(this.map.warps||[]),...(this.map.signs||[])].some(o=>Math.abs(o.x-tx)+Math.abs(o.y-ty)<=1);
       const outsideBounds=n.roamBounds&&(tx<n.roamBounds[0]||ty<n.roamBounds[1]||tx>n.roamBounds[2]||ty>n.roamBounds[3]);
-      if (outsideBounds || Math.hypot(tx-n.homeX,ty-n.homeY)>2 || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
+      if (outsideBounds || (!owner&&Math.hypot(tx-n.homeX,ty-n.homeY)>2) || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
       n.toX=tx;n.toY=ty;n.roamProgress=0;n.moving=true;
     }
   },
@@ -333,7 +337,7 @@ export const world = {
       const ch = tileAt(this.map, Math.floor(x + ox), Math.floor(y + oy));
       if (ch == null || solid(ch) || ch === "L") return false;
     }
-    return !this.npcs.some((n) => !n.gone && !n.residentPet && Math.hypot(n.x - x, n.y - y) < .58);
+    return !this.npcs.some((n) => !n.gone && (Math.hypot(n.x+(n.ox||0)/T-x,n.y+(n.oy||0)/T-y)<.72||(n.moving&&Math.hypot(n.toX-x,n.toY-y)<.72)));
   },
 
   /* --- あるく ------------------------------------------------- */
@@ -360,8 +364,8 @@ export const world = {
   },
 
   npcAt(x, y) {
-    return this.npcs.find((n) => !n.gone && !n.residentPet && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
-      ? Math.hypot(n.x - x, n.y - y) < .72
+    return this.npcs.find((n) => !n.gone && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
+      ? (Math.hypot(n.x+(n.ox||0)/T-x,n.y+(n.oy||0)/T-y)<.72||(n.moving&&Math.hypot(n.toX-x,n.toY-y)<.72))
       : (n.x === x && n.y === y) || (n.moving && n.toX === x && n.toY === y)));
   },
 
@@ -1084,7 +1088,7 @@ export const world = {
 
     // ひとたち（うしろに いる人から）
     this.humanTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
-    this.followerTrail.distance=State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1;
+    const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1,trailingMon?(followerSize(trailingMon.sp)*.925+14)/T:1);
     const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
     if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
@@ -1134,7 +1138,6 @@ export const world = {
       }
     }
 
-    for(const pet of map.residentFollowers||[]){const owner=this.npcs[pet.owner];if(!owner||owner.gone)continue;owner.petTrail ||= new FollowerTrail();if(!owner.petTrail.points)owner.petTrail.reset(owner.x,owner.y,owner.dir);owner.petTrail.record(owner.x+(owner.ox||0)/T,owner.y+(owner.oy||0)/T,owner.dir);const pose=owner.petTrail.pose;if(pose)drawFollower(G.ctx,{sp:pet.sp},pose,this.tick,pose.x*T+16-camX,pose.y*T+28-camY);}
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
     drawDaycareLabels(G.ctx,map,State.save,camX,camY);
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
