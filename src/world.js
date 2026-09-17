@@ -22,7 +22,7 @@ import {marineGate} from './marineRules.js';
 import {drawMarineAsset,drawMarineAtmosphere} from './marineArt.js';
 import {drawItem} from './itemArt.js';
 import {FollowerTrail} from './followerTrail.js';
-import {drawFollower,followerSize} from './followerArt.js';
+import {drawFollower,followerDistance} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
 import { drawNpc } from './npcArt.js?v=20260913-fashion-v50';
 import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
@@ -1088,7 +1088,7 @@ export const world = {
 
     // ひとたち（うしろに いる人から）
     this.humanTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
-    const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1,trailingMon?(followerSize(trailingMon.sp)*.925+14)/T:1);
+    const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:1,trailingMon?followerDistance(trailingMon.sp):1);
     const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
     if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
