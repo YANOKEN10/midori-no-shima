@@ -1,11 +1,12 @@
+import {drawNature73} from './natureArt73.js';
 import {drawEditorGround72} from './editorGround72.js';
 import {furnitureArt,shopStyle} from './decorArt.js';
-const THEMES={home:['#d9b47d','#b58257','#f2d8a3','#9e514e'],cottage:['#c1ae89','#947458','#e3d9b6','#467c73'],lab:['#d2dce1','#9eaeb9','#e9f3e5','#49808d'],hospital:['#f1dfa3','#d6c58a','#fff3cb','#477d78'],shop:['#d6bd8e','#ac865c','#e7dcc1','#4b8194']};
+const THEMES={castle:['#c9cbd2','#9298a6','#e6e4d9','#8d2440'],home:['#d9b47d','#b58257','#f2d8a3','#9e514e'],cottage:['#c1ae89','#947458','#e3d9b6','#467c73'],lab:['#d2dce1','#9eaeb9','#e9f3e5','#49808d'],hospital:['#f1dfa3','#d6c58a','#fff3cb','#477d78'],shop:['#d6bd8e','#ac865c','#e7dcc1','#4b8194']};
 export function paintInterior(c,map){const r=map.room;if(!r)return;const [floor,line,wall,accent]=r.shopTown?shopStyle(r).slice(1):THEMES[r.theme];const box=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
  const [bx,by,bw,bh]=r.bounds||[3,4,10,7],left=bx*32,top=by*32,right=(bx+bw)*32,bottom=(by+bh)*32;
  box(0,0,map.rows[0].length*32,map.rows.length*32,'#172d36');box(left-6,top-38,bw*32+12,bh*32+44,'#53676a');box(left,top,bw*32,bh*32,floor);
  for(let y=top;y<bottom;y+=16){box(left,y,bw*32,1,line);for(let x=left+(y%32?24:0);x<right;x+=48)box(x,y,1,16,line);}
- if(['lab','hospital'].includes(r.theme)||(r.theme==='shop'&&!['village','rods','resure','belerio','leafTown'].includes(r.shopTown))){for(let y=top;y<bottom;y+=32)for(let x=left;x<right;x+=32){box(x+1,y+1,30,30,(x+y)%64?floor:wall);box(x+3,y+3,26,1,'#ffffff55');if(r.theme==='hospital'){box(x+13,y+13,5,5,line);}}}
+ if(['lab','hospital','castle'].includes(r.theme)||(r.theme==='shop'&&!['village','rods','resure','belerio','leafTown'].includes(r.shopTown))){for(let y=top;y<bottom;y+=32)for(let x=left;x<right;x+=32){box(x+1,y+1,30,30,(x+y)%64?floor:wall);box(x+3,y+3,26,1,'#ffffff55');if(r.theme==='hospital'){box(x+13,y+13,5,5,line);}}}
  box(left,top-32,bw*32,32,wall);box(left,top-7,bw*32,7,line);box(left,top-2,bw*32,2,'#506870');for(let x=left+4;x<right-2;x+=16)box(x,top-29,1,20,'#ffffff44');
  // Continuous skirting, framed posters, and warm light fixtures finish the walls.
  box(left,top,3,bh*32,line);box(right-3,top,3,bh*32,line);for(const x of [left+7,right-23]){box(x,top-27,16,18,accent);box(x+2,top-25,12,14,'#f4ebcb');box(x+5,top-21,6,6,line);}
@@ -21,7 +22,7 @@ export function paintInterior(c,map){const r=map.room;if(!r)return;const [floor,
 }
 
 export function drawFurniture72(c,r,furniture){const accent=(r.shopTown?shopStyle(r).slice(1):THEMES[r.theme]||THEMES.home)[3];const box=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
- for(const [kind,tx,ty,tw,th]of furniture){const x=tx*32,y=ty*32,w=tw*32,h=th*32;box(x+3,y+6,w-2,h-3,'#00000022');if(furnitureArt(c,r,kind,x,y,w,h))continue;
+ for(const [kind,tx,ty,tw,th]of furniture){const x=tx*32,y=ty*32,w=tw*32,h=th*32;if(kind.startsWith('reference78-')&&drawNature73(c,kind,x,y,w,h))continue;box(x+3,y+6,w-2,h-3,'#00000022');if(furnitureArt(c,r,kind,x,y,w,h))continue;
  const panel=(color)=>{box(x+2,y+2,w-4,h-4,'#524638');box(x+4,y+3,w-8,h-8,color);box(x+5,y+4,w-10,2,'#ffffff60');};
  if(['books','shelf'].includes(kind)){panel('#9e6b49');for(let yy=y+7;yy<y+h-6;yy+=18){box(x+6,yy,w-12,13,'#54463c');for(let xx=x+8;xx<x+w-10;xx+=9){const colors=kind==='books'?['#607c85','#c99b56','#be7268','#738754']:['#73b8ad','#dc846f','#cfb874','#809bc1'];box(xx,yy+2,6,10,colors[Math.floor((xx+yy)/9)%4]);box(xx+1,yy+3,3,2,'#f0dfbd');}box(x+5,yy+14,w-10,3,'#d4ad78');}}
  else if(kind==='bed'){panel('#94704d');box(x+7,y+7,w-14,h-14,'#f3eccf');box(x+9,y+10,w-18,14,'#fffbea');box(x+7,y+29,w-14,h-35,accent);box(x+10,y+32,w-20,3,'#e8c79b');box(x+5,y+h-8,w-10,5,'#73553d');}

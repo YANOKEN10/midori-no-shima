@@ -1,0 +1,5 @@
+# Leafin Map Studio icon
+
+Mode: built-in image_gen.
+
+Use case: logo-brand. Create a square home-screen app icon for Gaon World's administrator Map Studio. Reference image is the exact character identity: Leafin, a small cream-white woodland Gaon with one large green leaf on its head, peach cheeks, long ears, dark brown eyes, tiny green tail. Preserve these distinctive features and colors. Show Leafin cheerful, waist-up, holding a large golden pencil, with a simple little green map tile and curving path beneath it. Polished crisp pixel-art matching the reference, charming and readable at 48px. Deep teal full-bleed opaque square background, gold and leaf-green highlights. Central safe composition suitable for smartphone corner clipping. No text, no letters, no rounded outer border, no phone mockup, no other characters, no watermark.

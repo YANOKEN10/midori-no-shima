@@ -1,6 +1,6 @@
 const L=require('./_lib'),F=require('./_friendStore');
 const base=require('../assets/editor-v72/base-maps.json'),species=require('../assets/editor-v72/species.json');
-const model=import('../src/editorModel72.mjs');const connections=import('../src/connections75.mjs');
+const model=import('../src/editorModel72.mjs');const connections=import('../src/connections75.mjs');const anchors=import('../src/linkAnchors78.mjs');
 const PUB='maps72:published';
 // Pinned to the existing account record, not a self-assigned display name or client flag.
 const isAdmin=u=>!!u&&u.id==='ヤノケン'&&Number(u.created)===1789724902905;
@@ -17,9 +17,10 @@ module.exports=async(req,res)=>{L.cors(req,res);if(req.method==='OPTIONS')return
  if(b.action!=='save'&&b.publicRevision!==(published?.version||0))return res.status(409).json({message:'公開状態が更新されています。再読み込みしてください。'});
  const m=await model,cat=m.catalog(base,species);let edit=b.action==='rollback'?previous?.data?.edit:b.edit;if(b.action==='rollback'&&!previous?.data)return res.status(400).json({message:'戻せる履歴がありません。'});
  if(edit===undefined)return res.status(400).json({message:'編集データがありません。'});if(edit!==null){if(JSON.stringify(edit).length>250000)return res.status(413).json({message:'編集データが大きすぎます。'});const errors=m.validateEdit(base[b.map],edit,cat);if(errors.length)return res.status(400).json({message:errors.join('\n'),errors});edit=JSON.parse(JSON.stringify(edit));}else if(b.action!=='rollback')return res.status(400).json({message:'編集データがありません。'});
- const effective={...base};for(const[id,d]of Object.entries(published?.data?.maps||{})){if(base[id]&&!m.validateEdit(base[id],d,cat).length)effective[id]=m.applyEdit(base[id],d,cat);}effective[b.map]=edit?m.applyEdit(base[b.map],edit,cat):base[b.map];const linkErrors=(await connections).validateLinks75(effective);if(linkErrors.length)return res.status(400).json({message:linkErrors.join('\n'),errors:linkErrors});
+ const anchorTools=await anchors,previousEdits=JSON.parse(JSON.stringify(published?.data?.maps||{})),previousViews={...base};for(const[id,d]of Object.entries(previousEdits))if(base[id]&&!m.validateEdit(base[id],d,cat).length)previousViews[id]=m.applyEdit(base[id],d,cat);for(const[id,d]of Object.entries(previousEdits))if(previousViews[id])anchorTools.attachLinkAnchors78(d,previousViews[id],previousViews);if(edit)anchorTools.attachLinkAnchors78(edit,m.applyEdit(base[b.map],edit,cat),previousViews);
+ const effective={...base};for(const[id,d]of Object.entries(previousEdits)){if(base[id]&&!m.validateEdit(base[id],d,cat).length)effective[id]=m.applyEdit(base[id],d,cat);}effective[b.map]=edit?m.applyEdit(base[b.map],edit,cat):base[b.map];const linkErrors=(await connections).validateLinks75(effective);if(linkErrors.length)return res.status(400).json({message:linkErrors.join('\n'),errors:linkErrors});
  const expected={[key]:draft?.version||0},writes={[key]:{edit,by:user.id,at:Date.now()}};
- if(b.action!=='save'){const maps={...published?.data?.maps};const old=maps[b.map]||null;if(edit)maps[b.map]=edit;else delete maps[b.map];if(JSON.stringify(maps).length>1400000)return res.status(413).json({message:'公開データの上限です。不要な床の変更を減らしてください。'});expected[PUB]=published?.version||0;expected[history]=previous?.version||0;writes[PUB]={maps,at:Date.now()};writes[history]={edit:old,at:Date.now()};}
+ if(b.action!=='save'){const maps={...previousEdits};const old=maps[b.map]||null;if(edit)maps[b.map]=edit;else delete maps[b.map];if(JSON.stringify(maps).length>1400000)return res.status(413).json({message:'公開データの上限です。不要な床の変更を減らしてください。'});expected[PUB]=published?.version||0;expected[history]=previous?.version||0;writes[PUB]={maps,at:Date.now()};writes[history]={edit:old,at:Date.now()};}
  if(!await F.commit(expected,writes))return res.status(409).json({message:'編集が競合しました。再読み込みしてください。'});
  return res.status(200).json({ok:true,draftRevision:expected[key]+1,publicRevision:b.action==='save'?published?.version||0:expected[PUB]+1,hasPrevious:b.action!=='save'||!!previous?.data});
  }catch(e){console.error('map editor:',e.message);return res.status(503).json({message:'保存サーバーに接続できません。下書きを端末に書き出し、再度お試しください。'});}};

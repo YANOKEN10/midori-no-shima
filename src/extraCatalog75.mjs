@@ -254,7 +254,7 @@ export const EXTRA75=[
     "tile": "#",
     "source": "village",
     "file": "assets/garden-v75/extra-castle.png",
-    "building": "house",
+    "building": "adminCastle78", "arrival": [9,19],
     "doorOffset": [
       3,
       5
