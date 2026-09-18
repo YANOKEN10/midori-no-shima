@@ -1,0 +1,3 @@
+import {height75} from './elevation75.mjs';
+import {drawNature73} from './natureArt73.js';
+export function drawElevation75(c,map){for(const t of map.elevations75||[]){if(!t.level)continue;const x=t.x*32,y=t.y*32;c.fillStyle=t.level===2?'#ffffe51b':'#ffffe50b';c.fillRect(x,y,32,32);if(height75(map,t.x,t.y+1)<t.level)drawNature73(c,'garden75-extra-cliff',x,y+12,32,20);if(height75(map,t.x-1,t.y)<t.level){c.fillStyle='#847357';c.fillRect(x,y,3,32);}if(height75(map,t.x+1,t.y)<t.level){c.fillStyle='#847357';c.fillRect(x+29,y,3,32);}}for(const p of map.climbs75||[])drawNature73(c,'garden75-extra-'+p.kind,p.x*32,(p.y-1)*32+12,32,44);}

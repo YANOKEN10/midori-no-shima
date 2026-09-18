@@ -1,3 +1,4 @@
+import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
 import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
 import {postgameCleared,refreshPostgame} from './postgame62.js';
@@ -265,14 +266,14 @@ export const world = {
     if (!move.x && !move.y) { this.moving = false; this.walkFrame = 0; return; }
     const length = Math.hypot(move.x, move.y) || 1;
     const vx = move.x / length, vy = move.y / length;
-    const distance = Math.min(0.18, dt * 0.0062);
+    const distance = Math.min(0.18, dt * (climbAt75(this.map,this.fx,this.fy)?.kind==='ladder'?0.0032:0.0062));
     if (Math.abs(vx) > Math.abs(vy)) this.dir = vx < 0 ? "left" : "right";
     else this.dir = vy < 0 ? "up" : "down";
 
     let nx = this.fx + vx * distance, ny = this.fy + vy * distance;
     // 壁沿いで止まり過ぎないよう、X/Yを分離して滑らせる。
-    if (this.canFreeStand(nx, this.fy)) this.fx = nx;
-    if (this.canFreeStand(this.fx, ny)) this.fy = ny;
+    if (canTraverse75(this.map,this.fx,this.fy,nx,this.fy)&&this.canFreeStand(nx, this.fy)) this.fx = nx;
+    if (canTraverse75(this.map,this.fx,this.fy,this.fx,ny)&&this.canFreeStand(this.fx, ny)) this.fy = ny;
     this.x = this.fx; this.y = this.fy;
     this.ox = this.oy = 0;
     this.moving = true;
@@ -319,7 +320,7 @@ export const world = {
       const owner=n.followOwner!==undefined?this.npcs[n.followOwner]:null;
       if(owner&&Math.hypot(owner.x-n.x,owner.y-n.y)<=2.2)continue;
       let nextDirection=null;
-      if(owner){const queue=[{x:n.x,y:n.y,first:null}],seen=new Set([n.x+','+n.y]);for(let i=0;i<queue.length&&!nextDirection;i++){const at=queue[i];if(at.first&&Math.hypot(at.x-owner.x,at.y-owner.y)<=2.2){nextDirection=at.first;break;}for(const d of dirs){const x=at.x+d[0],y=at.y+d[1],key=x+','+y,ch=tileAt(this.map,x,y);if(seen.has(key)||ch==null||solid(ch)||ch==='L'||landmarkBlocked(this.map,x,y)||this.npcs.some(o=>o!==n&&!o.gone&&((o.x===x&&o.y===y)||(o.moving&&o.toX===x&&o.toY===y)))||Math.hypot(this.x-x,this.y-y)<.85||(this.map.warps||[]).some(w=>Math.abs(w.x-x)+Math.abs(w.y-y)<=1))continue;seen.add(key);queue.push({x,y,first:at.first||d});}}if(!nextDirection)continue;}
+      if(owner){const queue=[{x:n.x,y:n.y,first:null}],seen=new Set([n.x+','+n.y]);for(let i=0;i<queue.length&&!nextDirection;i++){const at=queue[i];if(at.first&&Math.hypot(at.x-owner.x,at.y-owner.y)<=2.2){nextDirection=at.first;break;}for(const d of dirs){const x=at.x+d[0],y=at.y+d[1],key=x+','+y,ch=tileAt(this.map,x,y);if(!canTraverse75(this.map,at.x,at.y,x,y)||seen.has(key)||ch==null||solid(ch)||ch==='L'||landmarkBlocked(this.map,x,y)||this.npcs.some(o=>o!==n&&!o.gone&&((o.x===x&&o.y===y)||(o.moving&&o.toX===x&&o.toY===y)))||Math.hypot(this.x-x,this.y-y)<.85||(this.map.warps||[]).some(w=>Math.abs(w.x-x)+Math.abs(w.y-y)<=1))continue;seen.add(key);queue.push({x,y,first:at.first||d});}}if(!nextDirection)continue;}
       const d=nextDirection||dirs[Math.floor(Math.random()*dirs.length)];
       const tx=n.x+d[0],ty=n.y+d[1],ch=tileAt(this.map,tx,ty);
       n.dir=d[2];
@@ -327,7 +328,7 @@ export const world = {
       const player=Math.hypot(this.x+(this.ox||0)/T-tx,this.y+(this.oy||0)/T-ty)<.85||(this.moving&&this.mx===tx&&this.my===ty);
       const special=[...(this.map.warps||[]),...(this.map.signs||[])].some(o=>Math.abs(o.x-tx)+Math.abs(o.y-ty)<=1);
       const outsideBounds=n.roamBounds&&(tx<n.roamBounds[0]||ty<n.roamBounds[1]||tx>n.roamBounds[2]||ty>n.roamBounds[3]);
-      if (outsideBounds || (!owner&&Math.hypot(tx-n.homeX,ty-n.homeY)>2) || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
+      if (!canTraverse75(this.map,n.x,n.y,tx,ty) || outsideBounds || (!owner&&Math.hypot(tx-n.homeX,ty-n.homeY)>2) || player || occupied || special || ch==null || solid(ch) || ch==='L' || landmarkBlocked(this.map,tx,ty)) continue;
       n.toX=tx;n.toY=ty;n.roamProgress=0;n.moving=true;
     }
   },
@@ -348,7 +349,7 @@ export const world = {
     const nx = this.x + dx, ny = this.y + dy;
     const ch = tileAt(this.map, nx, ny);
 
-    if (ch === null) return;
+    if (ch === null||!canTraverse75(this.map,this.x,this.y,nx,ny)) return;
     // がけは 下へ とびおりるだけ
     if (ch === "L") {
       if (d !== "down") return;
@@ -431,7 +432,7 @@ export const world = {
       this.enter(b.map, b.x, b.y, "down");
     } else {
       if (wp.back) State.save.backTo = wp.back;
-      this.enter(wp.to, wp.tx, wp.ty, wp.edge ? this.dir : "down");
+      this.enter(wp.to, wp.tx, wp.ty, wp.arrivalDir || (wp.edge ? this.dir : "down"));
     }
     for (let i = 5; i >= 0; i--) {
       this.doorFade = i / 5;
