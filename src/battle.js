@@ -92,7 +92,7 @@ export async function startBattle(opts) {
   battle.active = true;
   ui.setBattleMode(true);
 
-  playBgm(opts.tournament ? "tournament" : isTrainer && opts.trainer.name === "ヤノケン" ? "yanokenBattle" : opts.emblemTest || isTrainer && (opts.trainer.leader || opts.trainer.champ || opts.trainer.major) ? "boss" : "battle");
+  playBgm(opts.tournament ? "tournament" : isTrainer && (opts.trainer.originalName80||opts.trainer.name) === "ヤノケン" ? "yanokenBattle" : opts.emblemTest || isTrainer && (opts.trainer.leader || opts.trainer.champ || opts.trainer.major) ? "boss" : "battle");
   seeMon(B.foe.mon.sp);
 
   await wait(260);

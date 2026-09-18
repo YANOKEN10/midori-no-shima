@@ -1,3 +1,4 @@
+import {drawResources80} from './resource80.js';
 import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
 import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
@@ -569,7 +570,7 @@ export const world = {
       if(!State.save.party.length){await ui.say(["まずは 草むらで ガオンをつかまえよう。","仲間ができたら しょうぶしよう！"]);return;}
       State.save.battleTerrain="grass";
       await ui.say(npcDialogue(State.save,this.mapId,n,"talk",n.talk || ["しょうぶだ！"]));
-      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name, appearance79:{name:n.name,variant:n.variant,look:n.look,script:n.script} }) });
+      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.displayName||n.name, originalName80:n.name, appearance79:{name:n.name,variant:n.variant,look:n.look,script:n.script} }) });
       if (res === "lose") { await this.blackout(); return; }
       setFlag(beatKey);
       if(ordinary)markRematch(State.save,beatKey);
@@ -1147,7 +1148,7 @@ export const world = {
     }
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
-    drawDaycareLabels(G.ctx,map,State.save,camX,camY);drawLot79(G.ctx,map,camX,camY);
+    drawDaycareLabels(G.ctx,map,State.save,camX,camY);drawLot79(G.ctx,map,camX,camY);drawResources80(G.ctx,map,State.save,camX,camY);
     const environmentNow=new Date(),environmentOptions={storyStorm:map.id==='raden'&&powerOutage(State.save)};
     drawRealtimeEnvironment(G.ctx,map,this.tick,environmentNow,{...environmentOptions,camX,camY});
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);

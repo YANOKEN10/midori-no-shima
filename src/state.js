@@ -167,7 +167,7 @@ export function loadInto(data) {
     for(const [oldName,newName]of Object.entries(SPECIES_ALIASES))if(G.save[key][oldName]){G.save[key][newName]=G.save[key][oldName];delete G.save[key][oldName];}
   }
   for(const key of ['starter','rivalStarter'])G.save[key]=SPECIES_ALIASES[G.save[key]]||G.save[key];
-  const names = {"ラグ・ネット":"ラグネット", "スーパーネット":"スーパーラグ", "ハイパーネット":"ハイパーラグ", "ヒールジェル":"ガオンのくすり"};
+  const names = {"つるはし":"採掘セット","ラグ・ネット":"ラグネット", "スーパーネット":"スーパーラグ", "ハイパーネット":"ハイパーラグ", "ヒールジェル":"ガオンのくすり"};
   for (const [oldName,newName] of Object.entries(names)) if (G.save.bag[oldName]) { G.save.bag[newName]=(G.save.bag[newName]||0)+G.save.bag[oldName]; delete G.save.bag[oldName]; }
   if (data && data.chapterVersion !== 5) { G.save.where={...START}; G.save.backTo={map:"village",x:13,y:12}; G.save.lastCenter=null; }
   G.save.chapterVersion=5;

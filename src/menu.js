@@ -439,13 +439,13 @@ export async function shopMenu() {
 
 async function buyMenu() {
   for (;;) {
-    const chosen=await ui.itemList(SHOP_LIST.map(name=>({name,n:(bagList('normal').find(e=>e.name===name)?.n||0)})),{mode:'buy',money:State.save.money});
+    const chosen=await ui.itemList(SHOP_LIST.map(name=>({name,n:(State.save.bag[name]||0)})),{mode:'buy',money:State.save.money});
     if(!chosen)return;
     const name=chosen.name,price=itemData(name).price;
-    if(name==='つるはし'&&State.save.bag[name]>0){await ui.say(['つるはしは すでに持っています。']);continue;}
+    if(name==='採掘セット'&&State.save.bag[name]>0){await ui.say(['採掘セットは すでに持っています。']);continue;}
     const max=Math.floor(State.save.money/price);
     if(max<1){await ui.say(['おかねが たりません。']);continue;}
-    const quantities=[1,2,3,5,10].filter(n=>n<=max);
+    const quantities=(name==='採掘セット'?[1]:[1,2,3,5,10]).filter(n=>n<=max);
     const ci=await ui.choice(quantities.map(n=>n+'こ  '+(n*price)+'円').concat('やめる'),{x:116,y:70,w:196,rows:6});
     if(ci<0||ci===quantities.length)continue;
     const n=quantities[ci];

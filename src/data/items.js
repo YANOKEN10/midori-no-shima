@@ -55,8 +55,8 @@ export function item(name) { return ITEMS[name] || { kind: "key", price: 0, desc
 export function isKey(name) { return item(name).kind === "key"; }
 
 // ショップの しなぞろえ
-Object.assign(ITEMS,{"つるはし":{kind:"key",price:500,desc:"岩に向かってAで採掘。1つの岩から毎日5回まで。"},...Object.fromEntries(Object.entries({"こいし":80,"てっこうせき":240,"どうこうせき":360,"きんこうせき":1200,"ひかりのけっしょう":2400}).map(([name,price])=>[name,{kind:"ore",price,desc:"採掘で見つかる素材。ショップで売ったり、自分のお店に並べられる。"}]))});
-export const SHOP_LIST = ["つるはし",
+Object.assign(ITEMS,{"採掘セット":{kind:"key",price:500,desc:"目印のある専用の木・岩に向かってAで素材採取。各場所で毎日5回まで。"},...Object.fromEntries(Object.entries({"もくざい":160,"じゅし":280,"かたいもくざい":480,"こいし":80,"てっこうせき":240,"どうこうせき":360,"きんこうせき":1200,"ひかりのけっしょう":2400}).map(([name,price])=>[name,{kind:"ore",price,desc:"専用の木や岩で採れる素材。ショップで売ったり、自分のお店に並べられる。"}]))});
+export const SHOP_LIST = ["採掘セット",
   "ラグネット", "スーパーラグ", "ガオンのくすり", "ハイヒール",
   "げどくそう", "しびれどめ", "ひやしそう", "めざましそう", "ぬけみちいし",
 ];
