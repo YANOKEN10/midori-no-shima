@@ -76,7 +76,7 @@ export const ui = {
   custom(drawFn, opt) {
     const o = opt || {};
     return new Promise((resolve) => {
-      stack.push({ kind: "custom", draw: drawFn, keep: o.keep, onPage: o.onPage, resolve: resolve });
+      stack.push({ kind: "custom", draw: drawFn, keep: o.keep, onPage: o.onPage, onInput: o.onInput, resolve: resolve });
     });
   },
 
@@ -96,6 +96,7 @@ export const ui = {
       if(n&&In.repeat('down',now)){w.i=(w.i+1)%n;beep('blip');}if(n&&In.repeat('up',now)){w.i=(w.i+n-1)%n;beep('blip');}
       if(In.hit('b')){beep('back');close(w,null);}else if(n&&In.hit('a')){beep('ok');close(w,{...list[w.i],category:w.category,index:w.i});}
     }
+    else if(w.kind==='custom'&&w.onInput){const key=In.hit('b')?'b':In.hit('a')?'a':In.repeat('up',now)?'up':In.repeat('down',now)?'down':null;if(key&&w.onInput(key)===true)close(w,true);}
     else if (w.kind === "custom") { const pageDir=w.onPage?(In.repeat("left",now,350,220)?-1:In.repeat("right",now,350,220)?1:0):0; if(pageDir){w.onPage(pageDir);beep("blip");} if (In.hit("a") || In.hit("b")) { beep("back"); close(w, true); } }
   },
 

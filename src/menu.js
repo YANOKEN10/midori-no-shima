@@ -1,3 +1,4 @@
+import {drawTypeIcon77} from './typeIcons77.js';
 import {habitatEntries,habitatRateLabel} from './habitats.js';
 import {FASHION_TOWNS,FASHION_ITEMS,fashionStock,itemLook,equipFashion} from './data/fashion.js';
 import {openFriends} from './friends.js';
@@ -92,6 +93,7 @@ export async function partyMenu(forItem) {
 }
 
 export async function showStatus(m) {
+  let cursor=0,selected=-1;
   normalizeMonStats(m);
   const sp = species(m.sp);
   await ui.custom(() => {
@@ -115,12 +117,21 @@ export async function showStatus(m) {
     m.moves.forEach((mv, i) => {
       const d = moveData(mv.name);
       const y = 176 + i * 23;
-      G.textFit(mv.name, 18, y, 142, 3, 15);
-      G.text(d.type, 166, y + 1, 3, 13);
+      if(i===cursor)G.text('▶',10,y+2,3,11);
+      if(i===selected)G.text('◆',23,y+2,3,10);
+      G.textFit(mv.name, 36, y, 123, 3, 14);
+      drawTypeIcon77(d.type,163,y-2,20);
+      G.text(d.type,187,y+1,3,11);
       G.textRight(mv.pp + "/" + mv.max, 304, y + 1, 3, 13);
     });
-    G.text("A・B もどる",18,266,3,10);
-  });
+    G.text(selected<0?'↑↓ えらぶ  A いれかえ  B もどる':'↑↓ いれかえ先  A けってい  B やめる',14,266,3,10);
+  },{onInput(key){
+    if(key==='b'){beep('back');if(selected>=0){selected=-1;return false;}return true;}
+    if(!m.moves.length)return false;
+    if(key==='up'||key==='down'){cursor=(cursor+(key==='up'?-1:1)+m.moves.length)%m.moves.length;beep('blip');return false;}
+    if(key==='a'){if(m.moves.length<2)return false;if(selected<0){selected=cursor;beep('ok');}else{if(selected!==cursor){[m.moves[selected],m.moves[cursor]]=[m.moves[cursor],m.moves[selected]];saveLocal();}selected=-1;beep('ok');}}
+    return false;
+  }});
 }
 
 /* ============ どうぐ ============ */
