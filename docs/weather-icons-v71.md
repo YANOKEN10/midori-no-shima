@@ -1,0 +1,8 @@
+# Weather and clock HUD v71
+
+Built-in image_gen generated source.png; extracted twelve icons, preserving transparency, normalized to 64 x 64 PNG. Runtime displays a cream rounded clock badge, outlined blue digits, time-period icon and weather icon. Existing Japan real-time clock, seasonal weather and transition timing remain authoritative. Indoor maps do not display the outdoor badge.
+
+Generation prompt:
+Create a single production sprite atlas for a cute Japanese pixel-art creature adventure game's weather/time HUD. Transparent background, exact 4 columns by 3 rows equal grid, no borders or text. 12 separate small charming readable pictograms centered in cells with generous transparent padding, consistent chunky dark teal outlines, pastel highlights, crisp pixel art. Row1: golden sunshine; soft cloudy cloud; blue rainy cloud with droplets; snowy cloud with snowflakes. Row2: thunderstorm cloud with gold lightning; volcanic gray ash cloud; snowy wind blizzard; sunrise just above horizon (dawn). Row3: morning sun rising with tiny fresh leaf; bright midday sun in blue sky; orange sunset on horizon; crescent moon and two stars (night). Uniform visual scale. Each icon occupies at most 65% of its cell. No lettering, no numbers, no backgrounds or checkerboard baked into image. This is a game-ready icon sheet, not a screenshot.
+
+Validation: verifyWeatherIconsV71.cjs checks all twelve images decode, time-period boundaries, weather fade selection, storm override, zero-padded time, badge rendering and browser errors. verifyRealtimeWeatherV68.cjs checks Japan time, regional consistency, daylight continuity and indoor exclusion. Morning/day/evening/night/rain game screenshots reviewed.

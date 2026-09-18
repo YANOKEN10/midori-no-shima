@@ -1,3 +1,4 @@
+import {drawWeatherBadge,clockWeatherPresentation} from './weatherBadge71.js';
 // Real-world Japan time matches the calendar encounter rules. No saved game clock.
 const HOUR=3600000;
 export function japanClock(now=new Date()) {
@@ -47,6 +48,5 @@ export function drawRealtimeEnvironment(c,map,tick,now=new Date(),{storyStorm=fa
 }
 export function drawClockWeather(c,map,now=new Date(),{storyStorm=false}={}) {
  if(map.kind!=='out')return;
- const light=daylight(now),weather=fieldWeather(map,now),label=light.label+' '+light.period+'・'+(storyStorm?'雷雨':names[weather.mix<.5?weather.previous:weather.current]);
- c.save();c.font='11px sans-serif';c.textAlign='left';c.textBaseline='middle';const w=Math.ceil(c.measureText(label).width)+16;c.fillStyle='rgba(13,35,48,.78)';c.fillRect(8,8,w,20);c.fillStyle='#f5f5df';c.fillText(label,16,18);c.restore();
+ drawWeatherBadge(c,clockWeatherPresentation(daylight(now),fieldWeather(map,now),storyStorm));
 }
