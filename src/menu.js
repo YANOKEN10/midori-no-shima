@@ -1,3 +1,5 @@
+import {businessMenu79} from './economy79.js';
+import {MAPS as businessMaps79} from './data/maps.js';
 import {drawTypeIcon77} from './typeIcons77.js';
 import {habitatEntries,habitatRateLabel} from './habitats.js';
 import {FASHION_TOWNS,FASHION_ITEMS,fashionStock,itemLook,equipFashion} from './data/fashion.js';
@@ -428,10 +430,10 @@ async function afterLogin() {
 /* ============ ショップ ============ */
 export async function shopMenu() {
   for (;;) {
-    const i = await ui.choice(["かう", "うる", "やめる"], { x: 176, y: 150, w: 136 });
-    if (i < 0 || i === 2) { await ui.say(["また どうぞ！"]); return; }
+    const i = await ui.choice(["かう", "うる", "土地・お店", "やめる"], { x: 176, y: 150, w: 136 });
+    if (i < 0 || i === 3) { await ui.say(["また どうぞ！"]); return; }
     if (i === 0) await buyMenu();
-    else await sellMenu();
+    else if(i===1)await sellMenu();else await businessMenu79(menuWorld,businessMaps79);
   }
 }
 
@@ -440,6 +442,7 @@ async function buyMenu() {
     const chosen=await ui.itemList(SHOP_LIST.map(name=>({name,n:(bagList('normal').find(e=>e.name===name)?.n||0)})),{mode:'buy',money:State.save.money});
     if(!chosen)return;
     const name=chosen.name,price=itemData(name).price;
+    if(name==='つるはし'&&State.save.bag[name]>0){await ui.say(['つるはしは すでに持っています。']);continue;}
     const max=Math.floor(State.save.money/price);
     if(max<1){await ui.say(['おかねが たりません。']);continue;}
     const quantities=[1,2,3,5,10].filter(n=>n<=max);

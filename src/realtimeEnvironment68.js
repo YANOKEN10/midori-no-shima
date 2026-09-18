@@ -5,7 +5,7 @@ export function japanClock(now=new Date()) {
  const j=new Date(now.getTime()+9*HOUR),hour=j.getUTCHours(),minute=j.getUTCMinutes();
  return {hour,minute,month:j.getUTCMonth()+1,day:Math.floor((now.getTime()+9*HOUR)/(24*HOUR)),hours:hour+minute/60+j.getUTCSeconds()/3600,label:String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0')};
 }
-const lightKeys=[[0,16,28,68,.30],[5,16,28,68,.30],[6,246,199,126,.09],[10,255,248,219,0],[16,255,248,219,0],[17,239,143,74,.12],[18,29,39,83,.26],[20,16,28,68,.30],[24,16,28,68,.30]];
+const lightKeys=[[0,8,17,49,.52],[5,8,17,49,.52],[6,246,199,126,.09],[10,255,248,219,0],[16,255,248,219,0],[17,239,143,74,.12],[18,14,25,66,.44],[20,8,17,49,.52],[24,8,17,49,.52]];
 export function daylight(now=new Date()) {
  const clock=japanClock(now),h=clock.hours,a=lightKeys.findLast(k=>k[0]<=h),b=lightKeys.find(k=>k[0]>h),t=(h-a[0])/(b[0]-a[0]);
  return {...clock,period:h<5||h>=18?'夜':h<6?'夜明け':h<10?'朝':h<16?'昼':'夕方',tint:a.slice(1).map((v,i)=>v+(b[i+1]-v)*t)};
@@ -35,7 +35,7 @@ function precipitation(c,type,tick,alpha,w,h) {
   if(type==='rain'){c.moveTo(x,y);c.lineTo(x-3,y+9);}else c.fillRect(Math.round(x),Math.round(y),2,2);
  }c.stroke();c.restore();
 }
-export function drawRealtimeEnvironment(c,map,tick,now=new Date(),{storyStorm=false}={}) {
+export function drawRealtimeEnvironment(c,map,tick,now=new Date(),{storyStorm=false,camX=0,camY=0}={}) {
  if(map.kind!=='out')return;
  const w=c.canvas.width,h=c.canvas.height,light=daylight(now),weather=fieldWeather(map,now);
  c.save();const [r,g,b,a]=light.tint;c.fillStyle=`rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a})`;c.fillRect(0,0,w,h);
@@ -44,7 +44,8 @@ export function drawRealtimeEnvironment(c,map,tick,now=new Date(),{storyStorm=fa
   const shade=cloud[weather.previous]*(1-weather.mix)+cloud[weather.current]*weather.mix;
   c.fillStyle=`rgba(30,49,65,${shade})`;c.fillRect(0,0,w,h);
   precipitation(c,weather.previous,tick,1-weather.mix,w,h);precipitation(c,weather.current,tick,weather.mix,w,h);
- }c.restore();
+ }
+ const night=Math.max(0,Math.min(1,(a-.15)/.35));if(night){c.globalCompositeOperation='screen';for(const p of [...map.props||[],...map.editorAddedProps72||[]]){const lamp=/lamp|lantern|light/i.test(p.art),building=!!p.door||/house|chalet|shop|hall|castle/i.test(p.art);if(!lamp&&!building)continue;const x=(p.x+p.w/2)*32-camX,y=(p.y+p.h*(lamp?.3:.62))*32-camY,radius=lamp?28:20;if(x<-radius||y<-radius||x>w+radius||y>h+radius)continue;const glow=c.createRadialGradient(x,y,1,x,y,radius);glow.addColorStop(0,'rgba(255,211,113,'+(.55*night)+')');glow.addColorStop(1,'rgba(255,185,76,0)');c.fillStyle=glow;c.fillRect(x-radius,y-radius,radius*2,radius*2);c.fillStyle='rgba(255,226,147,'+(.65*night)+')';c.fillRect(x-2,y-3,4,6);}}c.restore();
 }
 export function drawClockWeather(c,map,now=new Date(),{storyStorm=false}={}) {
  if(map.kind!=='out')return;

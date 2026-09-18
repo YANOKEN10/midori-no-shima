@@ -1,3 +1,4 @@
+import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
 import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
 import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
@@ -153,6 +154,7 @@ export const world = {
     State.save.bgmArea = musicArea(MAPS,mapId,State.save);
     this.mapId = mapId;
     this.map = mapId==='shop'?shopInteriorFor(MAPS[mapId],State.save.backTo?.map||'village'):MAPS[mapId];
+    this.map=economyMap79(this.map,State.save);
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
       x = this.map.spawn?.x ?? 1; y = this.map.spawn?.y ?? 1;
     }
@@ -493,6 +495,8 @@ export const world = {
     const dy = this.dir === "up" ? -1 : this.dir === "down" ? 1 : 0;
     const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
 
+    if(this.mapId==='playerShop79'&&ty<=7){this.busy=true;ownShop79(State.save.backTo?.map).finally(()=>this.busy=false);return;}
+    const mine=miningTarget79(this.map,tx,ty);if(mine){this.busy=true;miningMenu79(this,mine).finally(()=>this.busy=false);return;}
     const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>kind==='counter'&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
     const n = this.npcAt(tx, ty) || (counter ? this.npcAt(tx+dx,ty+dy) : null);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
@@ -565,7 +569,7 @@ export const world = {
       if(!State.save.party.length){await ui.say(["まずは 草むらで ガオンをつかまえよう。","仲間ができたら しょうぶしよう！"]);return;}
       State.save.battleTerrain="grass";
       await ui.say(npcDialogue(State.save,this.mapId,n,"talk",n.talk || ["しょうぶだ！"]));
-      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name }) });
+      const res = await startBattle({ trainer: Object.assign({}, n.trainer, { name: n.name, appearance79:{name:n.name,variant:n.variant,look:n.look,script:n.script} }) });
       if (res === "lose") { await this.blackout(); return; }
       setFlag(beatKey);
       if(ordinary)markRematch(State.save,beatKey);
@@ -1143,9 +1147,9 @@ export const world = {
     }
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
-    drawDaycareLabels(G.ctx,map,State.save,camX,camY);
+    drawDaycareLabels(G.ctx,map,State.save,camX,camY);drawLot79(G.ctx,map,camX,camY);
     const environmentNow=new Date(),environmentOptions={storyStorm:map.id==='raden'&&powerOutage(State.save)};
-    drawRealtimeEnvironment(G.ctx,map,this.tick,environmentNow,environmentOptions);
+    drawRealtimeEnvironment(G.ctx,map,this.tick,environmentNow,{...environmentOptions,camX,camY});
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
     if(map.kind==='out'&&map.frontierTheme==='ash')drawFrontierWeather(G.ctx,map,this.tick);drawEndWeather(G.ctx,this);
     if(this.showName<=0){drawClockWeather(G.ctx,map,environmentNow,environmentOptions);drawVoyageStatus(G.ctx,map,State.save);}

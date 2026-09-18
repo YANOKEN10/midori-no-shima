@@ -1,3 +1,4 @@
+import {npcFrame} from './npcArt.js';
 import {trainerLevel} from './postgame62.js';
 import {battleLabel} from './battleUi.js';
 import {battleBackgroundFor,prepareBattleBackground} from './battleBackgrounds.js';
@@ -95,7 +96,7 @@ export async function startBattle(opts) {
   seeMon(B.foe.mon.sp);
 
   await wait(260);
-  if (isTrainer) await ui.say([opts.trainer.name + "が しょうぶを しかけてきた！"]);
+  if (isTrainer) {await ui.say([opts.trainer.name + "が しょうぶを しかけてきた！"]);B.intro='foeSending';B.introTime=0;await wait(320);B.intro='foeReady';await ui.say([opts.trainer.name+"は "+B.foe.mon.sp+"を くりだした！"]);}
   else await ui.say(["あっ！ やせいの " + B.foe.mon.sp + "が とびだしてきた！"]);
   if (B.you) {
     await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
@@ -635,7 +636,7 @@ function drawBattle() {
   if (!B) return;
 
   drawBattleScene(G.ctx,B.backgroundKey);
-  if(B.intro==='trainer'||B.intro==='sending')drawTrainerBack(G.ctx,State.save.look,28-(B.intro==='sending'?Math.min(1,B.introTime/320)*120:0),120);
+  if(['trainer','foeSending','foeReady','sending'].includes(B.intro))drawTrainerBack(G.ctx,State.save.look,28-(B.intro==='sending'?Math.min(1,B.introTime/320)*120:0),120);
   if(B.captureNet){const t=Math.min(1,(performance.now()-B.captureNet.start)/400),size=24+72*t,x=62+(248-62)*t,y=158+(80-158)*t-Math.sin(t*Math.PI)*48;drawItem(G.ctx,B.captureNet.name,x-size/2,y-size/2,size);}
   const foeArt = MONART[B.foe.mon.sp];
   const youArt = B.you ? MONART[B.you.mon.sp] : null;
@@ -644,17 +645,18 @@ function drawBattle() {
   const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ひかり";
   const youAcc = B.you ? accentOf(species(B.you.mon.sp)) : "ほのお";
 
-  if (!B.foe.hidden && foeArt) {
+  if(B.isTrainer&&['trainer','foeSending'].includes(B.intro)){const n=B.trainer.appearance79||Object.values(MAPS).flatMap(m=>m.npcs||[]).find(n=>n.name===B.trainer.name)||{name:B.trainer.name,variant:28};const im=npcFrame({...n,dir:'down'},1);if(im){G.ctx.imageSmoothingEnabled=false;G.ctx.globalAlpha=B.intro==='foeSending'?Math.max(0,1-B.introTime/320):1;G.ctx.drawImage(im,220,56,48,72);G.ctx.globalAlpha=1;}G.use('ui');G.ctx.fillStyle='#183a4bdc';G.ctx.fillRect(156,16,160,26);G.textFit(B.trainer.name,162,22,148,0,13);for(let i=0;i<6;i++){G.ctx.fillStyle=i<B.foeParty.length?'#e9ae45':'#5e7a78';G.ctx.beginPath();G.ctx.arc(209+i*15,144,4,0,Math.PI*2);G.ctx.fill();}G.use('sky');}
+  if (!B.foe.hidden && foeArt && !(B.isTrainer&&['trainer','foeSending'].includes(B.intro))) {
     const generated = battleArt(B.foe.mon.sp);
-    if (generated) {const size=species(B.foe.mon.sp).no===20?112:88;G.drawScaled(generated,244-size/2+(B.foe.shakeX|0),132-size,size,size);}
+    if (generated) {const size=B.foe.mon.sp==='コケゴロ'?104:species(B.foe.mon.sp).no===20?112:88;G.drawScaled(generated,244-size/2+(B.foe.shakeX|0),132-size,size,size);}
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(200, 44, 88, 88, 0); G.ctx.globalAlpha = 1;
     }
   }
-  if (B.you && !B.you.hidden && youArt && B.intro!=='trainer' && B.intro!=='sending') {
+  if (B.you && !B.you.hidden && youArt && !['trainer','foeSending','foeReady','sending'].includes(B.intro)) {
     const generated = battleArt(B.you.mon.sp, true);
-    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=(species(B.you.mon.sp).no===20?112:88)*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
+    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=(B.you.mon.sp==='コケゴロ'?104:species(B.you.mon.sp).no===20?112:88)*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(20, 120, 88, 88, 0); G.ctx.globalAlpha = 1;
@@ -675,8 +677,8 @@ function drawBattle() {
   const top = topRect();
   const foeR = { x: 10, y: 20, w: 144, h: 44 };
   const youR = { x: 164, y: 146, w: 146, h: 54 };
-  if (!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
-  if (B.you && B.intro!=='trainer'&&B.intro!=='sending' && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
+  if (!(B.isTrainer&&['trainer','foeSending'].includes(B.intro))&&!overlaps(top, foeR)) infoBox(foeR.x, foeR.y, B.foe, false);
+  if (B.you && !['trainer','foeSending','foeReady','sending'].includes(B.intro) && !overlaps(top, youR)) infoBox(youR.x, youR.y, B.you, true);
 }
 
 function ellipse(cx, cy, rx, ry, c) {
