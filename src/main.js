@@ -1,4 +1,4 @@
-import { chooseAppearance } from "./characterSetup.js";
+import {professorIntro,introduceAdventure} from "./professorIntro70.js";
 import { battleArt } from './data/battleart.js';
 // ============================================================
 //  はじまり（タイトル → ログイン → ぼうけん）
@@ -175,25 +175,12 @@ async function mainFlow(local, restored) {
         const yes = await ui.ask(["いまの きろくは きえてしまいます。", "それでも さいしょから はじめますか？"]);
         if (!yes) continue;
       }
-      const r = await showForm({
-        title: "きみの なまえは？",
-        sub: "ぼうけんの あいだ つかう なまえです。",
-        fields: [{ el: "who", key: "name", label: "なまえ", type: "text", value: "", placeholder: "ポンキチ" }],
-        submit: "みためを えらぶ",
-      });
-      if (!r) continue;
-      const name = String(r.name || "").trim().slice(0, 8) || "ポンキチ";
-      const appearance = await chooseAppearance();
-      if (!appearance) continue;
-      loadInto(newGame(name));
-      State.save.look = { ...State.save.look, ...appearance.look };
+      scene = professorIntro;
+      const setup = await introduceAdventure();
+      if (!setup) { scene = title; continue; }
+      loadInto(newGame(setup.name));
+      State.save.look = { ...State.save.look, ...setup.appearance.look };
       saveLocal();
-      await ui.say([
-        "ようこそ ガオンの せかいへ！",
-        "きみの なまえは " + name + "。",
-        "ここは きみの生まれた ネイチャータウン。",
-        "村の女の子が めずらしいガオンを見たらしい。",
-      ]);
       startGame();
       return;
     }
