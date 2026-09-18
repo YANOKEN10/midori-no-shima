@@ -1,0 +1,3 @@
+const images={};for(const key of ['shop','fashion']){const im=new Image();im.src=new URL('../assets/shops-v74/'+key+'.png',import.meta.url).href;images[key]=im;}
+export const shopsReady74=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0);
+export function drawShop74(c,p){const key=p.fashionShop||p.art==='fashionShop74'?'fashion':p.art==='harborShop'?'shop':null;if(!key)return false;const im=images[key];if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,p.x*32,p.y*32,p.w*32,p.h*32);}return true;}
