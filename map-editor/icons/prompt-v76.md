@@ -1,0 +1,5 @@
+# Map Studio home-screen icon
+
+Mode: built-in image_gen. Original generation; resized for standard icon dimensions with sharp.
+
+Use case: logo-brand. Create one finished square home-screen app icon for Gaon World's administrator map editor, called Map Studio. Charming polished pixel-art illustration matching a cozy colorful Japanese 2D village RPG. Main emblem: a miniature square grassy map tile with a tiny leafy tree, a curving golden path and a small blue river, with a single bold golden pencil diagonally across the lower right to clearly signify editing. Deep teal solid full-bleed background, luminous fresh greens and warm cream/gold accents, clear thick silhouettes, beautifully crafted high-resolution pixel-art edges. All important imagery fits within the central 65 percent square, readable at 48px. Balanced simple composition, opaque square artwork to the edges; no pre-rounded corners, no border, no text, no letters, no logo from another game, no phone mockup, no watermark. Produce the icon itself, not a presentation sheet.
