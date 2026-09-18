@@ -426,7 +426,8 @@ export const world = {
       await wait(150);
     }
     if (wp.to === "@back") {
-      const b = State.save.backTo || { map: "village", x: 7, y: 6 };
+      let b = State.save.backTo || { map: "village", x: 7, y: 6 };
+      if(MAPS[b.map]?.editor72){const entrances=MAPS[b.map].warps.filter(w=>w.to===this.mapId&&w.back);const entry=entrances.find(w=>b.editorDoorId72&&w.back.editorDoorId72===b.editorDoorId72)||(entrances.length===1?entrances[0]:null);if(entry)b=entry.back;}
       this.enter(b.map, b.x, b.y, "down");
     } else {
       if (wp.back) State.save.backTo = wp.back;

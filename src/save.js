@@ -13,6 +13,7 @@ export function snapshot() {
 }
 
 export function saveLocal() {
+  if(globalThis.__adminPreview72)return;
   G.save.savedAt = Date.now();
   try { localStorage.setItem(KEY, JSON.stringify(G.save)); return true; }
   catch (e) { return false; }
@@ -35,11 +36,13 @@ export function loadLocal() {
 export function hasLocal() { return Boolean(loadLocal()); }
 
 export function clearLocal() {
+  if(globalThis.__adminPreview72)return;
   try { localStorage.removeItem(KEY); } catch (e) { /* ok */ }
 }
 
 // クラウドへ あずける。ぶつかったら { conflict, remote } を かえす
 export async function saveCloud(force) {
+  if(globalThis.__adminPreview72)return;
   if (!cloud.signedIn) return { ok: false, skip: true };
   const r = await cloud.push(snapshot(), force);
   if (r.ok) return { ok: true };

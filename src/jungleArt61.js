@@ -1,3 +1,4 @@
+import {drawEditorGround72,editorGroundReady72} from './editorGround72.js';
 const sheet=new Image();sheet.src=new URL('../assets/environment-v61/jungle.png',import.meta.url).href;
 const frames=[],maps=new WeakMap();
 function ready(){return sheet.complete&&sheet.naturalWidth>0;}
@@ -21,8 +22,9 @@ export function drawForest61(c,map,camX,camY,material){
   if(ch==='S')complete=material(g,'sign',dx,dy,32,32)&&complete;
   if(ch==='X'||ch==='R'){if(map.jungle61)sprite(g,1,dx,dy,32,32);else complete=material(g,'rock',dx,dy,32,32)&&complete;}
  }
+ drawEditorGround72(g,map,material);
  for(const p of map.props){if(['tree','fir'].includes(p.art)){if(map.jungle61)sprite(g,(p.x+p.y)%2?1:3,p.x*32,p.y*32,p.w*32,p.h*32);else {g.save();g.beginPath();g.rect(p.x*32,p.y*32,p.w*32,p.h*32);g.clip();complete=material(g,'tree',p.x*32-(p.w===1?16:0),p.y*32,64,64)&&complete;g.restore();}}else complete=material(g,p.art,p.x*32,p.y*32,p.w*32,p.h*32)&&complete;}
- if(complete)maps.set(map,cv);
+ if(complete)editorGroundReady72(map)&&maps.set(map,cv);
  }
  c.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }

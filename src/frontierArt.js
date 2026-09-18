@@ -1,3 +1,4 @@
+import {drawEditorGround72,editorGroundReady72} from './editorGround72.js';
 import {drawRoad,roadReady} from './roadArt.js';
 import {explorationWall,ruinFloor} from './explorationArt.js';
 import {paintInterior} from './interiorArt.js';
@@ -11,7 +12,7 @@ const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new UR
 const winter=Array.from({length:4},(_,col)=>Array.from({length:4},(_,row)=>{const im=new Image();im.src=new URL('../assets/chapter-v35/winter-'+col+'-'+row+'.png',import.meta.url).href;return im;}));
 const cache=new WeakMap(),winterCache=new WeakMap();
 export function winterFrame(n){const im=winter[n.winterVariant%4]?.[({down:0,left:1,right:2,up:3})[n.dir]??0];if(!im?.complete||!im.naturalWidth)return null;if(winterCache.has(im))return winterCache.get(im);const c=document.createElement('canvas');c.width=32;c.height=48;const ctx=c.getContext('2d'),w=40*im.width/im.height;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,16-w/2,7,w,40);winterCache.set(im,c);return c;}
-function asset(c,key,x,y,w,h){if(endAsset(c,key,x,y,w,h))return true;const im=images[key];if(!im?.complete||!im.naturalWidth)return false;c.drawImage(im,x,y,w,h);return true;}
+export function asset(c,key,x,y,w,h){if(endAsset(c,key,x,y,w,h))return true;const im=images[key];if(!im?.complete||!im.naturalWidth)return false;c.drawImage(im,x,y,w,h);return true;}
 export function frontierGrass(c,map,x,y,dx=x*32,dy=y*32){const key=map.endTheme==='dark'?'eDarkGrass':map.endTheme==='snow'||map.endTheme==='ice'?'eGrass':map.frontierTheme==='snow'?'snowGrass':map.frontierTheme==='ash'?'ashGrass':null;if(!key)return drawBiomeGrass(c,{...map,grassStyle:'rural'},dx,dy,x*32,y*32);c.save();c.beginPath();c.rect(dx,dy,32,32);c.clip();for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(map.rows[y+yy]?.[x+xx]==='"')asset(c,key,dx+xx*32-5,dy+yy*32-5,42,42);c.restore();return true;}
 export function drawFrontierMap(ctx,map,camX,camY,material){if(!map.frontierTheme)return false;let cv=cache.get(map);if(!cv){cv=document.createElement('canvas');cv.width=map.rows[0].length*32;cv.height=map.rows.length*32;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;const theme=map.frontierTheme;
  for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++){const ch=map.rows[y][x],dx=x*32,dy=y*32;c.fillStyle=theme==='snow'?'#dce9ee':theme==='ash'?'#665e59':theme==='coast'?'#e2d0a0':theme==='rail'?'#a8b6a1':'#78ad78';c.fillRect(dx,dy,32,32);if(map.endTheme==='dark'){c.fillStyle='#39384e';c.fillRect(dx,dy,32,32);}if(map.endTheme==='tropical'){c.fillStyle='#7acba5';c.fillRect(dx,dy,32,32);}if(theme==='snow'){c.save();c.globalAlpha=.12;asset(c,map.endTheme?'eGround':'snowGround',dx-1,dy-1,34,34);c.restore();}else{c.fillStyle=theme==='ash'?'#85776b':'#8eb987';for(let i=0;i<5;i++)c.fillRect(dx+(x*7+y*3+i*11)%30,dy+(x*3+y*13+i*7)%30,2,1);}
@@ -28,9 +29,10 @@ export function drawFrontierMap(ctx,map,camX,camY,material){if(!map.frontierThem
  }
  for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++)coastTile(c,map,x,y,map.rows[y][x]);
  paintEnvironment(c,map,material);
+ drawEditorGround72(c,map,material);
  for(const p of map.props){if(environmentProp(c,p,map))continue;let key=p.art;if(map.frontierTheme==='snow'&&['tree','fir'].includes(key))key='snowFir';if(key==='shopCounter'){const x=p.x*32,y=p.y*32;c.fillStyle='#4d4036';c.fillRect(x,y,p.w*32,p.h*32);c.fillStyle='#ba9467';c.fillRect(x+3,y+3,p.w*32-6,p.h*32-6);c.fillStyle='#e6ca8e';c.fillRect(x+3,y+3,p.w*32-6,8);c.fillStyle='#3d626b';c.fillRect(x+12,y+17,36,24);c.fillStyle='#dbe9d6';c.font='16px sans-serif';c.fillText('ショップ',x+66,y+40);continue;}if(key==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(!asset(c,key,p.x*32,p.y*32,p.w*32,p.h*32)&&!drawMarineAsset(c,key,p.x*32,p.y*32,p.w*32,p.h*32))material(c,key,p.x*32,p.y*32,p.w*32,p.h*32);if(p.door){c.fillStyle='#584333';c.fillRect(p.door.x*32,p.door.y*32,32,32);}}
  if(map.frontierTheme==='rail'&&map.kind==='in'&&!map.environmentArena){c.fillStyle='#535f62';for(let x=2;x<map.rows[0].length-2;x++){c.fillRect(x*32,3*32+10,32,3);c.fillRect(x*32,3*32+23,32,3);}}
  if(map.room)paintInterior(c,map);
- if(roadReady(map)&&grassReady(map)&&environmentReady(map)&&(!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))cache.set(map,cv);
+ if(roadReady(map)&&grassReady(map)&&environmentReady(map)&&(!map.endTheme||endArtReady())&&marineReady()&&mountainReady()&&grassReady({grassStyle:'rural'})&&Object.values(images).every(im=>im.complete&&im.naturalWidth))editorGroundReady72(map)&&cache.set(map,cv);
  }ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;}
 export function drawFrontierWeather(c,map,tick){if(!['snow','ash'].includes(map.frontierTheme))return;c.save();for(let i=0;i<45;i++){const x=(i*47+Math.sin(tick/1300+i)*8+320)%320,y=(i*29+tick/(map.frontierTheme==='snow'?95:145))%288;c.fillStyle=map.frontierTheme==='snow'?'rgba(255,255,255,.8)':'rgba(215,205,195,.4)';c.fillRect(x,y,2,2);}c.restore();}

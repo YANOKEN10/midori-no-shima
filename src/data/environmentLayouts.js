@@ -29,6 +29,7 @@ export function redesignEnvironments(maps){
 }
 
 export function shopInteriorFor(base,town='village'){
+ if(base.editor72)return {...base,room:{...base.room,shopTown:town}};
  const furniture=base.room.furniture.map(f=>[...f]);
  for(const f of furniture){if(['marine','karatPort','resurePort'].includes(town)&&f[0]==='shelfLeft'){f[0]='shelf';f[1]=11;f[2]=8;f[3]=3;f[4]=2;}}
  if(['karat','leafTown'].includes(town))furniture.push(['plant',12,6,1,1]);

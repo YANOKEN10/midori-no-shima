@@ -117,6 +117,7 @@ async function boot() {
     return;
   }
 
+  if(window.__adminPreview72){loadInto(newGame('プレビュー'));world.enter(window.__adminPreview72,NaN,NaN,'down');scene=world;const banner=document.createElement('div');banner.textContent='管理者プレビュー：セーブは変更されません';banner.style.cssText='position:fixed;bottom:0;left:0;right:0;text-align:center;background:#fff5d7;color:#245b49;padding:6px;z-index:100;font:12px sans-serif';document.body.append(banner);return;}
   cloud.init();
   const local = loadLocal();
   if (local && local.palette) G.setPalette(local.palette);
