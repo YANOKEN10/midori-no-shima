@@ -112,7 +112,7 @@ function drawChapterBase72(ctx,map,camX,camY){
  if(groundCh==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
  
  if(ch==='"'&&!drawBiomeGrass(c,map,dx,dy))ground(c,'tallGrass',dx,dy);
- if(ch==='T'&&map.editor72&&(!map.forestBorder||(x>=2&&x<map.rows[0].length-2&&y>=3&&y<map.rows.length-3))&&!(map.props||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMaterial(c,'tree',dx,dy-16,32,48);
+ if(ch==='T'&&map.editor72&&(!map.forestBorder||(x>=2&&x<map.rows[0].length-2&&y>=3&&y<map.rows.length-3))&&![...(map.props||[]),...(map.editorAddedProps72||[])].some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMaterial(c,'tree',dx,dy-16,32,48);
  if(ch==='F'&&!map.powerArt)drawMaterial(c,'flowers',dx+3,dy+3,26,26);
  if(ch==='R'){if(map.biome){if(!(map.props||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))drawMarineAsset(c,'shoreRock',dx,dy,32,32);}else if(map.id==='mountain'){if(!(map.props||[]).some(p=>p.art==='mountainCrag'&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))mountainMaterial(c,'rock',dx,dy,32,32);}else drawMaterial(c,'rock',dx,dy,32,32);}
  if(ch==='X')cliff(c,map,x,y);
