@@ -1450,7 +1450,7 @@ export const LEGACY73=[
     "group": "legacy",
     "direct": "assets/gardens-v52/pond.png",
     "walkable": false,
-    "tile": "\"",
+    "tile": "W",
     "file": "assets/editor-existing-v73/legacy73-gardens-v52-pond.png"
   },
   {
@@ -1558,7 +1558,7 @@ export const LEGACY73=[
   {
     "key": "legacy73-ground-village-87",
     "art": "legacy73-ground-village-87",
-    "label": "ネイチャータウン・水辺",
+    "label": "ネイチャータウン・水辺（旧：左上の角）",
     "w": 1,
     "h": 1,
     "group": "floor",
@@ -1591,7 +1591,7 @@ export const LEGACY73=[
   {
     "key": "legacy73-ground-rods-87",
     "art": "legacy73-ground-rods-87",
-    "label": "ロッズタウン・水辺",
+    "label": "ロッズタウン・水辺（旧：左上の角）",
     "w": 1,
     "h": 1,
     "group": "floor",
