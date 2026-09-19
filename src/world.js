@@ -395,7 +395,7 @@ export const world = {
     if (t) { await this.trainerSpot(t); return; }
 
     // The rare tile roll is direct (1% / 3%), independent of ordinary grass odds.
-    const rare=rollRareEncounter(State.save,this.mapId,this.x,this.y);
+    const rare=this.map.encountersConfigured86?null:rollRareEncounter(State.save,this.mapId,this.x,this.y);
     if(rare){await this.wildBattle(rare);return;}
     // やせいの モンスター
     const ch = tileAt(this.map, this.x, this.y);
@@ -937,7 +937,7 @@ export const world = {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const list=State.save.boating?waterEncounters(this.mapId):ordinaryEncounters(this.map.enc?.list,this.mapId);
+    const list=State.save.boating?waterEncounters(this.mapId):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId));
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}

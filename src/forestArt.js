@@ -1,3 +1,4 @@
+import {fitSprite85} from './treeSprite85.js';
 import {isTree83} from './treeFootprint83.mjs';
 const tree=new Image();tree.src=new URL('../assets/world-v19/tree.png',import.meta.url).href;
 export const forestReady=()=>tree.complete&&tree.naturalWidth;
@@ -29,4 +30,4 @@ export function forestLayout(map){
  }
  return out;
 }
-export function forestCanopy(c,map){if(!forestReady()||(map.props||[]).some(p=>isTree83(p)&&boundaryTree(map,p)))return;for(const p of forestLayout(map))c.drawImage(tree,p.x,p.y,p.w,p.h);}
+export function forestCanopy(c,map){if(!forestReady()||(map.props||[]).some(p=>isTree83(p)&&boundaryTree(map,p)))return;for(const p of forestLayout(map))fitSprite85(c,tree,p.x,p.y,p.w,p.h);}

@@ -1,3 +1,4 @@
+import {drawReadable84} from './readableArt84.js';
 import {boardingOpen,SHIP_MAPS,voyageRemaining} from './voyageRules.js';
 const names=['shipSeats','shipHelm','daycareHouse','nurseryPen'];
 const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new URL('../assets/voyage-v28/'+n+'.png',import.meta.url).href;return[n,im];}));
@@ -14,7 +15,7 @@ export function drawVoyageTile(c,map,x,y,ch){
 }
 export function drawVoyageOverlay(c,map,camX,camY,save,tick){
  if(!map.sailingPort||!boardingOpen()||!ferry.complete||!ferry.naturalWidth)return;
- for(const p of map.props||[])if(p.art==='ferry')c.drawImage(ferry,p.x*32-camX,p.y*32-camY,p.w*32,p.h*32);
+ for(const p of map.props||[])if(p.art==='ferry')drawReadable84(c,'liner86',p.x*32-camX,p.y*32-camY,p.w*32,p.h*32);
 }
 export function drawVoyageStatus(c,map,save){
  if(!SHIP_MAPS.includes(map.id)||!save.voyage)return;

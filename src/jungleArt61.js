@@ -1,3 +1,5 @@
+import {fitSprite85} from './treeSprite85.js';
+import {drawResourceTree85} from './resource80.js';
 import {drawTree83} from './activeArt83.js';
 import {isTree83} from './treeFootprint83.mjs';
 import {drawEditorGround72,editorGroundReady72} from './editorGround72.js';
@@ -7,7 +9,7 @@ function ready(){return sheet.complete&&sheet.naturalWidth>0;}
 function sprite(c,index,x,y,w,h){
  if(!ready())return false;
  if(!frames[index]){const s=sheet.width/2,cv=document.createElement('canvas');cv.width=s;cv.height=sheet.height/2;const g=cv.getContext('2d');g.drawImage(sheet,(index%2)*s,Math.floor(index/2)*cv.height,s,cv.height,0,0,s,cv.height);frames[index]=cv;}
- c.imageSmoothingEnabled=false;c.drawImage(frames[index],x,y,w,h);return true;
+ c.imageSmoothingEnabled=false;if(index===1||index===3)fitSprite85(c,frames[index],x,y,w,h);else c.drawImage(frames[index],x,y,w,h);return true;
 }
 export function drawJungleFeet61(c,map,x,y){return map.jungle61?sprite(c,2,x,y,32,32):false;}
 export function drawForest61(c,map,camX,camY,material){
@@ -22,10 +24,10 @@ export function drawForest61(c,map,camX,camY,material){
   }else complete=material(g,'grass',dx,dy,32,32)&&complete;
   if(ch==='"'){if(map.jungle61)sprite(g,2,dx,dy,32,32);else complete=material(g,'tallGrass',dx,dy,32,32)&&complete;}
   if(ch==='S')complete=material(g,'sign',dx,dy,32,32)&&complete;
-  if(ch==='X'||ch==='R'){if(map.jungle61)sprite(g,1,dx,dy,32,32);else complete=material(g,'rock',dx,dy,32,32)&&complete;}
+  if(ch==='X'||ch==='R'){complete=material(g,'rock',dx,dy,32,32)&&complete;}
  }
  drawEditorGround72(g,map,material);
- for(const p of map.props){if(isTree83(p)){complete=drawTree83(g,p,map)&&complete;continue;}if(['tree','fir'].includes(p.art)){if(map.jungle61)sprite(g,(p.x+p.y)%2?1:3,p.x*32,p.y*32,p.w*32,p.h*32);else {g.save();g.beginPath();g.rect(p.x*32,p.y*32,p.w*32,p.h*32);g.clip();complete=material(g,'tree',p.x*32-(p.w===1?16:0),p.y*32,64,64)&&complete;g.restore();}}else complete=material(g,p.art,p.x*32,p.y*32,p.w*32,p.h*32)&&complete;}
+ for(const p of map.props){if(isTree83(p)){complete=drawTree83(g,p,map)&&complete;continue;}if(drawResourceTree85(g,map,p))continue;if(['tree','fir'].includes(p.art)){if(map.jungle61)sprite(g,(p.x+p.y)%2?1:3,p.x*32,p.y*32,p.w*32,p.h*32);else {complete=material(g,'tree',p.x*32,p.y*32,p.w*32,p.h*32)&&complete;}}else complete=material(g,p.art,p.x*32,p.y*32,p.w*32,p.h*32)&&complete;}
  if(complete)editorGroundReady72(map)&&maps.set(map,cv);
  }
  c.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;

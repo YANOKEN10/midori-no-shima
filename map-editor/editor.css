@@ -9,3 +9,5 @@
 #newMap82{width:100%;margin:6px 0}#newMapDialog82{width:min(440px,94vw);max-height:90dvh;overflow:auto}#shopGoods82 label{display:flex;align-items:center;gap:8px;font-size:12px;min-height:36px}#shopGoods82 input{flex:none;width:18px;height:18px}.inspector details details{padding:8px 0;border-top:1px solid #cad7cf}
 
 #connectionDialog83{width:min(760px,96vw);max-height:94dvh;overflow:auto}#connectionView83{max-height:45dvh;overflow:auto;background:#243e3c;padding:12px}#connectionCanvas83{display:block;image-rendering:pixelated;cursor:crosshair}#connectionError83{color:#9c3834;white-space:pre-line}
+
+.encounter-row86{margin:10px 0;padding:10px;border:1px solid #b7cec3;border-radius:10px;min-width:0}.encounter-row86 select{max-width:100%}#newMapDialog82{max-height:90dvh;overflow-y:auto}
