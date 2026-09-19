@@ -29,7 +29,7 @@ const blueTree81=new Image();blueTree81.src=new URL('../assets/resources-v81/blu
 export function drawResources80(c,map,save,cx,cy){
  c.save();c.imageSmoothingEnabled=false;
  for(const p of resourceNodes80(map)){
-  if(p.type==='tree'&&blueTree81.complete&&blueTree81.naturalWidth){const trees=forestLayout(map),tx=(p.approach.tx+.5)*32,ty=(p.approach.ty+1)*32,near=trees.filter(t=>tx>=t.x&&tx<t.x+t.w&&ty>=t.y&&ty<=t.y+t.h+16).sort((a,b)=>Math.abs(a.x+a.w/2-tx)+Math.abs(a.y+a.h-ty)-Math.abs(b.x+b.w/2-tx)-Math.abs(b.y+b.h-ty))[0],w=near?.w||Math.max(32,Math.min(64,p.w*32)),h=near?.h||w*1.25,x=near?.x??(tx-w/2),y=near?.y??(ty-h);c.drawImage(blueTree81,x-cx,y-cy,w,h);}
+  if(p.type==='tree'&&!(p.w===2&&p.h===3)&&blueTree81.complete&&blueTree81.naturalWidth){const trees=forestLayout(map),tx=(p.approach.tx+.5)*32,ty=(p.approach.ty+1)*32,near=trees.filter(t=>tx>=t.x&&tx<t.x+t.w&&ty>=t.y&&ty<=t.y+t.h+16).sort((a,b)=>Math.abs(a.x+a.w/2-tx)+Math.abs(a.y+a.h-ty)-Math.abs(b.x+b.w/2-tx)-Math.abs(b.y+b.h-ty))[0],w=near?.w||Math.max(32,Math.min(64,p.w*32)),h=near?.h||w*1.25,x=near?.x??(tx-w/2),y=near?.y??(ty-h);c.drawImage(blueTree81,x-cx,y-cy,w,h);}
   if(p.type==='rock'&&blueRock81.complete&&blueRock81.naturalWidth){const w=p.w*32,h=p.h*32;c.drawImage(blueRock81,p.x*32-cx,p.y*32-cy,w,h);}
  }
  c.restore();

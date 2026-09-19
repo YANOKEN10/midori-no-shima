@@ -573,7 +573,7 @@ export const LEGACY73=[
     "h": 5,
     "source": "belerioPort",
     "group": "legacy",
-    "file": "assets/editor-existing-v73/legacy73-eShip.png"
+    "file": "assets/objects-v83/eShip.png"
   },
   {
     "key": "legacy73-ePalm",
@@ -595,7 +595,7 @@ export const LEGACY73=[
     "h": 6,
     "source": "belerio",
     "group": "legacy",
-    "file": "assets/editor-existing-v73/legacy73-eHouse.png"
+    "file": "assets/objects-v83/eHouse.png"
   },
   {
     "key": "legacy73-v41-facilities-6",
@@ -1238,7 +1238,7 @@ export const LEGACY73=[
     "source": "village",
     "group": "legacy",
     "direct": "assets/marine-v26/marineChest.png",
-    "file": "assets/editor-existing-v73/legacy73-marineChest.png"
+    "file": "assets/objects-v83/marineChest.png"
   },
   {
     "key": "legacy73-lake",
@@ -1462,7 +1462,7 @@ export const LEGACY73=[
     "h": 1,
     "source": "village",
     "group": "legacy",
-    "sheet": "assets/environment-v61/jungle.png",
+    "sheet": "assets/environment-v83/jungle.png",
     "cell": [
       0,
       0,
@@ -1471,7 +1471,7 @@ export const LEGACY73=[
     ],
     "walkable": true,
     "tile": ",",
-    "file": "assets/editor-existing-v73/legacy73-jungle0.png"
+    "file": "assets/environment-v83/jungle0.png"
   },
   {
     "key": "legacy73-jungle1",
@@ -1482,7 +1482,7 @@ export const LEGACY73=[
     "h": 3,
     "source": "village",
     "group": "legacy",
-    "sheet": "assets/environment-v61/jungle.png",
+    "sheet": "assets/environment-v83/jungle.png",
     "cell": [
       1,
       0,
@@ -1491,7 +1491,7 @@ export const LEGACY73=[
     ],
     "walkable": false,
     "tile": ",",
-    "file": "assets/editor-existing-v73/legacy73-jungle1.png"
+    "file": "assets/environment-v83/jungle1.png"
   },
   {
     "key": "legacy73-jungle2",
@@ -1502,7 +1502,7 @@ export const LEGACY73=[
     "h": 1,
     "source": "village",
     "group": "legacy",
-    "sheet": "assets/environment-v61/jungle.png",
+    "sheet": "assets/environment-v83/jungle.png",
     "cell": [
       0,
       1,
@@ -1511,7 +1511,7 @@ export const LEGACY73=[
     ],
     "walkable": true,
     "tile": "\"",
-    "file": "assets/editor-existing-v73/legacy73-jungle2.png"
+    "file": "assets/environment-v83/jungle2.png"
   },
   {
     "key": "legacy73-jungle3",
@@ -1522,7 +1522,7 @@ export const LEGACY73=[
     "h": 1,
     "source": "village",
     "group": "legacy",
-    "sheet": "assets/environment-v61/jungle.png",
+    "sheet": "assets/environment-v83/jungle.png",
     "cell": [
       1,
       1,
@@ -1531,7 +1531,7 @@ export const LEGACY73=[
     ],
     "walkable": true,
     "tile": ",",
-    "file": "assets/editor-existing-v73/legacy73-jungle3.png"
+    "file": "assets/environment-v83/jungle3.png"
   },
   {
     "key": "legacy73-ground-village-46",

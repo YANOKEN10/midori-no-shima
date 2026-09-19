@@ -1,0 +1,9 @@
+import {boundaryTree} from './forestArt.js';
+import {drawBiomeGrass} from './grassArt.js';
+import {resourceNodes80} from './resource80.js';
+const files={tree:'world-v19/tree.png',fir:'editor-existing-v73/legacy73-fir.png','garden72-conifer':'garden-v72/conifer.png','garden72-broadleaf':'garden-v72/broadleaf.png','legacy73-tree':'editor-existing-v73/legacy73-tree.png','legacy73-fir':'editor-existing-v73/legacy73-fir.png','legacy73-world-v19-tree':'world-v19/tree.png','resource83-blue-tree':'resources-v81/blue-tree.png','resource83-blue-rock':'resources-v81/blue-rock.png',jungle1:'environment-v83/jungle1.png',jungle3:'environment-v83/jungle3.png'};
+const images={};for(const[k,file]of Object.entries(files)){const im=new Image();im.src=new URL('../assets/'+file,import.meta.url).href;images[k]=im;}
+export function drawTree83(c,p,map){let key=p.art;if(boundaryTree(map,p)&&['tree','fir'].includes(key))key='legacy73-world-v19-tree';if(resourceNodes80(map).some(n=>n.type==='tree'&&n.x===p.x&&n.y===p.y))key='resource83-blue-tree';if(map.jungle61&&['tree','fir'].includes(p.art))key=(p.x+p.y)%2?'jungle1':'jungle3';const im=images[key];if(!im?.complete||!im.naturalWidth)return false;c.imageSmoothingEnabled=false;c.drawImage(im,p.x*32,(p.y-1)*32,64,128);return true;}
+export function drawActive83(c,p){if(p.art.startsWith('active83-')){const theme=p.art.slice(9),map={id:theme==='road'?'route1':'active83',rows:['"""','"""','"""'],grassStyle:theme==='mountain'?'mountain':'rural'};return drawBiomeGrass(c,map,p.x*32,p.y*32,32,32);}const im=images[p.art];if(!p.art.startsWith('resource83-')||!im)return false;if(im.complete&&im.naturalWidth)c.drawImage(im,p.x*32,p.y*32,p.w*32,p.h*32);return true;}
+
+export const activeReady83=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0);

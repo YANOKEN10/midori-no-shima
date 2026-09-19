@@ -1,3 +1,4 @@
+import {isTree83} from './treeFootprint83.mjs';
 import {drawResources80} from './resource80.js';
 import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
 import {canTraverse75,climbAt75} from './elevation75.mjs';
@@ -29,7 +30,7 @@ import {FollowerTrail} from './followerTrail.js';
 import {drawFollower,followerDistance} from './followerArt.js';
 import { ordinaryEncounters, rollRareEncounter, rareAreasUnlocked } from './rareEncounters.js';
 import { drawNpc } from './npcArt.js?v=20260913-fashion-v50';
-import { drawChapterMap, drawGrassFeet } from "./chapterArt.js";
+import { drawChapterMap, drawGrassFeet, drawEditorProp72 } from "./chapterArt.js";
 import { chapterNpc, chapterTravelHint } from "./chapterStory.js";
 // ============================================================
 //  フィールド（まちや どうろを あるく ところ）
@@ -1107,9 +1108,10 @@ export const world = {
     if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
     people.push(...daycareResidents(map,State.save,this.tick));
     people.push({me:true,y:this.y+this.oy/T});
+    people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>isTree83(p)&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
-      if (p.follower) {
+      if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,p.tree,map);G.ctx.restore();continue;}if (p.follower) {
         drawFollower(G.ctx,p.follower,p.pose,this.tick,p.x*T+16-camX,p.y*T+20-camY);
         if(map.tileWorld)drawGrassFeet(G.ctx,map,p.x*T,p.y*T,camX,camY);
       } else if (p.me) {
