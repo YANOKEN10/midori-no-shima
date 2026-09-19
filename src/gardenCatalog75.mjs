@@ -533,3 +533,6 @@ export const OBJECTS75=[
     "file": "assets/garden-v75/prop-daisies.png"
   }
 ];
+
+// Complete directional sets for the three decorative paving families.
+for(const p of PATHS75.filter(p=>!p.label.includes('・'))){for(const[shape,labels]of [['edge',['上ふち','右ふち','下ふち','左ふち']],['corner',['左上外角','右上外角','右下外角','左下外角']],['inner',['左上内角','右上内角','右下内角','左下内角']]])for(let i=0;i<4;i++)PATHS75.push({...p,key:p.key+'-'+shape+'-'+i,label:p.label+'・'+labels[i],rotation:i,shape81:shape});}

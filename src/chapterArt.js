@@ -5,6 +5,7 @@ import {asset as frontierAsset72} from './frontierArt.js';
 import {drawEditorGround72,editorGroundReady72} from './editorGround72.js';
 import {alpineReady65,drawAlpineProp65} from './alpineArt65.js';
 import {drawForest61,drawJungleFeet61} from './jungleArt61.js';
+const clinic81=new Image();clinic81.src=new URL('../assets/buildings-v81/hospital.png',import.meta.url).href;
 const cottage=new Image();cottage.src=new URL('../assets/house-v60/chalet.png',import.meta.url).href;
 import {drawSign,signReady} from './signArt.js';
 import {drawRoad,roadReady,roadStyle} from './roadArt.js';
@@ -23,7 +24,7 @@ import * as G from './gfx.js';
 const atlasImage=new Image();atlasImage.src=new URL('../assets/world-v5/swiss-atlas-v1.png',import.meta.url).href;
 let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).then(r=>r.json()).then(d=>{atlas=d;}).catch(e=>console.error('Tile atlas:',e));
 const cache=new WeakMap();
-export function drawMaterial(ctx,key,x,y,w,h){if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&cottage.complete&&cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
+export function drawMaterial(ctx,key,x,y,w,h){if(key==='chaletClinic'&&clinic81.complete&&clinic81.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(clinic81,x+w*13/160,y-h*7/160,w,h);return true;}if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&cottage.complete&&cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
 // Rural tracks keep the grass texture; connected neighbours share open edges.
 function landscape(c,map,x,y,ch){
@@ -60,7 +61,7 @@ function cliff(c,map,x,y){
  c.restore();
 }
 function drawChapterBase72(ctx,map,camX,camY){
- if(!signReady()||!cottage.complete||!cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
+ if(!clinic81.complete||!clinic81.naturalWidth||!signReady()||!cottage.complete||!cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
  if(drawForest61(ctx,map,camX,camY,drawMaterial))return true;
  if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
  if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
@@ -122,7 +123,7 @@ function drawChapterBase72(ctx,map,camX,camY){
  }}
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
  drawEditorGround72(c,map,drawMaterial);
- for(const p of map.props||[]){if(drawShop74(c,p))continue;if(drawAlpineProp65(c,p,map,drawMaterial))continue;if(p.fashionShop){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
+ for(const p of map.props||[]){if(p.turn81){drawEditorProp72(c,p,map);continue;}if(drawShop74(c,p))continue;if(drawAlpineProp65(c,p,map,drawMaterial))continue;if(p.fashionShop){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
  if(map.room)paintInterior(c,map);
  if(alpineReady65(map)&&roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!(map.biome||map.townPond)||marineReady()))shopsReady74()&&editorGroundReady72(map)&&cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
@@ -148,6 +149,6 @@ export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'rive
  }return true;}
 
 function drawEditorGrassFeet73(c,map,x,y,camX,camY){const p=map.editorAddedProps72?.find(p=>p.walkable&&(p.group==='grass'||p.tile==='\"')&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h);return p?drawNature73(c,p.art,p.x*32-camX,p.y*32-camY,p.w*32,p.h*32):false;}
-export function drawEditorProp72(c,p,map){if(p.art==='wall79'){c.drawImage(tileFor('X',0,null,255,0,0,0,0),p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(drawShop74(c,p))return true;if(p.art==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(p.art==='shopCounter'){drawFurniture72(c,{theme:'home'},[['counter',p.x,p.y,p.w,p.h]]);return true;}if(drawNature73(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(drawGarden72(c,p))return true;if(frontierAsset72(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(environmentProp(c,p,map))return true;if(drawAlpineProp65(c,p,{...map,alpineRoute65:true},drawMaterial))return true;if(drawMarineAsset(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;return drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
+export function drawEditorProp72(c,p,map){if(p.turn81){c.save();c.translate((p.x+p.w/2)*32,(p.y+p.h/2)*32);c.rotate(p.turn81*Math.PI/2);drawEditorProp72(c,{...p,x:-p.originalW81/2,y:-p.originalH81/2,w:p.originalW81,h:p.originalH81,turn81:0},map);c.restore();return true;}if(p.art==='legacy73-chaletClinic')return drawMaterial(c,'chaletClinic',p.x*32,p.y*32,p.w*32,p.h*32);if(p.art==='wall79'){c.drawImage(tileFor('X',0,null,255,0,0,0,0),p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(drawShop74(c,p))return true;if(p.art==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(p.art==='shopCounter'){drawFurniture72(c,{theme:'home'},[['counter',p.x,p.y,p.w,p.h]]);return true;}if(drawNature73(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(drawGarden72(c,p))return true;if(frontierAsset72(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(environmentProp(c,p,map))return true;if(drawAlpineProp65(c,p,{...map,alpineRoute65:true},drawMaterial))return true;if(drawMarineAsset(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;return drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
 const editorViews73=new WeakMap();
 export function drawChapterMap(c,map,camX,camY){let view=map;if(map.editorVisualRows73){view=editorViews73.get(map);if(!view){view={...map,rows:map.editorVisualRows73};editorViews73.set(map,view);}}const result=drawChapterBase72(c,view,camX,camY);c.save();c.translate(-camX,-camY);for(const p of map.editorAddedProps72||[])drawEditorProp72(c,p,map);if(map.editorAddedFurniture72?.length)drawFurniture72(c,{theme:'home'},map.editorAddedFurniture72);for(const f of map.editorStyledFurniture73||[])drawFurniture72(c,f.room,[f.f]);c.restore();return result;}

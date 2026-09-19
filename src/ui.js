@@ -59,7 +59,7 @@ export const ui = {
         i: Math.min(o.start || 0, Math.max(0, items.length - 1)), top: 0,
         cancel: o.cancel !== false,
         rows: o.rows || Math.min(items.length, 4), columns: o.columns === 2 ? 2 : 1,
-        x: o.x, y: o.y, w: o.w, extra: o.extra, battle: !!o.battle, details: o.details,
+        x: o.x, y: o.y, w: o.w, maxWidth:o.maxWidth, rightLabels:o.rightLabels, extra: o.extra, battle: !!o.battle, details: o.details,
         resolve: resolve,
       });
     });
@@ -203,7 +203,7 @@ function boxOf(w) {
   let widest = 0;
   for (const s of w.items) widest = Math.max(widest, G.textW(s, TEXT_SIZE));
   let width = Math.max(w.w || 0, widest + CH_PAD_L + CH_PAD_R, 96);
-  width = Math.min(width, G.W - 16);
+  width = Math.min(width, w.maxWidth||G.W-16, G.W - 16);
 
   let x = w.x == null ? G.W - width - 8 : w.x;
   if (x + width > G.W - 8) x = G.W - 8 - width;
@@ -269,7 +269,9 @@ function drawChoice(w) {
     if (i >= w.items.length) break;
     const y = b.y + CH_PAD_Y + r * CH_ROW;
     if (i === w.i) G.text("▶", b.x + 14, y, 3, 12);
-    G.textFit(w.items[i], b.x + CH_PAD_L, y, maxW, 3, TEXT_SIZE);
+    const right=w.rightLabels?.[i],rw=right?G.textW(right,12)+8:0;
+    G.textFit(w.items[i], b.x + CH_PAD_L, y, maxW-rw, 3, TEXT_SIZE);
+    if(right)G.text(right,b.x+b.w-CH_PAD_R-G.textW(right,12),y+2,3,12);
   }
   if (w.extra) w.extra(b, w.i);
   G.use("ui");

@@ -1011,6 +1011,7 @@ export const world = {
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     const fullBackdrop = map.tileWorld ? drawChapterMap(G.ctx,map,camX,camY) : map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
+    drawResources80(G.ctx,map,State.save,camX,camY);
     drawMarineAtmosphere(G.ctx,map,camX,camY,this.tick,State.save);
     drawVoyageOverlay(G.ctx,map,camX,camY,State.save,this.tick);
     if (map.fullArt && !fullBackdrop) {
@@ -1148,19 +1149,15 @@ export const world = {
     }
 
     if(map.tileWorld){drawGrassFeet(G.ctx,map,px,py,camX,camY);}
-    drawDaycareLabels(G.ctx,map,State.save,camX,camY);drawLot79(G.ctx,map,camX,camY);drawResources80(G.ctx,map,State.save,camX,camY);
+    drawLot79(G.ctx,map,camX,camY);
     const environmentNow=new Date(),environmentOptions={storyStorm:map.id==='raden'&&powerOutage(State.save)};
     drawRealtimeEnvironment(G.ctx,map,this.tick,environmentNow,{...environmentOptions,camX,camY});
     drawPowerAtmosphere(G.ctx,map,this.tick,State.save);
     if(map.kind==='out'&&map.frontierTheme==='ash')drawFrontierWeather(G.ctx,map,this.tick);drawEndWeather(G.ctx,this);
-    if(this.showName<=0){drawClockWeather(G.ctx,map,environmentNow,environmentOptions);drawVoyageStatus(G.ctx,map,State.save);}
+    {drawClockWeather(G.ctx,map,environmentNow,environmentOptions);drawVoyageStatus(G.ctx,map,State.save);}
     // まちの なまえ（はいってすぐ）
     G.use("ui");
-    if (this.showName > 0) {
-      const wdt = G.textW(map.name, 16) + 32;
-      G.window9(8, 8, wdt, 38);
-      G.text(map.name, 24, 19, 3, 16);
-    }
+
     if (compassEnabled()) drawCompassArrow(this.mapId, this.x, this.y, camX, camY, this.tick);
     if (this.doorFade > 0) {
       G.ctx.fillStyle = `rgba(3, 12, 23, ${Math.min(1, this.doorFade)})`;

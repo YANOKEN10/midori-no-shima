@@ -645,10 +645,10 @@ function drawBattle() {
   const youSet = B.you ? palOf(species(B.you.mon.sp)) : "ひかり";
   const youAcc = B.you ? accentOf(species(B.you.mon.sp)) : "ほのお";
 
-  if(B.isTrainer&&['trainer','foeSending'].includes(B.intro)){const n=B.trainer.appearance79||Object.values(MAPS).flatMap(m=>m.npcs||[]).find(n=>n.name===B.trainer.name)||{name:B.trainer.name,variant:28};const im=npcFrame({...n,dir:'down'},1);if(im){G.ctx.imageSmoothingEnabled=false;G.ctx.globalAlpha=B.intro==='foeSending'?Math.max(0,1-B.introTime/320):1;G.ctx.drawImage(im,220,56,48,72);G.ctx.globalAlpha=1;}G.use('ui');G.ctx.fillStyle='#183a4bdc';G.ctx.fillRect(156,16,160,26);G.textFit(B.trainer.name,162,22,148,0,13);for(let i=0;i<6;i++){G.ctx.fillStyle=i<B.foeParty.length?'#e9ae45':'#5e7a78';G.ctx.beginPath();G.ctx.arc(209+i*15,144,4,0,Math.PI*2);G.ctx.fill();}G.use('sky');}
+  if(B.isTrainer&&['trainer','foeSending'].includes(B.intro)){const n=B.trainer.appearance79||Object.values(MAPS).flatMap(m=>m.npcs||[]).find(n=>n.name===B.trainer.name)||{name:B.trainer.name,variant:28};const im=npcFrame({...n,dir:'down'},1);if(im){G.ctx.imageSmoothingEnabled=false;G.ctx.globalAlpha=B.intro==='foeSending'?Math.max(0,1-B.introTime/320):1;G.ctx.drawImage(im,212,40,64,96);G.ctx.globalAlpha=1;}G.use('ui');G.ctx.fillStyle='#183a4bdc';G.ctx.fillRect(156,16,160,26);G.textFit(B.trainer.name,162,22,148,0,13);for(let i=0;i<6;i++){G.ctx.fillStyle=i<B.foeParty.length?'#e9ae45':'#5e7a78';G.ctx.beginPath();G.ctx.arc(209+i*15,144,4,0,Math.PI*2);G.ctx.fill();}G.use('sky');}
   if (!B.foe.hidden && foeArt && !(B.isTrainer&&['trainer','foeSending'].includes(B.intro))) {
     const generated = battleArt(B.foe.mon.sp);
-    if (generated) {const size=B.foe.mon.sp==='コケゴロ'?104:species(B.foe.mon.sp).no===20?112:88;G.drawScaled(generated,244-size/2+(B.foe.shakeX|0),132-size,size,size);}
+    if (generated) {const size=B.foe.mon.sp==='コケゴロ'?116:species(B.foe.mon.sp).no===20?112:88;G.drawScaled(generated,244-size/2+(B.foe.shakeX|0),132-size,size,size);}
     if (B.foe.flash > 0 && Math.floor(B.foe.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(200, 44, 88, 88, 0); G.ctx.globalAlpha = 1;
@@ -656,7 +656,7 @@ function drawBattle() {
   }
   if (B.you && !B.you.hidden && youArt && !['trainer','foeSending','foeReady','sending'].includes(B.intro)) {
     const generated = battleArt(B.you.mon.sp, true);
-    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=(B.you.mon.sp==='コケゴロ'?104:species(B.you.mon.sp).no===20?112:88)*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
+    if(generated){const scale=B.intro==='reveal'?Math.max(.1,Math.min(1,B.introTime/300)):1,size=(B.you.mon.sp==='コケゴロ'?116:species(B.you.mon.sp).no===20?112:88)*scale;G.drawScaled(generated,64-size/2+(B.you.shakeX|0),208-size,size,size);}
     if (B.you.flash > 0 && Math.floor(B.you.flash / 40) % 2 === 0) {
       G.use("ui");
       G.ctx.globalAlpha = 0.5; G.rect(20, 120, 88, 88, 0); G.ctx.globalAlpha = 1;

@@ -69,16 +69,7 @@ const title = {
   draw() {
     const t = this.t;
     if (drawTitleBackground(G.ctx, G.W, G.H)) {
-      G.ctx.save();
-      G.ctx.fillStyle = "rgba(4,18,51,.64)";
-      G.ctx.strokeStyle = "rgba(126,211,255,.82)";
-      G.ctx.lineWidth = 2;
-      G.ctx.fillRect(22, 12, G.W - 44, 66);
-      G.ctx.strokeRect(26, 16, G.W - 52, 58);
-      G.ctx.restore();
-      outlined("ガオン・ワールド", G.W / 2, 24, 25);
       G.use("ui");
-      G.textCenter("まだ見たことのない世界へ", G.W / 2, 58, 0, 13);
       if (Math.floor(t / 500) % 2 === 0) {
         G.ctx.fillStyle = "rgba(4,18,51,.75)";
         G.ctx.fillRect(87, 238, 146, 30);

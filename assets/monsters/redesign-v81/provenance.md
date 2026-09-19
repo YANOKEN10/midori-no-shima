@@ -1,0 +1,1 @@
+Regenerated using imagegen from the existing three evolutionary designs: Hanabii 27, Flawan 28, Bloomna 29. Each sheet contains front and back. Faces and bodies explicitly opaque; only surrounding background transparent. Native alpha crop and nearest-neighbor resize to 96x96, no color-key transparency. Source sheets retained. Existing follower sprites checked and retained.

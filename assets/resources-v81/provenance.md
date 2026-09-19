@@ -1,0 +1,1 @@
+Generated using imagegen: blue-leaf variant of world-v19/tree.png and blue mineral rocks referencing mountain-v24/rock.png. Original generated outputs retained. Native alpha preserved; no green color-key removal.

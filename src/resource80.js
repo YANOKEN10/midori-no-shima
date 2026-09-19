@@ -23,12 +23,14 @@ export function resourceNodes80(map){
  }
  return nodes;
 }
+import {forestLayout} from './forestArt.js';
+const blueRock81=new Image();blueRock81.src=new URL('../assets/resources-v81/blue-rock.png',import.meta.url).href;
+const blueTree81=new Image();blueTree81.src=new URL('../assets/resources-v81/blue-tree.png',import.meta.url).href;
 export function drawResources80(c,map,save,cx,cy){
- c.save();c.font='bold 9px sans-serif';c.textAlign='center';c.textBaseline='middle';
+ c.save();c.imageSmoothingEnabled=false;
  for(const p of resourceNodes80(map)){
-  const x=p.approach.tx*32-cx+16,y=p.approach.ty*32-cy+26;
-  c.fillStyle='#243f35';c.fillRect(x-15,y-9,30,13);c.strokeStyle='#ffe59b';c.lineWidth=1;c.strokeRect(x-15,y-9,30,13);
-  c.fillStyle='#ffe59b';c.fillText(p.type==='tree'?'素材木':'採掘岩',x,y-2);
+  if(p.type==='tree'&&blueTree81.complete&&blueTree81.naturalWidth){const trees=forestLayout(map),tx=(p.approach.tx+.5)*32,ty=(p.approach.ty+1)*32,near=trees.filter(t=>tx>=t.x&&tx<t.x+t.w&&ty>=t.y&&ty<=t.y+t.h+16).sort((a,b)=>Math.abs(a.x+a.w/2-tx)+Math.abs(a.y+a.h-ty)-Math.abs(b.x+b.w/2-tx)-Math.abs(b.y+b.h-ty))[0],w=near?.w||Math.max(32,Math.min(64,p.w*32)),h=near?.h||w*1.25,x=near?.x??(tx-w/2),y=near?.y??(ty-h);c.drawImage(blueTree81,x-cx,y-cy,w,h);}
+  if(p.type==='rock'&&blueRock81.complete&&blueRock81.naturalWidth){const w=p.w*32,h=p.h*32;c.drawImage(blueRock81,p.x*32-cx,p.y*32-cy,w,h);}
  }
  c.restore();
 }

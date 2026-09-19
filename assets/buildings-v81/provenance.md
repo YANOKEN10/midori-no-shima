@@ -1,0 +1,1 @@
+Generated using the imagegen skill from the existing clinic reference; original output retained as hospital-source.png. Native alpha preserved, nearest-neighbor downsample to 160x160. Door artwork and gameplay tile are aligned by render anchor.
