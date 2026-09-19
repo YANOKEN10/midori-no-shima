@@ -1,3 +1,4 @@
+import {FURNITURE84,sizeTemplate84} from './readableCatalog84.mjs';
 import {buildingTemplate83} from './buildingRooms83.mjs';
 import {treeKind83,isTree83} from './treeFootprint83.mjs';
 import {GOODS82} from './shopCatalog82.mjs';
@@ -30,7 +31,7 @@ export function catalog(maps,species){
  for(const f of furniture)if(f.key.startsWith('reference78-'))f.label=({'reference78-throne':'王座','reference78-column':'石の柱','reference78-banner':'城の旗','reference78-armor':'よろいの置物'})[f.key]||f.label;
  const styles=new Set();for(const [id,m]of Object.entries(maps))for(const f of m.room?.furniture||[]){const signature=JSON.stringify([m.room.theme,m.room.shopTown||'',f[0],f[3],f[4]]);if(styles.has(signature))continue;styles.add(signature);furniture.push({key:'furniture73-'+id+'-'+f[0],kind:f[0],label:m.name+'・'+(furniture.find(p=>p.key===f[0])?.label||f[0]),w:f[3],h:f[4],room:{theme:m.room.theme,shopTown:m.room.shopTown}});}
  for(const p of props)if(p.art==='parkGate'||p.art==='legacy73-parkGate'){p.walkable=true;p.mask=['#..#','#..#','#..#'];}
- return {maps,props:[...new Map([...props,...GARDEN72,...OBJECTS75,...DECOR75,...REFERENCE78,...NATURE73.filter(p=>p.group!=='floor')].map(p=>[p.key,p])).values()].map(p=>/^(legacy73-)?stairs$/.test(p.art)?{...p,walkable:true,tile:'H'}:p).map(buildingTemplate83).map(p=>treeKind83(p)?{...p,w:2,h:3,walkable:false,tile:'T',label:p.key==='legacy73-world-v19-tree'?'外周の森の木（使用中）':p.label}:p),furniture,people:Array.from({length:34},(_,variant)=>({key:String(variant),variant,label:'住人 '+(variant+1)})),species};
+ return {maps,props:[...new Map([...props,...GARDEN72,...OBJECTS75,...DECOR75,...REFERENCE78,...NATURE73.filter(p=>p.group!=='floor')].map(p=>[p.key,p])).values()].map(sizeTemplate84).map(p=>/^(legacy73-)?stairs$/.test(p.art)?{...p,walkable:true,tile:'H'}:p).map(buildingTemplate83).map(p=>treeKind83(p)?{...p,w:2,h:3,walkable:false,tile:'T',label:p.key==='legacy73-world-v19-tree'?'外周の森の木（使用中）':p.label}:p),furniture:[...furniture,...FURNITURE84],people:Array.from({length:34},(_,variant)=>({key:String(variant),variant,label:'住人 '+(variant+1)})),species};
 }
 const groundCache79=new WeakMap(),groundIndex79=new WeakMap();
 export function groundObjects79(map){if(groundCache79.has(map))return groundCache79.get(map);const out=[];if(map.kind!=='in'&&!map.powerArt)map.rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(('FTRX=S'.includes(ch)||(map.townGardens||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))&&!map.props.some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))out.push({id:'g:'+(y*r.length+x),type:'prop',template:({F:'flowers',T:'tree',R:'rock',X:'wall79','=':'fenceHorizontal',S:'sign'})[ch]||'flowers',x,y});}));groundCache79.set(map,out);groundIndex79.set(map,new Map(out.map(o=>[o.id,o])));return out;}

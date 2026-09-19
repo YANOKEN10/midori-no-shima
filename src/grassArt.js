@@ -1,10 +1,11 @@
+import {drawReadable84,readableReady84} from './readableArt84.js';
 const roadGrass=new Image();roadGrass.src=new URL('../assets/gardens-v52/grass.png',import.meta.url).href;
 let roadBounds=null;
 export const isRoadGrass=map=>(/^route(?:[1-9]|1[0-8])$/.test(map.id)||['mountain','natureforest','mossSanctuary'].includes(map.id))&&!['snow','ash'].includes(map.frontierTheme)&&!['dark','ice','snow'].includes(map.endTheme);
 import {drawMarineAsset} from './marineArt.js';
 const images=Object.fromEntries(['mountain','rural'].map(name=>{const im=new Image();im.src=new URL('../assets/grass-v25/'+name+'.png',import.meta.url).href;return[name,im];}));
 export const grassTheme=map=>map.grassStyle||(['ranch','coast','flowers','rail'].includes(map.frontierTheme)?'rural':null)|| (map.id==='mountain'?'mountain':['village','rods','route1','route2','natureforest','mossSanctuary'].includes(map.id)?'rural':null);
-export const grassReady=map=>{if(isRoadGrass(map))return roadGrass.complete&&roadGrass.naturalWidth>0;const theme=grassTheme(map);return !theme||images[theme].complete&&images[theme].naturalWidth>0;};
+export const grassReady=map=>{if(!readableReady84())return false;if(isRoadGrass(map))return roadGrass.complete&&roadGrass.naturalWidth>0;const theme=grassTheme(map);return !theme||images[theme].complete&&images[theme].naturalWidth>0;};
 // Shared half-tile tufts bridge adjacent grass cells. The same world-space
 // anchors are used by the cached map and the character feet overlay.
 export function grassPatches(map,tx,ty){
@@ -19,7 +20,7 @@ export function grassPatches(map,tx,ty){
  return out;
 }
 export function drawBiomeGrass(c,map,x,y,worldX=x,worldY=y){
- if(isRoadGrass(map))return drawRoadGrass(c,map,x,y,worldX,worldY);
+ if(grassTheme(map)){drawReadable84(c,'grass-v25-'+grassTheme(map),x,y,32,32);return true;}if(isRoadGrass(map))return drawRoadGrass(c,map,x,y,worldX,worldY);
  const theme=grassTheme(map);if(!map.biome&&!theme)return false;
  const im=images[theme];if(!map.biome&&(!im.complete||!im.naturalWidth))return true;
  c.save();c.beginPath();c.rect(x,y,32,32);c.clip();c.imageSmoothingEnabled=false;
