@@ -11,3 +11,8 @@
 #connectionDialog83{width:min(760px,96vw);max-height:94dvh;overflow:auto}#connectionView83{max-height:45dvh;overflow:auto;background:#243e3c;padding:12px}#connectionCanvas83{display:block;image-rendering:pixelated;cursor:crosshair}#connectionError83{color:#9c3834;white-space:pre-line}
 
 .encounter-row86{margin:10px 0;padding:10px;border:1px solid #b7cec3;border-radius:10px;min-width:0}.encounter-row86 select{max-width:100%}#newMapDialog82{max-height:90dvh;overflow-y:auto}
+
+.selection-info90{padding:10px 14px;background:#fff9dd;border:1px solid #dacb83;border-radius:8px;line-height:1.6;overflow-wrap:anywhere}.selection-info90 strong{display:block;color:#234f50;font-size:15px}.selection-info90 span{display:block;font-size:12px;white-space:pre-line}#selectedInfo90{margin:0 10px 8px;max-height:120px;overflow:auto;flex-shrink:0}.inspector .selection-info90{margin-bottom:12px}@media(max-width:700px){#selectedInfo90{max-height:100px;margin:0 6px 6px}}
+
+/* Reserve the information area so selection never shifts the canvas during a drag. */
+#selectedInfo90{height:82px;min-height:82px}
