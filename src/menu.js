@@ -428,18 +428,18 @@ async function afterLogin() {
 }
 
 /* ============ ショップ ============ */
-export async function shopMenu() {
+export async function shopMenu(stock82=SHOP_LIST) {
   for (;;) {
     const i = await ui.choice(["かう", "うる", "土地・お店", "やめる"], { x: 176, y: 150, w: 136 });
     if (i < 0 || i === 3) { await ui.say(["また どうぞ！"]); return; }
-    if (i === 0) await buyMenu();
+    if (i === 0) await buyMenu(stock82);
     else if(i===1)await sellMenu();else await businessMenu79(menuWorld,businessMaps79);
   }
 }
 
-async function buyMenu() {
+async function buyMenu(stock82=SHOP_LIST) {
   for (;;) {
-    const chosen=await ui.itemList(SHOP_LIST.map(name=>({name,n:(State.save.bag[name]||0)})),{mode:'buy',money:State.save.money});
+    const chosen=await ui.itemList(stock82.map(name=>({name,n:(State.save.bag[name]||0)})),{mode:'buy',money:State.save.money});
     if(!chosen)return;
     const name=chosen.name,price=itemData(name).price;
     if(name==='採掘セット'&&State.save.bag[name]>0){await ui.say(['採掘セットは すでに持っています。']);continue;}

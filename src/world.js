@@ -610,7 +610,7 @@ export const world = {
 
     if (n.shop) {
       await ui.say(n.talk);
-      await shopMenu();
+      await shopMenu(this.map.shopItems82??MAPS[State.save.backTo?.map]?.shopItems82);
       return;
     }
 
