@@ -505,7 +505,7 @@ export const world = {
 
     if(this.mapId==='playerShop79'&&ty<=7){this.busy=true;ownShop79(State.save.backTo?.map).finally(()=>this.busy=false);return;}
     const mine=miningTarget79(this.map,tx,ty);if(mine){this.busy=true;miningMenu79(this,mine).finally(()=>this.busy=false);return;}
-    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>kind==='counter'&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
+    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>['counter','shop-counter106'].includes(kind)&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
     const n = this.npcAt(tx, ty) || (counter ? this.npcAt(tx+dx,ty+dy) : null);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
 

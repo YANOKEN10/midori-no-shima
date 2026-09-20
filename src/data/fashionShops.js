@@ -26,7 +26,7 @@ export function addFashionShops(M){
   for(let i=0;i<q.length&&!end;i++){const[a,b]=q[i];if(m.g[b][a]==='.')end=[a,b];else for(const[ox,oy]of [[0,1],[1,0],[-1,0],[0,-1]]){const xx=a+ox,yy=b+oy,k=xx+','+yy;if([',','F','.'].includes(m.g[yy]?.[xx])&&!prev.has(k)){prev.set(k,[a,b]);q.push([xx,yy]);}}}
   if(!end)throw Error('Fashion shop street not connected: '+id);
   while(end){const[a,b]=end;m.g[b][a]='.';if([',','F'].includes(m.g[b][a+1])&&!m.signs.some(s=>s.x===a+1&&s.y===b))m.g[b][a+1]='.';end=prev.get(end.join(','));}
-  const room=structuredClone(M.shop);room.id=target;room.name=name+'のふくや';room.fashionTown=id;room.room.shopTown=id;room.room.theme='shop';room.npcs=[{x:7,y:4,name:'ふくやの店員',variant:5,look:'clerk',dir:'down',noRoam:true,clothes:id,talk:[name+'のふくやへ ようこそ！','ぼうし・ふく・ズボン・くつを 試着できるよ。']}];room.warps=[{x:7,y:11,to:'@back'}];room.spawn={x:7,y:9};M[target]=room;
+  const room=structuredClone(M.shop);room.id=target;room.name=name+'のふくや';room.fashionTown=id;room.room.shopTown=id;room.room.theme='shop';room.npcs=[{x:2,y:5,name:'ふくやの店員',variant:5,look:'clerk',dir:'right',noRoam:true,clothes:id,talk:[name+'のふくやへ ようこそ！','ぼうし・ふく・ズボン・くつを 試着できるよ。']}];room.warps=[{x:7,y:11,to:'@back'}];room.spawn={x:7,y:9};M[target]=room;
   m.fashionShop={x:dx,y:dy,to:target};m.props.sort((a,b)=>a.y+a.h-b.y-b.h);
  }
 }

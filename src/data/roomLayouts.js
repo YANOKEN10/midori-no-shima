@@ -7,11 +7,11 @@ export function furnishInteriors(maps){
  rodsHome:{theme:'cottage',npcs:[[9,7]],rug:[6,6,5,3],furniture:[['sofa',3,6,2,2],['table',7,7,2,1],['kitchen',3,4,3,1],['books',10,4,3,1],['bed',11,8,2,3],['plant',3,10,1,1],['chair',7,8,1,1]],windows:[4,9]},
  lab:{theme:'lab',npcs:[[8,6],[11,9]],rug:[6,8,4,3],furniture:[['computer',3,4,3,1],['books',10,4,3,1],['machine',3,6,2,2],['labtable',5,6,2,1],['tank',11,6,2,2],['plant',3,10,1,1],['computer',4,9,2,1]],windows:[6,9]},
  hospital:{theme:'hospital',bounds:[1,3,14,8],npcs:[[7,4]],rug:[6,7,4,4],furniture:[['ward',2,3,4,3],['counter',6,5,4,1],['books',12,3,2,2],['sofa',11,9,3,1],['table',12,7,2,1],['plant',1,9,1,1],['computer',10,3,2,1]],windows:[2,11]},
- shop:{theme:'shop',bounds:[1,3,14,8],npcs:[[7,4]],rug:[6,10,3,1],furniture:[['shelf',2,3,3,2],['shelf',11,3,3,2],['counter',6,5,4,1],['shelfRight',2,7,1,3],['shelfLeft',13,7,1,3],['plant',1,6,1,1],['shelf',4,7,2,2],['shelf',9,7,2,2]],windows:[2,11]}
+ shop:{theme:'shop',shopDesign106:true,bounds:[1,3,14,8],npcs:[[2,5]],rug:[7,10,1,1],furniture:[['shop-counter106',3,4,1,4],['shop-wall-shelf106',5,3,2,2],['shop-wall-shelf106',7,3,2,2],['shop-glass106',10,3,3,2],['shop-shelf106',6,6,2,3],['shop-shelf106',10,6,2,3],['shop-table106',9,9,2,2],['shop-chair-blue106',8,9,1,1],['shop-chair-yellow106',8,10,1,1],['shop-chair-yellow106',11,9,1,1],['shop-chair-blue106',11,10,1,1],['plant',1,10,1,1],['plant',14,10,1,1]],windows:[]}
  };
  for(const [id,room]of Object.entries(layouts)){const m=maps[id];m.room=room;m.props=[];const [bx,by,bw,bh]=room.bounds||[3,4,10,7];m.g=m.g.map((row,y)=>row.map((_,x)=>x>=bx&&x<bx+bw&&y>=by&&y<by+bh?'f':'X'));m.g[11][7]='x';for(const exit of m.warps)if(exit.x===7&&exit.y===12)exit.y=11;
  room.furniture.forEach(([kind,x,y,w,h])=>{for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)m.g[j][i]='t';});
- m.npcs.forEach((n,i)=>{[n.x,n.y]=room.npcs[i];});
+ m.npcs.forEach((n,i)=>{[n.x,n.y]=room.npcs[i];if(room.shopDesign106){n.dir='right';n.noRoam=true;}});
  }
 }
 export function encloseTowns(maps){for(const id of ['village','rods','route1','route2','natureforest','mossSanctuary','mountain','route4','remoteLake','kageri','mountainAltar','route5','karat','route6','raden','route7','karatPort','resurePort','route8','resure']){const m=maps[id],w=m.g[0].length,h=m.g.length;const isEdge=p=>p.x<2||p.x+p.w>w-2||p.y<3||p.y+p.h>h-3;
