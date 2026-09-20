@@ -7,7 +7,7 @@ let bgmTimer = 0;
 let bgmName = "";
 let step = 0;
 let muted = false;
-const MUSIC_FILES={town:'../assets/music-v32/cozy-adventure.mp3',route:'../assets/music-v32/cozy-adventure.mp3',marineTown:'../assets/music-v31/marine-whispering-grove.mp3',karatTown:'../assets/music-v31/karat-cozy-mountain-village.mp3',natureTown:'../assets/music-v30/morning-meadow-path.mp3',battle:'../assets/music-v32/heroic-charge.mp3',boss:'../assets/music-v32/triumph-of-the-champion.mp3',tournament:'../assets/music-v32/the-final-stand.mp3',yanokenBattle:'../assets/music-v31/yanoken-warriors-charge.mp3'};
+const MUSIC_FILES={title:'../assets/music-v103/ritual-of-dawn.mp3',town:'../assets/music-v32/cozy-adventure.mp3',route:'../assets/music-v32/cozy-adventure.mp3',marineTown:'../assets/music-v31/marine-whispering-grove.mp3',karatTown:'../assets/music-v31/karat-cozy-mountain-village.mp3',natureTown:'../assets/music-v30/morning-meadow-path.mp3',battle:'../assets/music-v32/heroic-charge.mp3',boss:'../assets/music-v32/triumph-of-the-champion.mp3',tournament:'../assets/music-v32/the-final-stand.mp3',yanokenBattle:'../assets/music-v31/yanoken-warriors-charge.mp3'};
 // Reuse the element unlocked by a real gesture (iOS grants playback per element).
 let filePlayer=null,activeTrack=null,mediaUnlocked=false;
 const SILENCE='data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEARKwAAESsAAABAAgAZGF0YQEAAACA';
