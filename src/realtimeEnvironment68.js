@@ -1,3 +1,4 @@
+import {drawNightLights95} from './nightLighting95.mjs';
 import {drawWeatherBadge,clockWeatherPresentation} from './weatherBadge71.js';
 // Real-world Japan time matches the calendar encounter rules. No saved game clock.
 const HOUR=3600000;
@@ -45,7 +46,7 @@ export function drawRealtimeEnvironment(c,map,tick,now=new Date(),{storyStorm=fa
   c.fillStyle=`rgba(30,49,65,${shade})`;c.fillRect(0,0,w,h);
   precipitation(c,weather.previous,tick,1-weather.mix,w,h);precipitation(c,weather.current,tick,weather.mix,w,h);
  }
- const night=Math.max(0,Math.min(1,(a-.15)/.35));if(night){c.globalCompositeOperation='screen';for(const p of [...map.props||[],...map.editorAddedProps72||[]]){const lamp=/lamp|lantern|light/i.test(p.art),building=!!p.door||/house|chalet|shop|hall|castle/i.test(p.art);if(!lamp&&!building)continue;const x=(p.x+p.w/2)*32-camX,y=(p.y+p.h*(lamp?.3:.62))*32-camY,radius=lamp?28:20;if(x<-radius||y<-radius||x>w+radius||y>h+radius)continue;const glow=c.createRadialGradient(x,y,1,x,y,radius);glow.addColorStop(0,'rgba(255,211,113,'+(.55*night)+')');glow.addColorStop(1,'rgba(255,185,76,0)');c.fillStyle=glow;c.fillRect(x-radius,y-radius,radius*2,radius*2);c.fillStyle='rgba(255,226,147,'+(.65*night)+')';c.fillRect(x-2,y-3,4,6);}}c.restore();
+ drawNightLights95(c,map,light.hours,{camX,camY});c.restore();
 }
 export function drawClockWeather(c,map,now=new Date(),{storyStorm=false}={}) {
  if(map.kind!=='out')return;
