@@ -1,3 +1,4 @@
+import {visiblePlacement97} from './editorModel72.mjs';
 import {clone,objectSource,FLOORS} from './editorModel72.mjs';
 import {GROUND88} from './groundCatalog88.mjs';
 const cell=(x,y)=>x+','+y;
@@ -24,7 +25,7 @@ export function selectRegion93(base,doc,cat,rect,includeFloor){
 }
 export function transferSelection93(base,doc,cat,refs,dx,dy,copy=false,newId=()=> 'a:'+crypto.randomUUID()){
  const next=clone(doc),out=[],box=selectionBox93(base,doc,cat,refs);if(!box)return{doc:next,refs:[]};
- if(box.x+dx<0||box.y+dy<0||box.x+box.w+dx>base.rows[0].length||box.y+box.h+dy>base.rows.length)throw Error('選んだもの全体がマップに収まる場所へ動かしてください。');
+ for(const ref of refs){if(ref.kind==='object'){const o=doc.objects.find(o=>o.id===ref.id);if(o&&!visiblePlacement97(base,{...o,x:o.x+dx,y:o.y+dy},objectSource(base,o,cat)))throw Error('素材の一部がマップ内に見える位置へ動かしてください。');}else{const[x,y]=ref.id.split(',').map(Number);if(x+dx<0||y+dy<0||x+dx>=base.rows[0].length||y+dy>=base.rows.length)throw Error('床のマスはマップ内に置いてください。');}}
  const movingTiles=refs.filter(r=>r.kind!=='object').map(r=>{const[x,y]=r.id.split(',').map(Number),t=doc.tiles.find(t=>t.x===x&&t.y===y);const material=t?.material||nativeFloor93(base,x,y);if(!material)throw Error('この地面はまだ複製できません。');return{x,y,material,turn81:t?.turn81||0};});
  const put=t=>{next.tiles=next.tiles.filter(p=>p.x!==t.x||p.y!==t.y);next.tiles.push(t);};
  if(!copy)for(const t of movingTiles)put({x:t.x,y:t.y,material:base.kind==='in'?'wood':'grass',turn81:0});
