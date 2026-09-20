@@ -3,6 +3,7 @@ import {drawResources80} from './resource80.js';
 import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
 import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
+import {filterWild91,wildAvailable91} from './wildAvailability91.mjs';
 import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
 import {postgameCleared,refreshPostgame} from './postgame62.js';
 import {areaBgm,musicArea} from './musicPolicy.js';
@@ -937,7 +938,7 @@ export const world = {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const list=State.save.boating?waterEncounters(this.mapId):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId));
+    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
