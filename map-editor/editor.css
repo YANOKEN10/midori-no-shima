@@ -16,3 +16,5 @@
 
 /* Reserve the information area so selection never shifts the canvas during a drag. */
 #selectedInfo90{height:82px;min-height:82px}
+
+#publishStatus92{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:30;max-width:calc(100vw - 24px);width:max-content;padding:16px 22px;border:2px solid #27715c;border-radius:12px;background:#e8fff3;color:#174b39;font-weight:700;box-shadow:0 6px 24px #17392b33;pointer-events:none}#publishStatus92[data-state=pending]{background:#fff3d0;border-color:#ab7b1c;color:#634709}#publishStatus92[data-state=error]{background:#fff0ec;border-color:#ad3d33;color:#822c25}#publish[data-publish-state=pending]{opacity:1;background:#705a20}#publish[data-publish-state=success]{background:#167749}#publish[data-publish-state=pending]::before{content:'';display:inline-block;width:12px;height:12px;border:2px solid #ffffff66;border-top-color:white;border-radius:50%;margin-right:8px;vertical-align:-2px;animation:publish-spin92 .8s linear infinite}@keyframes publish-spin92{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){#publish[data-publish-state=pending]::before{animation:none}}
