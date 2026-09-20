@@ -4,7 +4,7 @@ const names=['shipSeats','shipHelm','daycareHouse','nurseryPen'];
 const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new URL('../assets/voyage-v28/'+n+'.png',import.meta.url).href;return[n,im];}));
 const ferry=new Image();ferry.src=new URL('../assets/power-v27/ferry.png',import.meta.url).href;
 export const voyageReady=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0);
-export function drawVoyageAsset(c,key,x,y,w,h){const im=images[key];if(!im)return false;if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
+export function drawVoyageAsset(c,key,x,y,w,h){if(drawReadable84(c,key,x,y,w,h))return true;const im=images[key];if(!im)return false;if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
 export function drawVoyageTile(c,map,x,y,ch){
  const dx=x*32,dy=y*32,nursery=map.biome==='nursery';
  c.fillStyle=nursery?'#d7bc86':'#b88958';c.fillRect(dx,dy,32,32);
