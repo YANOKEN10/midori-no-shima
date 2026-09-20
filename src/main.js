@@ -1,3 +1,4 @@
+import {welcome102} from './welcome102.js';
 import {professorIntro,introduceAdventure} from "./professorIntro70.js";
 import { battleArt } from './data/battleart.js';
 // ============================================================
@@ -114,7 +115,11 @@ async function boot() {
   if (local && local.palette) G.setPalette(local.palette);
 
   // ログインの券が いきていれば、しずかに ログインしておく
-  const restored = await cloud.restore();
+  let restored = await cloud.restore();
+  updateWho();
+
+  await welcome102(local,cloud,showAuth);
+  if(cloud.signedIn&&!restored)restored={payload:await loadCloud()};
   updateWho();
 
   // なにか おすまで まつ

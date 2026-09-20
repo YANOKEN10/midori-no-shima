@@ -16,3 +16,6 @@ for(const [mapId,variant,name,sp]of [['route1',30,'山歩きの ダイチ','コ�
 addMoveReminder92(MAPS);
 
 addDeenaGuide94(MAPS);
+
+import {addTutorialPeople100} from '../tutorial100.mjs';
+addTutorialPeople100(MAPS);

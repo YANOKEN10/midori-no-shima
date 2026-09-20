@@ -1,3 +1,4 @@
+import {tutorialNpc100} from './tutorial100.mjs';
 import {landscape98} from './landscapeLayers98.mjs';
 import {deenaReady94,deenaGuide94,recordDeenaVisit94} from './deenaQuest94.mjs';
 import {openMoveReminder92} from './moveLearning92.mjs';
@@ -535,6 +536,7 @@ export const world = {
 
   async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{return await this.runNpcContent(n);}finally{ui.speaker=old;}},
   async runNpcContent(n) {
+    if(await tutorialNpc100(n,State.save,ui,()=>{State.dirty=true;saveLocal();}))return;
     if(n.script==='post:deenaGuide94'){await deenaGuide94(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}
     if(n.script==='move:reminder92'){await openMoveReminder92(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}
     if(n.script==='post:deena'){
