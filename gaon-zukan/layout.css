@@ -1,0 +1,36 @@
+/* Readable cards, including Gaon with many habitats or twenty learned moves. */
+.family{align-items:flex-start;padding:18px;gap:12px}
+.family article,.singles article{min-width:0;padding:12px 8px;gap:5px}
+article>b{line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+article>p{line-height:1.8;text-align:left;margin:6px 0;width:100%;line-break:strict}
+article>span{font-size:13px;line-height:1.7}
+.arrow{align-self:center;width:42px;line-height:1.6}
+.evolution-direction{display:block;font-size:24px}
+.encounter-note{width:min(970px,calc(100% - 40px));margin:24px auto;line-height:1.9}
+.habitat-map,.learnset,.base-stats{width:100%;margin:6px 0 0;background:#f3f8f5;border:1px solid #cddfd5;border-radius:10px;text-align:left;min-width:0}
+article details summary{padding:12px 10px;min-height:44px;font-size:13px;line-height:1.6;color:#235c48;cursor:pointer;overflow-wrap:anywhere}
+article details summary:focus-visible,.detail-scroll:focus-visible{outline:3px solid #e8b851;outline-offset:2px}
+.detail-scroll{max-height:300px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 8px 8px;line-height:1.7}
+.habitat-map ul{list-style:none;padding:0;margin:0}
+.habitat-map li{padding:10px 0;border-top:1px solid #d7e5de}
+.habitat-map li strong,.habitat-map li span{display:block;font-size:13px;line-height:1.7}
+.habitat-map li span{color:#486257;margin-top:3px}
+.learnset table{font-size:13px;line-height:1.7;table-layout:auto}
+.learnset th,.learnset td{padding:8px 3px;vertical-align:top}
+.learnset td:first-child{width:44px;font-size:12px}
+.learnset td a{color:#20543f;text-decoration-thickness:1px;text-underline-offset:3px;overflow-wrap:anywhere}
+.learnset td small{display:inline;font-size:11px}
+@media(max-width:800px){
+ .family{flex-direction:column;gap:8px;padding:12px}
+ .family article,.singles article{width:100%;flex:none;display:grid;grid-template-columns:108px minmax(0,1fr);column-gap:12px;text-align:left;align-items:start;border:1px solid #d7e5de;border-radius:12px;padding:12px;background:white}
+ article>img{grid-column:1;grid-row:1/4;width:108px!important;height:108px!important;margin:0;max-width:100%;align-self:center}
+ article>small,article>b,article>span{grid-column:2;align-self:center}
+ .family small{font-size:12px}.family b,.singles b{font-size:18px;letter-spacing:0;line-height:1.6}.family span{font-size:13px}
+ article>p,article>details{grid-column:1/-1}
+ .arrow{width:auto;display:flex;align-items:center;gap:6px;font-size:13px}
+ .evolution-direction{transform:rotate(90deg);font-size:24px}
+ .singles{padding:12px;gap:12px}
+ .detail-scroll{max-height:280px}
+}
+@media print{.detail-scroll{max-height:none;overflow:visible}}
+.learnset th:first-child{white-space:nowrap;width:52px}.learnset td:first-child{width:52px}
