@@ -1,8 +1,9 @@
+import {drawStyle105} from './styleArt105.js';
 import {powerOutage} from './powerRules.js';
 const names=['controlBank','transformers','pipePump','turbine','flowerHouse','powerStation','solarPanels','generator','flowersPink','flowersGold','ferry','flowerTree'];
 const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new URL('../assets/power-v27/'+n+'.png',import.meta.url).href;return[n,im];}));
 export const powerReady=()=>Object.values(images).every(im=>im.complete&&im.naturalWidth>0);
-export function drawPowerAsset(c,key,x,y,w,h){const im=images[key];if(!im)return false;if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
+export function drawPowerAsset(c,key,x,y,w,h){if(drawStyle105(c,key,x,y,w,h))return true;const im=images[key];if(!im)return false;if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(im,x,y,w,h);}return true;}
 export function drawIndustrialTile(c,x,y,ch){
  const dx=x*32,dy=y*32;c.fillStyle='#899a9d';c.fillRect(dx,dy,32,32);c.fillStyle='#a5b4b3';c.fillRect(dx+1,dy+1,30,30);c.fillStyle='#74898d';for(const [a,b]of [[3,3],[27,3],[3,27],[27,27]])c.fillRect(dx+a,dy+b,2,2);
  if(ch==='X'){c.fillStyle='#34474e';c.fillRect(dx,dy,32,32);c.fillStyle='#66818a';c.fillRect(dx+2,dy+2,28,22);}
