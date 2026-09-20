@@ -118,3 +118,6 @@ bulk93=installBulkEditor93(canvas,{
  preview:next=>{doc=next;refresh();},
  commit:(before,next)=>{doc=before;checkpoint();doc=next;selection=null;refresh();}
 });
+
+$('import97').onclick=()=>{if(!inflight)$('importFile97').click();};
+$('importFile97').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file||inflight)return;try{if(file.size>5000000)throw Error('ファイルが大きすぎます。');const saved=JSON.parse(await file.text());if(saved.map!==mapId)throw Error('先に、このファイルのマップを選んでください：'+saved.map);const issues=validateEdit(base,saved.edit,cat);if(issues.length)throw Error(issues[0]);const next=upgrade79(base,clone(saved.edit));applyEdit(base,next,cat);if(!confirm('書き出した編集内容を読み込みます。現在の編集は「元に戻す」で戻せます。'))return;change(()=>{doc=next;selection=null;tool=null;});notice('編集内容を読み込みました。「下書き保存」または「公開する」を押してください。');}catch(err){notice('読み込めません：'+err.message);}};
