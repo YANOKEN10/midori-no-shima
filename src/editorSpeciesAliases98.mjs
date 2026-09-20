@@ -1,0 +1,3 @@
+// Editor drafts made before the three insect renames remain loadable.
+export const editorSpeciesName98=n=>({'ムシリン':'コガネム','カブトン':'アイバサミ','オオカブト':'ガルシザー'})[n]||n;
+export function upgradeSpecies98(d){return {...d,actors:d.actors?.map(a=>a&&({...a,...(a.species?{species:editorSpeciesName98(a.species)}:{}),...(Array.isArray(a.trainerParty82)?{trainerParty82:a.trainerParty82.map(p=>Array.isArray(p)?[editorSpeciesName98(p[0]),...p.slice(1)]:p)}:{})})),...(d.encounters86?.list?{encounters86:{...d.encounters86,list:d.encounters86.list.map(p=>Array.isArray(p)?[editorSpeciesName98(p[0]),...p.slice(1)]:p)}}:{})};}

@@ -1,3 +1,4 @@
+import {teachMove92} from './moveLearning92.mjs';
 import {npcFrame} from './npcArt.js';
 import {trainerLevel} from './postgame62.js';
 import {battleLabel} from './battleUi.js';
@@ -566,20 +567,7 @@ async function onFoeDown() {
     await ui.say([monName(m) + "は レベル " + lv + "に あがった！"]);
   }
   for (const name of res.learned) {
-    const r = learnMove(m, name);
-    if (r === "ok") await ui.say([monName(m) + "は " + name + "を おぼえた！"]);
-    else if (r === "full") {
-      await ui.say([monName(m) + "は あたらしく " + name + "を おぼえたい！", "でも わざは 4つまで…"]);
-      const yes = await ui.ask([name + "の かわりに どれを わすれる？"], "えらぶ", "やめる");
-      if (yes) {
-        const i = await ui.choice(m.moves.map((x) => x.name), { x: 8, y: 160, w: 240, rows: 4 });
-        if (i >= 0) {
-          const old = m.moves[i].name;
-          m.moves[i] = { name: name, pp: moveData(name).pp, max: moveData(name).pp };
-          await ui.say([old + "を わすれて…", name + "を おぼえた！"]);
-        }
-      }
-    }
+    await teachMove92(m,name,ui,()=>{State.dirty=true;});
   }
   if (res.evolve) B.pendingEvo = { mon: m, to: res.evolve };
 

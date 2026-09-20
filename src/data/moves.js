@@ -1,3 +1,4 @@
+import {EXTRA_MOVES92} from './moves92.mjs';
 // ============================================================
 //  わざ
 //   cat : "phys"=ぶつり / "spec"=とくしゅ / "stat"=へんか
@@ -8,7 +9,7 @@ export const MOVES = {
   タックル:      { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "からだごと ぶつかる。" },
   ブレイド:        { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 35, desc: "つめで ブレイド。" },
   スピードブロー:  { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 30, pri: 1, desc: "かならず 先に うごける。" },
-  れんぞくパンチ:  { type: "ひかり", cat: "phys", pow: 18, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つづけて たたく。" },
+  ラッシュナックル:  { type: "ひかり", cat: "phys", pow: 18, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つづけて たたく。" },
   マックスアタック:  { type: "ひかり", cat: "phys", pow: 100, acc: 90, pp: 10, fx: { recoil: 0.25 }, desc: "つよいが じぶんも きずつく。" },
   スピナー:        { type: "ひかり", cat: "phys", pow: 55, acc: 100, pp: 25, fx: { flinch: 0.2 }, desc: "たまに ひるませる。" },
   ボイス:        { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 40, fx: { foe: { atk: -1 } }, desc: "あいての こうげきを さげる。" },
@@ -67,6 +68,8 @@ export const MOVES = {
 
 };
 
+Object.assign(MOVES,EXTRA_MOVES92);
+
 export function move(name) {
   const m = MOVES[canonicalMoveName(name)];
   if (!m) return { type: "ひかり", cat: "phys", pow: 40, acc: 100, pp: 20, desc: "" };
@@ -80,6 +83,7 @@ export function newMove(name) {
 
 // Old saves and bookmarked move links retain compatibility.
 export const MOVE_ALIASES = {
+  "れんぞくパンチ": "ラッシュナックル",
   "かみつく": "スピナー",
   "しっぽふり": "ダンス",
   "ひばしら": "ファイアピン",

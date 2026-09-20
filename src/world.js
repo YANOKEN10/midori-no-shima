@@ -1,3 +1,6 @@
+import {landscape98} from './landscapeLayers98.mjs';
+import {deenaReady94,deenaGuide94,recordDeenaVisit94} from './deenaQuest94.mjs';
+import {openMoveReminder92} from './moveLearning92.mjs';
 import {isTree83} from './treeFootprint83.mjs';
 import {drawResources80} from './resource80.js';
 import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
@@ -218,6 +221,7 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
+    if(!this.busy&&!ui.busy){const step94=recordDeenaVisit94(State.save,this.mapId);if(step94){State.dirty=true;saveLocal();this.busy=true;ui.say([step94.name+'に '+step94.type+'の光が共鳴した！','虹の調査が ひとつ進んだ。']).finally(()=>{this.busy=false;});}}
     if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);refreshPostgame(this,State.save);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
@@ -531,8 +535,10 @@ export const world = {
 
   async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{return await this.runNpcContent(n);}finally{ui.speaker=old;}},
   async runNpcContent(n) {
+    if(n.script==='post:deenaGuide94'){await deenaGuide94(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}
+    if(n.script==='move:reminder92'){await openMoveReminder92(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}
     if(n.script==='post:deena'){
-      if(!postgameCleared(State.save)||flag('post:deenaCaught'))return;
+      if(!deenaReady94(State.save))return;
       if(!await ui.ask(['Lv.80の ディーナに 挑みますか？']))return;
       const result=await startBattle({wild:makeMon('ディーナ',80)});
       if(result==='caught'){setFlag('post:deenaCaught');n.gone=true;}
@@ -938,7 +944,7 @@ export const world = {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91);
+    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91,this.mapId)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91,this.mapId);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
@@ -1109,7 +1115,7 @@ export const world = {
     if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
     people.push(...daycareResidents(map,State.save,this.tick));
     people.push({me:true,y:this.y+this.oy/T});
-    people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>isTree83(p)&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
+    people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>(isTree83(p)||map.editor72&&landscape98(p))&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
       if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,p.tree,map);G.ctx.restore();continue;}if (p.follower) {

@@ -1,3 +1,4 @@
+import {V94_DESIGNS} from './redesignV94.js';
 import {V63_DESIGNS,V63_ALIASES,V63_DESCRIPTIONS} from './redesignV63.js';
 import {V51_DESIGNS,V51_ALIASES,V51_DESCRIPTIONS} from './redesignV51.js';
 // Design changes retain original species numbers, battle data and save compatibility.
@@ -249,6 +250,7 @@ for(const row of V51_DESIGNS){const at=REDESIGNS.findIndex(s=>s.id===row.id);if(
 Object.assign(SPECIES_RENAMES,V51_ALIASES);
 for(const row of V63_DESIGNS){const at=REDESIGNS.findIndex(s=>s.id===row.id);if(at<0)REDESIGNS.push({...row,revision63:true});else Object.assign(REDESIGNS[at],row,{revision63:true});if(row.oldName!==row.name)SPECIES_RENAMES[row.oldName]=row.name;}
 Object.assign(SPECIES_RENAMES,V63_ALIASES);
+for(const row of V94_DESIGNS){const at=REDESIGNS.findIndex(s=>s.id===row.id);if(at<0)REDESIGNS.push({...row,revision94:true});else Object.assign(REDESIGNS[at],row,{revision94:true});if(row.oldName!==row.name)SPECIES_RENAMES[row.oldName]=row.name;}
 for(const key of Object.keys(SPECIES_RENAMES)){let n=SPECIES_RENAMES[key],seen=new Set([key]);while(SPECIES_RENAMES[n]&&!seen.has(n)){seen.add(n);n=SPECIES_RENAMES[n];}SPECIES_RENAMES[key]=n;}
 export const canonicalName = name => SPECIES_RENAMES[name] || name;
 const OLD_NAMES=Object.fromEntries(REDESIGNS.map(s=>[s.name,s.oldName]));
@@ -266,7 +268,7 @@ export function applySpeciesRedesign(S){
  Object.assign(S['ワルニール'].base,{spc:130,atk:74,spd:100,sdef:74});
 }
 export function applyArtRedesign(files,view){
- for(const row of REDESIGNS){const url="../../assets/monsters/"+(row.revision63?"redesign-v63/":row.redesign?"redesign-v51/":"redesign-v47/")+view+"/"+String(row.id).padStart(3,"0")+".png";files[row.name]=url;if(row.oldName!==row.name){delete files[row.oldName];Object.defineProperty(files,row.oldName,{value:url,enumerable:false});}}
+ for(const row of REDESIGNS){const url="../../assets/monsters/"+(row.revision94?"redesign-v94/":row.revision63?"redesign-v63/":row.redesign?"redesign-v51/":"redesign-v47/")+view+"/"+String(row.id).padStart(3,"0")+".png";files[row.name]=url;if(row.oldName!==row.name){delete files[row.oldName];Object.defineProperty(files,row.oldName,{value:url,enumerable:false});}}
  for(const[oldName,newName]of Object.entries(SPECIES_RENAMES)){if(!files[newName]&&files[oldName])files[newName]=files[oldName];if(!files[oldName]&&files[newName])Object.defineProperty(files,oldName,{value:files[newName],enumerable:false});}
 }
 

@@ -28,6 +28,7 @@ const D={
  'festiveCityHouse86':{fit:1,panes:[[.17,.29,.04,.064],[.784,.29,.04,.064],[.14,.495,.065,.05],[.462,.495,.065,.05],[.767,.495,.065,.05],[.185,.762,.047,.035],[.783,.762,.047,.035]]},
 };
 // Filled from the actual source sizes at build time; no night-only image fetch.
+D.reminderHouse96=D.chalet;
 const ASPECT95={"lamp86":0.34375,"snow-lamp86":0.3541666666666667,"decor-lamp86":0.3046875,"canalHouse86":0.8880208333333334,"snow-hall86":0.9973958333333334,"cityApartment86":1.2673267326732673,"cityOffice86":1.0185676392572944,"festiveCityHouse86":1};
 for(const [k,v]of Object.entries(ASPECT95))if(D[k])D[k].fit=v;
 const LEGACY_ASPECT95={"chalet":1,"chaletStone":1,"chaletBalcony":1,"snowChalet":1,"harborShop":1,"marineHouse":1,"marineShop":1,"marineHall":1,"flowerHouse":1,"daycareHouse":1.3333333333333333,"snowHouse":1,"ranchBarn":1.2};

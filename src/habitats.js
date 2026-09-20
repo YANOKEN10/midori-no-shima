@@ -1,4 +1,4 @@
-import {wildWindow91} from './wildAvailability91.mjs';
+import {wildWindow91,filterWild91} from './wildAvailability91.mjs';
 import {waterEncounters,scheduleForMap} from './scheduledEncounters62.js';
 import {MAPS} from './data/maps.js';
 import {canonicalName} from './data/redesignV47.js';
@@ -15,17 +15,19 @@ function addPool(map,list,kind){
  for(const [name,weight] of weights){const rule=scheduleForMap(map.id);if(wildWindow91(name)&&kind==='outside-window'&&rule?.hours?.[0]===18&&rule.hours[1]===6)continue;add(name,map,kind,weight/total);}
 }
 for(const map of Object.values(MAPS)){
- const rule=scheduleForMap(map.id);
+ const rule=map.encountersConfigured86?null:scheduleForMap(map.id);
+ if(map.encountersConfigured86){addPool(map,filterWild91(map.enc?.list||[],new Date(),map.id,true),'ordinary');}else{
  addPool(map,ordinaryEncounters(map.enc?.list,map.id,new Date(),'inactive'),rule?'outside-window':'ordinary');
  if(rule)addPool(map,ordinaryEncounters(map.enc?.list,map.id,new Date(),'active'),'scheduled');
- if(map.boatWater&&map.rows.some(row=>row.includes('W'))){const rule=scheduleForMap(map.id,'water');addPool(map,waterEncounters(map.id,new Date(),'inactive'),rule?'water-outside-window':'water');if(rule)addPool(map,waterEncounters(map.id,new Date(),'active'),'water-scheduled');}
+ }
+ if(map.boatWater&&map.rows.some(row=>row.includes('W'))){const rule=scheduleForMap(map.id,'water');addPool(map,filterWild91(waterEncounters(map.id,new Date(),'inactive'),new Date(),map.id,true),rule?'water-outside-window':'water');if(rule)addPool(map,filterWild91(waterEncounters(map.id,new Date(),'active'),new Date(),map.id,true),'water-scheduled');}
  for(const npc of map.npcs||[]){if(events[npc.script])add(events[npc.script],map,'event');if(npc.script==='legend'&&npc.legend?.name)add(npc.legend.name,map,'event');}
 }
 for(const rule of RARE_RULES)add(rule.name,MAPS[rule.map],'rare',rule.rate);
 export function habitatEntries(name){return (habitats.get(canonicalName(name))||[]).map(e=>({...e}));}
 export function habitatNames(name){return [...new Set(habitatEntries(name).map(e=>e.mapName))];}
 export function habitatRateLabel(entry){if(entry.window91)return entry.window91+'のみ：遭遇時'+Number((entry.rate*100).toFixed(2))+'％';
- if(entry.kind==='event')return entry.mapId==='leafTown'?'クリア後・Lv.80（固定出現）':'条件付きイベント（通常抽選なし）';
+ if(entry.kind==='event')return entry.mapId==='leafTown'?'クリア後・虹の研究員の３つの調査を達成・Lv.80':'条件付きイベント（通常抽選なし）';
  const percent=Number((entry.rate*100).toFixed(2))+'％';
  const rule=scheduleForMap(entry.mapId,entry.kind.startsWith('water')?'water':'land');
  if(entry.kind==='scheduled'||entry.kind==='water-scheduled')return rule.label+'：遭遇時'+percent+'（日本時間）';

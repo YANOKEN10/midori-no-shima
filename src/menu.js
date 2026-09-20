@@ -1,3 +1,4 @@
+import {teachMove92} from './moveLearning92.mjs';
 import {businessMenu79} from './economy79.js';
 import {MAPS as businessMaps79} from './data/maps.js';
 import {drawTypeIcon77} from './typeIcons77.js';
@@ -185,7 +186,7 @@ async function leafCompassMenu() {
 
 async function useOutside(name) {
   if(name==='小型ボート'){const {useBoat}=await import('./endgameStory.js');if(menuWorld)await useBoat(menuWorld);return;}
-  if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expFor}=await import('./state.js');const result=gainExp(m,expFor(m.lv+1)-m.exp);for(const name of result.learned){if(m.moves.some(x=>x.name===name))continue;let idx=m.moves.length;if(idx>=4)idx=await ui.choice([...m.moves.map(x=>x.name),'おぼえない'],{rows:5});if(idx>=0&&idx<4)m.moves[idx]={name,pp:moveData(name).pp,max:moveData(name).pp};}if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
+  if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expFor}=await import('./state.js');const result=gainExp(m,expFor(m.lv+1)-m.exp);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
 
   const d = itemData(name);
   if (d.kind === "heal" || d.kind === "cure" || d.kind === "revive") {

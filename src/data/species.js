@@ -1,4 +1,5 @@
-import {MOVES, BURST_MOVE_NAMES} from './moves.js';
+import {expandLearnsets92} from './learnsets92.mjs';
+import {MOVES, BURST_MOVE_NAMES, canonicalMoveName} from './moves.js';
 // ============================================================
 //  モンスター ずかん（ぜんぶ オリジナルの いきものです）
 //   base : たいりょく・こうげき・ぼうぎょ・すばやさ・とくしゅ
@@ -271,6 +272,8 @@ import {applySpeciesRedesign} from './redesignV47.js';
 applySpeciesRedesign(SPECIES);
 import {addEvolutions63} from './redesignV63.js';
 addEvolutions63(SPECIES);
+import {addEvolutions94} from './redesignV94.js';
+addEvolutions94(SPECIES);
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 
@@ -338,4 +341,6 @@ for(const sp of Object.values(SPECIES))if(sp.base.spc>=BURST_SPECIAL_MIN){
 for(const sp of Object.values(SPECIES))if(sp.types.includes("くさ")&&sp.base.atk>sp.base.spc)sp.learn.push([38,"ウッドバースト"]);
 
 // A move is learned once, at its earliest level. Also normalizes generated learnsets.
-for(const sp of Object.values(SPECIES)){const seen=new Set();sp.learn=[...sp.learn].sort((a,b)=>a[0]-b[0]).filter(([,name])=>{if(seen.has(name))return false;seen.add(name);return true;});}
+for(const sp of Object.values(SPECIES)){const seen=new Set();sp.learn=[...sp.learn].map(([lv,n])=>[lv,canonicalMoveName(n)]).sort((a,b)=>a[0]-b[0]).filter(([,name])=>{if(seen.has(name))return false;seen.add(name);return true;});}
+
+expandLearnsets92(SPECIES,MOVES);
