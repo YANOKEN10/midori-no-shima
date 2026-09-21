@@ -46,7 +46,6 @@ import * as In from "./input.js";
 import { ui } from "./ui.js";
 import { beep, playBgm } from "./audio.js";
 import { tileFor, solid } from "./tiles.js";
-import { battleArt } from "./data/battleart.js";
 import { environmentTile } from "./environmentArt.js";
 import { findHouses, houseImage } from "./props.js";
 import { treeImage, TREE_W, TREE_UP } from "./trees.js";
@@ -1138,10 +1137,9 @@ export const world = {
       } else {
         const n = p.n;
         if(n.doorMarker)continue;
-        if(n.residentPet){drawFollower(G.ctx,{sp:n.artMon},{dir:n.dir,moving:n.moving},this.tick,n.x*T+(n.ox||0)+16-camX,n.y*T+(n.oy||0)+28-camY);continue;}
+        if(n.artMon){drawFollower(G.ctx,{sp:n.artMon},{dir:n.dir||'down',moving:n.moving},this.tick,n.x*T+(n.ox||0)+16-camX,n.y*T+(n.oy||0)+28-camY);continue;}
         if(n.itemArt){drawItem(G.ctx,n.itemArt,n.x*T-camX,n.y*T-camY,32);continue;}
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
-        if(n.artMon){const im=battleArt(n.artMon),size=n.artSize||64;if(im)G.drawScaled(im,n.x*T-camX+(32-size)/2+(n.ox||0),n.y*T-camY+32-size+(n.oy||0),size,size);continue;}
         const dirn = n.dir || "down";
         const newPerson = G.isColor() && (drawRoomStaff(G.ctx,this.map,n,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)));
         const nfi = n.moving ? n.walkFrame : 0;
