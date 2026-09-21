@@ -1,3 +1,4 @@
+import {salePrice,sellableItems,sellItem} from './itemSelling.js';
 import {teachMove92} from './moveLearning92.mjs';
 import {businessMenu79} from './economy79.js';
 import {MAPS as businessMaps79} from './data/maps.js';
@@ -462,21 +463,24 @@ async function buyMenu(stock82=SHOP_LIST) {
   }
 }
 
-async function sellMenu() {
+export async function sellMenu() {
+  await ui.say(['素材や どうぐを 買い取ります。','たいせつなもの・買取できない品は','売る一覧には 表示されません。']);
   for (;;) {
-    const list = bagList("normal");
-    if (!list.length) { await ui.say(["うれる ものが ありません。"]); return; }
+    const list = sellableItems(State.save);
+    if (!list.length) { await ui.say(['うれる 素材やどうぐが ありません。']); return; }
     const chosen=await ui.itemList(list,{mode:'sell',money:State.save.money});
     if(!chosen)return;
-    const name=chosen.name;
-    const price = Math.floor(itemData(name).price / 2);
-    const yes = await ui.ask([name + "を " + price + "円で ひきとります。", "よろしいですか？"]);
-    if (!yes) continue;
-    useItem(name);
-    State.save.money += price;
+    const name=chosen.name,price=salePrice(name),owned=State.save.bag[name]||0;
+    if(!price||owned<1)continue;
+    const quantities=[...new Set([1,5,10,owned])].filter(n=>n<=owned).sort((a,b)=>a-b);
+    const ci=await ui.choice(quantities.map(n=>(n===owned&&n>1?'全部 '+n:n)+'こ  '+(n*price)+'円').concat('やめる'),{x:116,y:70,w:196,rows:6});
+    if(ci<0||ci===quantities.length)continue;
+    const n=quantities[ci],total=price*n;
+    if(!await ui.ask([name+' ×'+n,'合計 '+total+'円で 売りますか？']))continue;
+    if(!sellItem(State.save,name,n)){await ui.say(['この品は 売却できませんでした。']);continue;}
     saveLocal();
-    beep("buy");
-    await ui.say(["ありがとう ございました！"]);
+    beep('buy');
+    await ui.say([name+'を '+n+'こ 売りました。',total+'円を 受け取りました！']);
   }
 }
 
