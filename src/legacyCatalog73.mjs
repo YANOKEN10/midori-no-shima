@@ -1435,7 +1435,7 @@ export const LEGACY73=[
     "source": "village",
     "group": "legacy",
     "direct": "assets/gardens-v52/grass.png",
-    "walkable": false,
+    "walkable": true,
     "tile": "\"",
     "file": "assets/editor-existing-v73/legacy73-gardens-v52-grass.png"
   },

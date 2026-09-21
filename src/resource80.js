@@ -4,7 +4,7 @@ import {resourceNodes80} from './resourceNodes89.mjs';
 export {resourceNodes80};
 export function migrateKit80(save){save.bag??={};if(save.bag['つるはし']){save.bag['採掘セット']=(save.bag['採掘セット']||0)+save.bag['つるはし'];delete save.bag['つるはし'];}}
 const blueRock81=new Image();blueRock81.src=new URL('../assets/resources-v81/blue-rock.png',import.meta.url).href;
-const blueTree81=new Image();blueTree81.src=new URL('../assets/resources-v85/blue-broadleaf.png',import.meta.url).href;
+const blueTree81=new Image();blueTree81.src=new URL('../assets/style-v105/resource-tree109.png',import.meta.url).href;
 export function drawResources80(c,map,save,cx,cy){
  c.save();c.imageSmoothingEnabled=false;
  for(const p of resourceNodes80(map)){
