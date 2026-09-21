@@ -1,3 +1,4 @@
+import {homeSignText117} from './homeSign117.mjs';
 import {claimNpcGift111} from './npcSettings111.mjs';
 import {tutorialNpc100} from './tutorial100.mjs';
 import {landscape98} from './landscapeLayers98.mjs';
@@ -513,7 +514,7 @@ export const world = {
     if (it) { this.busy = true; this.pickItem(it).then(() => { this.busy = false; }); return; }
 
     const sg = (this.map.signs || []).find((s) => s.x === tx && s.y === ty);
-    if (sg) { this.busy = true; ui.say(sg.text).then(() => { this.busy = false; }); return; }
+    if (sg) { this.busy = true; ui.say(homeSignText117(sg,State.save.name)).then(() => { this.busy = false; }); return; }
 
     const ob = (this.map.objects || []).find((o) => o.x === tx && o.y === ty);
     if (ob) {

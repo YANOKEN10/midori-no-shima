@@ -1,3 +1,4 @@
+import {addHomeSign117} from './homeSign117.mjs';
 import {extendMaps82} from './customMaps82.mjs';
 import {connectMaps75,validateLinks75} from './connections75.mjs';
 import {enclosedTown114} from './townBorder114.mjs';
@@ -12,4 +13,4 @@ export async function loadPublishedMaps(maps){try{
  // Apply inbound links after every map patch, so map iteration order cannot undo them.
  for(const other of Object.values(maps))other.warps=other.warps.map(w=>{const move=moves.find(m=>w.to===m.map&&Math.abs(w.tx-m.x)<=1&&Math.abs(w.ty-m.y)<=1);if(!move)return w;const dx=w.tx-move.x,dy=w.ty-move.y,[rx,ry]=move.turn===1?[-dy,dx]:move.turn===2?[-dx,-dy]:move.turn===3?[dy,-dx]:[dx,dy];return {...w,tx:move.nx+rx,ty:move.ny+ry};});
  if(!validateLinks75(maps).length)connectMaps75(maps);
- }catch(e){const cat=catalog(maps,[]);for(const[id,m]of Object.entries(maps))if(enclosedTown114(m)&&!m.editor72)maps[id]=applyEdit(m,initial(m),cat);console.warn('公開マップを取得できなかったため標準マップを使います。');}}
+ }catch(e){const cat=catalog(maps,[]);for(const[id,m]of Object.entries(maps))if(enclosedTown114(m)&&!m.editor72)maps[id]=applyEdit(m,initial(m),cat);console.warn('公開マップを取得できなかったため標準マップを使います。');}addHomeSign117(maps.village);}
