@@ -1,10 +1,12 @@
+import {mapHeroFrame119} from './peopleArt119.js';
+import {HAIRSTYLES119,OUTFITS119} from './peopleCatalog119.mjs';
 import { showForm } from './gate.js';
 import { APPEARANCE_COLORS } from './data/fashion.js';
 import { heroFrame } from './revampArt.js?v=20260914-hero-v55';
 
 export function chooseAppearance() {
   return showForm({title:'きみの みためは？',sub:'すきな みためを えらんでね。',fields:[],submit:'この すがたで はじめる',mount(host){
-    const look={gender:'boy',appearanceVersion:1,hair:'#6b4a2b',shirt:'#2f6fd0',pants:'#231a14'};
+    const look={gender:'boy',appearanceVersion:1,hair:'#6b4a2b',shirt:'',pants:'',hairMap119:'default',outfit119:'default'};
     host.id='character-setup';
     host.innerHTML=`<style>
       #character-setup canvas{display:block;width:100%;height:120px;position:sticky;top:0;z-index:1;image-rendering:pixelated;background:#dcefe6;border-radius:12px;margin:10px 0}
@@ -31,11 +33,13 @@ export function chooseAppearance() {
       groups.push({key,entries,caption});
     }
     group('gender','せいべつ',[{name:'おとこのこ',value:'boy'},{name:'おんなのこ',value:'girl'}]);
+    group('hairMap119','かみがた', [...new Map([...HAIRSTYLES119.boy,...HAIRSTYLES119.girl].map(([value,name])=>[value,{value,name}])).values()]);
+    group('outfit119','ふく',OUTFITS119.map(([value,name])=>({value,name})));
     group('hair','かみの いろ（50色）',APPEARANCE_COLORS.map(c=>({...c,value:c.color})));
-    group('shirt','うわぎの いろ（50色）',APPEARANCE_COLORS.map(c=>({...c,value:c.color})));
-    group('pants','ボトムスの いろ（50色）',APPEARANCE_COLORS.map(c=>({...c,value:c.color})));
-    function refresh(){for(const g of groups){for(const e of g.entries)e.button.setAttribute('aria-pressed',String(look[g.key]===e.choice.value));g.caption.textContent=g.entries.find(e=>look[g.key]===e.choice.value)?.choice.name||'';}}
-    let alive=true,raf;function draw(t){if(!alive)return;ctx.clearRect(0,0,320,120);ctx.imageSmoothingEnabled=false;['left','down','up'].forEach((dir,i)=>{const frame=heroFrame(dir,[0,1,2,1][Math.floor(t/180)%4],look);if(frame)ctx.drawImage(frame,22+i*100,12,64,96);});raf=requestAnimationFrame(draw);}
+    group('shirt','うわぎの いろ（50色）',[{name:'服の元の色',value:''},...APPEARANCE_COLORS.map(c=>({...c,value:c.color}))]);
+    group('pants','ボトムスの いろ（50色）',[{name:'服の元の色',value:''},...APPEARANCE_COLORS.map(c=>({...c,value:c.color}))]);
+    function refresh(){if(!HAIRSTYLES119[look.gender].some(([id])=>id===look.hairMap119))look.hairMap119='default';for(const g of groups){for(const e of g.entries){e.button.hidden=g.key==='hairMap119'&&!HAIRSTYLES119[look.gender].some(([id])=>id===e.choice.value);e.button.setAttribute('aria-pressed',String(look[g.key]===e.choice.value));}g.caption.textContent=g.entries.find(e=>look[g.key]===e.choice.value)?.choice.name||'';}}
+    let alive=true,raf;function draw(t){if(!alive)return;ctx.clearRect(0,0,320,120);ctx.imageSmoothingEnabled=false;['left','down','up'].forEach((dir,i)=>{const frame=mapHeroFrame119(dir,[0,1,2,1][Math.floor(t/180)%4],look);if(frame)ctx.drawImage(frame,22+i*100,12,64,96);});raf=requestAnimationFrame(draw);}
     refresh();raf=requestAnimationFrame(draw);
     return {read:()=>({look:{...look}}),dispose(){alive=false;cancelAnimationFrame(raf);}};
   }});

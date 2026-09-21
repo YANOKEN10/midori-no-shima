@@ -1,3 +1,4 @@
+import {mapHeroFrame119} from './peopleArt119.js';
 import {generatedBoyFrame} from './heroVariants.js';
 import {dressHero} from './fashionArt.js';
 const OBJECT_SRC = "../assets/revamp-v2/objects-source.png";
@@ -234,7 +235,7 @@ export function heroFrame(dir, step, look = {}) {
 
 export function drawHero(ctx, dir, moving, tick, x, y, look) {
   const row = moving ? [0,1,2,1][Math.floor(tick/90)%4] : 1;
-  const f=heroFrame(dir,row,look);
+  const f=mapHeroFrame119(dir,row,look)||heroFrame(dir,row,look);
   if(!f) return false;
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(f,Math.round(x),Math.round(y));

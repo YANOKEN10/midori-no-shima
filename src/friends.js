@@ -4,7 +4,7 @@ import {snapshot,saveLocal,applySave} from './save.js';
 import {ui} from './ui.js';
 import {battleArt} from './data/battleart.js';
 import {drawFollower,loadFollowerSheet} from './followerArt.js';
-import {heroFrame} from './revampArt.js';
+import {mapHeroFrame119 as heroFrame} from './peopleArt119.js';
 const labels={battle:'通信バトル',trade:'ガオン交換',coop:'協力ダンジョン'};
 const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
 export async function openFriends(){

@@ -146,7 +146,7 @@ export function newGame(playerName) {
     playTime: 0,
     where: { map: START.map, x: START.x, y: START.y, dir: START.dir },
     lastCenter: null,
-    look: { gender: "boy", appearanceVersion: 1, shirt: "#2f6fd0", pants: "#231a14", hair: "#6b4a2b" },
+    look: { gender: "boy", appearanceVersion: 1, shirt: "", pants: "", hair: "#6b4a2b", outfit119: "default", hairMap119: "default" },
     starter: "",
     rivalStarter: "",
   };
@@ -174,6 +174,7 @@ export function loadInto(data) {
   migrateVoyageSave(G.save);
   normalizeRareSpawns(G.save);
   G.save.look = G.save.look || { shirt: "#2f4fa8", pants: "#231a14", hair: "#241d1a" };
+  if(!G.save.look.clothesVersion119){if(["#2f6fd0","#2f4fa8"].includes(G.save.look.shirt))G.save.look.shirt="";if(G.save.look.pants==="#231a14")G.save.look.pants="";G.save.look.clothesVersion119=1;}
 }
 
 /* --- もちもの ------------------------------------------------- */

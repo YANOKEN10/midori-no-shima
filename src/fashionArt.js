@@ -6,7 +6,7 @@ export function dressHero(canvas,base,look,dir){
   const i=(y*32+x)*4,r=src[i],g=src[i+1],b=src[i+2],hi=Math.max(r,g,b),lo=Math.min(r,g,b);
   if(!src[i+3]||hi<35||base.protectedHead?.[y*32+x])continue;
   const skin=r>g*1.12&&g>b*1.12&&r>175&&g>115;
-  const shirt=y<35&&!skin&&(look.gender==='girl'?r>g*1.4&&r>b*1.25:(b>r*1.15||hi-lo<38&&lo>110));
+  const shirt=y<35&&!skin&&(look.gender==='girl'?b>r*1.05&&b>=g:(b>r*1.15||hi-lo<38&&lo>110));
   const pants=y>=35&&y<42&&!skin&&(b>=r*.9&&b>g*.9||hi-lo<35);
   const shoes=y>=42;
   const slot=shirt?'shirt':pants?'pants':shoes?'shoes':null;if(!slot)continue;

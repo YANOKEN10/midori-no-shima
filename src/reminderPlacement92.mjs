@@ -1,6 +1,6 @@
 import {addBuildingRooms83} from './buildingRooms83.mjs';
 export function addMoveReminder92(maps){
- addBuildingRooms83(maps);const m=maps.rods;if(!m||[...m.props,...m.editorAddedProps72||[]].some(p=>p.art==='reminderHouse96'))return;
+ addBuildingRooms83(maps);const m=maps.rods;if(!m||m.editor72||[...m.props,...m.editorAddedProps72||[]].some(p=>p.art==='reminderHouse96'))return;
  const points=[m.spawn,...m.npcs,...m.warps,...m.signs,...m.items||[]],props=[...m.props||[],...m.editorAddedProps72||[]];
  const clear=(x,y)=>[',','F'].includes(m.rows[y]?.[x])&&!points.some(n=>Math.abs(n.x-x)+Math.abs(n.y-y)<1)&&!props.some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y-1&&y<p.y+p.h+1);
  const spots=[];for(let y=4;y<m.rows.length-6;y++)for(let x=3;x<m.rows[y].length-6;x++){let ok=true;for(let yy=y;yy<y+6&&ok;yy++)for(let xx=x;xx<x+5;xx++)if(!clear(xx,yy)){ok=false;break;}if(ok)spots.push({x,y});}

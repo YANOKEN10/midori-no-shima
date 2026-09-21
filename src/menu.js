@@ -1,3 +1,5 @@
+import {mapHeroFrame119} from './peopleArt119.js';
+import {HAIRSTYLES119,OUTFITS119} from './peopleCatalog119.mjs';
 import {salePrice,sellableItems,sellItem} from './itemSelling.js';
 import {teachMove92} from './moveLearning92.mjs';
 import {businessMenu79} from './economy79.js';
@@ -491,7 +493,7 @@ export { hasProgress };
 function drawLookPreview(look, x, y) {
   G.use("ui");
   G.window9(x, y, 84, 108);
-  const current = heroFrame("down", 1, look);
+  const current = mapHeroFrame119("down",1,look)||heroFrame("down", 1, look);
   if (current) { G.ctx.imageSmoothingEnabled=false; G.ctx.drawImage(current,x+10,y+6,64,96); return; }
   const st = { hair: look.hat || look.style || "short", bangs: look.bangs == null ? "seven" : look.bangs,
                skirt: Boolean(look.skirt), face: look.gender || (look.skirt ? "girl" : "boy") };
@@ -517,17 +519,17 @@ export async function clothesShop(town) {
 export async function wardrobeMenu(){
  for(;;){
   const items=FASHION_ITEMS.filter(item=>(State.save.wardrobe||[]).includes(item.id));
-  const labels=[...items.map(item=>item.name),'ぼうしを ぬぐ','はじめの ふくに もどす','もどる'];
+  const labels=[...items.map(item=>item.name),'ぼうしを ぬぐ','はじめの ふくに もどす','新しい服・髪型をえらぶ','もどる'];
   const i=await ui.choice(labels,{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,idx)=>drawLookPreview(items[idx]?itemLook(State.save.look,items[idx]):State.save.look,228,8)});
-  if(i<0||i===items.length+2)return;
+  if(i<0||i===items.length+3)return;if(i===items.length+2){await customAppearance119();continue;}
   if(i<items.length)equipFashion(State.save,items[i].id);
   else if(i===items.length){State.save.look.hat='';if(State.save.equippedClothes)delete State.save.equippedClothes.hat;}
-  else{const original=State.save.startingLook||{shirt:'#2f6fd0',pants:'#231a14'};for(const key of ['shirt','pants','shoes','hat','hatColor','hatStyle','hatAccent','shirtStyle','shirtAccent','pantsStyle','pantsAccent','shoesStyle','shoesAccent','skirt']){delete State.save.look[key];if(original[key]!=null)State.save.look[key]=original[key];}State.save.equippedClothes={};}
+  else{const original=State.save.startingLook||{shirt:'#2f6fd0',pants:'#231a14'};for(const key of ['outfit119','shirt','pants','shoes','hat','hatColor','hatStyle','hatAccent','shirtStyle','shirtAccent','pantsStyle','pantsAccent','shoesStyle','shoesAccent','skirt']){delete State.save.look[key];if(original[key]!=null)State.save.look[key]=original[key];}State.save.equippedClothes={};}
   saveLocal();beep('ok');await ui.say(['きがえました！']);
  }
 }
 
-export async function hairSalon() {
+export async function hairSalon() {const kind119=await ui.choice(['かみがたを かえる','かみの色を かえる','もどる'],{x:8,y:8,w:216,rows:3});if(kind119<0||kind119===2)return;if(kind119===0){await customAppearance119('hairMap119');return;}
   if(State.save.look.gender!=="girl"){await boyHairSalon();return;}
   const price = 0;
   for (;;) {
@@ -635,3 +637,5 @@ export async function freeColors81(){
  if(j<0||j===APPEARANCE_COLORS.length)continue;if(!await ui.ask([label+'を '+APPEARANCE_COLORS[j].name+'に変えますか？','色の変更は 無料です。']))continue;
  State.save.look={...State.save.look,[key]:APPEARANCE_COLORS[j].color};saveLocal();beep('ok');await ui.say(['色を 変更しました！']);}
 }
+
+async function customAppearance119(only){for(;;){let field=only;if(!field){const choice=await ui.choice(['ふくをえらぶ','かみがたをえらぶ','もどる'],{x:8,y:8,w:216,rows:3});if(choice<0||choice===2)return;field=choice===0?'outfit119':'hairMap119';}const choices=field==='outfit119'?OUTFITS119:HAIRSTYLES119[State.save.look.gender==='girl'?'girl':'boy'];const i=await ui.choice([...choices.map(p=>p[1]),'もどる'],{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,idx)=>drawLookPreview({...State.save.look,...(choices[idx]?{[field]:choices[idx][0]}:{})},228,8)});if(i<0||i===choices.length){if(only)return;continue;}State.save.look[field]=choices[i][0];saveLocal();beep('ok');}}

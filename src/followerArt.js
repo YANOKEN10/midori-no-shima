@@ -1,3 +1,4 @@
+import {FOLLOWER_BOUNDS119} from './data/followerBounds119.mjs';
 import {SPECIES} from './data/species.js';
 import {FOLLOWER_PROFILES} from './data/followerProfilesV1.js';
 const columns = {down:0,up:1,right:2,left:3};
@@ -6,9 +7,9 @@ export const followerProfile = name => FOLLOWER_PROFILES[SPECIES[name]?.no] || n
 // Sizes describe the visible silhouette, never the transparent 80px cell.
 export const followerSize = name => followerProfile(name)?.size || 32;
 export function followerMetrics(name, dir='right') {
-  const p = followerProfile(name), rect = p?.dirs[columns[dir] ?? 0];
+  const p = followerProfile(name), audited=FOLLOWER_BOUNDS119[SPECIES[name]?.no], col=columns[dir]??0, samples=audited?.rects.filter((r,i)=>i%4===col), rect=samples?[0,0,Math.max(...samples.map(r=>r[2])),Math.max(...samples.map(r=>r[3]))]:p?.dirs[col];
   if (!p || !rect) return {width:32,height:32};
-  return {width:Math.max(1,Math.round(rect[2]*p.size/p.extent)),height:Math.max(1,Math.round(rect[3]*p.size/p.extent))};
+  return {width:Math.max(1,Math.round(rect[2]*p.size/(audited?.extent||p.extent))),height:Math.max(1,Math.round(rect[3]*p.size/(audited?.extent||p.extent)))};
 }
 export function followerDistance(name, dir='right') {
   const {width,height} = followerMetrics(name,dir);
@@ -34,11 +35,12 @@ export function followerFrame(name,dir,phase=0) {
   if(!p||!im?.complete||!im.naturalWidth)return null;
   const col=columns[dir]??0,row=((phase%p.rows)+p.rows)%p.rows,key=SPECIES[name].no+':'+col+':'+row;
   if(frames.has(key))return frames.get(key);
-  const [x,y,w,h]=p.dirs[col],size=followerMetrics(name,dir),c=document.createElement('canvas');
+  const audited=FOLLOWER_BOUNDS119[SPECIES[name]?.no],rect=audited?.rects[row*4+col], [x,y,w,h]=rect||p.dirs[col],size=followerMetrics(name,dir),c=document.createElement('canvas');
   c.width=size.width;c.height=size.height;
   const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;
-  // One common crop per direction preserves stance and head size during a stride.
-  ctx.drawImage(im,col*80+x,row*80+y,w,h,0,0,c.width,c.height);
+  // Source rows have uneven gutters. Audited rectangles avoid adjacent-frame feet.
+  // Common destination bounds preserve head size and foot anchoring during strides.
+  if(rect){const scale=p.size/audited.extent,dw=Math.max(1,Math.round(w*scale)),dh=Math.max(1,Math.round(h*scale));ctx.drawImage(im,x,y,w,h,Math.floor((c.width-dw)/2),c.height-dh,dw,dh);}else ctx.drawImage(im,col*80+x,row*80+y,w,h,0,0,c.width,c.height);
   frames.set(key,c);return c;
 }
 export function drawFollower(ctx,mon,pose,tick,cx,feetY) {
