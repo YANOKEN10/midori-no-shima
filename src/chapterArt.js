@@ -1,3 +1,4 @@
+import {interiorReady123} from './interiorArt123.js';
 import {tintMaterial115} from './materialColor115.js';
 import {sortedProps98} from './landscapeLayers98.mjs';
 import {drawPond87,pondReady87} from './pondArt87.js';
@@ -135,7 +136,7 @@ function drawChapterBase72(ctx,map,camX,camY){
  drawEditorGround72(c,map,drawMaterial);
  for(const p of (map.editorDepth98?[]:map.props||[])){if(!isTree83(p)&&drawResourceTree85(c,map,p))continue;if(isTree83(p)&&!p.turn81){drawEditorProp72(c,p,map);continue;}if(p.turn81){drawEditorProp72(c,p,map);continue;}if(drawShop74(c,p))continue;if(drawAlpineProp65(c,p,map,drawMaterial))continue;if(p.fashionShop){drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(environmentProp(c,p,map))continue;if(map.sailingPort&&p.art==='ferry')continue;if(boundaryTree(map,p))continue;if(map.townDesign&&['tree','fir'].includes(p.art)){if(map.biome==='flowers')drawMarineAsset(c,'flowerTree',p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);continue;}if(map.biome&&drawMarineAsset(c,['tree','fir'].includes(p.art)?'ancientTree':p.art,p.x*32,p.y*32,p.w*32,p.h*32)){}else if(map.id==='mountain'&&['tree','fir','mountainCrag'].includes(p.art))mountainMaterial(c,p.art==='mountainCrag'?'crag':p.art,p.x*32,p.y*32,p.w*32,p.h*32);else drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
  if(map.room)paintInterior(c,map);
- if(alpineReady65(map)&&roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!(map.biome||map.townPond)||marineReady()))shopsReady74()&&editorGroundReady72(map)&&cache.set(map,cv);}
+ if((!map.interior123||interiorReady123())&&alpineReady65(map)&&roadReady(map)&&environmentReady(map)&&(!map.forestBorder||forestReady())&&(map.id!=='mountain'||mountainReady())&&grassReady(map)&&(!(map.biome||map.townPond)||marineReady()))shopsReady74()&&editorGroundReady72(map)&&cache.set(map,cv);}
  ctx.fillStyle=map.kind==='in'?'#6e7879':'#75c7a2';ctx.fillRect(0,0,G.W,G.H);
  ctx.drawImage(cv,Math.round(-camX),Math.round(-camY));return true;
 }

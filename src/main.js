@@ -94,7 +94,7 @@ async function boot() {
 
   // フォントが よみこめたら くっきり えがきなおす
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => G.markFontReady());
+    Promise.all([document.fonts.load('700 15px "M PLUS Rounded 1c"'),document.fonts.ready]).then(() => G.markFontReady());
   }
 
   scene = title;

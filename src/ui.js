@@ -1,3 +1,4 @@
+import {drawMoveCell123} from './windowArt123.js';
 import {battleLabel,battleCells} from './battleUi.js';
 import {drawBattlePanel} from './battleSceneArt.js';
 import {drawItemList,visibleItems} from './itemScreens.js';
@@ -17,7 +18,7 @@ import { beep } from "./audio.js";
 const BOX = { x: 8, y: 196, w: 304, h: 84 };
 const PAD = 24;                 // わくの 内がわの よゆう（左右）
 const LINE_H = 26;              // 1行の 高さ
-const TEXT_SIZE = 16;
+const TEXT_SIZE = 15;
 const SAY_LINES = 2;            // 1ページに 出す 行数
 
 const CH_PAD_L = 32;            // ▶ のぶんの 左よゆう
@@ -59,7 +60,7 @@ export const ui = {
         i: Math.min(o.start || 0, Math.max(0, items.length - 1)), top: 0,
         cancel: o.cancel !== false,
         rows: o.rows || Math.min(items.length, 4), columns: o.columns === 2 ? 2 : 1,
-        x: o.x, y: o.y, w: o.w, maxWidth:o.maxWidth, rightLabels:o.rightLabels, extra: o.extra, battle: !!o.battle, details: o.details,
+        x: o.x, y: o.y, w: o.w, maxWidth:o.maxWidth, rightLabels:o.rightLabels, extra: o.extra, battle: !!o.battle, details: o.details, types:o.types,
         resolve: resolve,
       });
     });
@@ -179,7 +180,7 @@ function drawSay(w) {
   G.use("ui");
   const cur = curPage(w);
   if(battleMode)drawBattlePanel(G.ctx);else G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
-  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,12)+24);G.window9(BOX.x+4,BOX.y-25,width,26);G.textFit(w.speaker,BOX.x+16,BOX.y-20,width-24,3,12);}
+  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,14)+28);G.window9(BOX.x+4,BOX.y-25,width,26);G.textFit(w.speaker,BOX.x+16,BOX.y-20,width-24,3,14);}
   let left = Math.floor(w.shown);
   for (let i = 0; i < cur.length; i++) {
     const line = cur[i];
@@ -247,7 +248,8 @@ function drawChoice(w) {
     const cells=battleCells(b);
     w.items.forEach((label,i)=>{
       const cell=cells[i];if(!cell)return;const{x,y,w:cw,h}=cell;
-      if(i===w.i){G.ctx.fillStyle='#386b83';G.ctx.fillRect(x,y,cw,h);G.ctx.fillStyle='#70d5f4';G.ctx.fillRect(x,y,2,h);
+      drawMoveCell123(G.ctx,x,y,cw,h,w.types?.[i],i===w.i);
+      if(i===w.i){G.ctx.fillStyle='#ffffff18';G.ctx.fillRect(x,y,cw,h);G.ctx.fillStyle='#70d5f4';G.ctx.fillRect(x,y,2,h);
         G.ctx.beginPath();G.ctx.moveTo(x+7,y+h/2-4);G.ctx.lineTo(x+12,y+h/2);G.ctx.lineTo(x+7,y+h/2+4);G.ctx.fillStyle='#f1fbff';G.ctx.fill();}
       const available=cw-25,size=Math.min(14,14*available/Math.max(1,G.textW(label,14)));
       battleLabel(G.ctx,label,x+19,y+(w.details?8:h/2),{size,maxWidth:available});

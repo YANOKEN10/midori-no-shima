@@ -1,6 +1,6 @@
 // Canvas labels share a visual centre, independent of font ascender spacing.
 export function battleLabel(c,text,x,cy,{size=14,color='#f2f9ff',align='left',numeric=false,maxWidth}={}){
- c.save();c.font=(numeric?'700 ':'')+size+'px '+(numeric?'"Consolas", "Courier New", monospace':'"DotGothic16", "MS Gothic", monospace');
+ c.save();c.font='700 '+size+'px '+(numeric?'"Consolas", "Courier New", monospace':'"M PLUS Rounded 1c", "DotGothic16", sans-serif');
  c.textBaseline='alphabetic';c.textAlign=align;c.fillStyle=color;
  const m=c.measureText(text),a=m.actualBoundingBoxAscent||size*.8,d=m.actualBoundingBoxDescent||size*.2;
  if(maxWidth)c.fillText(text,x,Math.round(cy+(a-d)/2),maxWidth);else c.fillText(text,x,Math.round(cy+(a-d)/2));c.restore();

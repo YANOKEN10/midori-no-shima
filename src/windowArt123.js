@@ -1,0 +1,4 @@
+// Thick stepped corners use integer pixels at the game's native resolution.
+export function drawWindow123(c,x,y,w,h,dark=false){x=Math.round(x);y=Math.round(y);w=Math.round(w);h=Math.round(h);c.save();const shape=(inset,color)=>{const xx=x+inset,yy=y+inset,ww=w-inset*2,hh=h-inset*2,k=Math.max(2,6-inset);c.fillStyle=color;c.fillRect(xx+k,yy,ww-k*2,hh);c.fillRect(xx,yy+k,ww,hh-k*2);};shape(0,'#173641');shape(4,'#609d9b');shape(6,dark?'#244b60':'#fff9e5');c.fillStyle=dark?'#387080':'#e2ebd4';c.fillRect(x+8,y+h-10,w-16,2);c.restore();}
+
+export function drawMoveCell123(c,x,y,w,h,type,selected){const colors={'くさ':'#47794d','ほのお':'#995240','みず':'#386d9b','でんき':'#8d7735','こおり':'#417d8b','じめん':'#806545','ひこう':'#677da0','むし':'#6d7e3c','どく':'#805477','やみ':'#544768','ひかり':'#987b55','ノーマル':'#607477'};c.fillStyle=selected?'#d2ead7':'#173a49';c.fillRect(x,y,w,h);c.fillStyle=colors[type]||'#456d7b';c.fillRect(x+2,y+2,w-4,h-4);c.fillStyle='#ffffff30';c.fillRect(x+4,y+2,w-8,2);}

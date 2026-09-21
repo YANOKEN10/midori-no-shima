@@ -1,3 +1,4 @@
+import {MATERIALS123} from './materials123.mjs';
 const MATERIALS=[
   {
     "key": "nature73-grass-spring-short",
@@ -690,4 +691,4 @@ const MATERIALS=[
   }
 ];
 
-export const NATURE73=MATERIALS.map(p=>p.group==='rock'?{...p,tile:'#'}:p);
+export const NATURE73=[...MATERIALS123,...MATERIALS].map(p=>p.group==='rock'?{...p,tile:'#'}:p);

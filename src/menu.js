@@ -1,3 +1,5 @@
+import {drawMoveCell123} from './windowArt123.js';
+import {EV_ITEMS122,STAT_LABELS122,reduceEffort122,effortText122} from './training122.mjs';
 import {mapHeroFrame119} from './peopleArt119.js';
 import {HAIRSTYLES119,OUTFITS119} from './peopleCatalog119.mjs';
 import {salePrice,sellableItems,sellItem} from './itemSelling.js';
@@ -122,7 +124,9 @@ export async function showStatus(m) {
     G.window9(4, 166, 312, 114);
     m.moves.forEach((mv, i) => {
       const d = moveData(mv.name);
-      const y = 176 + i * 23;
+      const y = 176 + i * 22;
+      drawMoveCell123(G.ctx,10,y-2,300,22,d.type,i===cursor);
+      G.ctx.fillStyle="#fff9e5";G.ctx.fillRect(32,y,124,18);G.ctx.fillRect(184,y,114,18);
       if(i===cursor)G.text('▶',10,y+2,3,11);
       if(i===selected)G.text('◆',23,y+2,3,10);
       G.textFit(mv.name, 36, y, 123, 3, 14);
@@ -192,6 +196,7 @@ async function useOutside(name) {
   if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expFor}=await import('./state.js');const result=gainExp(m,expFor(m.lv+1)-m.exp);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
 
   const d = itemData(name);
+  if(d.kind==='evReduce'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];normalizeMonStats(m);if(!(m.ev[d.stat]>0)){await ui.say(['その能力の努力値は すでに0です。']);return;}if(!useItem(name))return;const amount=reduceEffort122(m,d.stat);m.hp=Math.min(m.hp,maxHp(m));State.dirty=true;saveLocal();await ui.say([monName(m)+'の '+STAT_LABELS122[d.stat]+'の努力値が '+amount+' 下がった！']);return;}
   if (d.kind === "heal" || d.kind === "cure" || d.kind === "revive") {
     const i = await partyMenu(true);
     if (i < 0) return;
@@ -245,11 +250,12 @@ export async function dexEntry(n) {
   const sp = SPECIES[n];
   const places=habitatEntries(n);
   const habitatPages=Math.max(1,Math.ceil(places.length/3));
-  let page=0;const pages=1+habitatPages+Math.ceil(sp.learn.length/7);
+  let page=0;const pages=2+habitatPages+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
+    if(page===pages-1){G.window9(4,4,312,276);G.textFit(n+' の 種族値',18,16,284,3,16);Object.entries(STAT_LABELS122).forEach(([key,label],i)=>{G.text(label,18,46+i*24,3,14);G.textRight(String(sp.base[key]),290,46+i*24,3,14);});G.text('倒すともらえる努力値',18,205,3,13);G.textFit(effortText122(sp),18,226,284,3,12);G.text('← → ページ　A・B もどる',18,262,3,11);return;}
     if(page>0&&page<=habitatPages){G.window9(4,4,312,276);G.textFit(n+' の 生息地',18,16,284,3,16);
       if(!places.length)G.text('野生の出現場所なし',18,48,3,14);
       places.slice((page-1)*3,page*3).forEach((entry,i)=>{G.textFit(entry.mapName,18,48+i*56,284,3,14);G.textFit(habitatRateLabel(entry),18,70+i*56,284,3,12);});
@@ -269,7 +275,7 @@ export async function dexEntry(n) {
     G.window9(4, 170, 312, 110);
     const lines = G.wrap(sp.dex, 276, 16).slice(0, 3);
     lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
-    G.text("← → 生息地・おぼえるわざ",18,262,3,11);
+    G.text("← → 生息地・わざ・種族値",18,262,3,11);
   },{onPage:dir=>{page=(page+(dir===-1?-1:1)+pages)%pages;}});
 }
 
@@ -433,6 +439,7 @@ async function afterLogin() {
 
 /* ============ ショップ ============ */
 export async function shopMenu(stock82=SHOP_LIST) {
+  stock82=[...new Set([...stock82,...EV_ITEMS122.map(i=>i.name)])];
   for (;;) {
     const i = await ui.choice(["かう", "うる", "土地・お店", "やめる"], { x: 176, y: 150, w: 136 });
     if (i < 0 || i === 3) { await ui.say(["また どうぞ！"]); return; }

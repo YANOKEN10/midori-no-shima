@@ -136,7 +136,7 @@ export function newGame(playerName) {
     box: [],
     bag: {},
     dexSeen: {},
-    dexOwn: {},
+    dexOwn: {}, captureCount122:0,
     badges: [],
     flags: {},
     steps: 0,
@@ -157,6 +157,7 @@ export const G = { save: newGame(), account: null, dirty: false };
 export function loadInto(data) {
   const base = newGame();
   G.save = Object.assign(base, data || {});
+  if(data&&data.captureCount122===undefined)G.save.captureCount122=Object.values(data.dexOwn||{}).some(Boolean)?1:0;
   G.save.bag = G.save.bag || {};
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];

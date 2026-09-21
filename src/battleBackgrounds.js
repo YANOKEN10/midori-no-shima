@@ -20,6 +20,12 @@ export const BACKGROUND_GROUPS = {
 };
 const byMap = Object.fromEntries(Object.entries(BACKGROUND_GROUPS).flatMap(([key,ids])=>ids.split(' ').map(id=>[id,key])));
 export function battleBackgroundFor(save, opts={}, map={}) {
+ const id=save?.where?.map||map.id||'';
+ if(id==='championTower'||id==='towerBattle123')return 'tower123';
+ if(id==='galaxyArena'||id==='galaxyBattle123')return 'galaxy123';
+ if(/^dark[1-4]$/.test(id))return 'ruin123';
+ if(id==='shipDeck')return 'deck123';
+ if(id.startsWith('ship'))return 'ship123';
  if(opts.tournament || opts.facility) return 'arena';
  if(save?.boating && map.boatWater) return 'water';
  return byMap[save?.where?.map] || (map.kind==='in'?'interior':map.kind==='cave'?'cave':'meadow');
@@ -33,7 +39,7 @@ export function prepareBattleBackground(key) {
  const record = {image, ready: null};
  record.ready = new Promise(resolve=>{image.onload=()=>resolve(true);image.onerror=()=>{images.delete(key);resolve(false)};});
  images.set(key,record);
- image.src = key==='water' ? new URL('../assets/chapter-v37/water-battle.png',import.meta.url).href : new URL('../assets/battle-v38/'+key+'.png',import.meta.url).href;
+ image.src = /^(tower|galaxy|ruin|ship|deck)123$/.test(key)?new URL('../assets/battle-v123/'+key.replace('123','')+'.png',import.meta.url).href:key==='water' ? new URL('../assets/chapter-v37/water-battle.png',import.meta.url).href : new URL('../assets/battle-v38/'+key+'.png',import.meta.url).href;
  return record.ready;
 }
 export function drawBattleBackground(ctx,key) {

@@ -2,7 +2,8 @@ import {recordBirth} from './frontierRules.js';
 import {SPECIES} from './data/species.js';
 import {MOVES} from './data/moves.js';
 export const SHIP_TICKET='船のチケット',VOYAGE_MS=180000,DAYCARE_STEPS=2000;
-export const SHIP_MAPS=['shipDeck','shipLounge','shipCabins','shipCaptain86','shipGalley86'];
+import {EXTRA_SHIP123} from './ship123.mjs';
+export const SHIP_MAPS=[...EXTRA_SHIP123,'shipDeck','shipLounge','shipCabins','shipCaptain86','shipGalley86'];
 export function japanTime(now=new Date()){const d=new Date(now.getTime()+9*3600000);return {day:d.toISOString().slice(0,10),hour:d.getUTCHours()};}
 export function boardingOpen(now=new Date()){const h=japanTime(now).hour;return h>=12&&h<17;}
 export function registeredCount(save){return Object.entries(save.dexOwn||{}).filter(([name,v])=>v&&SPECIES[name]).length;}

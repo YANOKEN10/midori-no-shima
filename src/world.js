@@ -1,3 +1,4 @@
+import {enterRival122,refreshRival122,tickRival122,runRivalEvent122} from './rivalStory122.js';
 import {walkWithFollower121,followerMood121,takeFollowerFind121,facingFollower121} from './followerBond121.mjs';
 import {homeSignText117} from './homeSign117.mjs';
 import {claimNpcGift111} from './npcSettings111.mjs';
@@ -154,6 +155,8 @@ export const world = {
   npcs: [], followerTrail: new FollowerTrail(), humanTrail: new FollowerTrail(),
 
   enter(mapId, x, y, dir) {
+    const rivalFrom122=this.mapId;
+    this.facilityEntry123=false;
     setMenuWorld(this);
     // しらない ばしょ（ふるい きろく など）なら むらへ もどす
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
@@ -217,9 +220,11 @@ export const world = {
     this.followerTrail.reset(x,y,this.dir);this.humanTrail.reset(x,y,this.dir);
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
+    enterRival122(this,rivalFrom122);
     playBgm(bgmFor(mapId));
   },
 
+  rivalCanStand122(x,y,n){return tileAt(this.map,x,y)!=null&&!solid(tileAt(this.map,x,y))&&!landmarkBlocked(this.map,x,y)&&!this.npcs.some(p=>p!==n&&!p.gone&&Math.hypot(p.x-x,p.y-y)<.8);},
   resumeBgm(){playBgm(bgmFor(this.mapId));},
 
   update(dt) {
@@ -229,7 +234,8 @@ export const world = {
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
     if (this.showName > 0) this.showName -= dt;
     ui.update(dt);
-    if(tickEnd(this,dt))return;
+    if(!this.busy)refreshRival122(this);
+    if(tickRival122(this)||tickEnd(this,dt))return;
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
     if(tickFrontier(this)||tickVoyage(this))return;
@@ -510,8 +516,8 @@ export const world = {
 
     if(this.mapId==='playerShop79'&&ty<=7){this.busy=true;ownShop79(State.save.backTo?.map).finally(()=>this.busy=false);return;}
     const mine=miningTarget79(this.map,tx,ty);if(mine){this.busy=true;miningMenu79(this,mine).finally(()=>this.busy=false);return;}
-    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>['counter','shop-counter106'].includes(kind)&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
-    const n = this.npcAt(tx, ty) || (counter ? this.npcAt(tx+dx,ty+dy) : null);
+    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>['counter','shop-counter106','tower-counter123','galaxy-counter123'].includes(kind)&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
+    const n = this.npcAt(tx, ty) || (counter ? (this.npcAt(tx+dx,ty+dy)||this.npcAt(tx+dx*2,ty+dy*2)) : null);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
 
     const it = (this.map.items || []).find((i) => i.x === tx && i.y === ty && !flag(i.flag));
@@ -551,6 +557,8 @@ export const world = {
 
   async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{const result=await this.runNpcContent(n);if(!n.trainer||flag('beat:'+this.mapId+':'+n.idx)){const gift=claimNpcGift111(State.save,this.mapId,n);if(gift){State.dirty=true;saveLocal();if(cloud.signedIn)saveCloud(true);await ui.say([gift.item+'を '+gift.count+'個 もらった！']);}}return result;}finally{ui.speaker=old;}},
   async runNpcContent(n) {
+    if(n.script?.startsWith('facility123:'))return endNpc(this,n);
+    if(n.script?.startsWith('rival122:')){await runRivalEvent122(this,n);return;}
     if(await tutorialNpc100(n,State.save,ui,()=>{State.dirty=true;saveLocal();}))return;
     if(n.script==='post:deenaGuide94'){await deenaGuide94(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}
     if(n.script==='move:reminder92'){await openMoveReminder92(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}

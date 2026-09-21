@@ -1,8 +1,10 @@
+import {EV_ITEMS122} from '../training122.mjs';
 // ============================================================
 //  どうぐ
 //   kind: net(つかまえる) / heal / cure / revive / escape / key
 // ============================================================
 export const ITEMS = {
+ ...Object.fromEntries(EV_ITEMS122.map(({name,...item})=>[name,item])),
  "小型ボート":{kind:"key",price:0,desc:"川や海に向いて使う。岸へ進むと上陸。"},
  "レベルの実":{kind:"level",price:0,desc:"ガオンのレベルを１上げる。"},
  "クリア・エンブレム":{kind:"key",price:0,desc:"試験を乗り越えた証。"},
@@ -56,7 +58,7 @@ export function isKey(name) { return item(name).kind === "key"; }
 
 // ショップの しなぞろえ
 Object.assign(ITEMS,{"採掘セット":{kind:"key",price:500,desc:"目印のある専用の木・岩に向かってAで素材採取。各場所で毎日5回まで。"},...Object.fromEntries(Object.entries({"もくざい":160,"じゅし":280,"かたいもくざい":480,"こいし":80,"てっこうせき":240,"どうこうせき":360,"きんこうせき":1200,"ひかりのけっしょう":2400}).map(([name,price])=>[name,{kind:"ore",price,desc:"専用の木や岩で採れる素材。ショップで売ったり、自分のお店に並べられる。"}]))});
-export const SHOP_LIST = ["採掘セット",
+export const SHOP_LIST = [...EV_ITEMS122.map(i=>i.name),"採掘セット",
   "ラグネット", "スーパーラグ", "ガオンのくすり", "ハイヒール",
   "げどくそう", "しびれどめ", "ひやしそう", "めざましそう", "ぬけみちいし",
 ];

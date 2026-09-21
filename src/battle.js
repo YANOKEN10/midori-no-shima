@@ -1,3 +1,4 @@
+import {participationRewards122} from './training122.mjs';
 import {teachMove92} from './moveLearning92.mjs';
 import {npcFrame} from './npcArt.js';
 import {trainerLevel} from './postgame62.js';
@@ -78,12 +79,12 @@ export async function startBattle(opts) {
   if (!you && isTrainer) return "lose";
   const backgroundKey=battleBackgroundFor(State.save,opts,MAPS[State.save.where?.map]);
   await prepareBattleBackground(backgroundKey);
-  const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], trainerLevel(p[1],State.save))) : [opts.wild];
+  const foeParty = isTrainer ? opts.trainer.party.map((p) => makeMon(p[0], opts.trainer.fixedLevels122?p[1]:trainerLevel(p[1],State.save),p[2])) : [opts.wild];
   B = {
     backgroundKey, playerParty, facility:!!opts.facility,
     isTrainer: isTrainer, captureDisabled:!!opts.captureDisabled, escapeDisabled:!!opts.escapeDisabled, catchRate:opts.catchRate, wildFleeRate:opts.wildFleeRate||0,
     trainer: opts.trainer || null,
-    foeParty: foeParty, foeIndex: 0,
+    foeParty: foeParty, foeIndex: 0, participants122:new Set(you?[you]:[]), pendingEvos122:[],
     you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
     turn: 0, runTries: 0, hpAnim: true, caught: false,
     intro: 'trainer',introTime:0,
@@ -141,7 +142,7 @@ export async function startBattle(opts) {
 
   battle.active = false;
   ui.setBattleMode(false);
-  lastEvo = B.pendingEvo || null;
+  lastEvo = B.pendingEvos122 || [];
   B = null;
   if (result === "win" && isTrainer && !opts.facility) {
     const money = opts.trainer.money || 0;
@@ -187,7 +188,7 @@ async function chooseMove() {
   const m = B.you.mon;
   const labels = m.moves.map(mv=>mv.name);
   const details = m.moves.map(mv=>'PP '+mv.pp+' / '+mv.max);
-  const i = await ui.choice(labels, { columns: 2, rows: 2, battle: true, details });
+  const i = await ui.choice(labels, { columns: 2, rows: 2, battle: true, details, types:m.moves.map(mv=>moveData(mv.name).type) });
   if (i < 0) return null;
   if (m.moves[i].pp <= 0) { await ui.say(["わざの のこりが ない！"]); return null; }
   return m.moves[i];
@@ -215,6 +216,7 @@ async function choosePartyMember() {
 async function switchTo(i) {
   await ui.say(["もどれ！ " + monName(B.you.mon) + "！"]);
   B.you = fresh(B.playerParty[i], true);
+  B.participants122.add(B.you.mon);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
 }
@@ -530,6 +532,7 @@ async function throwBall(ballRate, netName) {
   if (shakes >= 4) {
     beep("catch");
     await ui.say(["やった！ " + m.sp + "を つかまえた！"]);
+    State.save.captureCount122=(State.save.captureCount122||0)+1;
     ownMon(m.sp);
     const firstPartner = State.save.party.length === 0;
     const where = addToParty(m);
@@ -557,11 +560,12 @@ async function onFoeDown() {
   // けいけんち
   const base = species(B.foe.mon.sp).exp;
   const gain = Math.max(1, Math.floor((base * B.foe.mon.lv / 7) * (B.isTrainer ? 1.5 : 1)));
-  const m = B.you.mon;
-  await ui.say([monName(m) + "は " + gain + " けいけんちを もらった！"]);
-  gainEffort(m, B.foe.mon.sp);
+  for(const {mon:m,amount:earned122} of participationRewards122(B.playerParty,B.participants122,B.you.mon,gain)){
+  const wasFainted122=m.hp<=0;
+  await ui.say([monName(m) + "は " + earned122 + " けいけんちを もらった！"]);
+  if(m===B.you.mon)gainEffort(m, B.foe.mon.sp);
   State.dirty = true;
-  const res = gainExp(m, gain);
+  const res = gainExp(m, earned122);if(wasFainted122)m.hp=0;
   for (const lv of res.levels) {
     beep("levelup");
     await ui.say([monName(m) + "は レベル " + lv + "に あがった！"]);
@@ -569,7 +573,8 @@ async function onFoeDown() {
   for (const name of res.learned) {
     await teachMove92(m,name,ui,()=>{State.dirty=true;});
   }
-  if (res.evolve) B.pendingEvo = { mon: m, to: res.evolve };
+  if(res.evolve&&!B.pendingEvos122.some(e=>e.mon===m))B.pendingEvos122.push({mon:m,to:res.evolve});
+  }
 
   }
   // つぎの あいて
@@ -596,6 +601,7 @@ async function onYouDown() {
   }
   const i = await choosePartyMemberForce();
   B.you = fresh(B.playerParty[i], true);
+  B.participants122.add(B.you.mon);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
   return "";
@@ -611,9 +617,9 @@ async function choosePartyMemberForce() {
   }
 }
 
-let lastEvo = null;
+let lastEvo = [];
 // たたかいの あとで しんかを とりだす
-export function popEvolution() { const e = lastEvo; lastEvo = null; return e; }
+export function popEvolution() { return lastEvo.shift()||null; }
 
 /* ============================================================
    えがく
@@ -680,12 +686,7 @@ function infoBox(x, y, side, mine) {
   const m = side.mon;
   const w = mine?146:144, h = mine?54:44;
   G.use("ui");
-  if (G.isColor()) {
-    G.ctx.fillStyle="#315456";G.ctx.fillRect(x+3,y+3,w,h);
-    G.ctx.fillStyle="#324b4c";G.ctx.fillRect(x,y,w,h);
-    G.ctx.fillStyle="#f8f8df";G.ctx.fillRect(x+3,y+3,w-6,h-6);
-    G.ctx.fillStyle="#b4bea0";G.ctx.fillRect(x+6,y+6,w-12,1);
-  } else G.window9(x, y, w, h);
+  G.window9(x,y,w,h);
 
   const level='Lv.'+m.lv,lvWidth=35,name=monName(m),nameWidth=w-24-lvWidth;
   const nameSize=Math.min(12,12*nameWidth/Math.max(1,G.textW(name,12)));

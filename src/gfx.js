@@ -1,3 +1,4 @@
+import {drawWindow123} from './windowArt123.js';
 // ============================================================
 //  えがく どうぐ
 //   ・画面は 320x288（ゲームボーイの ちょうど2ばい）
@@ -197,24 +198,7 @@ export function frame(x, y, w, h, c, t) {
 }
 
 // 七つの谷のガラス細工と湖を思わせる共通ウィンドウ。
-export function window9(x, y, w, h) {
-  if (mode !== "color" || typeof ctx.roundRect !== "function") {
-    rect(x, y, w, h, 0); frame(x, y, w, h, 3, 2); frame(x + 3, y + 3, w - 6, h - 6, 3, 1);
-    return;
-  }
-  ctx.save();
-  const r = Math.max(3, Math.min(8, Math.floor(Math.min(w, h) / 7)));
-  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
-  const grad = ctx.createLinearGradient(x, y, x, y + h);
-  grad.addColorStop(0, "rgba(250,253,247,.98)");
-  grad.addColorStop(1, "rgba(215,237,233,.97)");
-  ctx.fillStyle = grad; ctx.fill();
-  ctx.strokeStyle = "#10283e"; ctx.lineWidth = 3; ctx.stroke();
-  ctx.beginPath(); ctx.roundRect(x + 4, y + 4, w - 8, h - 8, Math.max(2, r - 2));
-  ctx.strokeStyle = "#4aa4bd"; ctx.lineWidth = 1.5; ctx.stroke();
-  ctx.fillStyle = "#e3ad43"; ctx.fillRect(x + 9, y + 5, Math.max(14, Math.min(44, w * .18)), 2);
-  ctx.restore();
-}
+export function window9(x,y,w,h){drawWindow123(ctx,x,y,w,h);}
 
 let fontReady = false;
 let fontRev = 0;
@@ -225,7 +209,7 @@ export function fontOk() { return fontReady; }
 export function fontRevision() { return fontRev; }
 
 export function setFont(size) {
-  ctx.font = (size || 16) + 'px "DotGothic16", "MS Gothic", monospace';
+  ctx.font = '700 '+(size || 15) + 'px "M PLUS Rounded 1c", "DotGothic16", sans-serif';
   ctx.textBaseline = "top";
 }
 export function text(str, x, y, c, size) {
