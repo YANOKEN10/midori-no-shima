@@ -1,6 +1,6 @@
 const L=require('./_lib'),F=require('./_friendStore');
 const originalBase=require('../assets/editor-v72/base-maps.json'),species=require('../assets/editor-v72/species.json');
-const model=import('../src/editorModel72.mjs');const connections=import('../src/connections75.mjs');const anchors=import('../src/linkAnchors78.mjs');
+const managed=import('../src/managedPeople120.mjs');const model=import('../src/editorModel72.mjs');const connections=import('../src/connections75.mjs');const anchors=import('../src/linkAnchors78.mjs');
 const PUB='maps72:published',DEFS='maps82:definitions';const custom=import('../src/customMaps82.mjs');const encounterTools86=import('../src/encounters86.mjs');
 // Pinned to the existing account record, not a self-assigned display name or client flag.
 const isAdmin=u=>!!u&&u.id==='ヤノケン'&&Number(u.created)===1789724902905;
@@ -8,7 +8,7 @@ module.exports=async(req,res)=>{L.cors(req,res);if(req.method==='OPTIONS')return
  const b=L.body(req);if(req.method==='GET'){const doc=(await F.read([PUB]))[PUB];return res.status(200).json({revision:doc?.version||0,maps:doc?.data?.maps||{},definitions:doc?.data?.definitions||{}});}
  if(req.method!=='POST')return res.status(405).json({message:'未対応の操作です。'});
  const auth=L.readToken(L.bearer(req));if(!auth)return res.status(401).json({message:'ゲームのアカウントでログインしてください。'});const user=await L.readUser(auth.id);if(!isAdmin(user))return res.status(403).json({message:'このアカウントにはマップの管理権限がありません。'});
- const registry=(await F.read([DEFS]))[DEFS],definitions=registry?.data?.definitions||{},customTools=await custom,base=customTools.extendMaps82({...originalBase},definitions);
+ const registry=(await F.read([DEFS]))[DEFS],definitions=registry?.data?.definitions||{},customTools=await custom,base=customTools.extendMaps82((await managed).addManagedPeople120({...originalBase}),definitions);
  if(b.action==='create'){const d=b.definition;if(!customTools.validDefinition82(d)||(d.encounters86!==undefined&&!(await encounterTools86).validEncounters86(d.encounters86,species))||Object.hasOwn(base,d.id))return res.status(400).json({message:'マップの名前・大きさ・識別番号が不正です。'});if(Object.keys(definitions).length>=50)return res.status(400).json({message:'追加マップは50個までです。'});const clean={id:d.id,name:d.name.trim(),kind:d.kind,width:d.width,height:d.height,...(d.encounters86!==undefined?{encounters86:d.encounters86}: {})};if(!await F.commit({[DEFS]:registry?.version||0},{[DEFS]:{definitions:{...definitions,[d.id]:clean}}}))return res.status(409).json({message:'別の画面でマップが追加されました。再読み込みしてください。'});return res.status(200).json({ok:true,definition:clean});}
  if(b.action==='session')return res.status(200).json({admin:true,name:user.display||user.id,definitions});
  if(typeof b.map!=='string'||!Object.hasOwn(base,b.map))return res.status(400).json({message:'マップが見つかりません。'});

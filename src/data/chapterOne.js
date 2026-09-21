@@ -1,3 +1,4 @@
+import {addManagedPeople120} from '../managedPeople120.mjs';
 import {refineAlpineRoutes65} from './alpineRoutes65.js';
 import {refineMaps61} from './dungeonLayouts61.js';
 import {addTownLife} from './townLife.js';
@@ -150,5 +151,5 @@ export function buildChapterOne(){
  addTownLife(M);
  refineAlpineRoutes65(M);
  for(const m of Object.values(M)){m.rows=m.g.map(r=>r.join(''));delete m.g;}
- return M;
+ return addManagedPeople120(M);
 }

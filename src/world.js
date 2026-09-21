@@ -1,3 +1,4 @@
+import {walkWithFollower121,followerMood121,takeFollowerFind121,facingFollower121} from './followerBond121.mjs';
 import {homeSignText117} from './homeSign117.mjs';
 import {claimNpcGift111} from './npcSettings111.mjs';
 import {tutorialNpc100} from './tutorial100.mjs';
@@ -281,11 +282,13 @@ export const world = {
     if (Math.abs(vx) > Math.abs(vy)) this.dir = vx < 0 ? "left" : "right";
     else this.dir = vy < 0 ? "up" : "down";
 
+    const oldFx121=this.fx,oldFy121=this.fy;
     let nx = this.fx + vx * distance, ny = this.fy + vy * distance;
     // 壁沿いで止まり過ぎないよう、X/Yを分離して滑らせる。
     if (canTraverse75(this.map,this.fx,this.fy,nx,this.fy)&&this.canFreeStand(nx, this.fy)) this.fx = nx;
     if (canTraverse75(this.map,this.fx,this.fy,this.fx,ny)&&this.canFreeStand(this.fx, ny)) this.fy = ny;
     this.x = this.fx; this.y = this.fy;
+    if(!State.save.boating&&walkWithFollower121(followingMon(),Math.hypot(this.fx-oldFx121,this.fy-oldFy121))){State.dirty=true;saveLocal();}
     this.ox = this.oy = 0;
     this.moving = true;
     this.walkTimer += dt;
@@ -383,6 +386,7 @@ export const world = {
   },
 
   async afterStep() {
+    if(!State.save.boating&&walkWithFollower121(followingMon(),1)){State.dirty=true;saveLocal();}
     endStep(this,this.previousTile);
     State.save.where = { map: this.mapId, x: this.x, y: this.y, dir: this.dir };
     State.save.steps = (State.save.steps || 0) + 1;
@@ -525,6 +529,16 @@ export const world = {
       })().then(() => { this.busy = false; });
       return;
     }
+    const follower121=followingMon(),pose121=this.followerTrail.pose;
+    if(!State.save.boating&&follower121&&facingFollower121(this.x,this.y,this.dir,pose121,this.followerTrail.distance)){
+      const clear=[.25,.5,.75].every(t=>{const x=this.x+(pose121.x-this.x)*t,y=this.y+(pose121.y-this.y)*t;return !solid(tileAt(this.map,Math.round(x),Math.round(y)))&&!landmarkBlocked(this.map,Math.round(x),Math.round(y));});
+      if(clear){this.talkFollower121(follower121);return;}
+    }
+  },
+
+  async talkFollower121(mon){
+    this.busy=true;this.followerChat121=true;const pose=this.followerTrail.pose;if(pose){pose.dir=({up:'down',down:'up',left:'right',right:'left'})[this.dir];pose.moving=false;}
+    try{const mood=followerMood121(mon,maxHp(mon));this.followerJoy121=mood.happy?this.tick+2400:0;await ui.say(mood.lines);const found=takeFollowerFind121(mon,State.save.bag);if(found){State.dirty=true;saveLocal();beep('ok');await ui.say([monName(mon)+'が 何かを くわえている！',found+'を 1個 もらった！']);}State.dirty=true;saveLocal();}finally{this.followerChat121=false;this.busy=false;}
   },
 
   async pickItem(it) {
@@ -1112,8 +1126,8 @@ export const world = {
     const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
     if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
     const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
-    if(!(State.save.flags['end:eden']&&!State.save.flags['end:momiWon']))this.followerTrail.face(this.x+this.ox/T,this.y+this.oy/T,this.dir,(x,y)=>this.canFreeStand(x,y));
-    this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
+    if(!this.followerTrail.pose&&!(State.save.flags['end:eden']&&!State.save.flags['end:momiWon']))this.followerTrail.face(this.x+this.ox/T,this.y+this.oy/T,this.dir,(x,y)=>this.canFreeStand(x,y));
+    if(!this.followerChat121)this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
     const follower=followingMon(),pose=this.followerTrail.pose;
     if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
     people.push(...daycareResidents(map,State.save,this.tick));
@@ -1122,7 +1136,7 @@ export const world = {
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
       if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,p.tree,map);G.ctx.restore();continue;}if (p.follower) {
-        drawFollower(G.ctx,p.follower,p.pose,this.tick,p.x*T+16-camX,p.y*T+20-camY);
+        drawFollower(G.ctx,p.follower,p.pose,this.tick,p.x*T+16-camX,p.y*T+20-camY-(this.followerJoy121>this.tick?Math.round(Math.abs(Math.sin(this.tick/150))*5):0));
         if(map.tileWorld)drawGrassFeet(G.ctx,map,p.x*T,p.y*T,camX,camY);
       } else if (p.me) {
         const fi = this.moving ? this.walkFrame : 0;

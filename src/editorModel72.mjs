@@ -1,3 +1,4 @@
+import {upgradeManagedPeople120} from './managedPeople120.mjs';
 import {ADDITIONAL_PEOPLE119} from './peopleCatalog119.mjs';
 import {addHomeSign117} from './homeSign117.mjs';
 import {protectedNpc111,validGift111} from './npcSettings111.mjs';
@@ -27,7 +28,7 @@ export const FLOORS=[...STYLE_FLOORS109.map(p=>[p.key,p.label,p.tile]),...GROUND
 export const clone=v=>JSON.parse(JSON.stringify(v));
 const solid=new Set(['T','R','M','W','#','r','w','S','X','=','c','b','t','K','V','P','s','L']);
 export const pass=(m,x,y)=>m.rows[y]?.[x]!==undefined&&!solid.has(m.rows[y][x]);
-export function fingerprint(map){let n=2166136261;for(const ch of JSON.stringify(map)){n^=ch.charCodeAt(0);n=Math.imul(n,16777619);}return (n>>>0).toString(16);}
+export function fingerprint(map){let n=2166136261;for(const ch of JSON.stringify(map.npcs?.some(n=>n.managed120)?{...map,npcs:map.npcs.filter(n=>!n.managed120)}:map)){n^=ch.charCodeAt(0);n=Math.imul(n,16777619);}return (n>>>0).toString(16);}
 export function catalog(maps,species){
  const props=[...PONDS87],seen=new Set(PONDS87.map(p=>p.key));for(const [mapId,m]of Object.entries(maps))for(const p of m.props||[]){if(seen.has(p.art))continue;seen.add(p.art);props.push({key:p.art,label:p.label||p.art,art:p.art,w:p.w,h:p.h,source:mapId});}
  for(const [art,label,w,h]of [['tree','広葉樹',2,2],['fir','針葉樹',2,2],['flowers','花',1,1],['rock','岩',1,1],['smallRock','小石',1,1],['bush','低木',1,1],['lamp','街灯',1,2],['fenceHorizontal','横の柵',1,1],['fenceVertical','縦の柵',1,1]]){const p=props.find(p=>p.art===art);if(p)p.label=label;else props.push({key:art,art,label,w,h,source:'village'});}
@@ -48,7 +49,7 @@ export function catalog(maps,species){
 }
 const groundCache79=new WeakMap(),groundIndex79=new WeakMap();
 export function groundObjects79(map){if(groundCache79.has(map))return groundCache79.get(map);const out=[];if(map.kind!=='in'&&!map.powerArt)map.rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(('FTRX=S'.includes(ch)||(map.townGardens||[]).some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))&&!map.props.some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h))out.push({id:'g:'+(y*r.length+x),type:'prop',template:({F:'flowers',T:'tree',R:'rock',X:'wall79','=':'fenceHorizontal',S:'sign'})[ch]||'flowers',x,y});}));const pond=pondObject87(map);if(pond)out.push(pond);groundCache79.set(map,out);groundIndex79.set(map,new Map(out.map(o=>[o.id,o])));return out;}
-export function upgrade79(base,d){d=upgradeTownBorder114(base,d);d=upgradeSpecies98(d);d=upgradePond87(base,d);if(!d.signs82)d={...d,signs82:true,objects:[...d.objects,...groundObjects79(base).filter(o=>o.template==='sign'&&!d.objects.some(a=>a.id===o.id))]};if(d.materials79)return d;return {...d,materials79:true,objects:[...d.objects,...groundObjects79(base).filter(o=>!d.tiles.some(t=>t.x===o.x&&t.y===o.y))]};}
+export function upgrade79(base,d){d=upgradeManagedPeople120(base,d);d=upgradeTownBorder114(base,d);d=upgradeSpecies98(d);d=upgradePond87(base,d);if(!d.signs82)d={...d,signs82:true,objects:[...d.objects,...groundObjects79(base).filter(o=>o.template==='sign'&&!d.objects.some(a=>a.id===o.id))]};if(d.materials79)return d;return {...d,materials79:true,objects:[...d.objects,...groundObjects79(base).filter(o=>!d.tiles.some(t=>t.x===o.x&&t.y===o.y))]};}
 export function initial(map){return {schema:1,ponds87:true,materials79:true,signs82:true,base:fingerprint(map),links:[],elevations:[],climbs:[],tiles:[],objects:[...groundObjects79(map),...(map.props||[]).map((p,i)=>({id:'p:'+i,type:'prop',template:p.art,x:p.x,y:p.y})),...(map.room?.furniture||[]).map((f,i)=>({id:'f:'+i,type:'furniture',template:f[0],x:f[1],y:f[2]}))],actors:(map.npcs||[]).map((n,i)=>({id:'n:'+i,x:n.x,y:n.y,dir:n.dir||'down',mode:n.followOwner!==undefined?'follow':n.noRoam?'still':'roam',owner:n.followOwner!==undefined?'n:'+n.followOwner:null})),rug:map.room?.rug?clone(map.room.rug):null};}
 function rawObjectSource81(base,o,cat){if(o.copyOf93){
  if(!/^(p|f|g):\d+$/.test(o.copyOf93))return null;
