@@ -1,3 +1,4 @@
+import {claimNpcGift111} from './npcSettings111.mjs';
 import {tutorialNpc100} from './tutorial100.mjs';
 import {landscape98} from './landscapeLayers98.mjs';
 import {deenaReady94,deenaGuide94,recordDeenaVisit94} from './deenaQuest94.mjs';
@@ -534,7 +535,7 @@ export const world = {
     saveLocal();
   },
 
-  async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{return await this.runNpcContent(n);}finally{ui.speaker=old;}},
+  async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{const result=await this.runNpcContent(n);if(!n.trainer||flag('beat:'+this.mapId+':'+n.idx)){const gift=claimNpcGift111(State.save,this.mapId,n);if(gift){State.dirty=true;saveLocal();if(cloud.signedIn)saveCloud(true);await ui.say([gift.item+'を '+gift.count+'個 もらった！']);}}return result;}finally{ui.speaker=old;}},
   async runNpcContent(n) {
     if(await tutorialNpc100(n,State.save,ui,()=>{State.dirty=true;saveLocal();}))return;
     if(n.script==='post:deenaGuide94'){await deenaGuide94(State.save,ui,()=>{State.dirty=true;saveLocal();});return;}

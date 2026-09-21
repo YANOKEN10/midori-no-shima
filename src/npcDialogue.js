@@ -23,7 +23,7 @@ function choose(save,key,choices){
 }
 export function npcDialogue(save,mapId,n,phase='talk',fallback=n[phase]){
  const base=fallback||['こんにちは。'];
- if(n.fixedDialogue||n.healAll||n.heal||n.shop||n.clothes||n.salon||n.trainer?.leader||n.trainer?.champ||n.trainer?.major)return base;
+ if(n.editorTalk111||n.fixedDialogue||n.healAll||n.heal||n.shop||n.clothes||n.salon||n.trainer?.leader||n.trainer?.champ||n.trainer?.major)return base;
  if(n.script&&n.script!=='voyage:trainer')return base;
  let alternatives;
  if(n.trainer||n.script==='voyage:trainer'){
