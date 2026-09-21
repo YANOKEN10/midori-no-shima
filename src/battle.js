@@ -1,3 +1,4 @@
+import {showGrowth124} from './summary124.js';
 import {participationRewards122} from './training122.mjs';
 import {teachMove92} from './moveLearning92.mjs';
 import {npcFrame} from './npcArt.js';
@@ -566,6 +567,7 @@ async function onFoeDown() {
   if(m===B.you.mon)gainEffort(m, B.foe.mon.sp);
   State.dirty = true;
   const res = gainExp(m, earned122);if(wasFainted122)m.hp=0;
+  await showGrowth124(m,res.growth);
   for (const lv of res.levels) {
     beep("levelup");
     await ui.say([monName(m) + "は レベル " + lv + "に あがった！"]);

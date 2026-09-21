@@ -1,3 +1,4 @@
+import {showSummary124,showGrowth124} from './summary124.js';
 import {drawMoveCell123} from './windowArt123.js';
 import {EV_ITEMS122,STAT_LABELS122,reduceEffort122,effortText122} from './training122.mjs';
 import {mapHeroFrame119} from './peopleArt119.js';
@@ -100,49 +101,7 @@ export async function partyMenu(forItem) {
   }
 }
 
-export async function showStatus(m) {
-  let cursor=0,selected=-1;
-  normalizeMonStats(m);
-  const sp = species(m.sp);
-  await ui.custom(() => {
-    G.use("uiDark");
-    G.clear(1);
-    G.use("ui");
-    G.window9(4, 4, 312, 156);
-    const img = G.makeMonArt(MONART[m.sp], 2, "m" + m.sp, palOf(sp), accentOf(sp), MONPAL[m.sp]);
-    const current=battleArt(m.sp);
-    if(current)G.drawScaled(current,4,22,128,128);else G.draw(img,4,22);
-    G.text("No." + String(sp.no).padStart(3, "0"), 140, 14, 3, 14);
-    const lv = "Lv" + m.lv;
-    G.textFit(monName(m), 140, 34, 154 - G.textW(lv, 16), 3, 16);
-    G.textRight(lv, 302, 34, 3, 16);
-    G.textFit("タイプ/" + sp.types.join("・"), 140, 58, 162, 3, 14);
-    G.text("HP " + m.hp + "/" + maxHp(m), 140, 80, 3, 14);
-    if (m.status) G.textRight(m.status, 302, 80, 3, 14);
-    [["atk","def"],["spc","sdef"],["spd",null]].forEach((pair,row)=>pair.forEach((key,col)=>{if(!key)return;const x=140+col*84,y=100+row*18;G.text(STAT_LABELS[key],x,y,3,11);G.textRight(statOf(m,key),x+78,y,3,11);}));
-
-    G.window9(4, 166, 312, 114);
-    m.moves.forEach((mv, i) => {
-      const d = moveData(mv.name);
-      const y = 176 + i * 22;
-      drawMoveCell123(G.ctx,10,y-2,300,22,d.type,i===cursor);
-      G.ctx.fillStyle="#fff9e5";G.ctx.fillRect(32,y,124,18);G.ctx.fillRect(184,y,114,18);
-      if(i===cursor)G.text('▶',10,y+2,3,11);
-      if(i===selected)G.text('◆',23,y+2,3,10);
-      G.textFit(mv.name, 36, y, 123, 3, 14);
-      drawTypeIcon77(d.type,163,y-2,20);
-      G.text(d.type,187,y+1,3,11);
-      G.textRight(mv.pp + "/" + mv.max, 304, y + 1, 3, 13);
-    });
-    G.text(selected<0?'↑↓ えらぶ  A いれかえ  B もどる':'↑↓ いれかえ先  A けってい  B やめる',14,266,3,10);
-  },{onInput(key){
-    if(key==='b'){beep('back');if(selected>=0){selected=-1;return false;}return true;}
-    if(!m.moves.length)return false;
-    if(key==='up'||key==='down'){cursor=(cursor+(key==='up'?-1:1)+m.moves.length)%m.moves.length;beep('blip');return false;}
-    if(key==='a'){if(m.moves.length<2)return false;if(selected<0){selected=cursor;beep('ok');}else{if(selected!==cursor){[m.moves[selected],m.moves[cursor]]=[m.moves[cursor],m.moves[selected]];saveLocal();}selected=-1;beep('ok');}}
-    return false;
-  }});
-}
+export async function showStatus(m){return showSummary124(m,{onChange:()=>{State.dirty=true;saveLocal();}});}
 
 /* ============ どうぐ ============ */
 export async function bagMenu() {
@@ -193,7 +152,7 @@ async function leafCompassMenu() {
 
 async function useOutside(name) {
   if(name==='小型ボート'){const {useBoat}=await import('./endgameStory.js');if(menuWorld)await useBoat(menuWorld);return;}
-  if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expFor}=await import('./state.js');const result=gainExp(m,expFor(m.lv+1)-m.exp);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
+  if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expForLevel}=await import('./state.js');const result=gainExp(m,expForLevel(m.lv+1)-m.exp);await showGrowth124(m,result.growth);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
 
   const d = itemData(name);
   if(d.kind==='evReduce'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];normalizeMonStats(m);if(!(m.ev[d.stat]>0)){await ui.say(['その能力の努力値は すでに0です。']);return;}if(!useItem(name))return;const amount=reduceEffort122(m,d.stat);m.hp=Math.min(m.hp,maxHp(m));State.dirty=true;saveLocal();await ui.say([monName(m)+'の '+STAT_LABELS122[d.stat]+'の努力値が '+amount+' 下がった！']);return;}

@@ -100,14 +100,16 @@ export function healFull(m) {
 
 // レベルアップ（あがった ぶんの わざを かえす）
 export function gainExp(m, amount) {
-  const res = { levels: [], learned: [], evolve: null };
+  const res = { levels: [], learned: [], evolve: null, growth: [] };
   m.exp += amount;
   const sp = species(m.sp);
   while (m.lv < 100 && m.exp >= expForLevel(m.lv + 1)) {
     const before = maxHp(m);
+    const beforeStats124=Object.fromEntries(STAT_KEYS.map(k=>[k,statOf(m,k)]));
     m.lv++;
     m.hp += maxHp(m) - before;
     res.levels.push(m.lv);
+    res.growth.push({level:m.lv,before:beforeStats124,after:Object.fromEntries(STAT_KEYS.map(k=>[k,statOf(m,k)]))});
     for (const [lv, name] of sp.learn) {
       if (lv === m.lv) res.learned.push(name);
     }
@@ -220,6 +222,7 @@ export function lagNetMultiplier() {
 
 /* --- てもち --------------------------------------------------- */
 export function addToParty(m) {
+  m.encounter124 ||= {date:Date.now(),level:m.lv,place:G.save.where?.map||'記録なし',trainer:G.save.name};
   if (G.save.party.length < MAX_PARTY) { G.save.party.push(m); return "party"; }
   G.save.box.push(m);
   return "box";
