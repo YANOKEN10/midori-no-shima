@@ -41,7 +41,7 @@ for(const [type,columns] of Object.entries(names))for(const [c,column] of column
   if(c&&i===9||!c&&i===13){m.fx={drain:.5};m.desc+=' 与えたダメージの半分を回復。';}
   if(!c&&i===12)m.fx={multi:[2,2]};
   if(!c&&i===8||c&&i===11){m.fx={crit:2};m.desc+=' 急所に当たりやすい。';}
-  if(c&&i===12){m.fx={foe:{spd:-1},chance:.3};m.desc+=' 30%ですばやさを下げる。';}
+  if(c&&i===12){m.fx={foe:{spd:-1},chance:.3};m.desc+=' 30%でスピードを下げる。';}
   if(c&&i===13){m.fx={flinch:.2};m.desc+=' 20%でひるませる。';}
   if(!c&&i===14){m.fx={recoil:.25};m.desc+=' 与えたダメージの1/4の反動。';}
   EXTRA_MOVES92[name]=m;MOVE_FORMS92[name]=forms[i];

@@ -430,7 +430,7 @@ async function applyEffects(atk, def, fx, dealt) {
 }
 
 function statName(k) {
-  return { atk: "こうげき", def: "ぼうぎょ", spd: "すばやさ", spc: "とくこう", sdef: "とくぼう", acc: "めいちゅう" }[k] || k;
+  return { atk: "アタック", def: "ブロック", spd: "スピード", spc: "マジック", sdef: "バリア", acc: "めいちゅう" }[k] || k;
 }
 
 /* --- にげる ---------------------------------------------------- */

@@ -12,10 +12,10 @@ export const MOVES = {
   ラッシュナックル:  { type: "ひかり", cat: "phys", pow: 18, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つづけて たたく。" },
   マックスアタック:  { type: "ひかり", cat: "phys", pow: 100, acc: 90, pp: 10, fx: { recoil: 0.25 }, desc: "つよいが じぶんも きずつく。" },
   スピナー:        { type: "ひかり", cat: "phys", pow: 55, acc: 100, pp: 25, fx: { flinch: 0.2 }, desc: "たまに ひるませる。" },
-  ボイス:        { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 40, fx: { foe: { atk: -1 } }, desc: "あいての こうげきを さげる。" },
-  ダンス:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
-  レイロム:    { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ぼうぎょを さげる。" },
-  ブロック:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { self: { def: 1 } }, desc: "じぶんの ぼうぎょを あげる。" },
+  ボイス:        { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 40, fx: { foe: { atk: -1 } }, desc: "あいての アタックを さげる。" },
+  ダンス:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ブロックを さげる。" },
+  レイロム:    { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { foe: { def: -1 } }, desc: "あいての ブロックを さげる。" },
+  ブロック:      { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 30, fx: { self: { def: 1 } }, desc: "じぶんの ブロックを あげる。" },
   ダブルカット:      { type: "ひかり", cat: "phys", pow: 15, acc: 85, pp: 20, fx: { multi: [2, 5] }, desc: "2〜5かい つく。" },
   パワーアップ:          { type: "ひかり", cat: "stat", pow: 0, acc: 100, pp: 10, fx: { rest: true }, desc: "ねむって たいりょくを ぜんかい。" },
 
@@ -31,7 +31,7 @@ export const MOVES = {
   ファイアーブレス:    { type: "ほのお", cat: "phys", pow: 60, acc: 100, pp: 20, desc: "あつい ほのおの 息を はく。" },
 
   ウォーターブロー:    { type: "みず", cat: "spec", pow: 45, acc: 100, pp: 25, desc: "みずを いきおいよく はく。" },
-  アクアピストル:  { type: "みず", cat: "spec", pow: 65, acc: 100, pp: 20, fx: { foe: { spd: -1 }, chance: 0.3 }, desc: "たまに すばやさを さげる。" },
+  アクアピストル:  { type: "みず", cat: "spec", pow: 65, acc: 100, pp: 20, fx: { foe: { spd: -1 }, chance: 0.3 }, desc: "たまに スピードを さげる。" },
   ウォーターレーザー:    { type: "みず", cat: "spec", pow: 95, acc: 90, pp: 10, desc: "おおきな なみで おしながす。" },
   アクアマシンガン:        { type: "みず", cat: "spec", pow: 50, acc: 95, pp: 20, fx: { trap: true }, desc: "うずに とじこめる。" },
 
@@ -47,7 +47,7 @@ export const MOVES = {
   ドリルアタック:  { type: "じめん", cat: "phys", pow: 80, acc: 95, pp: 15, fx: { crit: 2 }, desc: "きりもみして つっこむ。" },
 
   ナイフ:        { type: "むし", cat: "phys", pow: 45, acc: 100, pp: 25, fx: { drain: 0.5 }, desc: "あたえた ダメージの 半分 かいふく。" },
-  イトハードイト:      { type: "むし", cat: "stat", pow: 0, acc: 95, pp: 40, fx: { foe: { spd: -2 } }, desc: "すばやさを ぐんと さげる。" },
+  イトハードイト:      { type: "むし", cat: "stat", pow: 0, acc: 95, pp: 40, fx: { foe: { spd: -2 } }, desc: "スピードを ぐんと さげる。" },
   スラッシュ:    { type: "むし", cat: "phys", pow: 75, acc: 100, pp: 15, fx: { crit: 2 }, desc: "おおあごで はさむ。" },
   ポイズン:        { type: "むし", cat: "phys", pow: 35, acc: 100, pp: 30, fx: { status: "どく", chance: 0.3 }, desc: "たまに どくに する。" },
 

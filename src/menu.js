@@ -1,3 +1,4 @@
+import {canonicalTrainingItem125} from './training122.mjs';
 import {showSummary124,showGrowth124} from './summary124.js';
 import {drawMoveCell123} from './windowArt123.js';
 import {EV_ITEMS122,STAT_LABELS122,reduceEffort122,effortText122} from './training122.mjs';
@@ -398,7 +399,7 @@ async function afterLogin() {
 
 /* ============ ショップ ============ */
 export async function shopMenu(stock82=SHOP_LIST) {
-  stock82=[...new Set([...stock82,...EV_ITEMS122.map(i=>i.name)])];
+  stock82=[...new Set([...stock82.map(canonicalTrainingItem125),...EV_ITEMS122.map(i=>i.name)])];
   for (;;) {
     const i = await ui.choice(["かう", "うる", "土地・お店", "やめる"], { x: 176, y: 150, w: 136 });
     if (i < 0 || i === 3) { await ui.say(["また どうぞ！"]); return; }

@@ -1,4 +1,4 @@
-import {EV_ITEMS122} from '../training122.mjs';
+import {EV_ITEMS122,canonicalTrainingItem125} from '../training122.mjs';
 // ============================================================
 //  どうぐ
 //   kind: net(つかまえる) / heal / cure / revive / escape / key
@@ -12,9 +12,9 @@ export const ITEMS = {
  "ダーク・エンブレム":{kind:"key",price:0,desc:"試験を乗り越えた証。"},
  "マスター・エンブレム":{kind:"key",price:0,desc:"試験を乗り越えた証。"},
 
- "パワーバンド":{kind:"held",stat:"atk",price:2500,desc:"持たせると こうげきが10％上がる。"},
- "まもりのおまもり":{kind:"held",stat:"def",price:2500,desc:"持たせると ぼうぎょが10％上がる。"},
- "ひらめきの石":{kind:"held",stat:"spc",price:2500,desc:"持たせると とくこうが10％上がる。"},
+ "パワーバンド":{kind:"held",stat:"atk",price:2500,desc:"持たせると アタックが10％上がる。"},
+ "まもりのおまもり":{kind:"held",stat:"def",price:2500,desc:"持たせると ブロックが10％上がる。"},
+ "ひらめきの石":{kind:"held",stat:"spc",price:2500,desc:"持たせると マジックが10％上がる。"},
  "レスレ・エンブレム":{kind:"key",price:0,desc:"ガオンパークと育て屋の試験に合格した証。"},
  "マニケレオ・エンブレム":{kind:"key",price:0,desc:"ヨウガン山の試験に合格した証。"},
   "ラグネット": { kind: "ball", rate: 1, price: 200, desc: "のびちぢみする あみ。ガオンを つかまえる。" },
@@ -53,7 +53,7 @@ export const ITEMS = {
   "たいかいパス": { kind: "key", price: 0, desc: "ガオンバトル大会の しゅつじょうけん。" },
 };
 
-export function item(name) { return ITEMS[name] || { kind: "key", price: 0, desc: "" }; }
+export function item(name) { return ITEMS[canonicalTrainingItem125(name)] || { kind: "key", price: 0, desc: "" }; }
 export function isKey(name) { return item(name).kind === "key"; }
 
 // ショップの しなぞろえ

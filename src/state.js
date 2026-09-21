@@ -1,3 +1,4 @@
+import {EV_ITEM_ALIASES125} from './training122.mjs';
 import {migrateVoyageSave} from './voyageRules.js';
 import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
 // ============================================================
@@ -161,6 +162,7 @@ export function loadInto(data) {
   G.save = Object.assign(base, data || {});
   if(data&&data.captureCount122===undefined)G.save.captureCount122=Object.values(data.dexOwn||{}).some(Boolean)?1:0;
   G.save.bag = G.save.bag || {};
+  for(const [old,name]of Object.entries(EV_ITEM_ALIASES125))if(Object.hasOwn(G.save.bag,old)){G.save.bag[name]=(G.save.bag[name]||0)+G.save.bag[old];delete G.save.bag[old];}
   G.save.flags = G.save.flags || {};
   G.save.party = G.save.party || [];
   G.save.box = G.save.box || [];

@@ -4,7 +4,7 @@ import {SPECIES} from './data/species.js';
 import {move} from './data/moves.js';
 import {item} from './data/items.js';
 import {battleArt} from './data/battleart.js';
-const labels={hp:'HP',atk:'こうげき',def:'ぼうぎょ',spc:'とくこう',sdef:'とくぼう',spd:'すばやさ'};
+const labels={hp:'HP',atk:'アタック',def:'ブロック',spc:'マジック',sdef:'バリア',spd:'スピード'};
 const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
 export function ensureSummaryStyle124(){if(document.getElementById('summary-css124'))return;const l=el('link');l.id='summary-css124';l.rel='stylesheet';l.href=new URL('./summary124.css',import.meta.url).href;document.head.append(l);}
 export async function showSummary124(mon,{readOnly=false,onChange=()=>{}}={}){

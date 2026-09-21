@@ -2,7 +2,7 @@ import {expandLearnsets92} from './learnsets92.mjs';
 import {MOVES, BURST_MOVE_NAMES, canonicalMoveName} from './moves.js';
 // ============================================================
 //  モンスター ずかん（ぜんぶ オリジナルの いきものです）
-//   base : たいりょく・こうげき・ぼうぎょ・すばやさ・とくしゅ
+//   base : たいりょく・アタック・ブロック・スピード・とくしゅ
 //   learn: [レベル, わざ]
 //   evo  : { lv:レベル, to:"なまえ" }
 // ============================================================
@@ -293,7 +293,7 @@ for(const [name,base] of Object.entries(RARE_BASE))SPECIES[name].base=base;
 for(const name of ['コケゴロ','ムラサキビ','ヨウガンヌシ','ヤミノヌシ','オバケシ']){SPECIES[name].catch=name==='オバケシ'?8:4;SPECIES[name].exp=280;}
 // Six permanent base stats and deterministic species-specific training rewards.
 export const STAT_KEYS = ["hp", "atk", "def", "spc", "sdef", "spd"];
-export const STAT_LABELS = {hp:"HP",atk:"こうげき",def:"ぼうぎょ",spc:"とくこう",sdef:"とくぼう",spd:"すばやさ"};
+export const STAT_LABELS = {hp:"HP",atk:"アタック",def:"ブロック",spc:"マジック",sdef:"バリア",spd:"スピード"};
 const evolutionTargets = new Set(Object.values(SPECIES).map(s=>s.evo?.to).filter(Boolean));
 for (const [name, sp] of Object.entries(SPECIES)) {
   sp.base.sdef ??= sp.base.spc;
