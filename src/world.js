@@ -1,3 +1,4 @@
+import {recoveryPoint126} from './recoveryPoint126.mjs';
 import {enterRival122,refreshRival122,tickRival122,runRivalEvent122} from './rivalStory122.js';
 import {walkWithFollower121,followerMood121,takeFollowerFind121,facingFollower121} from './followerBond121.mjs';
 import {homeSignText117} from './homeSign117.mjs';
@@ -156,7 +157,7 @@ export const world = {
 
   enter(mapId, x, y, dir) {
     const rivalFrom122=this.mapId;
-    this.facilityEntry123=false;
+    this.facilityEntry123=false;this.turnWait126=0;
     setMenuWorld(this);
     // しらない ばしょ（ふるい きろく など）なら むらへ もどす
     if (!MAPS[mapId]) { mapId = "village"; x = 7; y = 6; }
@@ -263,7 +264,7 @@ export const world = {
         this.moving = false;
         this.hop = 0;
         const stepMap=this.mapId;
-        this.afterStep().then(()=>{if(this.busy||ui.busy||this.mapId!==stepMap)return;const d=['up','down','left','right'].find(d=>In.isDown(d));if(d){this.dir=d;this.tryStep(d);}});
+        this.afterStep().then(()=>{if(this.busy||ui.busy||this.mapId!==stepMap)return;const d=['up','down','left','right'].find(d=>In.isDown(d));if(d&&d===this.dir)this.tryStep(d);});
       }
       return;
     }
@@ -272,21 +273,23 @@ export const world = {
 
     const d = In.isDown("up") ? "up" : In.isDown("down") ? "down" : In.isDown("left") ? "left" : In.isDown("right") ? "right" : "";
     if (d) {
-      if (this.dir !== d) { this.dir = d; this.walkTimer = 0; }
+      if (this.dir !== d) { this.dir = d; this.walkTimer = 0; this.walkFrame=0;this.turnWait126=140;return; }
+      if(this.turnWait126>0){this.turnWait126-=dt;return;}
       this.tryStep(d);
     } else {
-      this.walkFrame = 0;
+      this.turnWait126=0;this.walkFrame = 0;
     }
   },
 
   updateFree(dt) {
     const move = In.movementVector();
-    if (!move.x && !move.y) { this.moving = false; this.walkFrame = 0; return; }
+    if (!move.x && !move.y) { this.moving = false; this.walkFrame = 0;this.turnWait126=0; return; }
     const length = Math.hypot(move.x, move.y) || 1;
     const vx = move.x / length, vy = move.y / length;
     const distance = Math.min(0.18, dt * (climbAt75(this.map,this.fx,this.fy)?.kind==='ladder'?0.0032:0.0062));
-    if (Math.abs(vx) > Math.abs(vy)) this.dir = vx < 0 ? "left" : "right";
-    else this.dir = vy < 0 ? "up" : "down";
+    const nextDir=Math.abs(vx)>Math.abs(vy)?(vx<0?'left':'right'):(vy<0?'up':'down');
+    if(this.dir!==nextDir){this.dir=nextDir;this.moving=false;this.walkFrame=0;this.turnWait126=140;return;}
+    if(this.turnWait126>0){this.turnWait126-=dt;this.moving=false;return;}
 
     const oldFx121=this.fx,oldFy121=this.fy;
     let nx = this.fx + vx * distance, ny = this.fy + vy * distance;
@@ -466,6 +469,7 @@ export const world = {
 
   // 4マス さきまで 見ている トレーナー
   spotter() {
+    if (!State.save.party?.some(m=>m&&m.hp>0)) return null;
     for (const n of this.npcs) {
       if (!n.trainer || n.gone || n.moving) continue;
       if (flag("beat:" + this.mapId + ":" + n.idx)) continue;
@@ -482,27 +486,47 @@ export const world = {
       for (let i = 1; i < dist; i++) {
         const cx = n.x + (face === "right" ? i : face === "left" ? -i : 0);
         const cy = n.y + (face === "down" ? i : face === "up" ? -i : 0);
-        if (solid(tileAt(this.map, cx, cy))) { clear = false; break; }
+        if (!this.trainerCanStep126(n,cx,cy,cx-(face==='right'?1:face==='left'?-1:0),cy-(face==='down'?1:face==='up'?-1:0))) { clear = false; break; }
       }
       if (clear) return n;
     }
     return null;
   },
 
+  trainerCanStep126(n,x,y,fromX=n.x,fromY=n.y) {
+    const ch=tileAt(this.map,x,y);
+    return ch!==null&&!solid(ch)&&ch!=='L'&&!landmarkBlocked(this.map,x,y)
+      &&canTraverse75(this.map,fromX,fromY,x,y)
+      &&!this.npcs.some(o=>o!==n&&!o.gone&&((o.x===x&&o.y===y)||(o.moving&&o.toX===x&&o.toY===y)));
+  },
+
   async trainerSpot(n) {
-    this.busy = true;
-    n.alert = 900;
-    beep("ok");
-    await wait(700);
-    n.alert = 0;
-    // となりまで あるいてくる
-    if (n.dir === "down") n.y = this.y - 1;
-    else if (n.dir === "up") n.y = this.y + 1;
-    else if (n.dir === "right") n.x = this.x - 1;
-    else n.x = this.x + 1;
-    await wait(200);
-    await this.runNpc(n);
-    this.busy = false;
+    if(this.busy||!State.save.party?.some(m=>m&&m.hp>0))return;
+    const map=this.map;
+    this.busy=true;
+    try {
+      n.alert=900;beep('ok');await wait(700);n.alert=0;
+      const [dx,dy]=({down:[0,1],up:[0,-1],right:[1,0],left:[-1,0]})[n.dir];
+      while(Math.abs(this.x-n.x)+Math.abs(this.y-n.y)>1){
+        if(this.map!==map||!State.save.party?.some(m=>m&&m.hp>0))return;
+        const tx=n.x+dx,ty=n.y+dy;
+        if(!this.trainerCanStep126(n,tx,ty))return;
+        n.toX=tx;n.toY=ty;n.moving=true;
+        // Animate offsets while dialogue/input is paused; commit only a completed step.
+        for(let frame=1;frame<=24;frame++){
+          await wait(16);
+          if(this.map!==map)return;
+          n.roamProgress=frame/24;n.ox=dx*T*frame/24;n.oy=dy*T*frame/24;
+          n.walkFrame=Math.floor(frame/6)%4;
+        }
+        n.x=tx;n.y=ty;n.ox=n.oy=0;
+      }
+      n.moving=false;n.walkFrame=0;
+      if(this.map===map&&State.save.party?.some(m=>m&&m.hp>0))await this.runNpc(n);
+    } finally {
+      n.alert=0;n.moving=false;n.ox=n.oy=0;n.walkFrame=0;n.roamProgress=0;n.roamWait=2200;
+      this.busy=false;
+    }
   },
 
   /* --- はなす・しらべる --------------------------------------- */
@@ -634,7 +658,7 @@ export const world = {
         await wait(600);
         await ui.say(["おまたせしました！", "みんな げんきに なりました。"]);
         const b = State.save.backTo;
-        if (b && !n.restStop) State.save.lastCenter = { map: b.map, x: b.x, y: b.y };
+        if (b && !n.restStop) State.save.lastCenter = { ...b, interior126:this.mapId };
         saveLocal();
         if (cloud.signedIn) saveCloud(true);
       }
@@ -1001,8 +1025,8 @@ export const world = {
     const lost = Math.floor(State.save.money / 2);
     State.save.money -= lost;
     healParty();
-    const c = State.save.lastCenter || { map: "village", x: 5, y: 11 };
-    this.enter(c.map, c.x, c.y, "down");
+    const c = recoveryPoint126(MAPS,State.save.lastCenter);
+    this.enter(c.map, c.x, c.y, c.dir);
     await ui.say(["おかねを " + lost + "円 おとしてしまった…", "ガオンびょういんで 手当てをうけた。"]);
     saveLocal();
   },

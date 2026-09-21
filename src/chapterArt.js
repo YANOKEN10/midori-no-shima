@@ -144,7 +144,7 @@ export function drawGrassFeet(ctx,map,px,py,camX,camY){
 
  const left=px,top=py+8,right=px+32,bottom=py+20;
  for(let y=Math.floor(top/32);y<=Math.floor((bottom-1)/32);y++)for(let x=Math.floor(left/32);x<=Math.floor((right-1)/32);x++){
- if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(left-camX,top-camY,32,12);ctx.clip();if(!drawEditorGrassFeet73(ctx,map,x,y,camX,camY)&&!drawJungleFeet61(ctx,map,x*32-camX,y*32-camY)&&!frontierGrass(ctx,map,x,y,x*32-camX,y*32-camY)&&!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
+ if(map.rows[y]?.[x]!=='"')continue;ctx.save();ctx.beginPath();ctx.rect(Math.max(left,x*32)-camX,Math.max(top,y*32)-camY,Math.min(right,(x+1)*32)-Math.max(left,x*32),Math.min(bottom,(y+1)*32)-Math.max(top,y*32));ctx.clip();if(!drawEditorGrassFeet73(ctx,map,x,y,camX,camY)&&!drawJungleFeet61(ctx,map,x*32-camX,y*32-camY)&&!frontierGrass(ctx,map,x,y,x*32-camX,y*32-camY)&&!drawBiomeGrass(ctx,map,x*32-camX,y*32-camY,x*32,y*32))drawMaterial(ctx,'tallGrass',x*32-camX,y*32-camY,32,32);ctx.restore();}
 }
 const battleImages={};
 export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'river':'grass';let im=battleImages[key];if(!im){im=battleImages[key]=new Image();im.src=new URL('../assets/world-v5/battle-'+key+'-simple-v2.png',import.meta.url).href;}if(!im.complete||!im.naturalWidth)return false;
@@ -159,7 +159,14 @@ export function drawChapterBattle(ctx,terrain){const key=terrain==='river'?'rive
  ctx.drawImage(im,0,700,1080,324,-3,164,160,48);
  }return true;}
 
-function drawEditorGrassFeet73(c,map,x,y,camX,camY){const p=map.editorAddedProps72?.find(p=>p.walkable&&(p.group==='grass'||p.tile==='\"')&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h);return p?drawNature73(c,p.art,p.x*32-camX,p.y*32-camY,p.w*32,p.h*32):false;}
+function drawEditorGrassFeet73(c,map,x,y,camX,camY){
+ // Match the map renderer, including edited existing props, tint, and rotation.
+ const props=sortedProps98(map).filter(p=>p.walkable&&(p.group==='grass'||p.tile==='"')&&x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h);
+ if(!props.length)return false;
+ c.save();c.translate(-camX,-camY);
+ let drawn=false;for(const p of props)drawn=drawEditorProp72(c,p,map)||drawn;
+ c.restore();return drawn;
+}
 export function drawEditorProp72(c,p,map){if(p.color115)return tintMaterial115(c,p.color115,(p.x-1)*32,(p.y-2)*32,(p.w+2)*32,(p.h+4)*32,l=>drawEditorProp72(l,{...p,color115:undefined},map));if(!isTree83(p)&&!p.turn81&&drawResourceTree85(c,map,p))return true;if(isTree83(p)&&!p.treeDraw83&&!p.turn81){return drawTree83(c,p,map);}if(p.turn81){c.save();c.translate((p.x+p.w/2)*32,(p.y+p.h/2)*32);c.rotate(p.turn81*Math.PI/2);drawEditorProp72(c,{...p,x:-p.originalW81/2,y:-p.originalH81/2,w:p.originalW81,h:p.originalH81,turn81:0},map);c.restore();return true;}if(drawActive83(c,p))return true;if(drawReadable84(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(p.art==='legacy73-chaletClinic')return drawMaterial(c,'chaletClinic',p.x*32,p.y*32,p.w*32,p.h*32);if(p.art==='wall79'){c.drawImage(tileFor('X',0,null,255,0,0,0,0),p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(drawShop74(c,p))return true;if(p.art==='mountainCrag'){mountainMaterial(c,'crag',p.x*32,p.y*32,p.w*32,p.h*32);return true;}if(p.art==='shopCounter'){drawFurniture72(c,{theme:'home'},[['counter',p.x,p.y,p.w,p.h]]);return true;}if(drawNature73(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(drawGarden72(c,p))return true;if(frontierAsset72(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;if(environmentProp(c,p,map))return true;if(drawAlpineProp65(c,p,{...map,alpineRoute65:true},drawMaterial))return true;if(drawMarineAsset(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32))return true;return drawMaterial(c,p.art,p.x*32,p.y*32,p.w*32,p.h*32);}
 const editorViews73=new WeakMap();
 export function drawChapterMap(c,map,camX,camY){let view=map;if(map.editorVisualRows73){view=editorViews73.get(map);if(!view){view={...map,rows:map.editorVisualRows73,editorDepth98:true};editorViews73.set(map,view);}}const result=drawChapterBase72(c,view,camX,camY);c.save();c.translate(-camX,-camY);for(const p of (map.editorVisualRows73?sortedProps98(map):map.editorAddedProps72||[]))drawEditorProp72(c,p,map);if(map.editorAddedFurniture72?.length)drawFurniture72(c,{theme:'home'},map.editorAddedFurniture72);for(const f of map.editorStyledFurniture73||[])drawFurniture72(c,f.room,[f.f]);c.restore();drawWater83(c,map,camX,camY);drawWaterfalls84(c,map,camX,camY);return result;}
