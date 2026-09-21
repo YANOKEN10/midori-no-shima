@@ -22,7 +22,7 @@ export const professorIntro={
   const bg=c.createLinearGradient(0,0,0,G.H);bg.addColorStop(0,'#e9f4e4');bg.addColorStop(1,'#a8cbbf');c.fillStyle=bg;c.fillRect(0,0,G.W,G.H);
   c.fillStyle='rgba(255,255,236,.45)';c.beginPath();c.ellipse(160,95,88,78,0,0,Math.PI*2);c.fill();
   c.fillStyle='rgba(48,86,76,.18)';c.beginPath();c.ellipse(160,155,35,6,0,0,Math.PI*2);c.fill();
-  const frame=npcFrame(professor,1);if(frame){c.imageSmoothingEnabled=false;c.drawImage(frame,160-frame.width*1.5,14,frame.width*3,144);}
+  const frame=npcFrame(professor,1);if(frame){c.imageSmoothingEnabled=false;const w=144*frame.width/frame.height;c.drawImage(frame,160-w/2,14,w,144);}
   c.restore();ui.draw();
  }
 };
