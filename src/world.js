@@ -1,3 +1,4 @@
+import {servicePeople136} from './serviceLayouts136.mjs';
 import {talkCells135} from './counterTalk135.mjs';
 import {recoveryPoint126} from './recoveryPoint126.mjs';
 import {enterRival122,refreshRival122,tickRival122,runRivalEvent122} from './rivalStory122.js';
@@ -18,7 +19,6 @@ import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js
 import {postgameCleared,refreshPostgame} from './postgame62.js';
 import {areaBgm,musicArea} from './musicPolicy.js';
 import {drawRoomStaff} from './roomAssets.js';
-import {shopInteriorFor} from './data/environmentLayouts.js';
 import {endNpc,refreshEnd,tickEnd,endStep} from './endgameStory.js';
 import {endGate} from './endgameRules.js';
 import {drawBoat,drawEden,drawEndWeather} from './endgameArt.js';
@@ -167,7 +167,7 @@ export const world = {
     if(!(State.save.boating&&State.save.where?.map===mapId&&MAPS[mapId]?.boatWater&&MAPS[mapId]?.rows[y]?.[x]==="W"))State.save.boating=false;
     State.save.bgmArea = musicArea(MAPS,mapId,State.save);
     this.mapId = mapId;
-    this.map = mapId==='shop'?shopInteriorFor(MAPS[mapId],State.save.backTo?.map||'village'):MAPS[mapId];
+    this.map = servicePeople136(MAPS[mapId],State.save.backTo?.map||'village');
     this.map=economyMap79(this.map,State.save);
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
       x = this.map.spawn?.x ?? 1; y = this.map.spawn?.y ?? 1;

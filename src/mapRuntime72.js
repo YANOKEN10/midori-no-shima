@@ -11,9 +11,10 @@ export async function loadPublishedMaps(maps){try{
  const previewId=new URLSearchParams(location.search).get('editorPreview72');if(previewId){try{const auth=await fetch('/api/map-editor',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('vmon:token')},body:JSON.stringify({action:'session'}),signal:AbortSignal.timeout(7000)});if(auth.ok){const p=JSON.parse(localStorage.getItem('gaon:editorPreview72'));if(p?.definition){extendMaps82(base,{[p.definition.id]:p.definition});extendMaps82(maps,{[p.definition.id]:p.definition});cat.maps=base;}if(p?.map===previewId&&base[p.map]&&!validateEdit(base[p.map],p.edit,cat).length){edits[p.map]=p.edit;window.__adminPreview72=p.map;}}}catch{}}
  // Saved edits may use the bundled editor layout (for example the original shop).
  // Validate against that exact trusted base, retaining all normal fingerprint checks.
- if(Object.entries(edits).some(([id,d])=>base[id]&&validateEdit(base[id],d,cat).length)){
+ if(base.shop||base.hospital||Object.entries(edits).some(([id,d])=>base[id]&&validateEdit(base[id],d,cat).length)){
   const raw=await fetch(new URL('../assets/editor-v72/base-maps.json',import.meta.url),{signal:AbortSignal.timeout(7000)}).then(r=>r.json());
   const editorBases=extendMaps82(addManagedPeople120(raw),published.definitions),editorCat=catalog(editorBases,species);
+  for(const id of ['hospital','shop','building83-marineShop'])if(editorBases[id]){base[id]=editorBases[id];maps[id]=editorBases[id];}
   for(const[id,d]of Object.entries(edits))if(base[id]&&validateEdit(base[id],d,cat).length&&editorBases[id]&&!validateEdit(editorBases[id],d,editorCat).length){base[id]=editorBases[id];maps[id]=editorBases[id];}
  }
  for(const[id,m]of Object.entries(base))if((enclosedTown114(m)||m.id==='mountain'&&m.forestBorder||m.kind==='in'&&m.room?.rug)&&!edits[id])edits[id]=initial(m);
