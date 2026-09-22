@@ -235,8 +235,8 @@ export function heroFrame(dir, step, look = {}) {
 
 export function drawHero(ctx, dir, moving, tick, x, y, look) {
   const row = moving ? [0,1,2,1][Math.floor(tick/90)%4] : 1;
-  const f=mapHeroFrame119(dir,row,look)||heroFrame(dir,row,look);
-  if(!f) return false;
+  const f=mapHeroFrame119(dir,row,look);
+  if(!f) return true;
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(f,Math.round(x),Math.round(y));
   return true;

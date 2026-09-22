@@ -1,0 +1,24 @@
+/* Coarse framed controls: keep Japanese names intact at phone widths. */
+#gate {padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));}
+#gate .card {border:4px solid #639e9a;border-radius:4px;background:#123447;padding:18px;box-shadow:0 0 0 4px #071c2b,0 12px 0 #061824;}
+#gate .card h1 {color:#fff1c9;text-shadow:2px 2px #10232d;}
+#gate .card .sub,#gate label {color:#c5ddd8;line-height:1.65;}
+#gate .tabs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+#gate .tab {min-width:0;min-height:64px;padding:8px 2px;border:3px solid #497985;border-radius:3px;background:#092739;color:#e7f4e9;font:600 14px/1.5 "DotGothic16",monospace;word-break:keep-all;overflow-wrap:normal;}
+#gate .tab span {display:block;white-space:nowrap;}
+#gate .tab.on {background:#dcefe0;color:#123447;border-color:#b3e2d1;box-shadow:inset 0 -4px #a4cbc4;}
+#gate button:focus-visible {outline:3px solid #fff3c8;outline-offset:3px;}
+#gate input,#gate button.go,#gate button.ghost {border-radius:3px;border-width:3px;}
+#gate button.go {background:#dce6be;color:#153943;border:3px solid #8eb5a0;box-shadow:0 4px #082330;font-weight:600;}
+#gate button.ghost {border-color:#56888d;background:#0b2b3e;}
+#character-setup .options {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+#character-setup button:not(.swatch) {width:100%;min-width:0;min-height:52px;padding:10px 4px;border:3px solid #4b7d86;border-radius:3px;font-size:14px;font-weight:600;line-height:1.5;white-space:nowrap;word-break:keep-all;background:#0b2b3e;}
+#character-setup button[aria-pressed=true] {border-color:#badfca;box-shadow:inset 0 -4px #89b6af;color:#113441;background:#e3efdc;}
+#character-setup fieldset[data-part=hair] .options,#character-setup fieldset[data-part=shirt] .options,#character-setup fieldset[data-part=pants] .options {display:flex;flex-wrap:wrap;gap:8px;}
+#character-setup .swatch {flex:0 0 40px;width:40px;min-width:40px;min-height:40px;border:3px solid #4b7d86;border-radius:3px;}
+#character-setup .swatch[aria-pressed=true] {box-shadow:0 0 0 2px #f7ebbd;border-color:#143343;}
+#character-setup fieldset[data-part=shirt] button:not(.swatch),#character-setup fieldset[data-part=pants] button:not(.swatch) {flex:0 0 100%;}
+#character-setup canvas {border:3px solid #87b6ad;border-radius:3px;box-shadow:0 4px #082330;}
+#character-setup fieldset {margin:18px 0 24px;}
+#character-setup .selection {color:#c9ddd6;line-height:1.5;}
+@media(max-width:360px){#gate .card{padding:12px;}#gate .tab{font-size:12px;}#character-setup button:not(.swatch){font-size:13px;}}

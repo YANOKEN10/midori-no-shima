@@ -1,0 +1,342 @@
+[
+  {
+    "id": "boy-default",
+    "source": "C:/Users/voraz/Downloads/exec-6ca2388c-661b-4aab-ae57-1f5e0861aeb2.png",
+    "prompt": "User-approved original whole-body map sprite. Preserve unchanged base palette and form."
+  },
+  {
+    "id": "boy-default-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-b2f7bfc1-45a4-4aef-b74f-7212e7c96f60.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original spiky black hair exactly like reference. Keep BLACK hair, open denim jacket with white T-shirt, navy cuffed jeans and brown boots. ONLY change the jacket color to muted brick red. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "boy-default-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-694d7729-946d-42a0-aa4a-34fd31ab3fd2.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original spiky black hair exactly like reference. Keep BLACK hair, open denim jacket with white T-shirt, navy cuffed jeans and brown boots. ONLY change the jacket color to forest green. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "boy-default-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-218ad5ad-1c74-4dac-9e52-23db3e5f0d05.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original spiky black hair exactly like reference. Keep BLACK hair, open denim jacket with white T-shirt, navy cuffed jeans and brown boots. ONLY change the jacket color to warm cream. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "boy-default-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-2fd8cce1-f23f-45d1-833d-c708a035cca6.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original spiky black hair exactly like reference. Keep BLACK hair, open denim jacket with white T-shirt, navy cuffed jeans and brown boots. ONLY change the jacket color to muted lavender. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "boy-short",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-18679bac-3b8c-4d4c-9859-377980f449bb.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to neat short cropped hair. Hair is BLACK with muted blue-black highlights. Keep light sky-blue open denim jacket, WHITE T-shirt inside, NAVY cuffed jeans and BROWN boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "boy-short-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-bdb120c0-2b84-4d86-9190-ae67bcb4eae4.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-short-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9d064bb7-f1d4-40a8-b91f-721f497ffdbf.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-undercut-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e26d7226-9685-40b7-b787-bef4a31adf7c.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-undercut-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7c46b108-2c0f-4f1d-b895-08b832c85525.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-undercut-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4517c21f-dfd3-4c71-a3d3-65b2238ea8a4.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-undercut-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-54ad7b83-33b0-4282-a627-08ce5e7e35b1.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-fauxhawk",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1f16cec9-b3e3-4e4d-839b-a22214197e6e.png",
+    "prompt": "Edit this exact full-body Gaon walking sprite sheet. Correct ONLY the hairstyle: a BLACK SOFT MOHAWK with ALL front hair lifted UP and swept slightly back, a short central ridge, neat tapered sides. EXPOSE THE ENTIRE FOREHEAD above both eyebrows. No bangs pointing down, no central lock touching forehead, no widow's-peak fringe, no hair over eyes. Keep black hair color. Preserve every face, blue eyes, skin, sky-blue denim jacket, white shirt, navy cuffed jeans, brown boots, chibi head/body proportion and coarse pixel size. Keep all 12 complete-body poses in the same 4 columns(front,left,right,back) by 3 rows(walk,idle,walk), transparent alpha background. No head/body collage or text."
+  },
+  {
+    "id": "boy-fauxhawk-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-bb0195dd-c6ba-42e8-8dd8-4020bbbbfefe.png",
+    "prompt": "Edit this exact 12-pose whole-body sheet. Change ONLY sky-blue jacket color to muted brick red. Preserve BLACK SOFT MOHAWK exactly: entire forehead visible, front hair lifted UP and BACK, no downward bangs. Keep exact hair silhouette in every pose, blue eyes, face, white shirt, navy jeans, brown boots, body scale, coarse pixel grid and all 4 columns x 3 rows. Transparent background. No head/body collage, no extra details."
+  },
+  {
+    "id": "boy-fauxhawk-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9d8b4f0a-4499-4a74-a8a4-7395e8f7ea64.png",
+    "prompt": "Edit this exact 12-pose whole-body sheet. Change ONLY sky-blue jacket color to forest green. Preserve BLACK SOFT MOHAWK exactly: entire forehead visible, front hair lifted UP and BACK, no downward bangs. Keep exact hair silhouette in every pose, blue eyes, face, white shirt, navy jeans, brown boots, body scale, coarse pixel grid and all 4 columns x 3 rows. Transparent background. No head/body collage, no extra details."
+  },
+  {
+    "id": "boy-fauxhawk-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e8b132de-5f90-463e-b671-176298965ba0.png",
+    "prompt": "Edit this exact 12-pose whole-body sheet. Change ONLY sky-blue jacket color to warm cream. Preserve BLACK SOFT MOHAWK exactly: entire forehead visible, front hair lifted UP and BACK, no downward bangs. Keep exact hair silhouette in every pose, blue eyes, face, white shirt, navy jeans, brown boots, body scale, coarse pixel grid and all 4 columns x 3 rows. Transparent background. No head/body collage, no extra details."
+  },
+  {
+    "id": "boy-fauxhawk-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-15dd7b73-a28d-4872-8a98-c82fd31b3469.png",
+    "prompt": "Edit this exact 12-pose whole-body sheet. Change ONLY sky-blue jacket color to muted lavender. Preserve BLACK SOFT MOHAWK exactly: entire forehead visible, front hair lifted UP and BACK, no downward bangs. Keep exact hair silhouette in every pose, blue eyes, face, white shirt, navy jeans, brown boots, body scale, coarse pixel grid and all 4 columns x 3 rows. Transparent background. No head/body collage, no extra details."
+  },
+  {
+    "id": "boy-buzz",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-898821bc-f783-4f5a-bee0-5c5c4ea4927c.png",
+    "prompt": "Identity-preserving whole-body sprite variation. Reference is the approved Gaon protagonist map walking sheet. Keep the exact chunky pixel grid, head/body ratio, face identity, blue eyes, skin and clothing. Change ONLY hairstyle to STYLISH BUZZ CUT: very short close-cropped black hair, neat faded temples and a clean natural hairline. Rounded compact head silhouette, no long fringe or spikes. Keep sky-blue open denim jacket, white T-shirt, navy cuffed jeans, brown boots. Draw each pose as a complete coherent person with no pasted head/body parts. EXACT 4 columns front/left/right/back and 3 rows walk A/idle/walk B. Transparent background. No text, no grid, no glow, no finer pixels. Every frame same scale and full body visible with margins."
+  },
+  {
+    "id": "boy-buzz-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a35f3fbb-34b6-4f4a-9f56-e3beff135993.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the sky-blue jacket to muted brick red. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, white T-shirt, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "boy-buzz-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-50835816-a436-4718-91e8-a06ab37a444b.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the sky-blue jacket to forest green. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, white T-shirt, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "boy-buzz-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0c8f85c0-6046-4ce9-8b68-077dd3a87515.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the sky-blue jacket to warm cream. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, white T-shirt, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "boy-buzz-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d6047734-d238-4136-bd6a-ef18fb92515f.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the sky-blue jacket to muted lavender. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, white T-shirt, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "boy-long",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d092e1f2-00d4-425b-9f45-c98abc89d25d.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to neck-length layered hair, face fully visible. Hair is BLACK with muted blue-black highlights. Keep light sky-blue open denim jacket, WHITE T-shirt inside, NAVY cuffed jeans and BROWN boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "boy-long-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1637bfb8-9e14-4714-a553-eba4baf58f40.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-long-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-3bdb2c59-8379-4b25-8132-e87900218da6.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-long-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-521ca4f9-79fc-409b-a39a-d69cc86b2d41.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-long-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-90bae2f5-c5c9-4638-9898-68ac2a07f5a2.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-default",
+    "source": "C:/Users/voraz/Downloads/exec-e360556d-b3e2-41ed-a9c1-08af28e70af2.png",
+    "prompt": "User-approved original whole-body map sprite. Preserve unchanged base palette and form."
+  },
+  {
+    "id": "girl-default-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4c5bd470-f99f-47ef-8701-0241679f3c23.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original brown ponytail with red tie exactly like reference. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted brick red. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-default-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-2b1db5d0-498a-42d2-9422-30e11afb2510.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original brown ponytail with red tie exactly like reference. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to forest green. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-default-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-42e05810-33cf-4028-8ddd-1c90a996d982.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original brown ponytail with red tie exactly like reference. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to warm cream. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-default-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-68a7960b-8b4c-4ad9-b3da-829cec88b297.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: original brown ponytail with red tie exactly like reference. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted lavender. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-bob",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-b23fbd05-8039-4d01-934f-690cd7d70645.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to chin-length bob without ponytail. Hair is warm BROWN. Keep sleeveless NAVY high-neck top, KHAKI cargo trousers, dark charcoal boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "girl-bob-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-ff08f7f4-0ca8-4445-9515-a7243ba344a3.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: chin-length bob without ponytail. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted brick red. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-bob-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-bb410dfb-64ba-405a-8396-78254eb8568c.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: chin-length bob without ponytail. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to forest green. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-bob-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a097771d-a85f-43f9-97f2-34f4251af39d.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: chin-length bob without ponytail. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to warm cream. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-bob-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d69f9fd3-ee07-45d3-ac7f-9f00fee56942.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: chin-length bob without ponytail. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted lavender. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-twintail",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-05ed00e3-d37c-4666-a98f-64466b63e328.png",
+    "prompt": "Identity-preserving whole-body sprite variation. Reference is the approved Gaon protagonist map walking sheet. Keep the exact chunky pixel grid, head/body ratio, face identity, blue eyes, skin and clothing. Change ONLY hairstyle to TWIN TAILS: two clearly separate symmetrical brown ponytails tied at the left and right sides with small red bands. NOT one ponytail. Keep navy sleeveless high-neck top, khaki cargo trousers and dark boots. Draw each pose as a complete coherent person with no pasted head/body parts. EXACT 4 columns front/left/right/back and 3 rows walk A/idle/walk B. Transparent background. No text, no grid, no glow, no finer pixels. Every frame same scale and full body visible with margins."
+  },
+  {
+    "id": "girl-twintail-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a199e058-0311-496e-a61f-4b4e738436af.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the navy sleeveless top to muted brick red. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "girl-twintail-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-38582cdb-7652-4f55-8e22-6e190911c9fb.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the navy sleeveless top to forest green. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "girl-twintail-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-c772c2c2-58d8-4d81-a4a7-f126aeba55fa.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the navy sleeveless top to warm cream. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "girl-twintail-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-ed8afe03-2bb0-40aa-8524-1b9d3bd92d33.png",
+    "prompt": "Edit this exact complete 12-pose sprite sheet. Change ONLY the navy sleeveless top to muted lavender. Keep EVERY hairstyle silhouette and hair color EXACTLY as this image, including all 12 poses. Keep face, blue eyes, skin, trousers, boots, body proportions, pose arrangement and chunky pixel grid unchanged. Whole coherent figures, no head/body assembly. Transparent alpha background. No new accessories, no text, no glow."
+  },
+  {
+    "id": "girl-center",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0784a4bc-6e56-4772-a45a-e66e5bbda95d.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to shoulder-length center-parted hair without ponytail. Hair is warm BROWN. Keep sleeveless NAVY high-neck top, KHAKI cargo trousers, dark charcoal boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "girl-center-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-9f4f16d7-161c-4092-8866-c9bafe05a7aa.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-center-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-6b0da104-51b1-4478-ad27-d57d64a11df2.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-center-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-861e01f0-cecc-45de-909f-14f6876fe54c.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-center-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-392d9c9a-1ead-4762-91ba-d11f21d948e1.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-short",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-51cc581e-c509-4624-b414-f1528685aebd.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to short pixie haircut. Hair is warm BROWN. Keep sleeveless NAVY high-neck top, KHAKI cargo trousers, dark charcoal boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "girl-short-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7b8d6092-7f3a-46b1-9027-7769758fc0bb.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: short pixie haircut. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted brick red. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-short-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-cb914cfc-7357-490b-87b0-bd89eceacc48.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: short pixie haircut. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to forest green. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-short-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-c382338b-40c6-4192-9f78-d78589510b4a.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: short pixie haircut. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to warm cream. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-short-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-f8b104c6-01f4-49c0-bc9b-833d00f47a6d.png",
+    "prompt": "Use case: identity-preserve. ONE full-body 12-pose walking sprite sheet for the SAME Gaon protagonist as reference. Keep the exact coarse pixel grid, chibi proportions, face identity, blue eyes, skin, and garment SHAPES. Hairstyle: short pixie haircut. Keep BROWN hair, sleeveless high-neck top, khaki cargo trousers and dark charcoal boots. ONLY change the sleeveless top color to muted lavender. All other clothing and hair colors must stay as reference. Draw every pose as a complete coherent person; no head/body collage. Four equal columns front/left/right/back; three rows walk A/idle/walk B exactly as reference. Transparent alpha background, no text, grids, shadow, smooth gradients or finer pixel detail."
+  },
+  {
+    "id": "girl-long",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0a50d299-7515-493a-810e-4616df40174e.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to loose mid-back length hair, face fully visible. Hair is warm BROWN. Keep sleeveless NAVY high-neck top, KHAKI cargo trousers, dark charcoal boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "girl-long-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-71c05d89-89bd-4cd2-93f0-6eb49e0ff19d.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-long-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a4fd0bbb-9c02-459a-b772-6c1d4826a0b0.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-long-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-33078e8c-7786-4f9c-a00b-e9f8ccbb4612.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "girl-long-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-699f5221-ecae-4ab7-b7a0-c8348f6b99f9.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE NAVY SLEEVELESS SHIRT to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original brown hair, face, blue eyes, trousers, boots, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-fauxhawk-battle",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-be746ebb-25ce-43d6-877e-3e6016ea585b.png",
+    "prompt": "Remove ONLY the entire black background and all colored glow/halo around these two pixel-art figures, replacing it with fully TRANSPARENT ALPHA. Keep both complete characters unchanged pixel-for-pixel: face, hairstyle (forehead visible), clothing, colors, outlines, poses and scale. Do not redraw or restyle. Transparent cutouts only, no solid background, no glow, no shadow."
+  },
+  {
+    "id": "boy-buzz-battle",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-abf85260-7a02-4ffd-bff3-d5d4301dea31.png",
+    "prompt": "Remove ONLY the entire black background and all colored glow/halo around these two pixel-art figures, replacing it with fully TRANSPARENT ALPHA. Keep both complete characters unchanged pixel-for-pixel: face, hairstyle (forehead visible), clothing, colors, outlines, poses and scale. Do not redraw or restyle. Transparent cutouts only, no solid background, no glow, no shadow."
+  },
+  {
+    "id": "girl-twintail-battle",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-db9a8faf-7c5c-4eef-9fd9-b79d464222da.png",
+    "prompt": "Reference is the approved Gaon BATTLE protagonist. Generate a coherent complete-body variation, TWO equally sized poses side by side, front three-quarter view on left and rear three-quarter view on right, exactly matching reference pose, body proportions, outline thickness, coarse pixel size, face, blue eyes, skin and ALL clothing shapes and colors. Change ONLY hairstyle to TWIN TAILS: two clearly separate symmetrical brown ponytails tied at the left and right sides with small red bands. NOT one ponytail.. Brown hair, navy sleeveless high-neck shirt, khaki cargo pants, dark boots. No head/body collage. Transparent background. Full bodies and boots visible, each pose centered in its half with margins. No text, shadow, glow, or smooth rendering."
+  },
+  {
+    "id": "boy-short-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-3f2679a2-6fa9-4fb8-abab-24ca952c5f6f.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-short-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-70ef857e-9467-4688-8581-0fb79178fd88.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-center",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1c1c7956-b181-47e8-aa88-4d5f9550c27e.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to soft center-parted hair. Hair is BLACK with muted blue-black highlights. Keep light sky-blue open denim jacket, WHITE T-shirt inside, NAVY cuffed jeans and BROWN boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  },
+  {
+    "id": "boy-center-red",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a425adf2-0e64-49c6-9d09-e1d44c40a321.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted brick red. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-center-green",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-0eb9e3b5-beea-4066-8dcb-5bda3cf08c3c.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to forest green. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-center-cream",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-1681682d-7b20-43da-a66e-28ee82993866.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to warm cream. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-center-purple",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-d838b9c2-16d2-4523-a23c-af56d1858c62.png",
+    "prompt": "Edit target: this exact 12-pose whole-body Gaon sprite sheet. RECOLOR ONLY THE BLUE DENIM JACKET to muted lavender. Keep its garment shape unchanged. All 12 hairstyles, including the exact fringe, length and rear silhouette, MUST remain IDENTICAL to this reference. Keep original black hair, face, blue eyes, trousers, boots, white undershirt, head/body proportions, pose positions and coarse pixel grid. Do not invent a different hairstyle. No head/body collage. Same 4 columns x 3 rows. Transparent alpha background, no text or glow."
+  },
+  {
+    "id": "boy-undercut",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-78a72fd4-671c-4277-bb5a-d7af5008ec26.png",
+    "prompt": "Use case: identity-preserve. Make ONE complete Gaon World protagonist walking sprite sheet derived from the attached APPROVED BASE REFERENCE. Preserve precisely the reference's coarse pixel size, chibi head/body proportions, facial identity, blue eyes, skin tone, clothing silhouette and original palette. Only hairstyle changes to short two-block undercut with swept fringe. Hair is BLACK with muted blue-black highlights. Keep light sky-blue open denim jacket, WHITE T-shirt inside, NAVY cuffed jeans and BROWN boots. Draw every pose as a complete coherent body, never paste a head onto another body. Four equal columns front, left, right, back. Three equal rows walk-step A, standing idle, walk-step B. Same 12-pose arrangement as reference. Fully transparent background, no grid lines, text or shadows. Keep coarse square pixels, limited palette, no fine detail or smooth gradients. Do not invent clothing, do not use purple hair."
+  }
+]

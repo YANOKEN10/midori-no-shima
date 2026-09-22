@@ -26,7 +26,7 @@ const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-run
    cases.push({name:'adjacent',props:[{art:variants[0],walkable:true,group:'grass',x:1,y:1,w:1,h:1,color115:'#de418e'}],editorAddedProps72:[{art:variants[0],walkable:true,group:'grass',x:2,y:1,w:1,h:1,color115:'#56b6e1'}]});
    const samples=[];
    for(const item of cases){
-    const map={...item,rows:['......','.""...','."....','......'],id:'art-test',kind:'out'},x=item.name==='adjacent'?48:32,y=36,camX=7,camY=9;
+    const map={...item,rows:['......','.""...','."....','......'],id:'art-test',kind:'out'},x=item.name==='adjacent'?48:32,y=44,camX=7,camY=9;
     const actual=canvas(),expected=canvas(),ac=actual.getContext('2d'),ec=expected.getContext('2d');
     A.drawGrassFeet(ac,map,x,y,camX,camY);
     ec.save();ec.beginPath();ec.rect(x-camX,y+8-camY,32,12);ec.clip();ec.translate(-camX,-camY);for(const prop of [...map.props,...map.editorAddedProps72])A.drawEditorProp72(ec,prop,map);ec.restore();

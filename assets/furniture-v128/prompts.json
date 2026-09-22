@@ -1,0 +1,107 @@
+[
+  {
+    "id": "table-long-h",
+    "w": 128,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A long horizontal rectangular oak dining table, 4 tiles wide and 2 tiles deep. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 128x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-18b32222-0cf2-4d20-a85e-8cf40540ecbe.png"
+  },
+  {
+    "id": "table-long-v",
+    "w": 64,
+    "h": 128,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A long vertical rectangular oak dining table, 2 tiles wide and 4 tiles deep. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 64x128 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-b5a5c097-7738-435c-802a-fb7f73b4a02d.png"
+  },
+  {
+    "id": "table-round",
+    "w": 64,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A round oak table, viewed slightly from above showing an oval top and short feet, 2 by 2 tiles. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 64x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-53c27bb5-735b-4b9f-b25f-71d56d259000.png"
+  },
+  {
+    "id": "table-square",
+    "w": 64,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A square oak table with four short feet, 2 by 2 tiles. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 64x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-491199b3-d0e3-4440-89aa-8103420d04c3.png"
+  },
+  {
+    "id": "table-rect-h",
+    "w": 96,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A horizontal rectangular oak desk, 3 tiles wide and 2 deep. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 96x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-4313ac1b-7370-485c-9b53-2056a376455b.png"
+  },
+  {
+    "id": "table-rect-v",
+    "w": 64,
+    "h": 96,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A vertical rectangular oak desk, 2 tiles wide and 3 deep. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 64x96 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-7cd308f3-f892-4c1e-af28-5a395bf7dcb6.png"
+  },
+  {
+    "id": "books",
+    "w": 96,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A brown wooden bookcase filled with colored books, 3 tiles wide and 2 high. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 96x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-a5a2392b-fa1f-4674-be54-a743ccdab681.png"
+  },
+  {
+    "id": "lab-bookshelf",
+    "w": 64,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A pale cream and muted blue low laboratory bookcase filled with colorful books, 2 by 2 tiles. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 64x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-07274bda-9a1f-487b-a7ef-d7fc8527a73b.png"
+  },
+  {
+    "id": "kitchen",
+    "w": 96,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A home kitchen counter with sink on left and stovetop on right, cabinets underneath, 3 tiles wide and 2 high. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 96x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-53259297-86b5-44ed-a10c-1643b138d27f.png"
+  },
+  {
+    "id": "plant-monstera",
+    "w": 32,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A lush broad split-leaf monstera in a warm terracotta pot, 1 tile wide 2 high. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-eacc3aad-9499-47f5-89b8-ec4deb373401.png"
+  },
+  {
+    "id": "plant-palm",
+    "w": 32,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A small indoor palm with arched leaves in a cream ceramic pot, 1 tile wide 2 high. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-684704bb-f319-487c-9aab-fce4d40e79c3.png"
+  },
+  {
+    "id": "plant-snake",
+    "w": 32,
+    "h": 64,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A snake plant with upright striped pointed leaves in a dark teal ceramic pot, 1 tile wide 2 high. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x64 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e9cdd750-1a79-4730-b438-010c8aca36b7.png"
+  },
+  {
+    "id": "plant-fern",
+    "w": 32,
+    "h": 32,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A bushy low fern in a terracotta pot, 1 by 1 tile. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x32 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-407357a9-802a-4ba1-a936-664f9765f9ba.png"
+  },
+  {
+    "id": "vase-flowers",
+    "w": 32,
+    "h": 32,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: A cream ceramic vase of pink and yellow flowers and green stems, 1 by 1 tile. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x32 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-e75266e4-7342-4e65-9092-51e6ec9036f2.png"
+  },
+  {
+    "id": "vase-blue",
+    "w": 32,
+    "h": 32,
+    "prompt": "Use case: stylized-concept. Game asset for Gaon World, a warm classic 16-bit top-down Japanese RPG. Create ONE isolated sprite: An empty rounded blue ceramic decorative vase with a narrow open neck, 1 by 1 tile. True transparent background. Orthographic RPG interior view, horizontal edges stay horizontal, NOT isometric. Crisp coarse pixel art using a logical 32x32 grid, nearest-neighbor enlarged presentation. Flat clusters, limited palette, dark 1-pixel outline, no tiny details or smooth antialiasing. The entire object must fill almost its full logical rectangle with only 1-2 logical pixels of margin at all sides, no floor plane, no cast glow or background. For tables use an EMPTY large tabletop with short legs and warm light oak wood, no objects on top. No text, no labels, no tile grid.",
+    "source": "C:\\Users\\voraz\\.codex\\generated_images\\01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8\\exec-8192999f-189e-492f-b93a-1bfd7c4aa232.png"
+  }
+]

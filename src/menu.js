@@ -3,7 +3,7 @@ import {showSummary124,showGrowth124} from './summary124.js';
 import {drawMoveCell123} from './windowArt123.js';
 import {EV_ITEMS122,STAT_LABELS122,reduceEffort122,effortText122} from './training122.mjs';
 import {mapHeroFrame119} from './peopleArt119.js';
-import {HAIRSTYLES119,OUTFITS119} from './peopleCatalog119.mjs';
+import {HAIRSTYLES127 as HAIRSTYLES119,OUTFITS127 as OUTFITS119} from './heroCatalog127.mjs';
 import {salePrice,sellableItems,sellItem} from './itemSelling.js';
 import {teachMove92} from './moveLearning92.mjs';
 import {businessMenu79} from './economy79.js';
@@ -15,7 +15,6 @@ import {openFriends} from './friends.js';
 let menuWorld=null;
 export function setMenuWorld(w){menuWorld=w;}
 import {releaseMon} from './marineRules.js';
-import { heroFrame } from "./revampArt.js?v=20260913-fashion-v50";
 import { battleArt } from './data/battleart.js';
 import { chapterObjective } from "./chapterStory.js";
 // ============================================================
@@ -35,7 +34,6 @@ import {
 import { saveLocal, saveCloud, loadCloud, applySave, describeSave, compatible } from "./save.js";
 import { cloud } from "./cloud.js";
 import { showAuth, showForm } from "./gate.js";
-import { personFramesRaw } from "./data/charart.js";
 import { playerColors, SHIRT_BASIC, PANTS_BASIC, SHIRT_FANCY, PANTS_FANCY, HAIR_COLORS , HAIR_STYLES, BANGS_STYLES, SKIRT_BASIC, SKIRT_FANCY, HAT_STYLES } from "./data/looks.js";
 import { compassEnabled, compassSummary, nextObjective, setCompassEnabled } from "./compass.js";
 
@@ -460,119 +458,17 @@ export { hasProgress };
 function drawLookPreview(look, x, y) {
   G.use("ui");
   G.window9(x, y, 84, 108);
-  const current = mapHeroFrame119("down",1,look)||heroFrame("down", 1, look);
+  const current = mapHeroFrame119("down",1,look);
   if (current) { G.ctx.imageSmoothingEnabled=false; G.ctx.drawImage(current,x+10,y+6,64,96); return; }
-  const st = { hair: look.hat || look.style || "short", bangs: look.bangs == null ? "seven" : look.bangs,
-               skirt: Boolean(look.skirt), face: look.gender || (look.skirt ? "girl" : "boy") };
-  const f = personFramesRaw(st).down[0];
-  G.draw(G.makeColorArt(f, 2, "look" + st.hair + st.bangs + (st.skirt ? "s" : ""), playerColors(look)), x + 10, y + 14);
 }
 
-export async function clothesShop(town) {
-  const id=FASHION_TOWNS[town]?town:FASHION_TOWNS[State.save.backTo?.map]?State.save.backTo.map:'village';
-  const stock=fashionStock(id),categories=[['hat','ぼうし'],['shirt','うわぎ'],['pants','ズボン'],['shoes','くつ']];
-  for(;;){
-    const i=await ui.choice([...categories.map(c=>c[1]+'を えらぶ'),'買った服に きがえる','色をかえる（無料）','やめる'],{x:8,y:8,w:304,rows:7});
-    if(i<0||i===6)return;if(i===5){await freeColors81();continue;}if(i===4){await wardrobeMenu();continue;}
-    const list=stock.filter(item=>item.slot===categories[i][0]);
-    const j=await ui.choice(list.map(item=>item.name),{x:8,y:8,w:216,maxWidth:216,rows:5,rightLabels:list.map(item=>(State.save.wardrobe||[]).includes(item.id)?'購入済み':item.price+'円'),extra:(b,idx)=>{if(list[idx]){drawLookPreview(itemLook(State.save.look,list[idx]),228,8);G.window9(8,194,304,54);G.textFit(list[idx].name,20,204,280,3,12);G.textFit('所持金 '+State.save.money+'円',20,225,280,3,12);}}});
-    if(j<0)continue;const item=list[j],owned=(State.save.wardrobe||[]).includes(item.id);
-    if(!owned&&State.save.money<item.price){await ui.say(['おかねが たりません…']);continue;}
-    if(!await ui.ask([item.name,owned?'この服に きがえますか？':item.price+'円で 買ってきがえますか？']))continue;
-    const result=equipFashion(State.save,item.id,{buy:true});
-    if(result.ok){saveLocal();beep('buy');await ui.say([item.name+'に きがえた！']);}
-  }
-}
-export async function wardrobeMenu(){
- for(;;){
-  const items=FASHION_ITEMS.filter(item=>(State.save.wardrobe||[]).includes(item.id));
-  const labels=[...items.map(item=>item.name),'ぼうしを ぬぐ','はじめの ふくに もどす','新しい服・髪型をえらぶ','もどる'];
-  const i=await ui.choice(labels,{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,idx)=>drawLookPreview(items[idx]?itemLook(State.save.look,items[idx]):State.save.look,228,8)});
-  if(i<0||i===items.length+3)return;if(i===items.length+2){await customAppearance119();continue;}
-  if(i<items.length)equipFashion(State.save,items[i].id);
-  else if(i===items.length){State.save.look.hat='';if(State.save.equippedClothes)delete State.save.equippedClothes.hat;}
-  else{const original=State.save.startingLook||{shirt:'#2f6fd0',pants:'#231a14'};for(const key of ['outfit119','shirt','pants','shoes','hat','hatColor','hatStyle','hatAccent','shirtStyle','shirtAccent','pantsStyle','pantsAccent','shoesStyle','shoesAccent','skirt']){delete State.save.look[key];if(original[key]!=null)State.save.look[key]=original[key];}State.save.equippedClothes={};}
-  saveLocal();beep('ok');await ui.say(['きがえました！']);
- }
-}
+export async function clothesShop(){await customAppearance119('outfit119');}
+export async function wardrobeMenu(){await customAppearance119();}
 
-export async function hairSalon() {const kind119=await ui.choice(['かみがたを かえる','かみの色を かえる','もどる'],{x:8,y:8,w:216,rows:3});if(kind119<0||kind119===2)return;if(kind119===0){await customAppearance119('hairMap119');return;}
-  if(State.save.look.gender!=="girl"){await boyHairSalon();return;}
-  const price = 0;
-  for (;;) {
-    const which = await ui.choice(["かみの 色を かえる", "やめる"],
-      { x: 144, y: 168, w: 168, rows: 2 });
-    if (which !== 0) { await ui.say(["また どうぞ！"]); return; }
-    const labels = HAIR_COLORS.map((x) => x.name + "  " + price + "円");
-    labels.push("やめる");
-    const j = await ui.choice(labels, {
-      x: 8, y: 8, w: 216, maxWidth:216, rows: 6,
-      extra: (b, idx) => {
-        const look = Object.assign({}, State.save.look);
-        if (HAIR_COLORS[idx]) look.hair = HAIR_COLORS[idx].color;
-        drawLookPreview(look, 228, 8);
-      },
-    });
-    if (j < 0 || j >= HAIR_COLORS.length) continue;
-    if (State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
-    const yes = await ui.ask([HAIR_COLORS[j].name + "　" + price + "円", "これに しますか？"]);
-    if (!yes) continue;
-    State.save.money -= price;
-    State.save.look = Object.assign({}, State.save.look, { hair: HAIR_COLORS[j].color });
-    beep("buy");
-    await ui.say(["できあがり！ " + HAIR_COLORS[j].name + "に なった。"]);
-    saveLocal();
-  }
-}
-
-/* --- まえがみを えらぶ --- */
-async function bangsMenu(price) {
-  for (;;) {
-    const labels = BANGS_STYLES.map((x) => x.name + "  " + price + "円");
-    labels.push("やめる");
-    const j = await ui.choice(labels, {
-      x: 8, y: 8, w: 216, rows: 6,
-      extra: (b, idx) => {
-        const look = Object.assign({}, State.save.look);
-        if (BANGS_STYLES[idx]) look.bangs = BANGS_STYLES[idx].style;
-        drawLookPreview(look, 228, 8);
-      },
-    });
-    if (j < 0 || j >= BANGS_STYLES.length) return;
-    if (State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
-    const yes = await ui.ask([BANGS_STYLES[j].name + "　" + price + "円", "これに しますか？"]);
-    if (!yes) continue;
-    State.save.money -= price;
-    State.save.look = Object.assign({}, State.save.look, { bangs: BANGS_STYLES[j].style });
-    beep("buy");
-    await ui.say(["できあがり！ " + BANGS_STYLES[j].name + "に なった。"]);
-    saveLocal();
-  }
-}
-
-/* --- かみがたを えらぶ --- */
-async function hairStyleMenu(price) {
-  for (;;) {
-    const labels = HAIR_STYLES.map((x) => x.name + "  " + price + "円");
-    labels.push("やめる");
-    const j = await ui.choice(labels, {
-      x: 8, y: 8, w: 216, rows: 6,
-      extra: (b, idx) => {
-        const look = Object.assign({}, State.save.look);
-        if (HAIR_STYLES[idx]) look.style = HAIR_STYLES[idx].style;
-        drawLookPreview(look, 228, 8);
-      },
-    });
-    if (j < 0 || j >= HAIR_STYLES.length) return;
-    if (State.save.money < price) { await ui.say(["おかねが たりません…"]); continue; }
-    const yes = await ui.ask([HAIR_STYLES[j].name + "　" + price + "円", "これに しますか？"]);
-    if (!yes) continue;
-    State.save.money -= price;
-    State.save.look = Object.assign({}, State.save.look, { style: HAIR_STYLES[j].style });
-    beep("buy");
-    await ui.say(["できあがり！ " + HAIR_STYLES[j].name + "に なった。"]);
-    saveLocal();
-  }
+export async function hairSalon(){
+ const i=await ui.choice(['かみがたを かえる','かみの色を かえる','もどる'],{x:8,y:8,w:216,rows:3});
+ if(i===0)await customAppearance119('hairMap119');
+ if(i===1)await hairColors127();
 }
 
 async function releaseChosen(collection,index){
@@ -586,23 +482,18 @@ export async function boxMenu(){
  if(action===0)await showStatus(list[i]);if(action===1){if(State.save.party.length>=6)await ui.say(['てもちが いっぱいです。']);else{State.save.party.push(list.splice(i,1)[0]);saveLocal();}}if(action===2)await releaseChosen('box',i);}
 }
 
-async function boyHairSalon(){
- const lengths=[{name:'みじかい',value:'short'},{name:'ふつう',value:'medium'},{name:'ながい',value:'long'}];
- for(;;){const action=await ui.choice(['かみの ながさ','かみの いろ','やめる'],{x:130,y:145,w:182,rows:3});if(action<0||action===2)return;
- const price=action===0?300:0;const choices=action===0?lengths:HAIR_COLORS.map(c=>({name:c.name,value:c.color}));const key=action===0?'hairLength':'hair';
- const picked=await ui.choice([...choices.map(c=>c.name+'　'+price+'円'),'やめる'],{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,i)=>{const look={...State.save.look};if(choices[i])look[key]=choices[i].value;drawLookPreview(look,228,8);}});
- if(picked<0||picked>=choices.length)continue;if(State.save.money<price){await ui.say(['おかねが たりません…']);continue;}
- if(!await ui.ask([choices[picked].name+'　'+price+'円','この見た目に しますか？']))continue;
- State.save.look={...State.save.look,appearanceVersion:1,[key]:choices[picked].value};State.save.money-=price;saveLocal();if(cloud.signedIn)await saveCloud(true);beep('buy');await ui.say(['できあがり！ 新しい髪で お出かけしよう。']);
+async function hairColors127(){
+ const choices=[{name:'もとの髪色',color:''},...APPEARANCE_COLORS];
+ for(;;){
+  const j=await ui.choice([...choices.map(c=>c.name),'もどる'],{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,n)=>drawLookPreview({...State.save.look,...(choices[n]?{hair:choices[n].color}:{})},228,8)});
+  if(j<0||j===choices.length)return;
+  State.save.look.hair=choices[j].color;saveLocal();beep('ok');
  }
 }
-
 export async function freeColors81(){
- const parts=[['shirt','うわぎ'],['pants','ズボン・スカート'],['shoes','くつ'],['hair','かみ'],...(State.save.look.hat?[['hatColor','ぼうし']]:[])];
- for(;;){const i=await ui.choice(parts.map(p=>p[1]+'の色').concat('もどる'),{x:8,y:8,w:216,maxWidth:216,rows:6});if(i<0||i===parts.length)return;const[key,label]=parts[i];
- const j=await ui.choice(APPEARANCE_COLORS.map(c=>c.name).concat('もどる'),{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,n)=>drawLookPreview({...State.save.look,...(APPEARANCE_COLORS[n]?{[key]:APPEARANCE_COLORS[n].color}:{})},228,8)});
- if(j<0||j===APPEARANCE_COLORS.length)continue;if(!await ui.ask([label+'を '+APPEARANCE_COLORS[j].name+'に変えますか？','色の変更は 無料です。']))continue;
- State.save.look={...State.save.look,[key]:APPEARANCE_COLORS[j].color};saveLocal();beep('ok');await ui.say(['色を 変更しました！']);}
+ const i=await ui.choice(['ふくの色を かえる','かみの色を かえる','もどる'],{x:8,y:8,w:216,rows:3});
+ if(i===0)await customAppearance119('outfit119');
+ if(i===1)await hairColors127();
 }
 
-async function customAppearance119(only){for(;;){let field=only;if(!field){const choice=await ui.choice(['ふくをえらぶ','かみがたをえらぶ','もどる'],{x:8,y:8,w:216,rows:3});if(choice<0||choice===2)return;field=choice===0?'outfit119':'hairMap119';}const choices=field==='outfit119'?OUTFITS119:HAIRSTYLES119[State.save.look.gender==='girl'?'girl':'boy'];const i=await ui.choice([...choices.map(p=>p[1]),'もどる'],{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,idx)=>drawLookPreview({...State.save.look,...(choices[idx]?{[field]:choices[idx][0]}:{})},228,8)});if(i<0||i===choices.length){if(only)return;continue;}State.save.look[field]=choices[i][0];saveLocal();beep('ok');}}
+async function customAppearance119(only){for(;;){let field=only;if(!field){const choice=await ui.choice(['ふくの色をえらぶ','かみがたをえらぶ','もどる'],{x:8,y:8,w:216,rows:3});if(choice<0||choice===2)return;field=choice===0?'outfit119':'hairMap119';}const choices=field==='outfit119'?OUTFITS119:HAIRSTYLES119[State.save.look.gender==='girl'?'girl':'boy'];const i=await ui.choice([...choices.map(p=>p[1]),'もどる'],{x:8,y:8,w:216,maxWidth:216,rows:6,extra:(b,idx)=>drawLookPreview({...State.save.look,...(choices[idx]?{[field]:choices[idx][0]}:{})},228,8)});if(i<0||i===choices.length){if(only)return;continue;}State.save.look[field]=choices[i][0];saveLocal();beep('ok');}}

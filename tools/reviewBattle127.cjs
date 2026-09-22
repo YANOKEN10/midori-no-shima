@@ -1,0 +1,8 @@
+const fs=require('fs');const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const b=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});try{
+ const p=await b.newPage({viewport:{width:1280,height:1430}});await p.route('**/src/main.js*',r=>r.fulfill({body:'',contentType:'text/javascript'}));await p.route('**/usage-tracker.js*',r=>r.fulfill({body:'',contentType:'text/javascript'}));await p.goto('http://127.0.0.1:5182/');
+ await p.evaluate(async()=>{const a=await import('/src/peopleArt119.js'),c=await import('/src/heroCatalog127.mjs');document.body.innerHTML='<canvas width="1280" height="1430"></canvas>';document.body.style='margin:0;background:#dcefe6';const ctx=document.querySelector('canvas').getContext('2d');ctx.imageSmoothingEnabled=false;ctx.fillStyle='#dcefe6';ctx.fillRect(0,0,1280,1430);
+ let n=0;for(const gender of ['boy','girl'])for(const [hair]of c.HAIRSTYLES127[gender]){const y=n*110;ctx.fillStyle='#123447';ctx.font='13px sans-serif';ctx.fillText(gender+' '+hair,0,y+14);
+ for(const [k,[color]]of c.OUTFITS127.entries())for(const [d,dir]of ['front','back'].entries()){const look={gender,hairMap119:hair,outfit119:color};let f;for(let tries=0;tries<100;tries++){f=a.heroBattle119(look,dir);if(f)break;await new Promise(r=>setTimeout(r,30));}if(!f)throw Error('Missing '+gender+hair);ctx.drawImage(f,130+k*230+d*100,y,64,96);}n++;}});
+ fs.mkdirSync('artifacts/verify127',{recursive:true});await p.screenshot({path:'artifacts/verify127/battle-review.png'});console.log('Saved battle-review.png');
+}finally{await b.close();}})();

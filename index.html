@@ -155,6 +155,7 @@
   button.go { border-radius:12px; background:linear-gradient(135deg,#e8aa3d,#db7527); box-shadow:0 8px 18px rgba(0,0,0,.28); }
   button.ghost { border-radius:12px; border-color:rgba(112,192,222,.45); color:#caeaf2; }
 </style>
+<link rel="stylesheet" href="src/gate127.css">
 
 <div id="stage"><canvas id="screen" width="320" height="288"></canvas></div>
 
@@ -174,9 +175,9 @@
     <p class="sub">ログインすると、パソコンでも スマホでも<br>おなじ ぼうけんの つづきが あそべます。</p>
 
     <div class="tabs">
-      <div class="tab on" data-mode="login">ログイン</div>
-      <div class="tab" data-mode="signup">あたらしく つくる</div>
-      <div class="tab" data-mode="guest">この たんまつだけ</div>
+      <button type="button" class="tab on" data-mode="login">ログイン</button>
+      <button type="button" class="tab" data-mode="signup"><span>あたらしく</span><span>つくる</span></button>
+      <button type="button" class="tab" data-mode="guest"><span>この端末で</span><span>あそぶ</span></button>
     </div>
 
     <form id="form" autocomplete="on">
@@ -217,7 +218,7 @@
   </div>
 </div>
 
-<meta name="voraz-build" content="20260922-field-fixes-v126">
-<script type="module" src="src/main.js?v=20260922-field-fixes-v126"></script>
+<meta name="voraz-build" content="20260922-appearance-furniture-v128">
+<script type="module" src="src/main.js?v=20260922-appearance-furniture-v128"></script>
 
 <script async src="/usage-tracker.js" data-game="gaon"></script>

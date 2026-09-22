@@ -5,10 +5,4 @@ const scene=new Image(),trainers=new Image();scene.src=new URL('../assets/world-
 export const readyBattleArt=()=>scene.complete&&scene.naturalWidth&&trainers.complete&&trainers.naturalWidth;
 export {drawBattleBackground as drawBattleScene} from './battleBackgrounds.js';
 export function drawBattlePanel(c,x=0,y=208,w=320,h=80){drawWindow123(c,x,y,w,h,true);}
-const cache=new Map();
-export function drawTrainerBack(c,look={},x=28,y=120){
- const hero119=heroBattle119(look,'back');if(hero119){c.imageSmoothingEnabled=false;c.drawImage(hero119,Math.round(x),Math.round(y)-32,80,120);return;}
- if(!trainers.complete||!trainers.naturalWidth)return;const key=JSON.stringify(look);let cv=cache.get(key);
- if(!cv){const customHead=look.gender!=='girl'?boyHairPortrait(look):null;if(look.gender!=='girl'&&!customHead)return;cv=document.createElement('canvas');cv.width=80;cv.height=88;const cx=cv.getContext('2d');cx.drawImage(trainers,look.gender==='girl'?80:0,0,80,88,0,0,80,88);const im=cx.getImageData(0,0,80,88),rgb=h=>/^#[0-9a-f]{6}$/i.test(h||'')?[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)):null,hair=rgb(look.hair),shirt=rgb(look.shirt);for(let i=0;i<im.data.length;i+=4){const r=im.data[i],g=im.data[i+1],b=im.data[i+2],py=Math.floor(i/4/80);let color=null,f=1;if(py<53&&hair&&r>g*1.18&&g>b*1.15&&r>45){color=hair;f=(r+g+b)/260;}else if(shirt&&b>r*1.4&&b>g*1.12&&b>50){color=shirt;f=b/180;}if(color)for(let j=0;j<3;j++)im.data[i+j]=Math.min(255,Math.round(color[j]*f));}cx.putImageData(im,0,0);if(customHead){cx.clearRect(0,0,80,53);cx.imageSmoothingEnabled=false;cx.drawImage(customHead,0,0,32,36,14,13,56,63);}cache.set(key,cv);}
- c.imageSmoothingEnabled=false;c.drawImage(cv,Math.round(x)-12,y-26,104,114);
-}
+export function drawTrainerBack(c,look={},x=28,y=120){const hero=heroBattle119(look,'back');if(!hero)return;c.imageSmoothingEnabled=false;c.drawImage(hero,Math.round(x),Math.round(y)-32,80,120);}
