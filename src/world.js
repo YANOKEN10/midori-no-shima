@@ -1,3 +1,5 @@
+import {drawPickup139} from './pickupArt139.js';
+import {stepGhost139,npcBlocks139,touchingSymbol139,beginSymbol139} from './ghost139.mjs';
 import {servicePeople136} from './serviceLayouts136.mjs';
 import {talkCells135} from './counterTalk135.mjs';
 import {recoveryPoint126} from './recoveryPoint126.mjs';
@@ -231,6 +233,7 @@ export const world = {
 
   update(dt) {
     this.tick += dt;
+    if(!this.busy&&!ui.busy)for(const n of this.npcs)stepGhost139(n,this,dt);
     if(!this.busy&&!ui.busy){const step94=recordDeenaVisit94(State.save,this.mapId);if(step94){State.dirty=true;saveLocal();this.busy=true;ui.say([step94.name+'に '+step94.type+'の光が共鳴した！','虹の調査が ひとつ進んだ。']).finally(()=>{this.busy=false;});}}
     if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);refreshPostgame(this,State.save);}
     if(this.mapId==='raden'&&powerOutage(State.save)&&this.tick-(this.lastThunder||0)>7300){this.lastThunder=this.tick;playThunder();}
@@ -240,6 +243,7 @@ export const world = {
     if(tickRival122(this)||tickEnd(this,dt))return;
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
+    if(!this.moving){const symbol=this.npcs.find(n=>touchingSymbol139(n,this.x,this.y));if(symbol&&(!this.map.tileWorld||flag('v5:netGift'))){this.symbolBattle139(symbol);return;}}
     if(tickFrontier(this)||tickVoyage(this))return;
 
     if (In.hit("start")) { this.busy = true; openMenu().then(() => { this.busy = false; }); return; }
@@ -363,7 +367,7 @@ export const world = {
       const ch = tileAt(this.map, Math.floor(x + ox), Math.floor(y + oy));
       if (ch == null || solid(ch) || ch === "L") return false;
     }
-    return !this.npcs.some((n) => !n.gone && (Math.hypot(n.x+(n.ox||0)/T-x,n.y+(n.oy||0)/T-y)<.72||(n.moving&&Math.hypot(n.toX-x,n.toY-y)<.72)));
+    return !this.npcs.some((n) => npcBlocks139(n) && (Math.hypot(n.x+(n.ox||0)/T-x,n.y+(n.oy||0)/T-y)<.72||(n.moving&&Math.hypot(n.toX-x,n.toY-y)<.72)));
   },
 
   /* --- あるく ------------------------------------------------- */
@@ -390,7 +394,7 @@ export const world = {
   },
 
   npcAt(x, y) {
-    return this.npcs.find((n) => !n.gone && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
+    return this.npcs.find((n) => npcBlocks139(n) && !(n.eden&&State.save.flags["end:eden"]) && (this.map.freeMove
       ? (Math.hypot(n.x+(n.ox||0)/T-x,n.y+(n.oy||0)/T-y)<.72||(n.moving&&Math.hypot(n.toX-x,n.toY-y)<.72))
       : (n.x === x && n.y === y) || (n.moving && n.toX === x && n.toY === y)));
   },
@@ -411,6 +415,7 @@ export const world = {
       const legend=this.npcs.find(n=>n.script==="v5:latett"&&!n.gone);
       if(legend&&flag("v5:heardLatett")&&Math.abs(this.x-legend.x)+Math.abs(this.y-legend.y)<=3){this.busy=true;try{await chapterNpc(this,legend);}finally{this.busy=false;}return;}
     }
+    const symbol=this.npcs.find(n=>touchingSymbol139(n,this.x,this.y));if(symbol&&(!this.map.tileWorld||flag('v5:netGift'))){await this.symbolBattle139(symbol);return;}
     // トレーナーに 見つかる
     const t = this.spotter();
     if (t) { await this.trainerSpot(t); return; }
@@ -422,7 +427,7 @@ export const world = {
     const ch = tileAt(this.map, this.x, this.y);
     const enc = this.map.enc;
     if ((State.save.boating&&ch==='W') || enc && (ch === '"' || enc.encAll || (this.map.kind === "cave" && ch === "C"))) {
-      if (chance((enc?.rate||18) / 100)) await this.wildBattle();
+      if (chance((enc?.rate??18) / 100)) await this.wildBattle();
     }
   },
 
@@ -540,6 +545,7 @@ export const world = {
     const tx = Math.round(this.x + dx), ty = Math.round(this.y + dy);
 
     if(this.mapId==='playerShop79'&&ty<=7){this.busy=true;ownShop79(State.save.backTo?.map).finally(()=>this.busy=false);return;}
+    const symbol=this.npcs.find(n=>touchingSymbol139(n,tx,ty));if(symbol){this.symbolBattle139(symbol);return;}
     const mine=miningTarget79(this.map,tx,ty);if(mine){this.busy=true;miningMenu79(this,mine).finally(()=>this.busy=false);return;}
     const n = talkCells135(this.map,Math.round(this.x),Math.round(this.y),dx,dy).map(([x,y])=>this.npcAt(x,y)).find(Boolean);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
@@ -991,12 +997,14 @@ export const world = {
     saveLocal();
   },
 
+  async symbolBattle139(n){if(this.map.tileWorld&&!flag('v5:netGift'))return;await beginSymbol139(this,n,async()=>{const lv=n.symbol139.min+rnd(n.symbol139.max-n.symbol139.min+1);State.save.battleTerrain=this.map.battleTerrain||'grass';const result=await startBattle({wild:makeMon(n.artMon,lv)});if(result==='lose'){await this.blackout();return;}await this.checkEvolution();playBgm(bgmFor(this.mapId));State.dirty=true;saveLocal();});},
+
   /* --- やせいの ガオン ---------------------------------------- */
   async wildBattle(rare = null) {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91,this.mapId)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91,this.mapId);
+    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91,this.mapId)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91,this.mapId).filter(e=>e[3]>0);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}
@@ -1152,7 +1160,7 @@ export const world = {
     // おちている どうぐ
     for (const it of map.items || []) {
       if (flag(it.flag)) continue;
-      if(!drawItem(G.ctx,it.item,it.x*T-camX,it.y*T-camY,32))drawBall(it.x*T-camX,it.y*T-camY);
+      drawPickup139(G.ctx,it.x*T-camX,it.y*T-camY,this.tick);
     }
 
     // ひとたち（うしろに いる人から）

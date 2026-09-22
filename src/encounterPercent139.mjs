@@ -1,0 +1,4 @@
+// Largest-remainder allocation keeps integer percentages totaling exactly 100.
+export function percentages139(weights,total=100){const sum=weights.reduce((a,b)=>a+Math.max(0,b),0),raw=weights.map(w=>(sum?Math.max(0,w)/sum:1/weights.length)*total),out=raw.map(Math.floor),order=raw.map((v,i)=>[v-out[i],i]).sort((a,b)=>b[0]-a[0]||a[1]-b[1]);for(let n=total-out.reduce((a,b)=>a+b,0),i=0;i<n;i++)out[order[i%order.length][1]]++;return out;}
+export function asPercent139(value){const next=structuredClone(value),p=percentages139(next.list.map(e=>e[3]));next.list.forEach((e,i)=>e[3]=p[i]);next.percent139=true;return next;}
+export function setPercent139(value,index,percent){const next=asPercent139(value);if(next.list.length===1)return next;const others=next.list.filter((_,i)=>i!==index),p=percentages139(others.map(e=>e[3]),100-percent);let j=0;next.list.forEach((e,i)=>e[3]=i===index?percent:p[j++]);return next;}

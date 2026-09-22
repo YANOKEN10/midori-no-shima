@@ -1,0 +1,10 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Create the NORTH-SOUTH wooden fence counterpart of this reference horizontal fence for a top-down pixel RPG. One single seamless 32x32 logical pixel tile on transparent background. Exactly ONE sturdy square-ended upright wooden post centered in the tile: the post is 8 pixels WIDE and 24 pixels TALL in the screen image, extending from y=4 to y=27. It must be a tall vertical rectangular timber with a small squared cap, NOT a short bead. Behind it, two rails run north-south to top and bottom tile edges, forming a narrow fence with visible dark depth. Match reference golden tan wood, dark brown 1px outline and 3-tone simple pixel shading. The wooden post needs the SAME apparent width and height as ONE of the reference horizontal fence posts. No multiple small posts, no chain of beads, no rounded logs, no rope, no diagonal fence, no ground, no text. Actual transparent alpha background, simple 32px game sprite, crisp nearest-neighbor square pixel blocks. Render enlarged with no smooth shading. Only the single tile.",
+  "output": "vertical.png",
+  "logicalSize": [
+    32,
+    32
+  ],
+  "visibleWidth": 8
+}

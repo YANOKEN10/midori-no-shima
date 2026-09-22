@@ -1,3 +1,5 @@
+import {ghostKind139} from './ghost139.mjs';
+import {drawGhost139,ghostFrame139} from './ghostArt139.js';
 import {mapPerson119,trainerBattle119} from './peopleArt119.js';
 import {ADDITIONAL_PEOPLE119} from './peopleCatalog119.mjs';
 import {winterFrame} from './frontierArt.js';
@@ -12,6 +14,6 @@ const yanokenFrames=new Map();
 export function isYanoken(n){return n.name==='ヤノケン'||['v5:dex','voyage:yanoken','frontier:yanoken'].includes(n.script);}
 function yanokenFrame(n,step){if(!yanokenSheet.complete||!yanokenSheet.naturalWidth)return null;const col=({down:0,left:1,right:2,up:3})[n.dir]??0,row=Math.max(0,Math.min(2,step)),key=col+':'+row;if(yanokenFrames.has(key))return yanokenFrames.get(key);const c=document.createElement('canvas');c.width=32;c.height=48;c.getContext('2d').drawImage(yanokenSheet,col*32,row*48,32,48,0,0,32,48);yanokenFrames.set(key,c);return c;}
 function legacyNpcFrame119(n,step=1){if(isYanoken(n))return yanokenFrame(n,step);if(Number.isInteger(n.winterVariant))return winterFrame(n);const variant=Number.isInteger(n.variant)?n.variant:n.script==='v5:mother'?7:({boy:0,girl:1,prof:2,oldman:3,nurse:4,clerk:5,hiker:6,sailor:12})[n.look]??0;const im=atlases[variant];if(!im?.complete||!im.naturalWidth)return null;const col=({down:0,left:1,right:2,up:3})[n.dir]??0,key=variant+':'+col+':'+step;if(cache.has(key))return cache.get(key);const c=document.createElement('canvas');c.width=32;c.height=48;c.getContext('2d').drawImage(im,col*32,step*48,32,48,0,0,32,48);const fitted=variant===32?c:matchHeroHeight(c);cache.set(key,fitted);return fitted;}
-export function drawNpc(ctx,n,tick,x,y){const step=n.moving?[0,1,2,1][Math.floor((n.roamProgress||Math.max(Math.abs(n.ox||0),Math.abs(n.oy||0))/32)*4)%4]:1,frame=mapPerson119(n,step)||legacyNpcFrame119(n,step);if(!frame)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(frame,Math.round(x+16-frame.width/2),Math.round(y));return true;}
+export function drawNpc(ctx,n,tick,x,y){if(drawGhost139(ctx,n,tick,x,y))return true;const step=n.moving?[0,1,2,1][Math.floor((n.roamProgress||Math.max(Math.abs(n.ox||0),Math.abs(n.oy||0))/32)*4)%4]:1,frame=mapPerson119(n,step)||legacyNpcFrame119(n,step);if(!frame)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(frame,Math.round(x+16-frame.width/2),Math.round(y));return true;}
 
-export function npcFrame(n,step=1){return trainerBattle119(n)||legacyNpcFrame119(n,step);}
+export function npcFrame(n,step=1){if(ghostKind139(n))return ghostFrame139(n,true);return trainerBattle119(n)||legacyNpcFrame119(n,step);}
