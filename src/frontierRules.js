@@ -1,3 +1,4 @@
+import {isGaonPark131} from './parkMaps131.mjs';
 import {endTarget} from './endgameRules.js';
 export const PARK_SPECIES=['ウリボン','スナボンネ','ワンヒノ','シオマント','ネコデン','ドロヌマ','カマキリン','ハナヤリ','タヌポン','フワクジ'];
 export const RESURE_EMBLEM='レスレ・エンブレム',VOLCANO_EMBLEM='マニケレオ・エンブレム';
@@ -6,7 +7,7 @@ export function jstDay(now=new Date()){return new Date(now.getTime()+9*3600000).
 export function weekKey(now=new Date()){const d=new Date(now.getTime()+9*3600000);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10);}
 export function rematchAvailable(save,key,daily=false,now=new Date()){return save.trainerDates?.[key]!== (daily?jstDay(now):weekKey(now));}
 export function markRematch(save,key,daily=false,now=new Date()){save.trainerDates||={};save.trainerDates[key]=daily?jstDay(now):weekKey(now);}
-export function recordParkCatch(save,map,sp){if(map!=='gaonPark'||!PARK_SPECIES.includes(sp))return;save.parkCaught||={};save.parkCaught[sp]=true;}
+export function recordParkCatch(save,map,sp){if(!isGaonPark131(map)||!PARK_SPECIES.includes(sp))return;save.parkCaught||={};save.parkCaught[sp]=true;}
 export function parkCount(save){return PARK_SPECIES.filter(n=>save.parkCaught?.[n]).length;}
 export function recordBirth(save){if(save.daycare&&save.steps>=save.daycare.readyAt&&!save.daycare.birthRecorded){save.daycare.birthRecorded=true;save.daycareBirths=(save.daycareBirths||0)+1;}}
 export function resureReady(save){return parkCount(save)>=10&&(save.daycareBirths||0)>=1;}

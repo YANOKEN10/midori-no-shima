@@ -20,7 +20,7 @@ export function tickFrontier(w){if(w.busy||ui.busy||w.moving)return false;const 
  if(w.mapId==='volcano3'&&!s.flags['frontier:yanokenMet'])n=w.npcs.find(n=>n.script==='frontier:yanoken'&&Math.abs(n.x-w.x)+Math.abs(n.y-w.y)<=9);
  if(!n)return false;w.busy=true;(async()=>{await walk(w,n,{x:w.x,y:w.y});s.flags[n.script==='frontier:takara'?'frontier:takaraMet':'frontier:yanokenMet']=true;await persist();await frontierNpc(w,n);})().catch(e=>console.error('Frontier event',e)).finally(()=>{w.busy=false;});return true;}
 export async function frontierNpc(w,n){const s=State.save,f=s.flags;
- if(n.script==='frontier:park'){await ui.say(['ここでしか捕まえられない ガオンが10種類いるよ。','パーク内で捕まえた種類：'+parkCount(s)+'／10','試験には 育て屋で１匹の誕生も必要だよ。']);return;}
+ if(n.script==='frontier:park'){await ui.say(['パークには 草原・林・水辺・花畑・丘の 5つのエリアがあるよ。','北へ進むと 次のエリア。場所ごとに 違うガオンに会えるよ。','ここでしか捕まえられない ガオンが10種類いるよ。','パーク内で捕まえた種類：'+parkCount(s)+'／10','試験には 育て屋で１匹の誕生も必要だよ。']);return;}
  if(n.script==='frontier:takara'){
   if(f['frontier:resureWon']){await ui.say(['レスレの自然とガオンを 大切にしてね。']);return;}
   if(!resureReady(s)){await ui.say(['私は 町長のタカラダです。','パークで10種類捕まえて 育て屋で１匹誕生させよう。','パーク：'+parkCount(s)+'／10　誕生：'+(s.daycareBirths||0)+'匹']);return;}
