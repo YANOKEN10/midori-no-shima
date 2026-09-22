@@ -1,0 +1,3 @@
+export const seaFloor140=key=>['sea-floor140','legacy73-sea','sea'].includes(key);
+// Old sea stamps become floor cells. Duplicate stamps cannot create overlap errors.
+export function upgradeSeaFloor140(d){const stamps=d.objects.filter(o=>o.id?.startsWith('a:')&&!o.stored79&&seaFloor140(o.template));if(!stamps.length)return d;const tiles=[...d.tiles],seen=new Set(tiles.map(t=>t.x+','+t.y));for(const o of stamps){const key=o.x+','+o.y;if(!seen.has(key)){tiles.push({x:o.x,y:o.y,material:'sea-floor140',...(o.color115?{color115:o.color115}:{})});seen.add(key);}}return {...d,tiles,objects:d.objects.filter(o=>!stamps.includes(o))};}

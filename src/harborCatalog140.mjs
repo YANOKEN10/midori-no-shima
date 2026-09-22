@@ -1,0 +1,1 @@
+export const HARBOR140=[{key:'rowboat140',art:'rowboat140',label:'小舟',w:3,h:2,source:'village',group:'decor',harborBoat140:true},{key:'yacht140',art:'yacht140',label:'ヨット',w:4,h:4,source:'village',group:'decor',harborBoat140:true}];
