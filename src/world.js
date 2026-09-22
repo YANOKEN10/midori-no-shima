@@ -572,11 +572,14 @@ export const world = {
   },
 
   async pickItem(it) {
+    if(flag(it.flag))return;
+    const count=Number.isInteger(it.count)&&it.count>=1&&it.count<=99?it.count:1;
     beep("ok");
-    addItem(it.item);
+    addItem(it.item,count);
     setFlag(it.flag);
-    await ui.say([State.save.name + "は " + it.item + "を みつけた！"]);
+    State.dirty=true;
     saveLocal();
+    await ui.say([State.save.name + "は " + it.item + (count>1?'を '+count+'個':'を') + " みつけた！"]);
   },
 
   async runNpc(n) {const old=ui.speaker;ui.speaker=n.displayName||n.name||null;try{const result=await this.runNpcContent(n);if(!n.trainer||flag('beat:'+this.mapId+':'+n.idx)){const gift=claimNpcGift111(State.save,this.mapId,n);if(gift){State.dirty=true;saveLocal();if(cloud.signedIn)saveCloud(true);await ui.say([gift.item+'を '+gift.count+'個 もらった！']);}}return result;}finally{ui.speaker=old;}},

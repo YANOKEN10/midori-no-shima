@@ -1,21 +1,15 @@
+import {CHAPTERS138} from './story138.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
-const chapters=[
-[['村の女の子と話そう','ネイチャータウンで、山おくのラテットの話を聞こう。'],['北の山おくへ行こう','ラテットに会ったら、町にもどろう。'],['スイスはかせに知らせよう','研究施設へ。ラグネットを15個もらえるよ。'],['ロッズタウンをめざそう','１ばんどうろの草むらで、はじめてのガオンをつかまえよう。'],['ヤノケンに話しかけよう','ロッズタウンで、ガオンずかんをもらおう。']],
-[['はなれの湖へ','マリンタウンから北の４番道路へ進もう。'],['中央の島の宝箱をしらべよう','西の岸の桟橋（さんばし）から島へ。試験がはじまるよ。'],['カニポン４体に勝とう','湖の四隅をさがそう。試験の相手はつかまえられないよ。'],['島にもどってエビゲルに挑もう','なかまを回復してからバトル。勝ったら５番道路へ進もう。']],
-[['カラットタウンで話を聞こう','発電所の試験について聞こう。'],['ジネルに勝って発電所の中へ','中のいちばん奥の宝箱をしらべよう。'],['外のライメイに挑もう','停電を直したら、ジネルからエンブレムをもらおう。'],['ガオンを15種類つかまえよう','スイスはかせから、船のチケットをもらおう。'],['船で新しい町へ','到着したら船をおりて、レスレタウンの育て屋マリオに会おう。']],
-[['ガオンパークで10種類つかまえよう','育て屋でも１匹を誕生させ、レスレタウンの試験に挑もう。'],['マニケレオタウンで話を聞こう','火山の試験について教えてもらおう。'],['ヨウガン山の頂上へ','ヨウガンヌシに挑もう。回復のどうぐも用意してね。'],['ネイチャータウンへ報告しよう','町長に知らせたら、雪の町へぼうけんを続けよう。']],
-[['モミの森の試験に挑もう','終わったらバルコレに報告して、エンブレムをもらおう。'],['ほのおタイプを連れて氷河へ','氷河の試験に挑んで、ハイラス・エンブレムを手に入れよう。'],['ギャラクシータウンとカゲの廃墟へ','町での勝負を進め、廃墟（はいきょ）のいちばん奥をめざそう。'],['メリレの谷でラテットと再会しよう','ラテットを仲間にして、スイスはかせに知らせよう。'],['クリア後のぼうけんへ！','リーフタウンで連勝に挑戦したり、虹の研究員の調査を手伝おう。']]
-];
-let stepPicture=null;
-let checked={};try{checked=JSON.parse(localStorage.getItem('gaon:guide100')||'{}');if(!checked||typeof checked!=='object')checked={};}catch{}
-function renderSteps(){const c=Number($('#chapter').value);$('#steps').replaceChildren();chapters[c].forEach(([title,text],i)=>{const li=el('li'),label=el('label'),box=el('input');box.type='checkbox';box.checked=!!checked[c+':'+i];li.classList.toggle('done',box.checked);label.append(box,el('span',title));const body=el('div');if(stepPicture){const im=stepPicture(['ラテット','カニポン','ビリボール','ヨウガンヌシ','ヒョウガン'][c]);im.className='step-picture';body.append(im);}body.append(label,el('p',text));li.append(body);$('#steps').append(li);box.addEventListener('change',()=>{checked[c+':'+i]=box.checked;try{localStorage.setItem('gaon:guide100',JSON.stringify(checked));}catch{}li.classList.toggle('done',box.checked);progress();});});progress();}
+const chapters=CHAPTERS138.map(c=>c.steps);
+let checked={};try{checked=JSON.parse(localStorage.getItem('gaon:guide138')||'{}');if(!checked||typeof checked!=='object')checked={};}catch{}
+function renderSteps(){const c=Number($('#chapter').value);$('#steps').replaceChildren();const chapter=CHAPTERS138[c],fig=$('#story-figure');fig.replaceChildren();const im=el('img');im.src='./images/'+chapter.image+'-138.png';im.alt=chapter.caption;im.width=640;im.height=384;fig.append(im,el('figcaption',chapter.caption));chapters[c].forEach(([title,text],i)=>{const li=el('li'),label=el('label'),box=el('input');box.type='checkbox';box.checked=!!checked[c+':'+i];li.classList.toggle('done',box.checked);label.append(box,el('span',title));const body=el('div');body.append(label,el('p',text));li.append(body);$('#steps').append(li);box.addEventListener('change',()=>{checked[c+':'+i]=box.checked;try{localStorage.setItem('gaon:guide138',JSON.stringify(checked));}catch{}li.classList.toggle('done',box.checked);progress();});});progress();}
 function progress(){const c=Number($('#chapter').value);$('#progress').textContent=`できたこと：${chapters[c].filter((_,i)=>checked[c+':'+i]).length} / ${chapters[c].length}`;}
-$('#chapter').addEventListener('change',renderSteps);$('#reset-progress').addEventListener('click',()=>{const c=$('#chapter').value;for(const k of Object.keys(checked))if(k.startsWith(c+':'))delete checked[k];try{localStorage.setItem('gaon:guide100',JSON.stringify(checked));}catch{}renderSteps();});renderSteps();
+$('#chapter').addEventListener('change',renderSteps);$('#reset-progress').addEventListener('click',()=>{const c=$('#chapter').value;for(const k of Object.keys(checked))if(k.startsWith(c+':'))delete checked[k];try{localStorage.setItem('gaon:guide138',JSON.stringify(checked));}catch{}renderSteps();});renderSteps();
 try{
 const [{SPECIES},{BATTLE_ART_FILES},{TYPES,effect},{MOVES},{habitatEntries,habitatRateLabel},{WILD_WINDOWS94,wildAvailable91},{SCHEDULED_ENCOUNTERS},{MAPS}]=await Promise.all([import('/src/data/species.js'),import('/src/data/battleart.js'),import('/src/data/types.js'),import('/src/data/moves.js'),import('/src/habitats.js'),import('/src/wildAvailability91.mjs'),import('/src/scheduledEncounters62.js'),import('/src/data/maps.js')]);
 const art=name=>new URL(BATTLE_ART_FILES[name],new URL('/src/data/battleart.js',location.origin)).href;
 const picture=(name,lazy=true)=>{const i=el('img');i.src=art(name);i.alt=name;i.width=136;i.height=136;if(lazy)i.loading='lazy';return i;};
-stepPicture=picture;renderSteps();
+renderSteps();
 for(const im of document.querySelectorAll('[data-mon]'))im.src=art(im.dataset.mon);
 for(const id of ['type','attack','defend','defend2'])for(const type of TYPES){const o=el('option',type);o.value=type;$('#'+id).append(o);}$('#attack').value='ほのお';$('#defend').value='くさ';
 function matchup(){const types=[$('#defend').value,$('#defend2').value].filter(Boolean),unique=[...new Set(types)],m=effect($('#attack').value,unique);$('#match-result').textContent=(m===0?'このわざは、こうかがないよ。':m>1?'こうかばつぐん！ ダメージは '+m+'倍。':m<1?'ちょっと苦手。ダメージは '+m+'倍。':'ふつうのあいしょうだよ。ダメージは１倍。');}for(const id of ['attack','defend','defend2'])$('#'+id).addEventListener('change',matchup);matchup();

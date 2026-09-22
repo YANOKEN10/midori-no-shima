@@ -1,3 +1,4 @@
+import {nameMap138} from '../peopleNames138.mjs';
 import {moveRugs130} from '../rugPlacement130.mjs';
 import {addMoveReminder92} from '../reminderPlacement92.mjs';
 import {createCastle78} from './castle78.mjs';
@@ -11,3 +12,5 @@ MAPS.adminCastle78=createCastle78();moveRugs130(MAPS);
 await loadPublishedMaps(MAPS);
 const playerShop=JSON.parse(JSON.stringify(MAPS.adminHouse72));playerShop.id='playerShop79';playerShop.name='あなたのお店';playerShop.room.theme='shop';playerShop.npcs=[];playerShop.items=[];playerShop.signs=[];playerShop.editorAddedProps72=[];playerShop.editorAddedFurniture72=[];const shopGrid79=playerShop.rows.map(r=>[...r]);for(const [k,x,y,w,h]of playerShop.room.furniture)for(let yy=y;yy<y+h;yy++)for(let xx=x;xx<x+w;xx++)shopGrid79[yy][xx]='f';for(let xx=5;xx<10;xx++)shopGrid79[5][xx]='t';playerShop.rows=shopGrid79.map(r=>r.join(''));playerShop.editorVisualRows73=undefined;playerShop.room.furniture=[['counter',5,5,5,1],['shelf',3,4,2,1],['shelf',10,4,2,1]];MAPS.playerShop79=playerShop;
 addMoveReminder92(MAPS);
+
+for(const map of Object.values(MAPS))nameMap138(map);

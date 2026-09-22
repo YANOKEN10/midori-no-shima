@@ -696,7 +696,7 @@ export const LEGACY73=[
     "h": 1,
     "source": "village",
     "group": "legacy",
-    "file": "assets/editor-existing-v73/legacy73-tallGrass.png",
+    "file": "assets/grass-v138/tall-grass.png",
     "walkable": true,
     "tile": "\""
   },
