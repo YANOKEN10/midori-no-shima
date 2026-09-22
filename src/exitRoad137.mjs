@@ -1,0 +1,3 @@
+const cache=new WeakMap();
+export function exitRoadView137(map){if(map.kind==='in')return map;if(cache.has(map))return cache.get(map);const rows=map.rows.map(r=>[...r]),h=rows.length,w=rows[0].length;let changed=false;for(const p of map.warps||[]){const [dx,dy]=p.y===0?[0,1]:p.y===h-1?[0,-1]:p.x===0?[1,0]:p.x===w-1?[-1,0]:[0,0];if(!dx&&!dy)continue;const current=rows[p.y]?.[p.x],inner=rows[p.y+dy]?.[p.x+dx];if(['.', 'D','d','H','x'].includes(inner)&&['.',',','D','d','H','x'].includes(current)){rows[p.y][p.x]='.';changed=true;}}const view=changed?{...map,rows:rows.map(r=>r.join(''))}:map;cache.set(map,view);return view;}
+export function exitContinues137(map,x,y,dx,dy){return map.rows[y+dy]?.[x+dx]===undefined&&(map.warps||[]).some(w=>w.x===x&&w.y===y);}

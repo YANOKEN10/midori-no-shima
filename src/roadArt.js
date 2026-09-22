@@ -1,3 +1,4 @@
+import {exitContinues137} from './exitRoad137.mjs';
 import {drawPaving132,pavingReady132} from './paving132.js';
 const atlas=new Image();atlas.src=new URL('../assets/roads-v46/materials.png',import.meta.url).href;
 const textures=new Map();
@@ -5,7 +6,7 @@ export const roadStyle=m=>m.kind==='out'&&m.id!=='mountain'&&!['snow','ash'].inc
 export const roadReady=m=>!roadStyle(m)||(atlas.complete&&atlas.naturalWidth>0&&pavingReady132());
 export function drawRoad(c,m,x,y){
  const style=roadStyle(m);const forecourt=(a,b)=>m.frontierTheme==='rail'&&m.kind==='out'&&(m.props||[]).some(p=>p.door&&a>=p.x-1&&a<p.x+p.w+1&&b>=p.y&&b<p.y+p.h+1);const isRoad=(a,b)=>forecourt(a,b)||['.','D','d','H'].includes(m.rows[b]?.[a])||(m.rows[b]?.[a]==='S'&&m.signs?.some(s=>s.x===a&&s.y===b&&s.ground==='.'));if(!style||!isRoad(x,y))return false;
- const near=(dx,dy)=>isRoad(x+dx,y+dy);
+ const near=(dx,dy)=>isRoad(x+dx,y+dy)||exitContinues137(m,x,y,dx,dy);
  const l=near(-1,0),r=near(1,0),t=near(0,-1),b=near(0,1),px=x*32,py=y*32;
  c.save();c.beginPath();
  // Small stepped turf edges, continuous through straight roads and junctions.
