@@ -1,0 +1,25 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "file": "jungle-floor.png",
+      "prompt": "Use case: stylized-concept. Asset type: seamless top-down pixel-art ground texture for Gaon World, a 2D Japanese monster RPG with 32px tiles. Generate one square opaque seamless jungle grass floor texture, no objects. Deep natural jungle greens, subdued medium-dark moss grass carpeting the entire image, scattered tiny short grass strokes, very subtle earthy olive soil glimpses. Flat horizontal walkable ground seen straight from above. Tiny irregular pixel clusters, consistent visible square pixels, design as 128 by 128 logical pixels enlarged nearest-neighbor. Low contrast, even lighting and uniform density from edge to edge so tiled repeats are unobtrusive. No large leaves, no ferns, no tall plants, no bushes, no trees, no rocks, no decorative wallpaper motifs, no regular rows or grid lines, no vignette, no borders, no text. Grass should support sprites visually, never dominate them. Seamless matching edges in both axes."
+    },
+    {
+      "file": "paving.png",
+      "prompt": "Use case: stylized-concept. Asset type: one seamless overhead stone paving texture for a 2D Japanese pixel RPG, 32px world tiles, repeating texture sampled over 4 by 4 tiles. Square opaque image. True top-down flat walkable patio made of medium-sized irregular polygonal flagstones in warm pale sand beige and muted light gray, narrow subtle beige grout. Roughly 8 stones across image and 8 down, irregular rounded angular shapes interlocking naturally. Pixel art on a consistent 128x128 logical grid enlarged nearest-neighbor. Flat diffuse lighting, only extremely subtle edge highlights, low contrast. The stones are horizontal paving, NOT a vertical brick wall: no stacked brick rows, no embossed tall blocks, no perspective, no deep shadows. Uniform texture all the way to seamless matching edges. No grass, no buildings, no borders, no characters, no writing. Reference mood is a quiet town sidewalk and hospital forecourt in a handheld monster RPG, original asset."
+    },
+    {
+      "file": "train.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent pixel-art train sprite for Gaon World, top-down 2D Japanese monster adventure RPG. One complete short passenger train with two connected carriages horizontally, nose pointing left. 3/4 overhead orthographic view showing roof and south-facing side, matching RPG houses seen from above, no perspective vanishing points. Deep navy blue lower panels, muted teal trim, warm ivory body and pale gray curved metal roof, dark blue windows, a small warm brass headlamp. Believable passenger train, compact and friendly but not a toy icon, no steam locomotive, no chimney, no oversized wheels. Train occupies almost entire canvas width and height with small transparent margin. Consistent pixel grid designed at 192 wide x 80 high logical pixels, enlarged nearest-neighbor; sharp 1 logical pixel outlines, modest shading 3 tones per material. No antialiasing, no photorealistic texture. No railway tracks, no ground, no scenery, no text, no logo. True transparent background. Single train only."
+    },
+    {
+      "file": "sea.png",
+      "prompt": "Use case: stylized-concept. Asset type: seamless square ocean water texture for a top-down Japanese pixel RPG with 32px tiles. One opaque water-only tileable image. Cheerful rich medium blue ocean, small gently interlocking irregular pale cyan ripple highlights, varied rounded wave cells. Strict top-down flat surface, NO horizon, no perspective, no coastline, no foam border, no objects, no rocks. Calm water as a handheld RPG beach background. Crisp square pixels on a 128x128 logical pixel grid enlarged nearest neighbor, restrained 5-7 blue shades, avoid painterly gradients. Highlights light blue rather than white, subtle enough not to overpower sprites. Uniform density, seamless all four edges, no straight horizontal dotted lines or grid. Entire image filled with water."
+    },
+    {
+      "file": "sand.png",
+      "prompt": "Use case: stylized-concept. Asset type: seamless sand ground texture for a top-down 2D Japanese pixel RPG, 32px tiles. Square opaque image, entire image warm pale golden beach sand. Quiet, flat walkable ground viewed directly overhead. Very sparse tiny ochre and cream pixel speckles and faint irregular wind-swept shallow sand ripples, low contrast, mostly empty clean sand. Designed on a consistent 128x128 logical pixel grid enlarged nearest-neighbor. Restrained 5-7 cream/golden shades, tiny 1-2 logical pixel detail, no smooth gradient, no shading suggesting hills. Seamless matching edges all four sides. No ocean, no beach outline, no plants, no rocks, no shells, no objects, no text. Plain light dry sand suitable for tiling across a sunny beach without looking like patterned wallpaper."
+    }
+  ]
+}

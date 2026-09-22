@@ -3,12 +3,12 @@ import {drawReadable84,readableReady84} from './readableArt84.js';
 const townPondImage=new Image();townPondImage.src=new URL('../assets/gardens-v52/pond.png',import.meta.url).href;
 import {drawVoyageAsset,voyageReady} from './voyageArt.js';
 import {drawPowerAsset,powerReady} from './powerArt.js';
-import {forestLayout} from './forestArt.js';
+import {forestLayout,boundaryTree} from './forestArt.js';
 const names=['marineHouse','marineHall','marineShop','marinePier','ancientTree','shoreRock','ancientAltar','marineChest','sea','lake','reeds'];
 const images=Object.fromEntries(names.map(n=>{const im=new Image();im.src=new URL('../assets/'+(n==='marineChest'?'objects-v83/':'marine-v26/')+n+'.png',import.meta.url).href;return[n,im];}));
 export const marineReady=()=>readableReady84()&&townPondImage.complete&&townPondImage.naturalWidth>0&&Object.values(images).every(im=>im.complete&&im.naturalWidth>0)&&powerReady()&&voyageReady();
 export function drawMarineAsset(c,key,x,y,w,h){if(drawReadable84(c,key,x,y,w,h))return true;const im=images[key];if(!im)return drawVoyageAsset(c,key,x,y,w,h)||drawPowerAsset(c,key,x,y,w,h);if(im.complete&&im.naturalWidth){c.imageSmoothingEnabled=false;if(treeArt85(key))fitSprite85(c,im,x,y,w,h);else c.drawImage(im,x,y,w,h);}return true;}
-export function marineForest(c,map){for(const p of forestLayout(map))drawMarineAsset(c,map.biome==='flowers'?'flowerTree':'ancientTree',p.x,p.y,p.w,p.h);}
+export function marineForest(c,map){if(map.editor72||(map.props||[]).some(p=>boundaryTree(map,p)))return;for(const p of forestLayout(map))drawMarineAsset(c,map.biome==='flowers'?'flowerTree':'ancientTree',p.x,p.y,p.w,p.h);}
 export function drawMarineTile(c,map,x,y,ch){
  if(!map.biome&&!map.townPond)return false;const dx=x*32,dy=y*32;
  if(ch==='W'&&map.townPond){const[px,py,pw,ph]=map.townPond;if(x>=px&&x<px+pw&&y>=py&&y<py+ph){if(townPondImage.complete&&townPondImage.naturalWidth)c.drawImage(townPondImage,(x-px)*townPondImage.width/pw,(y-py)*townPondImage.height/ph,townPondImage.width/pw,townPondImage.height/ph,dx,dy,32,32);return true;}}
