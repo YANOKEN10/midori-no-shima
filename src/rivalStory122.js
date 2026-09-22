@@ -19,7 +19,7 @@ export async function runRivalEvent122(w,n,deps={}){const s=State.save,id=n.scri
  if(event.team&&!s.party.some(m=>m.hp>0)){await say(['元気なガオンを 連れてきてくれ！']);return;}
  await say(rivalLines122(event.talk,s));if(id==='lab')return;
  if(id==='blizzard'){s.flags['rival122:blizzard']=true;s.bag['ハイパーラグ']=(s.bag['ハイパーラグ']||0)+10;await save();await say(['ハイパーラグを 10個 もらった！']);await say(event.win);await leave(w,n);return;}
- const result=await battle({trainer:{name:n.displayName||'ライバル',appearance79:{...RIVAL_APPEARANCE122},fixedLevels122:true,party:event.team,money:0}});
+ const result=await battle({trainer:{rivalBattle129:'regular',name:n.displayName||'ライバル',appearance79:{...RIVAL_APPEARANCE122},fixedLevels122:true,party:event.team,money:0}});
  if(result!=='win'){if(result==='lose')await w.blackout();await save();w.resumeBgm();return;}
  if(id==='weekly')s.flags['rival122:week']=sunday122(now());else s.flags['rival122:'+id]=true;if(id==='marine')delete s.flags['rival122:marineExit'];await save();await say(rivalLines122(event.win,s));if(id!=='weekly')await leave(w,n);await w.checkEvolution();await save();w.resumeBgm();
  }finally{ui.speaker=old;}}

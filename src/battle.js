@@ -1,3 +1,4 @@
+import {battleMusic129} from './battleMusic129.mjs';
 import {showGrowth124} from './summary124.js';
 import {participationRewards122} from './training122.mjs';
 import {teachMove92} from './moveLearning92.mjs';
@@ -95,7 +96,7 @@ export async function startBattle(opts) {
   battle.active = true;
   ui.setBattleMode(true);
 
-  playBgm(opts.tournament ? "tournament" : isTrainer && (opts.trainer.originalName80||opts.trainer.name) === "ヤノケン" ? "yanokenBattle" : opts.emblemTest || isTrainer && (opts.trainer.leader || opts.trainer.champ || opts.trainer.major) ? "boss" : "battle");
+  playBgm(battleMusic129(opts));
   seeMon(B.foe.mon.sp);
 
   await wait(260);
