@@ -14,8 +14,9 @@ export const FURNITURE128=[
 ].map(([asset,label,w,h])=>({key:asset+'128',label,w,h,asset128:asset}))
 ];
 const kind128=p=>p?.kind||p?.art||p?.key||'';
-export const tabletop128=p=>['computer','computer84','register84'].includes(kind128(p));
-export const table128=p=>/^(?:table(?:-|$)|long-table84$|counter84$|counter$|lab-desk86$|ship-desk85$|ship-table85$|labtable$|(?:home|ruin|tower|galaxy)-(?:table|counter)123$)/.test(kind128(p));
+export const tabletop128=p=>['computer','computer84','register84','plant-fern128','vase-flowers128','vase-blue128','plant-monstera128','plant-palm128','plant-snake128'].includes(kind128(p));
+export const shelf134=p=>/^shop-(?:glass|wall-shelf|shelf|shelf-side)106$/.test(kind128(p));
+export const table128=p=>shelf134(p)||/^(?:table(?:-|$)|long-table84$|counter84$|counter$|lab-desk86$|ship-desk85$|ship-table85$|labtable$|(?:home|ruin|tower|galaxy)-(?:table|counter)123$)/.test(kind128(p));
 export function canStack128(a,b){
  const item=tabletop128(a)?a:tabletop128(b)?b:null;
  const table=table128(a)?a:table128(b)?b:null;
@@ -26,7 +27,7 @@ export function mountFurniture128(map){
  const placement=({f})=>({art:f[0],x:f[1],y:f[2],w:f[3],h:f[4]});
  const tables=entries.map(placement).filter(table128),mounted=new Set();
  map.tabletopFurniture128=[];
- for(const e of entries)if(tabletop128(placement(e))&&tables.some(t=>canStack128(placement(e),t))){mounted.add(e.f);map.tabletopFurniture128.push({...e,f:[...e.f.slice(0,2),e.f[2]-0.375,...e.f.slice(3)]});}
+ for(const e of entries){const item=placement(e),support=tabletop128(item)&&tables.find(t=>canStack128(item,t));if(support){const y=shelf134(support)?(support.art==='shop-glass106'||support.art==='shop-wall-shelf106'?support.y+0.75-item.h:item.y-0.375):item.y-0.375;mounted.add(e.f);map.tabletopFurniture128.push({...e,f:[...e.f.slice(0,2),y,...e.f.slice(3)]});}}
  if(map.room)map.room.furniture=map.room.furniture.filter(f=>!mounted.has(f));
  map.editorAddedFurniture72=(map.editorAddedFurniture72||[]).filter(f=>!mounted.has(f));
  map.editorStyledFurniture73=(map.editorStyledFurniture73||[]).filter(e=>!mounted.has(e.f));
