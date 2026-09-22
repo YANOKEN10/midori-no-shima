@@ -1,0 +1,181 @@
+[
+  {
+    "id": 0,
+    "file": "exec-63f0fd2b-3975-432a-921c-79b6ba474709.png",
+    "prompt": "Create ONE full-body original GAON battle character. First reference is IDENTITY numbered map sprite, second is exact battle STYLE reference. Match the second reference's silhouette and roughly4.5-head proportions, head ~24% of height, broad hands and boots, friendly confident gesturing battle stance. Coarse square pixel art as a64x96 bitmap magnified16x nearest neighbor: thick stepped dark outlines, large uniform pixel blocks,3 flat shades per material, NO dithering/tiny details/smooth shading. Entire body visible with margin, transparent alpha background no glow/no scene. NO balls of any kind, NO Pokeballs/franchise emblems. Empty hands gesture. Do NOT draw reference hero. Character 0: young boy with black spiky hair, olive green open jacket, cream shirt, brown trousers and brown boots. Exactly ONE figure ONLY. Single front three-quarter full body pose. DO NOT include second pose or back view. Pixel style reference2 only, not its identity. No net.",
+    "frontOnly": false
+  },
+  {
+    "id": 1,
+    "file": "exec-32622d7f-44d6-4615-8dbe-10dea06eb7a3.png",
+    "prompt": "Create ONE full-body original GAON battle character. First reference is IDENTITY numbered map sprite, second is exact battle STYLE reference. Match the second reference's silhouette and roughly4.5-head proportions, head ~24% of height, broad hands and boots, friendly confident gesturing battle stance. Coarse square pixel art as a64x96 bitmap magnified16x nearest neighbor: thick stepped dark outlines, large uniform pixel blocks,3 flat shades per material, NO dithering/tiny details/smooth shading. Entire body visible with margin, transparent alpha background no glow/no scene. NO balls of any kind, NO Pokeballs/franchise emblems. Empty hands gesture. Do NOT draw reference hero. Character 1: young girl, brown side ponytail with red ribbon, red jacket cream blouse, blue short skirt and brown boots. Exactly ONE figure ONLY. Single front three-quarter full body pose. DO NOT include second pose or back view. Pixel style reference2 only, not its identity. No net.",
+    "frontOnly": false
+  },
+  {
+    "id": 3,
+    "file": "exec-f57524a5-d247-4837-be67-0b37caa08583.png",
+    "prompt": "Create ONE full-body original GAON battle character. First reference is IDENTITY numbered map sprite, second is exact battle STYLE reference. Match the second reference's silhouette and roughly4.5-head proportions, head ~24% of height, broad hands and boots, friendly confident gesturing battle stance. Coarse square pixel art as a64x96 bitmap magnified16x nearest neighbor: thick stepped dark outlines, large uniform pixel blocks,3 flat shades per material, NO dithering/tiny details/smooth shading. Entire body visible with margin, transparent alpha background no glow/no scene. NO balls of any kind, NO Pokeballs/franchise emblems. Empty hands gesture. Do NOT draw reference hero. Character 3 from map reference: elderly grandfather, grey short hair and moustache, rust-brown vest over cream shirt, dark brown trousers and boots",
+    "frontOnly": false
+  },
+  {
+    "id": 4,
+    "file": "exec-31b9bec3-8233-4cb5-a441-9a9748d297cf.png",
+    "prompt": "Create ONE full-body original GAON battle character. First reference is IDENTITY numbered map sprite, second is exact battle STYLE reference. Match the second reference's silhouette and roughly4.5-head proportions, head ~24% of height, broad hands and boots, friendly confident gesturing battle stance. Coarse square pixel art as a64x96 bitmap magnified16x nearest neighbor: thick stepped dark outlines, large uniform pixel blocks,3 flat shades per material, NO dithering/tiny details/smooth shading. Entire body visible with margin, transparent alpha background no glow/no scene. NO balls of any kind, NO Pokeballs/franchise emblems. Empty hands gesture. Do NOT draw reference hero. Character 4 from map reference: young nurse woman, brown bob hair, white nurse cap with simple blue cross, white dress with sky-blue trim and white shoes",
+    "frontOnly": true
+  },
+  {
+    "id": 5,
+    "file": "exec-b741c4fa-a554-433f-aefa-9b8447d4f6d5.png",
+    "prompt": "Create ONE full-body original GAON battle character. First reference is IDENTITY numbered map sprite, second is exact battle STYLE reference. Match the second reference's silhouette and roughly4.5-head proportions, head ~24% of height, broad hands and boots, friendly confident gesturing battle stance. Coarse square pixel art as a64x96 bitmap magnified16x nearest neighbor: thick stepped dark outlines, large uniform pixel blocks,3 flat shades per material, NO dithering/tiny details/smooth shading. Entire body visible with margin, transparent alpha background no glow/no scene. NO balls of any kind, NO Pokeballs/franchise emblems. Empty hands gesture. Do NOT draw reference hero. Character 5: male shopkeeper, black swept hair, navy shirt and ochre apron, dark trousers brown boots. Exactly ONE figure ONLY. Single front three-quarter full body pose. DO NOT include second pose or back view. Pixel style reference2 only, not its identity. No net.",
+    "frontOnly": false
+  },
+  {
+    "id": 6,
+    "file": "exec-2ea3561b-199e-4a99-b17c-fbbf25c52a61.png",
+    "prompt": "NaN from map reference: male hiker, dark green brimmed hat, orange outdoor jacket, dark brown trousers, hiking boots and backpack. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep the clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 7,
+    "file": "exec-b79fd67c-3162-4ab3-a386-80e913b0346d.png",
+    "prompt": "NaN from map reference: motherly adult woman, short chestnut brown bob, purple cardigan over cream blouse, plum long skirt and brown shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep the clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 8,
+    "file": "exec-d22f4c66-b12d-45e1-a8aa-78f2c2e437eb.png",
+    "prompt": "NaN from map reference: young male ranger, auburn hair orange headband, olive green jacket over orange shirt, brown trousers and boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep the clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 9,
+    "file": "exec-30da3b3b-f87d-4e6f-9de9-1f9c83ebc066.png",
+    "prompt": "Match map NPC 9: straw hat green band, cream shirt green vest and shorts, net; coarse 64x96 battle style matching user references."
+  },
+  {
+    "id": 11,
+    "file": "exec-cb227ae7-fb6c-40e5-b171-9e09dc94e8df.png",
+    "prompt": "NaN from map reference: young fisherman, teal cap, cream sleeveless fishing vest over dark blue shirt, brown trousers and boots, fishing rod. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep the clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 12,
+    "file": "exec-5a35c737-4fec-40f4-9dee-330e3538a41c.png",
+    "prompt": "NaN from map reference: young male sailor, brown hair, white sailor cap with blue brim and gold emblem, blue sailor uniform with red neckerchief, blue trousers and dark boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep the clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 13,
+    "file": "exec-cfa16481-a40f-4fd7-87de-246a1d8dcab4.png",
+    "prompt": "NaN from map reference: young male miner, brown hair yellow mining helmet with round lamp, cream shirt under brown overalls, brown work boots, small pickaxe. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 15,
+    "file": "exec-4f5cf628-36b0-44ad-9887-861b2ca97c23.png",
+    "prompt": "NaN from map reference: young mountaineer woman, brown ponytail, blue winter jacket and trousers with red scarf and dark boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 16,
+    "file": "exec-a1f4c0d0-bad9-4532-a7ea-15e125e65cc3.png",
+    "prompt": "NaN from map reference: male chef, short brown hair, tall white toque, white chef coat and trousers red neckerchief, black shoes, wooden spoon. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 17,
+    "file": "exec-0b05b20d-f32a-4007-8e0a-aad673f20f27.png",
+    "prompt": "NaN from map reference: young courier boy, brown hair red cap, red jacket cream shirt, ochre trousers, brown boots, small shoulder delivery bag. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 18,
+    "file": "exec-8d7913a0-454f-446b-9450-8364c70d2347.png",
+    "prompt": "NaN from map reference: young male painter, brown hair purple beret, yellow neckscarf, blue artist jacket and brown trousers, palette and brush. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 20,
+    "file": "exec-e456a8f0-2378-438e-8155-021e0e74c1b5.png",
+    "prompt": "NaN from map reference: athletic teen boy, tall spiky auburn hair, white sleeveless sports top with blue trim and blue shorts, blue trainers. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 21,
+    "file": "exec-cfcefeb7-a952-4278-a77f-1caf46c181f6.png",
+    "prompt": "NaN from map reference: young martial artist male, black spiky hair, white karate gi black belt, bare feet. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 22,
+    "file": "exec-932737cc-f63f-486e-9382-89fc0b11eeee.png",
+    "prompt": "NaN from map reference: male school student, brown sidepart hair, navy uniform jacket with gold buttons, dark trousers and brown shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 23,
+    "file": "exec-be81c956-c19f-40c7-ac67-331483ba5683.png",
+    "prompt": "NaN from map reference: elderly grandmother, lavender grey hair in high bun, purple blouse, long navy skirt and dark shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 24,
+    "file": "exec-d6863233-84cf-464f-9b0a-ce68d2105847.png",
+    "prompt": "NaN from map reference: adult office man, wavy navy black hair, dark navy suit, white shirt yellow tie and black shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 25,
+    "file": "exec-1ccda083-a725-4f1d-9dab-7176db30f3f9.png",
+    "prompt": "NaN from map reference: ranch woman, golden brown hair under cowboy hat, red checked shirt yellow bandanna, blue overalls and brown boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 26,
+    "file": "exec-7d088b67-d66a-476f-9255-4ed9b17a23be.png",
+    "prompt": "NaN from map reference: young female animal keeper, brown bob, headband with pale catlike ears as seen in map26, green coat over cream blouse and dark brown trousers and boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 27,
+    "file": "exec-d8548957-f57a-4b95-85a3-826d977838d5.png",
+    "prompt": "NaN from map reference: adventurous girl, brown high ponytail with red ribbon, red short sleeve jacket and cream blouse, brown shorts and brown boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 28,
+    "file": "exec-763634bb-49fc-44e3-bb68-4b45e8c79255.png",
+    "prompt": "NaN from map reference: young male ace, spiky silver lavender hair, long black coat with purple cuffs and trim, dark trousers and boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 29,
+    "file": "exec-5d009aa9-a7db-4c33-9cf4-4bf30f12d527.png",
+    "prompt": "NaN from map reference: female dancer, vivid magenta high ponytail, turquoise and gold cropped dancer costume, turquoise flowing trousers, golden shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 30,
+    "file": "exec-db013be6-38ef-47ab-8514-9cba0effeda3.png",
+    "prompt": "NaN from map reference: stocky middle-aged man with round belly, green cap, brown vest over orange shirt, dark brown trousers and boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 31,
+    "file": "exec-16c643e0-6507-461f-83e2-67be0bd6e812.png",
+    "prompt": "NaN from map reference: elderly woman trainer, short grey bob and round glasses, purple cardigan over cream shirt, dark brown trousers and shoes. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 32,
+    "file": "exec-5619a950-141b-4f08-9404-424f1aef4778.png",
+    "prompt": "NaN from map reference: child trainer boy, black hair under green cap, orange vest over cream shirt, blue trousers brown boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  },
+  {
+    "id": 33,
+    "file": "exec-be75608c-1e66-45d9-baff-a341660b0ea0.png",
+    "prompt": "NaN from map reference: elderly male trainer, grey hair brown flat cap, olive green vest cream shirt, brown trousers and boots. Exactly ONE single front three-quarter pose, no second/back view. Reference2 is ONLY pixel style and proportions; keep clothing identity specified.",
+    "frontOnly": false
+  }
+]

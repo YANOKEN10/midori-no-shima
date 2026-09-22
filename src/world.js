@@ -12,7 +12,6 @@ import {landscape98} from './landscapeLayers98.mjs';
 import {deenaReady94,deenaGuide94,recordDeenaVisit94} from './deenaQuest94.mjs';
 import {openMoveReminder92} from './moveLearning92.mjs';
 import {isTree83} from './treeFootprint83.mjs';
-import {drawResources80} from './resource80.js';
 import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './economy79.js';
 import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
@@ -1079,7 +1078,8 @@ export const world = {
     const frame = Math.floor(this.tick / 500) % 2;
     const x0 = Math.floor(camX / T), y0 = Math.floor(camY / T);
     const fullBackdrop = map.tileWorld ? drawChapterMap(G.ctx,map,camX,camY) : map.fullArt && drawWorldBackdrop(G.ctx, map.fullArt, camX, camY, mw * T, mh * T);
-    drawResources80(G.ctx,map,State.save,camX,camY);
+
+    // Resource rocks use the same scene sprites as the workshop.
     drawMarineAtmosphere(G.ctx,map,camX,camY,this.tick,State.save);
     drawVoyageOverlay(G.ctx,map,camX,camY,State.save,this.tick);
     if (map.fullArt && !fullBackdrop) {

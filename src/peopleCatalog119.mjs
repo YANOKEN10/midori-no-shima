@@ -5,5 +5,5 @@ export const PALETTE_BASES119=[['winter-boy','冬の旅人（男）',34],['winte
 export const GIRL_VARIANTS119=['紺のロング','緑のポニーテール','黄のツインテール','紫のCカール','青緑のお団子','桃のセンター分け','白の耳かけショート','深紅のぱっつんボブ','水色の外はねボブ','橙の三つ編み'];
 export const ADDITIONAL_PEOPLE119=[...NEW_PEOPLE119.map((label,i)=>({label,key:'new-'+i})),...PALETTE_BASES119.flatMap(([base,label])=>PALETTES119.slice(1).map(([color,name])=>({label:label+'（'+name+'）',key:'palette-'+base+'-'+color}))),...GIRL_VARIANTS119.map((label,i)=>({label:'冒険少女（'+label+'）',key:'girl-variant-'+String(i+1).padStart(2,'0')})),{label:'ヤノケン',key:'yanoken'},{label:'ライバル（迷彩ジャケット）',key:'rival-camo'},...['女の子の霊','おじいさんの霊','白い服の長髪の霊'].map((label,i)=>({label,key:'ghost139-'+['girl','elder','white'][i]}))];
 export function personKey119(variant){return Number.isInteger(variant)&&variant>=34?ADDITIONAL_PEOPLE119[variant-34]?.key:variant>=0&&variant<34?'npc-'+String(variant).padStart(2,'0'):null;}
-export function battleKey119(variant){const base=PALETTE_BASES119.find(b=>b[2]===variant);return base?'palette-'+base[0]+'-original':variant>=34?personKey119(variant):null;}
+export function battleKey119(variant){const base=PALETTE_BASES119.find(b=>b[2]===variant);return base?'palette-'+base[0]+'-original':personKey119(variant);}
 export const OUTFITS119=[['default','いつもの服'],...NEW_PEOPLE119.map((label,i)=>['new-'+i,label])];
