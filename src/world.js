@@ -1,3 +1,4 @@
+import {talkCells135} from './counterTalk135.mjs';
 import {recoveryPoint126} from './recoveryPoint126.mjs';
 import {enterRival122,refreshRival122,tickRival122,runRivalEvent122} from './rivalStory122.js';
 import {walkWithFollower121,followerMood121,takeFollowerFind121,facingFollower121} from './followerBond121.mjs';
@@ -540,8 +541,7 @@ export const world = {
 
     if(this.mapId==='playerShop79'&&ty<=7){this.busy=true;ownShop79(State.save.backTo?.map).finally(()=>this.busy=false);return;}
     const mine=miningTarget79(this.map,tx,ty);if(mine){this.busy=true;miningMenu79(this,mine).finally(()=>this.busy=false);return;}
-    const counter=this.map.room?.furniture.some(([kind,x,y,w,h])=>['counter','shop-counter106','tower-counter123','galaxy-counter123'].includes(kind)&&tx>=x&&tx<x+w&&ty>=y&&ty<y+h);
-    const n = this.npcAt(tx, ty) || (counter ? (this.npcAt(tx+dx,ty+dy)||this.npcAt(tx+dx*2,ty+dy*2)) : null);
+    const n = talkCells135(this.map,Math.round(this.x),Math.round(this.y),dx,dy).map(([x,y])=>this.npcAt(x,y)).find(Boolean);
     if (n) { n.moving=false;n.ox=n.oy=0;n.roamWait=2200;n.dir=({up:"down",down:"up",left:"right",right:"left"})[this.dir];this.busy = true; this.runNpc(n).then(() => { this.busy = false; }); return; }
 
     const it = (this.map.items || []).find((i) => i.x === tx && i.y === ty && !flag(i.flag));

@@ -1,0 +1,4 @@
+const directions=[[0,-1],[0,1],[-1,0],[1,0]];
+export function counterAt135(map,x,y){return [...(map.room?.furniture||[]),...(map.editorAddedFurniture72||[]),...(map.editorStyledFurniture73||[]).map(e=>e.f)].some(([k,a,b,w,h])=>/^(?:counter|counter84|shop-counter106|tower-counter123|galaxy-counter123)$/.test(k)&&x>=a&&x<a+w&&y>=b&&y<b+h);}
+export function talkCells135(map,x,y,dx,dy){const out=[[x+dx,y+dy]];if(!counterAt135(map,x+dx,y+dy))return out;for(let n=2;n<=6;n++){const a=x+dx*n,b=y+dy*n;if(!counterAt135(map,a,b)){if(map.rows[b]?.[a]!==undefined&&!/^[TRMW#rwSX=cbtKVPsL]$/.test(map.rows[b][a]))out.push([a,b]);break;}}return out;}
+export function reachableTalk135(map,actor,reach){return directions.some(([dx,dy])=>{for(let n=1;n<=6;n++){const x=actor.x-dx*n,y=actor.y-dy*n;if(reach.has(x+','+y)&&talkCells135(map,x,y,dx,dy).some(([a,b])=>a===actor.x&&b===actor.y))return true;}return false;});}
