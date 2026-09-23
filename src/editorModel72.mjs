@@ -58,6 +58,7 @@ export function catalog(maps,species){
  props.push({key:'reminderHouse96',label:'思い出し屋（黄色い屋根）',art:'reminderHouse96',w:5,h:5,building:'building83-reminderHouse96',source:'rods'},{key:'house',label:'家（室内つき）',art:'chalet',w:5,h:5,building:'house',source:'village'},{key:'shop',label:'ショップ（室内つき）',art:'harborShop',w:5,h:5,building:'shop',source:'rods'},{key:'hospital',label:'ガオン病院',art:'chaletClinic',w:5,h:5,building:'hospital',source:'rods'});
  for(const p of props.filter(p=>p.building)){const original=Object.values(maps).flatMap(m=>m.props||[]).find(o=>o.art===p.art&&o.w===p.w&&o.h===p.h&&o.door);p.doorOffset=original?[original.door.x-original.x,original.door.y-original.y]:[2,4];}
  props.push(...['rural','road','mountain'].map((n,i)=>({key:'active83-'+n,art:'active83-'+n,label:['町の草むら（使用中）','道路の草むら（使用中）','山の草むら（使用中）'][i],w:1,h:1,group:'grass',walkable:true,tile:'"',source:'village'})),{key:'resource83-blue-tree',art:'resource83-blue-tree',label:'青い素材木（広葉樹）',w:2,h:3,source:'village'},{key:'resource83-blue-rock',art:'resource83-blue-rock',label:'青い採掘岩（使用中）',w:1,h:1,source:'mountain'});
+ props.push({key:'border-rock155',art:'rock',label:'外周の丸い石',w:1,h:1,tile:'R',group:'rock',source:'resure'});
  props.push({key:'standing-sign152',label:'立て看板（文章編集）',art:'standing-sign152',w:1,h:1,tile:'S',source:'manikereo'});
  props.push({key:'sign82',label:'木製の看板（使用中・文章編集）',art:'sign',w:1,h:1,source:'village'});
  props.push({key:'wall79',label:'外周の壁',art:'wall79',w:1,h:1,tile:'X'});
