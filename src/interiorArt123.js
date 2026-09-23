@@ -20,6 +20,7 @@ export function floor123(c,map){const r=map.room,W=map.rows[0].length,H=map.rows
  }
 
  if(!ruin&&!ship){const[x,y,w,h]=r.rug;a.fillStyle=galaxy?'#a8b7cf':'#dac888';a.fillRect(x*16,y*16,w*16,h*16);a.fillStyle=galaxy?'#635981':'#b8ac70';a.fillRect(x*16+2,y*16+2,w*16-4,h*16-4);a.strokeStyle=galaxy?'#c6d5ed':'#efe1ab';a.lineWidth=1;a.strokeRect(x*16+5.5,y*16+5.5,w*16-11,h*16-11);if(map.interior123==='arena'){a.strokeRect((x+w/2)*16-16.5,(y+h/2)*16-16.5,33,33);a.fillStyle=galaxy?'#b4cce2':'#ede2b4';a.fillRect(x*16+6,(y+h/2)*16,w*16-12,1);}}
+ for(const [x,y] of map.cabinDoors160||[]){a.fillStyle='#e0c46e';a.fillRect(x*16,y*16+6,32,4);a.fillStyle='#795631';a.fillRect(x*16,y*16+10,32,2);}
  for(const wp of map.warps){a.fillStyle=ruin?'#ab4945':galaxy?'#afa0cd':'#e0c46e';a.fillRect(wp.x*16,wp.y*16,16,6);}
  c.save();c.imageSmoothingEnabled=false;c.drawImage(cv,0,0,W*32,H*32);c.restore();
 }
