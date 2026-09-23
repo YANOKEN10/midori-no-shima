@@ -1,3 +1,4 @@
+import {drawDungeonWall165} from './dungeonWall165.mjs';
 import {drawPortShore163} from './portLayout163.mjs';
 import {drawTownArt152} from './townArt152.js';
 import {exitRoadView137} from './exitRoad137.mjs';
@@ -100,12 +101,7 @@ function drawChapterBase72(ctx,map,camX,camY){
   if(ch==='X'||ch==='R'){
    if(map.maze61){
     const ruin=map.theme==='ruins',solid=(xx,yy)=>['R','X'].includes(map.rows[yy]?.[xx]);
-    c.fillStyle=ruin?'#6b6878':'#344252';c.fillRect(dx,dy,32,32);
-    c.fillStyle=ruin?'#858293':'#435267';
-    for(let yy=0;yy<32;yy+=16){c.fillRect(dx+1,dy+yy+1,30,2);c.fillRect(dx+((y*2+yy/16)%2?8:23),dy+yy+3,1,12);}
-    if(!solid(x,y+1)){c.fillStyle=ruin?'#343342':'#19232f';c.fillRect(dx,dy+21,32,11);c.fillStyle=ruin?'#a09aab':'#647083';c.fillRect(dx,dy+20,32,2);}
-    if(!solid(x-1,y)){c.fillStyle='#242d36';c.fillRect(dx,dy,2,32);}
-    if(!solid(x+1,y)){c.fillStyle='#242d36';c.fillRect(dx+30,dy,2,32);}
+    drawDungeonWall165(c,ruin,dx,dy,{front:!solid(x,y+1),left:!solid(x-1,y),right:!solid(x+1,y)});
    }else drawMaterial(c,'rock',dx,dy,32,32);
   }
   if(ch==='S')drawMaterial(c,'sign',dx,dy,32,32);
