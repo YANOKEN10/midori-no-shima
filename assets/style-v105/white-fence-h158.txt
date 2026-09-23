@@ -1,0 +1,6 @@
+Built-in image_gen generation, 2026-09-23.
+Reference: white-fence-v106.png (post shape, coarse pixels); white-fence-h106.png (replacement target).
+Prompt: One horizontal white fence tile on transparent background, matching the vertical fence's faceted white/gray post, dark outline and coarse 32x32 logical pixel grid. Two horizontal rails join across tile edges. Limited 8 colors, no antialiasing or fine texture.
+Source: C:/Users/voraz/.codex/generated_images/01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8/exec-9591b7d8-dc67-4b19-b870-f004b954bfb2.png
+Normalization: crop (243,486,768,768), nearest-neighbor 32x32, 8-color PNG, alpha retained.
+Output: white-fence-h158.png

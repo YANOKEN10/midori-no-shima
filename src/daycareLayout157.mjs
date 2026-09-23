@@ -9,3 +9,8 @@ export function upgradeDaycare157(base,d){
  for(let y=15;y<=16;y++)for(let x=9;x<=11;x++)tiles.set(x+','+y,{x,y,material:'tile',color115:'#c78b70'});
  return {...d,daycare157:true,objects,tiles:[...tiles.values()],actors:d.actors.map(a=>a.id==='n:0'?{...a,x:7,y:5,dir:'down',mode:'still'}:a)};
 }
+
+export function upgradeDaycareWalls158(base,d){
+ if(base.id!=='daycare'||d.daycareWalls158)return d;
+ return {...d,daycareWalls158:true,objects:d.objects.map(o=>o.id.startsWith('a:daycare157-')&&!o.stored79&&o.y===1&&((o.template==='wall-clock86'&&o.x===7)||(o.template==='wall-frame86'&&o.x===17))?{...o,y:0}:o)};
+}
