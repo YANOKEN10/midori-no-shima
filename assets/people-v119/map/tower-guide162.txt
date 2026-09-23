@@ -1,0 +1,2 @@
+Source: C:/Users/voraz/.codex/generated_images/01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8/exec-26858a06-47f8-4694-a873-0ba41d96253d.png
+Built-in imagegen; user reference exec-e360556d-b3e2-41ed-a9c1-08af28e70af2.png. Pink bob-haired adult female guide, navy business suit, white collar, skirt and black shoes. Match reference chibi head ratio and coarse pixels. Four columns down/left/right/up; rows walk A/standing/walk B; transparent background. Normalize each visible sprite within 28x44 pixels on 32x48 cells, nearest neighbor, 24 colors.
