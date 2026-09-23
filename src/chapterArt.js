@@ -113,7 +113,8 @@ function drawChapterBase72(ctx,map,camX,camY){
   continue;
  }
  const groundCh=ch==='S'?(map.signs.find(s=>s.x===x&&s.y===y)?.ground||','):ch;
- const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
+ if(map.grassBase151&&ch!=='W')ground(c,'grass',dx,dy);
+ const base=groundCh==='.'?'path':ch==='W'?'river':ch==='H'||ch==='h'?'path':'grass';if(!map.grassBase151||ch==='W')if(!['grass','path'].includes(base)||!landscape(c,map,x,y,groundCh))ground(c,base,dx,dy);
  if(drawMarineTile(c,map,x,y,ch)){if(!(map.alpineRoute65&&ch==='d'))drawRoad(c,map,x,y);continue;}
  if(groundCh==='.'&&roadStyle(map)){ground(c,'grass',dx,dy);drawRoad(c,map,x,y);}
  
@@ -136,7 +137,7 @@ function drawChapterBase72(ctx,map,camX,camY){
  for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)visited.add(i+','+j);c.drawImage(tileFor(ch,0,null,255,0,0,x,y),x*32,y*32,w*32,h*32);
  }}
  if(map.biome)marineForest(c,map);else if(map.id==='mountain')mountainForest(c,map);else forestCanopy(c,map);
- drawEditorGround72(c,map,drawMaterial);
+ drawEditorGround72(c,map,drawMaterial);if(map.grassBase151)for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++)if(map.rows[y][x]==='"')drawBiomeGrass(c,map,x*32,y*32);
  // Native signs are objects above painted floors, just like placed sign props.
  for(const s of map.signs||[])if(s.editorSign82?.startsWith('g:'))drawMaterial(c,'sign',s.x*32,s.y*32,32,32);
  for(const p of map.editorObjects78||[])if(p.id.startsWith('g:')&&p.art==='fenceHorizontal'&&!p.turn81&&!p.color115)drawMaterial(c,p.art,p.x*32,p.y*32,32,32);

@@ -11,7 +11,7 @@ export function upgradeResureEntrances153(base,d){
 export function resureEntrances153(map){
  if(map.id!=='resure')return map;
  let changed=false;map.warps=map.warps.map(w=>{if(w.to==='route11'&&w.y===0&&[29,30].includes(w.x)&&!w.editorLink75){changed=true;return {...w,x:w.x-20};}return w;});
- if(changed){for(const key of ['rows','editorVisualRows73'])if(map[key]){const grid=map[key].map(r=>[...r]);for(const x of [29,30])grid[0][x]='R';for(const x of [9,10])for(let y=0;y<3;y++)grid[y][x]=y===0&&key==='rows'?'D':',';map[key]=grid.map(r=>r.join(''));}map.editorGround72=(map.editorGround72||[]).filter(t=>!(t.y===0&&[29,30].includes(t.x)));}
+ if(changed){for(const key of ['rows','editorVisualRows73'])if(map[key]){const grid=map[key].map(r=>[...r]);for(const x of [29,30])grid[0][x]=(map.editorObjects78||[]).some(o=>o.x===x&&o.y===0&&/rock/i.test(o.art))?'R':',';for(const x of [9,10])for(let y=0;y<3;y++)grid[y][x]=y===0&&key==='rows'?'D':',';map[key]=grid.map(r=>r.join(''));}map.editorGround72=(map.editorGround72||[]).filter(t=>!(t.y===0&&[29,30].includes(t.x)));}
  return map;
 }
 
