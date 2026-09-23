@@ -11,6 +11,7 @@ export function drawVoyageTile(c,map,x,y,ch){
  c.fillStyle=nursery?'#c6aa76':'#997348';c.fillRect(dx,dy+15,32,1);c.fillRect(dx,dy+31,32,1);c.fillRect(dx+(y%2?8:23),dy,1,15);c.fillRect(dx+(y%2?23:8),dy+16,1,15);
  if(!nursery&&x>=14&&x<=18){c.fillStyle=map.openDeck?'#a77b4d':'#355b6b';c.fillRect(dx,dy,32,32);if(x===14||x===18){c.fillStyle='#c8ad71';c.fillRect(dx+(x===14?2:28),dy,2,32);}if(y%2===0){c.fillStyle=map.openDeck?'#b18a59':'#426877';c.fillRect(dx+5,dy+12,22,1);}}
  if(ch==='X'){c.fillStyle=map.openDeck?'#397c94':nursery?'#637c60':'#254c63';c.fillRect(dx,dy,32,32);c.fillStyle=nursery?'#e4d6ae':'#e8ddbe';c.fillRect(dx,dy+5,32,4);c.fillRect(dx,dy+25,32,4);c.fillRect(dx+3,dy,3,32);c.fillStyle='#bc944b';c.fillRect(dx,dy+4,32,1);}
+ if(map.daycare157&&ch==='X'){c.fillStyle='#eabda9';c.fillRect(dx,dy,32,32);c.fillStyle='#9e7153';c.fillRect(dx,dy+22,32,10);c.fillStyle='#d3a079';c.fillRect(dx,dy+22,32,3);c.fillStyle='#f5d9c6';c.fillRect(dx+4,dy+6,4,4);}
  if(ch==='x'){c.fillStyle='#315e76';c.fillRect(dx+1,dy+1,30,30);c.fillStyle='#d6bb78';c.fillRect(dx+3,dy+3,26,2);c.fillRect(dx+3,dy+27,26,2);}
 }
 export function drawVoyageOverlay(c,map,camX,camY,save,tick){
