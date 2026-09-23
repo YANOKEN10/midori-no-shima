@@ -1,0 +1,2 @@
+Generated with built-in imagegen using ship-chair85.png as reference. Prompt: Rear view of the exact gold wood and navy upholstered chair, facing north toward a desk; backrest foreground, seat behind; coarse 32px RPG pixel art, transparent background. Source: C:/Users/voraz/.codex/generated_images/01a0769c-78fb-7fe0-aaeb-5f2d7bff6ca8/exec-dbc575c4-6983-48b3-bcd6-c24828aad945.png
+Normalization: trim transparent margins, nearest-neighbor 22x32 pixels, 16-color palette, no dithering. Display footprint 1x1 map cell; original forward-facing asset preserved.
