@@ -1,3 +1,4 @@
+import './languageUI166.js';
 import {welcome102} from './welcome102.js';
 import {professorIntro,introduceAdventure} from "./professorIntro70.js";
 import { battleArt } from './data/battleart.js';

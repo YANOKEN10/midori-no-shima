@@ -1,3 +1,4 @@
+import {t166,languageRevision166} from './i18n166.mjs';
 import {drawWindow123} from './windowArt123.js';
 // ============================================================
 //  えがく どうぐ
@@ -206,18 +207,19 @@ export function markFontReady() { fontReady = true; fontRev++; }
 export function fontOk() { return fontReady; }
 // フォントが よみこまれると 文字の はばが かわるので、
 // おりかえしを やりなおす めじるしに つかいます
-export function fontRevision() { return fontRev; }
+export function fontRevision() { return fontRev+languageRevision166()*100000; }
 
 export function setFont(size) {
   ctx.font = '700 '+(size || 15) + 'px "M PLUS Rounded 1c", "DotGothic16", sans-serif';
   ctx.textBaseline = "top";
 }
 export function text(str, x, y, c, size) {
+  str=t166(str);
   setFont(size);
   ctx.fillStyle = PAL[c == null ? 3 : c];
   ctx.fillText(str, x | 0, y | 0);
 }
-export function textW(str, size) { setFont(size); return ctx.measureText(str).width; }
+export function textW(str, size) { setFont(size); return ctx.measureText(t166(str)).width; }
 export function textRight(str, x, y, c, size) { text(str, x - textW(str, size), y, c, size); }
 export function textCenter(str, cx, y, c, size) { text(str, cx - textW(str, size) / 2, y, c, size); }
 
@@ -231,7 +233,7 @@ const NO_LINE_END = "「『（〔【〈《“‘";
 
 export function wrap(str, maxW, size) {
   const out = [];
-  for (const para of String(str == null ? "" : str).split("\n")) {
+  for (const para of t166(str).split("\n")) {
     let line = "";
     const flush = () => { out.push(line.replace(/\s+$/, "")); line = ""; };
 
@@ -266,7 +268,7 @@ export function wrap(str, maxW, size) {
 
 // はみ出す文字を「…」で つめる
 export function fitText(str, maxW, size) {
-  let s = String(str == null ? "" : str);
+  let s = t166(str);
   if (textW(s, size) <= maxW) return s;
   while (s.length > 1 && textW(s + "…", size) > maxW) s = s.slice(0, -1);
   return s + "…";

@@ -1,0 +1,30 @@
+import {PLACES166} from './i18n/places166.mjs';
+import {MOVE_NAMES166} from './i18n/moves166.mjs';
+import {EXTRA166,EXTRA_PATTERNS166} from './i18n/extra166.mjs';
+import {NAMES166} from './i18n/names166.mjs';
+import {EN166,PATTERNS166} from './i18n/en166.mjs';
+import {STORY166} from './i18n/story166.mjs';
+const KEY='gaon:language';
+let locale='ja',revision=0;
+try{const saved=globalThis.localStorage?.getItem(KEY);if(saved==='en')locale='en';}catch{}
+const normalize=s=>String(s).normalize('NFKC').replace(/[\s\u3000]+/g,'');
+const dictionary=new Map([...EN166,...STORY166,...EXTRA166,...PLACES166,...NAMES166,...MOVE_NAMES166].map(([ja,en])=>[normalize(ja),en]));
+const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const patterns=[...EXTRA_PATTERNS166,...PATTERNS166].map(([ja,en])=>{
+ const parts=ja.normalize('NFKC').split(/(\{\d+\})/);
+ return {en,re:new RegExp('^\\s*'+parts.map(p=>/^\{\d+\}$/.test(p)?'(.+?)':Array.from(p.replace(/\s/g,'')).map(escape).join('\\s*')).join('\\s*')+'\\s*$')};
+});
+const cache=new Map();
+export const language166=()=>locale;
+export const languageRevision166=()=>revision;
+export function setLanguage166(next){if(!['ja','en'].includes(next))return false;if(next===locale)return true;locale=next;revision++;cache.clear();try{globalThis.localStorage?.setItem(KEY,next);}catch{}if(typeof window!=='undefined')window.dispatchEvent(new Event('gaon:language'));return true;}
+export function registerNames166(pairs){for(const [ja,en]of pairs)dictionary.set(normalize(ja),en);cache.clear();}
+export function t166(value,depth=0){
+ const source=String(value??'');if(locale!=='en'||!/[\u3040-\u30ff\u3400-\u9fff]/.test(source))return source;
+ if(cache.has(source))return cache.get(source);
+ const key=normalize(source);let result=dictionary.get(key);
+ if(!result&&depth<3){for(const p of patterns){const m=source.normalize('NFKC').match(p.re);if(m){result=p.en.replace(/\{(\d+)\}/g,(_,i)=>t166(m[+i+1].trim(),depth+1));break;}}}
+ // Party and move lists retain their canonical keys and numeric suffixes.
+ if(!result){const m=source.match(/^(.+?)(\s+Lv\s*\d+.*|\s+[\d／/]+\s*PP.*)$/);if(m&&dictionary.has(normalize(m[1])))result=dictionary.get(normalize(m[1]))+m[2];}
+ result??=source;if(cache.size>4000)cache.clear();cache.set(source,result);return result;
+}

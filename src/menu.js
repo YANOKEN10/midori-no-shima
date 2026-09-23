@@ -1,3 +1,4 @@
+import {language166,setLanguage166} from './i18n166.mjs';
 import {canonicalTrainingItem125} from './training122.mjs';
 import {showSummary124,showGrowth124} from './summary124.js';
 import {drawMoveCell123} from './windowArt123.js';
@@ -290,10 +291,12 @@ export async function settingsMenu() {
       "がめんの いろ",
       isMuted() ? "おと：きれています" : "おと：なっています",
       cloud.signedIn ? "アカウント（" + cloud.who + "）" : "ログイン / とうろく",
+      "Language / 言語",
       "もどる",
     ];
     const i = await ui.choice(items, { x: 60, y: 60, w: 220 });
-    if (i < 0 || i === 3) return;
+    if (i < 0 || i === 4) return;
+    if(i===3){const j=await ui.choice(['日本語','English (Beta)'],{start:language166()==='en'?1:0});if(j>=0)setLanguage166(j?'en':'ja');continue;}
     if (i === 0) {
       const j = await ui.choice(["カラー（おすすめ）", "ゲームボーイ みどり", "ゲームボーイ グレー"], { x: 30, y: 100, w: 260 });
       if (j >= 0) {
