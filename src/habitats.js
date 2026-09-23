@@ -1,5 +1,6 @@
+import {waterPool150} from './encounterTerrain150.mjs';
 import {wildWindow91,filterWild91} from './wildAvailability91.mjs';
-import {waterEncounters,scheduleForMap} from './scheduledEncounters62.js';
+import {scheduleForMap} from './scheduledEncounters62.js';
 import {MAPS} from './data/maps.js';
 import {canonicalName} from './data/redesignV47.js';
 import {ordinaryEncounters,RARE_RULES} from './rareEncounters.js';
@@ -20,10 +21,10 @@ for(const map of Object.values(MAPS)){
  addPool(map,ordinaryEncounters(map.enc?.list,map.id,new Date(),'inactive'),rule?'outside-window':'ordinary');
  if(rule)addPool(map,ordinaryEncounters(map.enc?.list,map.id,new Date(),'active'),'scheduled');
  }
- if(map.boatWater&&map.rows.some(row=>row.includes('W'))){const rule=scheduleForMap(map.id,'water');addPool(map,filterWild91(waterEncounters(map.id,new Date(),'inactive'),new Date(),map.id,true),rule?'water-outside-window':'water');if(rule)addPool(map,filterWild91(waterEncounters(map.id,new Date(),'active'),new Date(),map.id,true),'water-scheduled');}
+ if(map.boatWater&&map.rows.some(row=>row.includes('W'))){const rule=map.waterEncountersConfigured150?null:scheduleForMap(map.id,'water');addPool(map,filterWild91(waterPool150(map,new Date(),'inactive'),new Date(),map.id,true),rule?'water-outside-window':'water');if(rule)addPool(map,filterWild91(waterPool150(map,new Date(),'active'),new Date(),map.id,true),'water-scheduled');}
  for(const npc of map.npcs||[]){if(events[npc.script])add(events[npc.script],map,'event');if(npc.script==='legend'&&npc.legend?.name)add(npc.legend.name,map,'event');}
 }
-for(const rule of RARE_RULES)add(rule.name,MAPS[rule.map],'rare',rule.rate);
+for(const rule of RARE_RULES)if(!MAPS[rule.map]?.encountersConfigured86)add(rule.name,MAPS[rule.map],'rare',rule.rate);
 export function habitatEntries(name){return (habitats.get(canonicalName(name))||[]).map(e=>({...e}));}
 export function habitatNames(name){return [...new Set(habitatEntries(name).map(e=>e.mapName))];}
 export function habitatRateLabel(entry){if(entry.window91)return entry.window91+'のみ：遭遇時'+Number((entry.rate*100).toFixed(2))+'％';

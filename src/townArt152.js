@@ -1,0 +1,3 @@
+const paving=new Image(),sign=new Image();paving.src=new URL('../assets/town-v152/herringbone.png',import.meta.url).href;sign.src=new URL('../assets/town-v152/standing-sign.png',import.meta.url).href;
+export const townArtReady152=()=>paving.complete&&paving.naturalWidth>0&&sign.complete&&sign.naturalWidth>0;
+export function drawTownArt152(c,key,x,y,w=32,h=32){const im=key==='herringbone152'?paving:key==='standing-sign152'?sign:null;if(!im?.complete||!im.naturalWidth)return false;c.imageSmoothingEnabled=false;if(key==='herringbone152'){const sx=((Math.floor(x/32)%2)+2)%2*32,sy=((Math.floor(y/32)%2)+2)%2*32;c.drawImage(im,sx,sy,32,32,x,y,w,h);}else c.drawImage(im,x,y,w,h);return true;}

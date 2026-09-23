@@ -1,3 +1,4 @@
+import {encounterRate150,waterPool150} from './encounterTerrain150.mjs';
 import {drawPickup139} from './pickupArt139.js';
 import {stepGhost139,npcBlocks139,touchingSymbol139,beginSymbol139} from './ghost139.mjs';
 import {servicePeople136} from './serviceLayouts136.mjs';
@@ -16,7 +17,7 @@ import {economyMap79,drawLot79,miningTarget79,miningMenu79,ownShop79} from './ec
 import {canTraverse75,climbAt75} from './elevation75.mjs';
 import {drawRealtimeEnvironment,drawClockWeather} from './realtimeEnvironment68.js';
 import {filterWild91,wildAvailable91} from './wildAvailability91.mjs';
-import {waterEncounters,scheduledBattleOptions} from './scheduledEncounters62.js';
+import {scheduledBattleOptions} from './scheduledEncounters62.js';
 import {postgameCleared,refreshPostgame} from './postgame62.js';
 import {areaBgm,musicArea} from './musicPolicy.js';
 import {drawRoomStaff} from './roomAssets.js';
@@ -318,8 +319,8 @@ export const world = {
     recordBirth(State.save);
       if(State.save.daycare)saveLocal();
       const ch = tileAt(this.map, cellX, cellY);
-      // 野生ガオンは「濃い草むら (")」に足を踏み入れた時だけ出現する。
-      if (ch === '"' && this.map.enc && chance(this.map.enc.rate / 100) && !this.busy) {
+      // Use the same configured terrain and water rates as grid movement.
+      if (chance(encounterRate150(this.map,ch,State.save.boating) / 100) && !this.busy) {
         this.wildBattle();
       }
     }
@@ -424,10 +425,7 @@ export const world = {
     if(rare){await this.wildBattle(rare);return;}
     // やせいの モンスター
     const ch = tileAt(this.map, this.x, this.y);
-    const enc = this.map.enc;
-    if ((State.save.boating&&ch==='W') || enc && (ch === '"' || enc.encAll || (this.map.kind === "cave" && ch === "C"))) {
-      if (chance((enc?.rate??18) / 100)) await this.wildBattle();
-    }
+    if (chance(encounterRate150(this.map,ch,State.save.boating) / 100)) await this.wildBattle();
   },
 
   async doWarp(wp) {
@@ -1003,7 +1001,7 @@ export const world = {
     if(this.map.tileWorld&&!flag("v5:netGift"))return;
     this.busy = true;
     State.save.battleTerrain=State.save.boating?"water":this.map.battleTerrain||"grass";
-    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91,this.mapId)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterEncounters(this.mapId,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91,this.mapId).filter(e=>e[3]>0);
+    const now91=new Date();if(rare&&!wildAvailable91(rare.name,now91,this.mapId)){this.busy=false;return;}const list=filterWild91(State.save.boating?waterPool150(this.map,now91):(this.map.encountersConfigured86?(this.map.enc?.list||[]):ordinaryEncounters(this.map.enc?.list,this.mapId,now91)),now91,this.mapId).filter(e=>e[3]>0);
     if(!rare&&!list.length){this.busy=false;return;}
     let chosen=rare?[rare.name,rare.min,rare.max,1]:list[0];
     if(!rare){let r=rnd(list.reduce((sum,e)=>sum+e[3],0));for(const e of list){r-=e[3];if(r<0){chosen=e;break;}}}

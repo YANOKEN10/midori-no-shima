@@ -1,14 +1,15 @@
 import {asPercent139,setPercent139} from '/src/encounterPercent139.mjs';
-export function encounterPanel86(host,value,species,onchange){
+export function encounterPanel86(host,value,species,onchange,options={}){
  host.replaceChildren();
  const button=(text,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.onclick=fn;host.append(b);return b;};
- const note=document.createElement('p');note.className='muted';note.textContent='草むらで出会う種類・レベル・確率を設定できます。種類の割合を変えると、残りをほかのガオンに自動配分します。保存後「公開する」でゲームに反映します。時間・曜日限定のガオンは、その条件を満たす時間に出現します。';host.append(note);
- if(!value){note.textContent='草むらの通常出現は未設定です。設定後、草むらを配置してください。';button('＋ 出現するガオンを設定',()=>onchange({rate:18,percent139:true,list:[[species[0],3,5,100]]}));return;}
+ const note=document.createElement('p');note.className='muted';note.textContent='出会う場所・種類・レベル・確率を設定できます。種類の割合を変えると、残りをほかのガオンに自動配分します。保存後「公開する」でゲームに反映します。時間・曜日限定のガオンは、その条件を満たす時間に出現します。';host.append(note);
+ if(!value){note.textContent='通常出現は設定されていません。「出現するガオンを設定」から追加できます。';button('＋ 出現するガオンを設定',()=>onchange({rate:18,percent139:true,list:[[species[0],3,5,100]]}));return;}
  const number=(parent,label,n,min,max,fn)=>{const l=document.createElement('label');l.textContent=label;const input=document.createElement('input');input.type='number';input.min=min;input.max=max;input.value=n;input.required=true;input.step=1;input.onchange=()=>{if(input.reportValidity())fn(Number(input.value));};l.append(input);parent.append(l);};
  const update=fn=>{const next=structuredClone(value);fn(next);onchange(next);};
- number(host,'草むらで1歩ごとの出現率（%）',value.rate,0,100,n=>update(v=>v.rate=n));
+ if(!options.water){const label=document.createElement('label');label.textContent='出会う場所';const select=document.createElement('select');select.setAttribute('aria-label','出会う場所');select.add(new Option('草むらのみ','grass'));select.add(new Option('歩ける地面全体（草むら不要）','land'));select.value=value.terrain150||(value.encAll||options.cave?'land':'grass');select.onchange=()=>update(v=>{v.terrain150=select.value;v.encAll=select.value==='land';});label.append(select);host.append(label);}
+ number(host,options.water?'水上で1歩ごとの出現率（%）':'1歩ごとの出現率（%）',value.rate,0,100,n=>update(v=>v.rate=n));
  const percentages=asPercent139(value);const summary=document.createElement('p');summary.textContent='種類ごとの割合：合計100%（全種類の出現条件を満たす場合）';summary.setAttribute('role','status');host.append(summary);
  value.list.forEach((entry,i)=>{const row=document.createElement('fieldset');row.className='encounter-row86';const legend=document.createElement('legend');legend.textContent=(i+1)+'体目';row.append(legend);const label=document.createElement('label');label.textContent='ガオン';const select=document.createElement('select');select.setAttribute('aria-label',(i+1)+'体目の出現ガオン');for(const name of species)select.add(new Option(name,name));select.value=entry[0];select.onchange=()=>update(v=>v.list[i][0]=select.value);label.append(select);row.append(label);number(row,'最低レベル',entry[1],1,100,n=>update(v=>v.list[i][1]=n));number(row,'最高レベル',entry[2],1,100,n=>update(v=>v.list[i][2]=n));number(row,'このガオンに出会う割合（%）',percentages.list[i][3],0,100,n=>onchange(setPercent139(value,i,n)));const chance=document.createElement('p');chance.className='muted';chance.textContent='1歩あたりの目安：約'+(value.rate*percentages.list[i][3]/100).toFixed(2)+'%';row.append(chance);const remove=document.createElement('button');remove.type='button';remove.textContent='このガオンを外す';remove.onclick=()=>onchange(value.list.length===1?null:asPercent139({...value,list:value.list.filter((_,j)=>j!==i)}));row.append(remove);host.append(row);});
  if(value.list.length<30&&species.some(n=>!value.list.some(e=>e[0]===n)))button('＋ ガオンを追加',()=>onchange(asPercent139({...value,list:[...asPercent139(value).list,[species.find(n=>!value.list.some(e=>e[0]===n)),3,5,10]]})));
- button('通常の草むら出現をなしにする',()=>onchange(null));
+ button('この通常出現をなしにする',()=>onchange(null));
 }

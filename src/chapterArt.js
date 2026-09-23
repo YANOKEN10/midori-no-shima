@@ -1,3 +1,4 @@
+import {drawTownArt152} from './townArt152.js';
 import {exitRoadView137} from './exitRoad137.mjs';
 import {furnitureReady128} from './furnitureArt128.js';
 import {interiorReady123} from './interiorArt123.js';
@@ -37,7 +38,7 @@ import * as G from './gfx.js';
 const atlasImage=new Image();atlasImage.src=new URL('../assets/world-v5/swiss-atlas-v1.png',import.meta.url).href;
 let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).then(r=>r.json()).then(d=>{atlas=d;}).catch(e=>console.error('Tile atlas:',e));
 const cache=new WeakMap();
-export function drawMaterial(ctx,key,x,y,w,h){if(drawPond87(ctx,key,x,y,w,h))return true;if(drawReadable84(ctx,key,x,y,w,h))return true;if(key==='chaletClinic'&&clinic81.complete&&clinic81.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(clinic81,x+w*13/160,y-h*7/160,w,h);return true;}if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&cottage.complete&&cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;if(treeArt85(key))fitSprite85(ctx,atlasImage,x,y,w,h,s.rect);else ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
+export function drawMaterial(ctx,key,x,y,w,h){if(drawTownArt152(ctx,key,x,y,w,h))return true;if(drawPond87(ctx,key,x,y,w,h))return true;if(drawReadable84(ctx,key,x,y,w,h))return true;if(key==='chaletClinic'&&clinic81.complete&&clinic81.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(clinic81,x+w*13/160,y-h*7/160,w,h);return true;}if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&cottage.complete&&cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;if(treeArt85(key))fitSprite85(ctx,atlasImage,x,y,w,h,s.rect);else ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
 // Rural tracks keep the grass texture; connected neighbours share open edges.
 function landscape(c,map,x,y,ch){
