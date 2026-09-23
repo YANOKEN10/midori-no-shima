@@ -44,3 +44,6 @@ images.set('クリア・エンブレム',images.get('雪翼エンブレム'));
 images.set('ハイラス・エンブレム',images.get('水鏡エンブレム'));
 images.set('ダーク・エンブレム',images.get('夕映エンブレム'));
 images.set('マスター・エンブレム',images.get('たいかいパス'));
+
+// Shared by the guide so canvas icons render only after their source images are ready.
+export function itemArtReady(){return Promise.all([...new Set(images.values())].map(im=>im.complete?Promise.resolve():new Promise(resolve=>{im.addEventListener('load',resolve,{once:true});im.addEventListener('error',resolve,{once:true});})));}
