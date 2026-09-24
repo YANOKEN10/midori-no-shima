@@ -1,3 +1,4 @@
+import {rivalName168} from './rival168.mjs';
 import {EV_ITEM_ALIASES125} from './training122.mjs';
 import {migrateVoyageSave} from './voyageRules.js';
 import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
@@ -127,13 +128,14 @@ export function learnMove(m, name) {
 }
 
 /* --- セーブデータ --------------------------------------------- */
-export function newGame(playerName) {
+export function newGame(playerName, rivalName) {
   return {
     ver: 3,
     rareSpawns: createRareSpawns(),
     chapterVersion: 5,
     name: playerName || "レオ",
     rival: "フィロア",
+    rivalName168: rivalName168({rivalName168:rivalName}),
     money: 3000,
     party: [],
     box: [],

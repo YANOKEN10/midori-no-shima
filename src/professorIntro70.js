@@ -1,3 +1,5 @@
+import {cleanRivalName168} from './rival168.mjs';
+import {t166} from './i18n166.mjs';
 import * as G from './gfx.js';
 import {ui} from './ui.js';
 import {npcFrame} from './npcArt.js';
@@ -34,7 +36,10 @@ export async function introduceAdventure(){
  if(!r)return null;
  const name=Array.from(String(r.name||'').trim()).slice(0,8).join('')||'ポンキチ';
  await say(['そうか！　'+name+'というのか！']);
+ const rival=await showForm({title:'ライバルの なまえは？',sub:'ライバルの なまえを 決めてね。（8文字まで）',fields:[{el:'who',key:'rivalName',label:'ライバルの なまえ',type:'text',value:'',placeholder:t166('レイジ')}],submit:'この なまえにする'});
+ if(!rival)return null;
+ const rivalName=cleanRivalName168(rival.rivalName)||t166('レイジ');
  const appearance=await chooseAppearance();if(!appearance)return null;
  await say(INTRO_FAREWELL);
- return {name,appearance};
+ return {name,rivalName,appearance};
 }

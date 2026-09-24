@@ -178,7 +178,7 @@ async function mainFlow(local, restored) {
       scene = professorIntro;
       const setup = await introduceAdventure();
       if (!setup) { scene = title; continue; }
-      loadInto(newGame(setup.name));
+      loadInto(newGame(setup.name,setup.rivalName));
       State.save.look = { ...State.save.look, ...setup.appearance.look };
       saveLocal();
       startGame();

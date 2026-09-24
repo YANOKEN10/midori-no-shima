@@ -1,3 +1,4 @@
+import {NPC_WALK_MS168} from './rival168.mjs';
 import {encounterRate150,waterPool150} from './encounterTerrain150.mjs';
 import {drawPickup139} from './pickupArt139.js';
 import {stepGhost139,npcBlocks139,touchingSymbol139,beginSymbol139} from './ghost139.mjs';
@@ -331,7 +332,7 @@ export const world = {
     for (const n of this.npcs) {
       if (n.gone || n.noRoam || (n.artMon&&!n.roamMon)) continue;
       if (n.moving) {
-        n.roamProgress = Math.min(1, n.roamProgress + dt / 650);
+        n.roamProgress = Math.min(1, n.roamProgress + dt / NPC_WALK_MS168);
         n.ox = (n.toX - n.x) * T * n.roamProgress;
         n.oy = (n.toY - n.y) * T * n.roamProgress;
         n.walkFrame = Math.floor(n.roamProgress * 4) % 4;

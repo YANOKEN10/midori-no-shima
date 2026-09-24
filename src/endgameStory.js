@@ -1,3 +1,4 @@
+import {rivalName168} from './rival168.mjs';
 import {G as State,makeMon,healParty,healFull,addToParty,ownMon,maxHp} from './state.js';
 import {SPECIES} from './data/species.js';
 import {ui} from './ui.js';
@@ -43,7 +44,7 @@ run.pendingOpponent122||=facilityOpponent(mode,run.streak+1);w.enter(mode+'Battl
 }
 // The floor is a playable intermission: A at the opponent continues; the side
 // attendant returns to reception without changing the registered team/streak.
-export function refreshFacility123(w){if(w.map.interior123!=='arena')return;const mode=w.map.facility123,run=State.save.facilities?.[mode],n=w.npcs.find(n=>n.script==='facility123:battle');if(!n)return;if(!run?.active){n.gone=true;return;}run.pendingOpponent122||=facilityOpponent(mode,run.streak+1);const foe=run.pendingOpponent122;n.name=foe.name;n.displayName=foe.name;n.variant=foe.appearance79?.variant??(foe.name==='ヤノケン'?0:foe.name==='スイスはかせ'?2:6);if(foe.appearance79)Object.assign(n,foe.appearance79);n.gone=false;n.noRoam=true;}
+export function refreshFacility123(w){if(w.map.interior123!=='arena')return;const mode=w.map.facility123,run=State.save.facilities?.[mode],n=w.npcs.find(n=>n.script==='facility123:battle');if(!n)return;if(!run?.active){n.gone=true;return;}run.pendingOpponent122||=facilityOpponent(mode,run.streak+1);const foe=run.pendingOpponent122;if(foe.rivalBattle129==='tower'||foe.appearance79?.variant===110){foe.rivalBattle129='tower';foe.name=rivalName168(State.save);}n.name=foe.name;n.displayName=foe.name;n.variant=foe.appearance79?.variant??(foe.name==='ヤノケン'?0:foe.name==='スイスはかせ'?2:6);if(foe.appearance79)Object.assign(n,foe.appearance79);n.gone=false;n.noRoam=true;}
 function facilityLobby123(mode){return mode==='tower'?'championTower':'galaxyArena';}
 export async function facilityNpc123(w,n,deps={}){const s=State.save,mode=w.map.facility123,run=s.facilities?.[mode];if(n.script==='facility123:pause'){await ui.say(['連勝記録を 保存して エントランスへ戻ります。','受付で いつでも再開できます。']);w.enter(facilityLobby123(mode),12,15,'down');await persist();return;}
  if(!run?.active){w.enter(facilityLobby123(mode),12,15,'down');return;}

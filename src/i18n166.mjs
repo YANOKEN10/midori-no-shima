@@ -17,7 +17,7 @@ const KEY='gaon:language';
 let locale='ja',revision=0;
 try{const saved=globalThis.localStorage?.getItem(KEY);if(saved==='en')locale='en';}catch{}
 const normalize=s=>String(s).normalize('NFKC').replace(/[\s\u3000]+/g,'');
-const dictionary=new Map([...SCHEDULE167,...RUNTIME167,...UI167,...DESCS167,...MAP_TEXT167,...RESIDENTS167,...DEX167,...LATER167,...EN166,...STORY166,...EXTRA166,...PLACES166,...NAMES166,...MOVE_NAMES166].map(([ja,en])=>[normalize(ja),en]));
+const dictionary=new Map([["ライバルの なまえは？","What is your rival's name?"],["ライバルの なまえを 決めてね。（8文字まで）","Choose your rival's name (up to 8 characters)."],["ライバルの なまえ","Rival's name"],["レイジ","Reiji"],...SCHEDULE167,...RUNTIME167,...UI167,...DESCS167,...MAP_TEXT167,...RESIDENTS167,...DEX167,...LATER167,...EN166,...STORY166,...EXTRA166,...PLACES166,...NAMES166,...MOVE_NAMES166].map(([ja,en])=>[normalize(ja),en]));
 const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const patterns=[...PATTERNS167,...EXTRA_PATTERNS166,...PATTERNS166].map(([ja,en])=>{
  const parts=ja.normalize('NFKC').split(/(\{\d+\})/);
