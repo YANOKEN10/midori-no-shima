@@ -1,21 +1,18 @@
-# English beta (v166)
+# English localization (v167)
 
-The game offers Japanese and opt-in English (Beta) using the language selector or Settings. The preference is stored in `gaon:language` on the device, separately from all saves. Japanese is the default. No translation service or network request is used for translation.
+Japanese and English (Beta) are available through the language selector and Settings. The device preference `gaon:language` is separate from game saves. Translation uses local dictionaries, without a translation service.
 
-## Implemented
-- All 200 species have authored English display names; all 292 moves have English names.
-- Core menus, battle commands/messages, common item descriptions, login, saving, character setup, onboarding, and the first chapter's main story.
-- Translations run before text wrapping and measurement; live changes invalidate dialogue layout.
-- Canonical Japanese species/move/item names and all saved fields remain unchanged. Choices still return original indices.
+## Coverage
+- All 200 Gaon names and encyclopedia descriptions, all 292 move names and descriptions, and all item names and descriptions.
+- Later story chapters through the postgame, including ferry travel, daycare, park trials, legendary encounters, the Champion Tower and Galaxy Tournament.
+- Built-in map NPC dialogue, signs, facility names and habitat conditions. Times remain explicitly in Japan time.
+- Variable counts, rewards, travel times and player names use anchored message templates.
+- Long encyclopedia descriptions have additional pages so the complete text remains readable.
+- Existing menus, battles, login, saving and onboarding remain available in both languages. Canonical identifiers and saved fields are unchanged.
 
-## Remaining work before calling this a complete English release
-- Later story chapters, incidental NPC dialogue and map signs.
-- Encyclopedia species descriptions, some move/item descriptions, secondary facility and multiplayer/economy messages, clothing/color labels.
-- Japanese text embedded in artwork and separate guide/editor websites.
+This does not translate text embedded in artwork, separate guide/editor websites, or arbitrary text authored by players in the map editor. The Beta label remains while secondary interfaces such as clothing and multiplayer receive further review. Unknown text remains in its original language.
 
-Unknown text intentionally stays in Japanese instead of inventing a translation. Add exact entries to `src/i18n/`; variable messages use anchored templates. English creature names are display mappings, not key migrations.
-
-## Verification
-`node tools/verifyEnglish166.cjs` checks all creature/move names, template substitutions, preservation of player-name spaces, unchanged game data and save, wrapping, battle choice indices, switching back, persistence, login input preservation, and mobile rendering.
-
-The new-game test also exposed an existing error after removing all grass from Moss Sanctuary. Rare encounters now prefer reachable grass, fall back to reachable open ground, and safely omit a rule when a map has no valid land. Existing valid spawn positions remain stable.
+## Checks
+- `node tools/verifyEnglish167.mjs`: all encyclopedia, move/item, map NPC/sign, habitat and later-story content; dynamic quantities; original Japanese and canonical data preservation.
+- `node tools/verifyEnglish166.cjs`: browser regressions plus `checkEnglish167Browser.cjs` for full encyclopedia pagination and late-story dialogue, wrapping, switching language, save preservation, battle controls and login.
+- Set `BASE` to check a deployed build. The test only intercepts its own browser's main module to enable the existing local test hook; production code is not changed.

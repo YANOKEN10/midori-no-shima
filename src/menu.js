@@ -209,21 +209,26 @@ export async function dexEntry(n) {
   const sp = SPECIES[n];
   const places=habitatEntries(n);
   const habitatPages=Math.max(1,Math.ceil(places.length/3));
-  let page=0;const pages=2+habitatPages+Math.ceil(sp.learn.length/7);
+  let page=0;
+  const descriptionLines=()=>G.wrap(sp.dex,276,16);
+  const descriptionPages=()=>Math.max(1,Math.ceil(descriptionLines().length/3));
+  const pageCount=()=>descriptionPages()+1+habitatPages+Math.ceil(sp.learn.length/7);
   await ui.custom(() => {
     G.use("uiDark");
     G.clear(1);
     G.use("ui");
+    const pages=pageCount(), detailPage=page-descriptionPages()+1;
+    page=Math.min(page,pages-1);
     if(page===pages-1){G.window9(4,4,312,276);G.textFit(n+' の 種族値',18,16,284,3,16);Object.entries(STAT_LABELS122).forEach(([key,label],i)=>{G.text(label,18,46+i*24,3,14);G.textRight(String(sp.base[key]),290,46+i*24,3,14);});G.text('倒すともらえる努力値',18,205,3,13);G.textFit(effortText122(sp),18,226,284,3,12);G.text('← → ページ　A・B もどる',18,262,3,11);return;}
-    if(page>0&&page<=habitatPages){G.window9(4,4,312,276);G.textFit(n+' の 生息地',18,16,284,3,16);
+    if(detailPage>0&&detailPage<=habitatPages){G.window9(4,4,312,276);G.textFit(n+' の 生息地',18,16,284,3,16);
       if(!places.length)G.text('野生の出現場所なし',18,48,3,14);
-      places.slice((page-1)*3,page*3).forEach((entry,i)=>{G.textFit(entry.mapName,18,48+i*56,284,3,14);G.textFit(habitatRateLabel(entry),18,70+i*56,284,3,12);});
+      places.slice((detailPage-1)*3,detailPage*3).forEach((entry,i)=>{G.textFit(entry.mapName,18,48+i*56,284,3,14);G.textFit(habitatRateLabel(entry),18,70+i*56,284,3,12);});
       G.text('通常・水上：遭遇したときの割合',18,226,3,11);
       G.text('1歩ごとの確率ではありません',18,242,3,11);
-      G.text('← → ページ '+page+'/'+(pages-1)+'　A・B もどる',18,262,3,10);return;}
-    if(page>0){G.window9(4,4,312,276);G.textFit(n+" の おぼえるわざ",18,16,284,3,16);
-     sp.learn.slice((page-habitatPages-1)*7,(page-habitatPages)*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
-     G.text("← → ページ "+page+"/"+(pages-1)+"　A・B もどる",18,262,3,10);return;}
+      G.text('← → ページ '+(page+1)+'/'+pages+'　A・B もどる',18,262,3,10);return;}
+    if(detailPage>0){G.window9(4,4,312,276);G.textFit(n+" の おぼえるわざ",18,16,284,3,16);
+     sp.learn.slice((detailPage-habitatPages-1)*7,(detailPage-habitatPages)*7).forEach(([lv,name],i)=>{const y=48+i*28;G.text("Lv"+lv,18,y,3,13);G.textFit(name,76,y,160,3,14);G.textRight(moveData(name).type,300,y,3,11);});
+     G.text("← → ページ "+(page+1)+"/"+pages+"　A・B もどる",18,262,3,10);return;}
     G.window9(4, 4, 312, 160);
     const current=battleArt(n);
     if(current)G.drawScaled(current,4,24,128,128);else G.draw(G.makeMonArt(MONART[n], 2, "d" + n, palOf(sp), accentOf(sp), MONPAL[n]),4,24);
@@ -232,10 +237,10 @@ export async function dexEntry(n) {
     G.textFit("タイプ/" + sp.types.join("・"), 140, 74, 162, 3, 14);
     G.text(State.save.dexOwn[n] ? "つかまえた" : "みつけた", 140, 96, 3, 14);
     G.window9(4, 170, 312, 110);
-    const lines = G.wrap(sp.dex, 276, 16).slice(0, 3);
+    const lines = descriptionLines().slice(page*3,page*3+3);
     lines.forEach((l, i) => G.text(l, 18, 182 + i * 25, 3, 16));
-    G.text("← → 生息地・わざ・種族値",18,262,3,11);
-  },{onPage:dir=>{page=(page+(dir===-1?-1:1)+pages)%pages;}});
+    G.textFit("← → ページ "+(page+1)+"/"+pages+"　A・B もどる",18,262,284,3,11);
+  },{onPage:dir=>{const pages=pageCount();page=(page+(dir===-1?-1:1)+pages)%pages;}});
 }
 
 /* ============ トレーナーカード ============ */
