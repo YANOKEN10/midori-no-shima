@@ -6,7 +6,7 @@ const assert=require('node:assert/strict'),fs=require('fs'),{chromium}=require('
  await p.goto((process.env.BASE||'http://127.0.0.1:5182')+'/',{waitUntil:'domcontentloaded',timeout:60000});await p.waitForFunction(()=>window.VM,null,{timeout:180000});
  async function press(){await p.keyboard.down('z');await p.evaluate(()=>VM.steps(1));await p.keyboard.up('z');await p.waitForTimeout(100);}
  async function advanceTo(selector){for(let i=0;i<120;i++){if(await p.locator(selector).isVisible())return;await press();}throw Error('Did not reach '+selector);}
- await p.locator('#screen').click();await advanceTo('#who');await p.fill('#who','テストくん');await p.click('#go');
+ if(await p.locator('#start169[open]').count())await p.locator('.start-actions169 button').click();await p.locator('#screen').click();await advanceTo('#who');await p.fill('#who','テストくん');await p.click('#go');
  await advanceTo('#who');assert.match(await p.locator('#gate h1').textContent(),/ライバル/);await p.fill('#who','カイト');fs.mkdirSync('artifacts',{recursive:true});await p.screenshot({path:'artifacts/rival-name168.png'});await p.click('#go');
  await p.waitForSelector('#character-setup');await p.click('#go');for(let i=0;i<100&&!(await p.evaluate(()=>VM.scene===VM.world));i++)await press();
  assert.equal(await p.evaluate(()=>VM.State.save.rivalName168),'カイト');assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('gaon-world:save:v3')).rivalName168),'カイト');

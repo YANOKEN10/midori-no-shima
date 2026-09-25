@@ -11,25 +11,25 @@
   "lang": "ja",
   "icons": [
     {
-      "src": "gaon-icon-192.png",
+      "src": "assets/icons-v169/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "gaon-icon-512.png",
+      "src": "assets/icons-v169/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "gaon-icon-maskable-512.png",
+      "src": "assets/icons-v169/maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "gaon-apple-touch-icon.png",
+      "src": "assets/icons-v169/apple-touch.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"

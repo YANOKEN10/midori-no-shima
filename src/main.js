@@ -1,3 +1,4 @@
+import {showStart169} from './start169.js';
 import './languageUI166.js';
 import {welcome102} from './welcome102.js';
 import {professorIntro,introduceAdventure} from "./professorIntro70.js";
@@ -118,6 +119,8 @@ async function boot() {
   if (local && local.palette) G.setPalette(local.palette);
 
   // ログインの券が いきていれば、しずかに ログインしておく
+  await showStart169();
+  In.consumedAll();In.usedInput();
   let restored = await cloud.restore();
   updateWho();
 
@@ -126,24 +129,11 @@ async function boot() {
   updateWho();
 
   // なにか おすまで まつ
-  await waitForKey();
   initAudio();
   resumeAudio();
   playBgm("title");
 
   await mainFlow(local, restored);
-}
-
-function waitForKey() {
-  return new Promise((res) => {
-    const check = () => {
-      if (In.anyHit() || In.usedInput()) { res(); return; }
-      requestAnimationFrame(check);
-    };
-    const onPointer = () => { removeEventListener("pointerdown", onPointer); res(); };
-    addEventListener("pointerdown", onPointer);
-    requestAnimationFrame(check);
-  });
 }
 
 async function mainFlow(local, restored) {

@@ -1,0 +1,17 @@
+#start169{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;overflow:hidden;background:#0b302f;color:#fff;cursor:pointer;isolation:isolate}
+#start169::backdrop{background:#0b302f}
+.start-art169{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:-3}
+.start-shade169{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(4,27,29,.18),transparent 24%,transparent 65%,rgba(4,27,29,.85)),radial-gradient(ellipse at center,transparent 50%,rgba(4,27,29,.4))}
+.start-logo169{position:absolute;top:36%;left:3%;right:3%;text-align:center;filter:drop-shadow(0 3px 1px #163a33)}
+.start-kicker169{font:800 clamp(11px,1.5vw,19px) sans-serif;letter-spacing:.4em;color:#ffdf81;margin:0 0 12px;text-shadow:0 2px 5px #122f29}
+#start169 h1{font:900 clamp(32px,6.1vw,84px)/1.2 'M PLUS Rounded 1c',sans-serif;letter-spacing:-.04em;margin:0;color:#fff6d4;-webkit-text-stroke:1px #1b6256;text-shadow:0 4px 0 #155143,0 7px 0 #092d2c,0 10px 24px #082921}
+.start-tag169{font:700 clamp(11px,1.5vw,17px)/1.7 'M PLUS Rounded 1c',sans-serif;margin:20px 0 0;text-shadow:0 2px 3px #092e2c,0 0 9px #092e2c}
+.start-actions169{position:absolute;bottom:max(5%,env(safe-area-inset-bottom));left:12%;right:12%;text-align:center}
+#start169 .start-actions169 button{cursor:pointer;min-height:54px;padding:15px 35px;border:2px solid #ffdf84;border-radius:999px;background:linear-gradient(#fff0b6,#efd071);color:#123e36;font:800 16px 'M PLUS Rounded 1c',sans-serif;box-shadow:0 5px 0 #6c6132,0 10px 28px #06322bcc;max-width:100%}
+#start169 .start-actions169 button:focus-visible{outline:3px solid #fff;outline-offset:6px}
+.start-hint169{font:11px sans-serif;letter-spacing:.22em;color:#e1f2df;margin-top:19px}
+@media(min-aspect-ratio:4/3){.start-art169{object-fit:contain}.start-logo169{top:34%}.start-actions169{bottom:5%}}
+@media(max-width:500px){.start-logo169{top:39%}.start-tag169{margin-top:13px}.start-actions169{bottom:max(8%,env(safe-area-inset-bottom))}.start-kicker169{margin-bottom:8px}}
+@media(max-height:480px){.start-logo169{top:25%}#start169 h1{font-size:40px}.start-tag169{margin-top:8px}.start-actions169{bottom:2%}.start-hint169{margin:10px 0}}
+
+#start169::before{content:"";position:absolute;inset:-30px;z-index:-4;background:url("../assets/start-v169/ensemble.webp") center/cover;filter:blur(24px) brightness(.4);opacity:.8;pointer-events:none}
