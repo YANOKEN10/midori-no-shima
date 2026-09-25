@@ -14,4 +14,4 @@
 @media(max-width:500px){.start-logo169{top:39%}.start-tag169{margin-top:13px}.start-actions169{bottom:max(8%,env(safe-area-inset-bottom))}.start-kicker169{margin-bottom:8px}}
 @media(max-height:480px){.start-logo169{top:25%}#start169 h1{font-size:40px}.start-tag169{margin-top:8px}.start-actions169{bottom:2%}.start-hint169{margin:10px 0}}
 
-#start169::before{content:"";position:absolute;inset:-30px;z-index:-4;background:url("../assets/start-v169/ensemble.webp") center/cover;filter:blur(24px) brightness(.4);opacity:.8;pointer-events:none}
+#start169::before{content:"";position:absolute;inset:-30px;z-index:-4;background:url("../assets/start-v170/ensemble.webp") center/cover;filter:blur(24px) brightness(.4);opacity:.8;pointer-events:none}
