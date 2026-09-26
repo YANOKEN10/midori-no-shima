@@ -1,9 +1,11 @@
+import {MATERIAL_ITEMS172} from '../materials172.mjs';
 import {EV_ITEMS122,canonicalTrainingItem125} from '../training122.mjs';
 // ============================================================
 //  どうぐ
 //   kind: net(つかまえる) / heal / cure / revive / escape / key
 // ============================================================
 export const ITEMS = {
+ ...Object.fromEntries(MATERIAL_ITEMS172.map(({name,kind,amount,price,desc})=>[name,{kind,amount,price,desc}])),
  ...Object.fromEntries(EV_ITEMS122.map(({name,...item})=>[name,item])),
  "小型ボート":{kind:"key",price:0,desc:"川や海に向いて使う。岸へ進むと上陸。"},
  "レベルの実":{kind:"level",price:0,desc:"ガオンのレベルを１上げる。"},

@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('fs'),{chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const b=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});try{const p=await b.newPage({viewport:{width:1400,height:950}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.goto('http://127.0.0.1:5182/materials/',{waitUntil:'networkidle',timeout:120000});assert.equal(await p.locator('.card').count(),200);
+const assets=await p.evaluate(async()=>{const m=await(await fetch('/assets/materials-v172/manifest.json')).json();return Promise.all(m.map(async a=>{const i=new Image();i.src='/'+a.file;await i.decode();return [a.id,i.naturalWidth===a.w*32&&i.naturalHeight===a.h*32];}));});assert(assets.every(x=>x[1]));
+await p.selectOption('#group','furniture');assert.equal(await p.locator('.card').count(),20);fs.mkdirSync('artifacts',{recursive:true});await p.screenshot({path:'artifacts/materials172-gallery.png'});await p.selectOption('#group','');await p.fill('#search','トマト');assert((await p.locator('.card').count())>=2);
+await p.addInitScript(()=>localStorage.setItem('vmon:token','test'));await p.route('**/api/map-editor',r=>{const d=r.request().method()==='POST'?r.request().postDataJSON():{};return r.fulfill({contentType:'application/json',body:JSON.stringify(d.action==='session'?{name:'検証',definitions:{}}:d.action==='read'?{draft:null,draftRevision:0,publicRevision:0}:{maps:{},definitions:{}})});});
+await p.goto('http://127.0.0.1:5182/map-editor/',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForSelector('#mapSelect:not([disabled])',{timeout:120000});
+const labels=['車・乗り物','いす・机・家具','収納・家電','街・橋・設備','畑・市場の小物','野菜・作物','木・森の植物','岩・遺跡','鉱石アイテム','収穫アイテム'];
+for(const label of labels){await p.getByRole('button',{name:label,exact:true}).click();assert.equal(await p.locator('#materials button').count(),20,label);}
+await p.getByRole('button',{name:labels[1],exact:true}).click();await p.screenshot({path:'artifacts/materials172-editor.png'});assert.deepEqual(errors,[]);console.log('PASS all 200 images, dimensions, gallery search, and 10 editor categories with 20 materials each');
+}finally{await b.close()}})().catch(e=>{console.error(e);process.exit(1)});
