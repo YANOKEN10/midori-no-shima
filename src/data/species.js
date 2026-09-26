@@ -1,3 +1,4 @@
+import {planBalance176} from './balance176.mjs';
 import {expandLearnsets92} from './learnsets92.mjs';
 import {MOVES, BURST_MOVE_NAMES, canonicalMoveName} from './moves.js';
 // ============================================================
@@ -344,3 +345,7 @@ for(const sp of Object.values(SPECIES))if(sp.types.includes("くさ")&&sp.base.a
 for(const sp of Object.values(SPECIES)){const seen=new Set();sp.learn=[...sp.learn].map(([lv,n])=>[lv,canonicalMoveName(n)]).sort((a,b)=>a[0]-b[0]).filter(([,name])=>{if(seen.has(name))return false;seen.add(name);return true;});}
 
 expandLearnsets92(SPECIES,MOVES);
+
+// Apply after learnsets/rewards are decided: balance changes only the six base stats.
+export const BALANCE176=planBalance176(SPECIES);
+for(const [name,base]of Object.entries(BALANCE176.after))SPECIES[name].base={...base};

@@ -1,3 +1,4 @@
+import {migrateBalanceHp176} from './data/balance176.mjs';
 import {rivalName168} from './rival168.mjs';
 import {EV_ITEM_ALIASES125} from './training122.mjs';
 import {migrateVoyageSave} from './voyageRules.js';
@@ -5,7 +6,7 @@ import { createRareSpawns, normalizeRareSpawns } from './rareEncounters.js';
 // ============================================================
 //  ゲームの なかみ（もちもの・てもち・ずかん・フラグ）
 // ============================================================
-import { SPECIES, species, palOf, accentOf, STAT_KEYS } from "./data/species.js";
+import { SPECIES, species, palOf, accentOf, STAT_KEYS, BALANCE176 } from "./data/species.js";
 import { newMove, move, canonicalMoveName } from "./data/moves.js";
 import { item, isKey } from "./data/items.js";
 import { START } from "./data/maps.js";
@@ -43,7 +44,7 @@ export function makeMon(spName, lv, opt) {
   const o = opt || {};
   const iv = Object.fromEntries(STAT_KEYS.map(k=>[k,clampStat(o.iv?.[k] ?? rnd(32),31)]));
   const m = {
-    companionId: companionId(), sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv, ev: normalizeEV(o.ev), statVersion: 2,
+    companionId: companionId(), sp: spName, nick: "", lv: lv, exp: expForLevel(lv), iv, ev: normalizeEV(o.ev), statVersion: 2, balanceVersion176: 1,
     moves: [], status: "", hp: 0,
   };
   // レベルまでに おぼえる わざの うち あたらしい 4つ
@@ -70,10 +71,11 @@ export function normalizeMonStats(m) {
     return [k,old?clampStat(value,15)*2:clampStat(value,IV_MAX)];
   }));
   m.ev=normalizeEV(m.ev);m.statVersion=2;
+  migrateBalanceHp176(m,BALANCE176.before[m.sp],species(m.sp).base);
   return m;
 }
 function statTerm(m,key) {
-  if(m.statVersion!==2||!m.ev||!m.iv)normalizeMonStats(m);
+  if(m.statVersion!==2||m.balanceVersion176!==1||!m.ev||!m.iv)normalizeMonStats(m);
   return Math.floor((2*species(m.sp).base[key]+(m.iv[key]||0)+Math.floor((m.ev[key]||0)/4))*m.lv/100);
 }
 export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
