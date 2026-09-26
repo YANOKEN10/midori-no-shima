@@ -1,12 +1,6 @@
-// Keep moving highlights within the central water curtain, clear of the rocky sides.
+import {drawWaterfallTile173} from './waterfall173.js';
+// Every visible waterfall cell is independently editable in Map Workshop.
 export function drawWaterfalls84(c,map,camX=0,camY=0,tick=performance.now()){
- const props=[...(map.props||[]),...(map.editorAddedProps72||[])];
- c.save();c.translate(-camX,-camY);
- for(const p of props){if(!/^(legacy73-)?eWaterfall$/.test(p.art))continue;
-  c.save();const w=p.w*32,h=p.h*32;c.translate(p.x*32+w/2,p.y*32+h/2);c.rotate((p.turn81||0)*Math.PI/2);
-  const ow=(p.turn81%2?p.h:p.w)*32,oh=(p.turn81%2?p.w:p.h)*32;
-  c.translate(-ow/2,-oh/2);c.beginPath();c.rect(ow*.4,oh*.12,ow*.17,oh*.69);c.clip();
-  for(let i=0;i<5;i++){const x=ow*(.405+i*.032),phase=(tick/650+i*.23)%1;c.fillStyle=i%2?'#dcf6ff88':'#98dce877';for(let j=-1;j<3;j++)c.fillRect(x,oh*(.12+(phase+j)*.34),Math.max(1,ow*.012),oh*.18);}
-  c.restore();
- }c.restore();
-}
+ const props=[...(map.props||[]),...(map.editorAddedProps72||[])];c.save();c.translate(-camX,-camY);
+ for(const t of map.editorGround72||[]){if(!t.material.startsWith('waterfall-')||t.color115||t.material.includes('rock'))continue;if(props.some(p=>t.x>=p.x&&t.x<p.x+p.w&&t.y>=p.y&&t.y<p.y+p.h))continue;if(t.turn81){c.save();c.translate(t.x*32+16,t.y*32+16);c.rotate(t.turn81*Math.PI/2);drawWaterfallTile173(c,t.material,-16,-16,tick);c.restore();}else drawWaterfallTile173(c,t.material,t.x*32,t.y*32,tick);}
+ c.restore();}
