@@ -1,9 +1,9 @@
-import{drawNature73,natureReady73}from'./natureArt73.js';
 import{drawRoad,roadReady}from'./roadArt.js';
+const centerImage=new Image();centerImage.src=new URL('../assets/garden-v75/grass-center.png',import.meta.url).href;
 const fullRoad={id:'village',kind:'out',rows:['...','...','...']};
-export const pathReady175=()=>roadReady(fullRoad)&&natureReady73({editorGround72:[{material:'garden75-grass-center'}]});
+export const pathReady175=()=>roadReady(fullRoad)&&centerImage.complete&&centerImage.naturalWidth>0;
 export function drawPath175(c,key,x,y,material){
- if(key==='grass-path175-center'){c.save();c.fillStyle='#8d805d';c.fillRect(x,y,32,32);drawNature73(c,'garden75-grass-center',x,y,32,32);c.restore();return true;}
+ if(key==='grass-path175-center'){c.save();c.fillStyle='#8d805d';c.fillRect(x,y,32,32);if(centerImage.complete&&centerImage.naturalWidth){c.imageSmoothingEnabled=false;c.drawImage(centerImage,x,y,32,32);}c.restore();return true;}
  if(!key.startsWith('sand175-'))return false;
  c.save();c.translate(x,y);material(c,'grass',0,0,32,32);
  const kind=key.split('-')[1],turn=Number(key.split('-')[2]||0);
