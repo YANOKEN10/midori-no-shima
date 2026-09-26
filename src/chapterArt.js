@@ -1,3 +1,4 @@
+import {drawRouteWall178} from './routeEdges178.mjs';
 import {drawWaterfall173} from './waterfall173.js';
 import {drawCliff173} from './cliffArt173.js';
 import {drawShore173} from './shore173.js';
@@ -68,17 +69,7 @@ function landscape(c,map,x,y,ch){
 function cliff(c,map,x,y){
  const w=map.rows[0].length,dx=x*32,dy=y*32;
  if(x!==0&&x!==w-1){drawMaterial(c,'cliff',dx,dy,32,32);return;}
- c.save();c.beginPath();c.rect(dx,dy,32,32);c.clip();c.translate(dx,dy);if(x===0){c.translate(32,0);c.scale(-1,1);}
- c.fillStyle=map.townDesign?'#64766b':'#624735';c.fillRect(0,0,32,32);
- for(let row=-1;row<3;row++)for(let col=0;col<3;col++){
-  const px=5+col*11+(row%2?4:0),py=row*16+((y%2)*7);
-  c.fillStyle=map.townDesign?'#96a28e':'#9b7650';c.fillRect(px,py,9,14);
-  c.fillStyle=map.townDesign?'#bac2a8':'#bd9462';c.fillRect(px+1,py+1,4,9);
-  c.fillStyle=map.townDesign?'#788677':'#78563d';c.fillRect(px+6,py+6,2,7);
- }
- c.fillStyle='#245f3a';c.fillRect(0,0,6,32);c.fillStyle='#53a653';c.fillRect(0,0,4,32);
- for(let py=0;py<32;py+=8){c.fillStyle='#81c766';c.fillRect(0,py,3,5);c.fillStyle='#377e42';c.fillRect(3,py+3,3,4);}
- c.restore();
+ drawRouteWall178(c,dx,dy,{left:x===0,stone:!!map.townDesign,phase:y});
 }
 function drawChapterBase72(ctx,map,camX,camY){
  if(!pondReady87()||!resourceArtReady85()||!readableReady84()||!activeReady83()||!clinic81.complete||!clinic81.naturalWidth||!signReady()||!cottage.complete||!cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
