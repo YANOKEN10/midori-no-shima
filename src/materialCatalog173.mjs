@@ -1,3 +1,4 @@
+import {blankTarget181} from './workshopMaps181.mjs';
 export const CLIFFS173=Object.entries({grass:'草地',sand:'砂地',snow:'雪',ice:'氷',volcano:'火山岩',ruins:'遺跡'}).flatMap(([theme,label])=>Object.entries({down:'下向き',up:'上向き',left:'左向き',right:'右向き'}).map(([direction,dir])=>({key:'cliff173-'+theme+'-'+direction,art:'cliff173-'+theme+'-'+direction,label:label+'の崖・'+dir+'（1マス）',w:1,h:1,group:'cliff',placement83:'props',walkable:false,tile:'X',source:'village'})));
 // Native 16px terrain, rendered at exactly 2x.
 export const MATERIALS173=[
@@ -11,4 +12,4 @@ export const MATERIALS173=[
 ];
 export const DUNGEONS173=['shadowDepths','volcanicDepths','forgottenRuins','volcano1','volcano2','volcano3','volcanoSummit'];
 export const SNOW173=['clearTown','route13','route14','route15','route16','glacier','blizzard'];
-export const target173=m=>!['hut','rodsHome','hospital'].includes(m.id)&&(m.id==='merire'||SNOW173.includes(m.id)||DUNGEONS173.includes(m.id)||m.kind==='in'&&(['hut','rodsHome','adminHouse72','clearElder','marineHall','hospital','lab','karatSalon','shipCabins','shipLounge'].includes(m.id)||/の家/.test(m.name)&&!m.interior123));
+export const target173=m=>!['hut','rodsHome','hospital'].includes(m.id)&&(blankTarget181(m.id)||m.id==='merire'||SNOW173.includes(m.id)||DUNGEONS173.includes(m.id)||m.kind==='in'&&(['hut','rodsHome','adminHouse72','clearElder','marineHall','hospital','lab','karatSalon','shipCabins','shipLounge'].includes(m.id)||/の家/.test(m.name)&&!m.interior123));

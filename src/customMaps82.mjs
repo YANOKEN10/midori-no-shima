@@ -1,3 +1,4 @@
+import {extendWorkshop181} from './workshopMaps181.mjs';
 import {moveRugs130} from './rugPlacement130.mjs';
 import {addShip123} from './ship123.mjs';
 import {addShipRooms86} from './shipRooms86.mjs';
@@ -5,4 +6,4 @@ import {validEncounters86} from './encounters86.mjs';
 import {addBuildingRooms83} from './buildingRooms83.mjs';
 export function validDefinition82(d){return !!d&&/^custom82-[a-f0-9-]{36}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim().length>0&&d.name.length<=40&&['out','in'].includes(d.kind)&&Number.isInteger(d.width)&&Number.isInteger(d.height)&&d.width>=12&&d.width<=64&&d.height>=12&&d.height<=64&&(d.encounters86===undefined||validEncounters86(d.encounters86));}
 export function createMap82(d){if(!validDefinition82(d))throw Error('マップ名は40文字、縦横は12〜64マスで指定してください。');const {id,name,kind,width:w,height:h}=d;return {id,name,kind,tileWorld:true,chapter:1,custom82:true,...(d.encounters86!==undefined?{enc:d.encounters86,encountersConfigured86:true}:{}),rows:Array.from({length:h},(_,y)=>Array.from({length:w},(_,x)=>x===0||y===0||x===w-1||y===h-1?'X':kind==='in'?'f':',').join('')),props:[],npcs:[],signs:[],items:[],objects:[],warps:[],spawn:{x:Math.floor(w/2),y:Math.floor(h/2)},...(kind==='in'?{room:{theme:'home',bounds:[1,1,w-2,h-2],rug:[0,0,0,0],windows:[],furniture:[]}}:{})};}
-export function extendMaps82(maps,definitions={}){addBuildingRooms83(maps);addShipRooms86(maps);addShip123(maps);for(const[id,d]of Object.entries(definitions))if(id===d?.id&&validDefinition82(d)&&!Object.hasOwn(maps,id))maps[id]=createMap82(d);return moveRugs130(maps);}
+export function extendMaps82(maps,definitions={}){addBuildingRooms83(maps);addShipRooms86(maps);addShip123(maps);for(const[id,d]of Object.entries(definitions))if(id===d?.id&&validDefinition82(d)&&!Object.hasOwn(maps,id))maps[id]=createMap82(d);return extendWorkshop181(moveRugs130(maps));}

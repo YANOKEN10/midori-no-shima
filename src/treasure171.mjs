@@ -17,6 +17,7 @@ export function treasureSpots171(m){
 }
 export function addTreasures171(maps){
  for(const [id,m] of Object.entries(maps)){
+  if(m.blank181)continue;
   const route=/^route\d+$/.test(id),dungeon=/洞窟|遺跡|ほらあな/.test(m.name||'');
   if(!route&&!dungeon)continue;
   m.items||=[];
