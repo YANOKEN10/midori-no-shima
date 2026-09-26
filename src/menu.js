@@ -155,6 +155,14 @@ async function useOutside(name) {
   if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expForLevel}=await import('./state.js');const result=gainExp(m,expForLevel(m.lv+1)-m.exp);await showGrowth124(m,result.growth);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
 
   const d = itemData(name);
+  if(d.kind==='evBoost'){
+ const i=await partyMenu(true);if(i<0)return;
+ const m=State.save.party[i],{effortRoom171,boostEffort171}=await import('./state.js');
+ if(!effortRoom171(m,d.stat,d.amount)){await ui.say(['努力値が上限に達しているので 使えません。']);return;}
+ if(!useItem(name))return;
+ const amount=boostEffort171(m,d.stat,d.amount);State.dirty=true;saveLocal();
+ await ui.say([monName(m)+'の '+STAT_LABELS122[d.stat]+'の努力値が '+amount+' 上がった！']);return;
+ }
   if(d.kind==='evReduce'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];normalizeMonStats(m);if(!(m.ev[d.stat]>0)){await ui.say(['その能力の努力値は すでに0です。']);return;}if(!useItem(name))return;const amount=reduceEffort122(m,d.stat);m.hp=Math.min(m.hp,maxHp(m));State.dirty=true;saveLocal();await ui.say([monName(m)+'の '+STAT_LABELS122[d.stat]+'の努力値が '+amount+' 下がった！']);return;}
   if (d.kind === "heal" || d.kind === "cure" || d.kind === "revive") {
     const i = await partyMenu(true);

@@ -79,6 +79,14 @@ function statTerm(m,key) {
 export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
 export function statOf(m,key) { const value=key==='hp'?maxHp(m):statTerm(m,key)+5;return Math.floor(value*(item(m.heldItem).stat===key?1.1:1)); }
 export function evTotal(m) { return STAT_KEYS.reduce((n,k)=>n+(m.ev?.[k]||0),0); }
+export function effortRoom171(m,key,amount=10){
+ if(!STAT_KEYS.includes(key)||!Number.isFinite(amount)||amount<=0)return 0;
+ normalizeMonStats(m);return Math.max(0,Math.min(Math.floor(amount),EV_STAT_MAX-m.ev[key],EV_TOTAL_MAX-evTotal(m)));
+}
+export function boostEffort171(m,key,amount=10){
+ const gain=effortRoom171(m,key,amount),before=maxHp(m);if(!gain)return 0;
+ m.ev[key]+=gain;if(m.hp>0)m.hp=Math.min(maxHp(m),m.hp+maxHp(m)-before);return gain;
+}
 export function gainEffort(m,defeatedSpecies) {
   normalizeMonStats(m);
   const gained=Object.fromEntries(STAT_KEYS.map(k=>[k,0]));

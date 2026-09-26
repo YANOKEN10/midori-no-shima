@@ -58,6 +58,11 @@ export function isKey(name) { return item(name).kind === "key"; }
 
 // ショップの しなぞろえ
 Object.assign(ITEMS,{"採掘セット":{kind:"key",price:500,desc:"目印のある専用の木・岩に向かってAで素材採取。各場所で毎日5回まで。"},...Object.fromEntries(Object.entries({"もくざい":160,"じゅし":280,"かたいもくざい":480,"こいし":80,"てっこうせき":240,"どうこうせき":360,"きんこうせき":1200,"ひかりのけっしょう":2400}).map(([name,price])=>[name,{kind:"ore",price,desc:"専用の木や岩で採れる素材。ショップで売ったり、自分のお店に並べられる。"}]))});
+Object.assign(ITEMS,{
+ 'こはくのかけら':{kind:'treasure',price:4000,desc:'黄金色に透き通る化石。ショップで2000円で売れる。'},
+ '古代のきんか':{kind:'treasure',price:10000,desc:'古い王国の金貨。ショップで5000円で売れる。'},
+ 'ほしの宝石':{kind:'treasure',price:20000,desc:'星のように輝く希少な宝石。ショップで10000円で売れる。'}
+});
 export const SHOP_LIST = [...EV_ITEMS122.map(i=>i.name),"採掘セット",
   "ラグネット", "スーパーラグ", "ガオンのくすり", "ハイヒール",
   "げどくそう", "しびれどめ", "ひやしそう", "めざましそう", "ぬけみちいし",

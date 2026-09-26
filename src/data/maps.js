@@ -14,3 +14,6 @@ const playerShop=JSON.parse(JSON.stringify(MAPS.adminHouse72));playerShop.id='pl
 addMoveReminder92(MAPS);
 
 for(const map of Object.values(MAPS))nameMap138(map);
+
+import {addTreasures171} from '../treasure171.mjs';
+addTreasures171(MAPS);
