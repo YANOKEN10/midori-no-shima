@@ -1,0 +1,3 @@
+import {canTraverse75} from './elevation75.mjs';
+// Blank workshop maps keep their exits, but their old interior spawn is not authored by the user.
+export function repairWorkshopSpawn185(map,pass){if(!map.blank181||!map.spawn||pass(map,map.spawn.x,map.spawn.y))return map;const width=map.rows[0].length,height=map.rows.length;for(const exit of map.warps||[]){const directions=exit.x===0?[[1,0]]:exit.x===width-1?[[-1,0]]:exit.y===0?[[0,1]]:exit.y===height-1?[[0,-1]]:[[0,1],[1,0],[-1,0],[0,-1]];for(const[dx,dy]of directions){const x=exit.x+dx,y=exit.y+dy;if(pass(map,exit.x,exit.y)&&pass(map,x,y)&&canTraverse75(map,exit.x,exit.y,x,y)&&!map.warps.some(w=>w.x===x&&w.y===y)&&!map.npcs.some(n=>n.x===x&&n.y===y)){map.spawn={x,y};return map;}}}return map;}
