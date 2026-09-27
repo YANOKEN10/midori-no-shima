@@ -14,3 +14,7 @@ work/
 artifacts/
 
 !assets/materials-v172/gaon-materials-200.zip
+
+/assets/monsters/expansion-v184/source/
+/assets/monsters/expansion-v184/source-bold/
+/assets/monsters/expansion-v184/source-coarse/

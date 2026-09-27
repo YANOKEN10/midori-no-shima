@@ -1,0 +1,113 @@
+{
+  "reason": "User rejected fine pixels and insufficiently thick outlines. Recoloring alone is not acceptable.",
+  "entries": [
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/source/203.png",
+      "sha256": "857824ecd2f58a043b582d93a5ddad45ab001d902f05f653a87db75a64c376f5",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/source-bold/203.png",
+      "sha256": "7b3e6c4f4c17205812faa7d350311150f08d2835ef37a6eb271508a7ce4dddd1",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/front/203.png",
+      "sha256": "845baae3c8cec8342e1058ece65410e8884b35b7392833297f5361c979db5193",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/back/203.png",
+      "sha256": "a4ce3c743fcd212621bc5d80618fae3aac413010f371ca571956eda4fce21894",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/map/203.png",
+      "sha256": "077dd73105e63f79379f5632d52ad89d429707a072511f46079cbc5c074286d1",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 203,
+      "file": "assets/monsters/expansion-v184/follower/203.png",
+      "sha256": "e517533a1d259c7b7b572ca06ad786f722cc09bca966a84a6ce12ceea2578b5b",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/source/204.png",
+      "sha256": "9f6f5200f6c2a1bbad8a8263c9a82aa394797e8397554f99ddd5b2932cdfa9ec",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/source-bold/204.png",
+      "sha256": "c5d9f15680d71f3d1020bf252c90404313dc57d3170103cd560e099a336753dc",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/front/204.png",
+      "sha256": "c9f1adf26cff65a3eaa85fce98b8c2ba7700f207b181754bb8a7f33da6e0ac7a",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/back/204.png",
+      "sha256": "6ce98ed59b5893293302686a11eeced73eea34d114fd87e4b0c301978a80345c",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/map/204.png",
+      "sha256": "508a61703880ff136e5422dc006a433e04e7fb4a81c33797437c599e9f126484",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 204,
+      "file": "assets/monsters/expansion-v184/follower/204.png",
+      "sha256": "bae40f67f0b54ae6b30f121610ae11c8fb6d8aacfdd3ab167baad284b8ff1691",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/source/205.png",
+      "sha256": "27d2236f08c2aae9122b391aa34d1c8ec0134855630e052066e7a7fb7fae142c",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/source-bold/205.png",
+      "sha256": "f9c30316cff4bda8f8b81fa8cb096d39be1b2da202f32a9b3345108b43ff7247",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/front/205.png",
+      "sha256": "ac4bf4fb8b3a2c4e2026e1550e124806ace74abbf39c790c3cc28dd4cd0a6d71",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/back/205.png",
+      "sha256": "7c7c24bfaa325dce3786bd9ecc4a77a140336d0c6825fda889ee346a4ec0aade",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/map/205.png",
+      "sha256": "b19ec798355f769ed813ee23bd4ac968834ca0906c2b92fbfbdfab298dbfa6ae",
+      "status": "rejected-do-not-release"
+    },
+    {
+      "id": 205,
+      "file": "assets/monsters/expansion-v184/follower/205.png",
+      "sha256": "ab0f0e2808414f39072aaf342ea0bd9e964c4c72caf6f69d4dc8131cab9c9d06",
+      "status": "rejected-do-not-release"
+    }
+  ]
+}

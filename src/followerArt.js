@@ -17,23 +17,24 @@ export function followerDistance(name, dir='right') {
   // depth overlap is intentional vertically, as in the reference screenshots.
   return ['up','down'].includes(dir) ? Math.max(.94,(height*.5+14)/32) : Math.max(1,(width/2+15+5)/32);
 }
-export function followerSheet(name) {
+export function followerSheet(name,mapMode=false) {
   const no=SPECIES[name]?.no, p=followerProfile(name);
   if (!p) return null;
-  if (!sheets.has(no)) {
-    const im=new Image(); im.src=new URL('../assets/'+p.src,import.meta.url).href;
-    sheets.set(no,im);
+  const key=no+(mapMode&&p.srcMap?':map':'');
+  if (!sheets.has(key)) {
+    const im=new Image(); im.src=new URL('../assets/'+(mapMode&&p.srcMap?p.srcMap:p.src),import.meta.url).href;
+    sheets.set(key,im);
   }
-  return sheets.get(no);
+  return sheets.get(key);
 }
 export async function loadFollowerSheet(name) {
   const im=followerSheet(name); if(!im)return false;
   try {await im.decode();return true;} catch {return false;}
 }
-export function followerFrame(name,dir,phase=0) {
-  const p=followerProfile(name), im=followerSheet(name);
+export function followerFrame(name,dir,phase=0,mapMode=false) {
+  const p=followerProfile(name), im=followerSheet(name,mapMode);
   if(!p||!im?.complete||!im.naturalWidth)return null;
-  const col=columns[dir]??0,row=((phase%p.rows)+p.rows)%p.rows,key=SPECIES[name].no+':'+col+':'+row;
+  const col=columns[dir]??0,row=mapMode&&p.srcMap?0:((phase%p.rows)+p.rows)%p.rows,key=(mapMode&&p.srcMap?'map:':'')+SPECIES[name].no+':'+col+':'+row;
   if(frames.has(key))return frames.get(key);
   const audited=FOLLOWER_BOUNDS119[SPECIES[name]?.no],rect=audited?.rects[row*4+col], [x,y,w,h]=rect||p.dirs[col],size=followerMetrics(name,dir),c=document.createElement('canvas');
   c.width=size.width;c.height=size.height;
@@ -47,7 +48,7 @@ export function drawFollower(ctx,mon,pose,tick,cx,feetY) {
   const p=followerProfile(mon.sp);if(!p)return false;
   const hovering=['fly','float','swim'].includes(p.kind),active=pose.moving||hovering;
   const beat=Math.floor(tick/p.frameMs),phase=active?(p.rows===3?[0,1,0,2][beat%4]:beat%p.rows):0;
-  const frame=followerFrame(mon.sp,pose.dir,phase);
+  const frame=followerFrame(mon.sp,pose.dir,phase,!!pose.map184);
   if(!frame)return false;
   const bob=hovering?2+Math.round(Math.sin(tick/(p.frameMs*2))*1.5):p.kind==='hop'&&pose.moving?Math.round(Math.abs(Math.sin(tick/(p.frameMs*2)*Math.PI))*3):0;
   ctx.save();ctx.imageSmoothingEnabled=false;

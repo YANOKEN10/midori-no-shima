@@ -1194,7 +1194,7 @@ export const world = {
       } else {
         const n = p.n;
         if(n.doorMarker)continue;
-        if(n.artMon){drawFollower(G.ctx,{sp:n.artMon},{dir:n.dir||'down',moving:n.moving},this.tick,n.x*T+(n.ox||0)+16-camX,n.y*T+(n.oy||0)+28-camY);continue;}
+        if(n.artMon){drawFollower(G.ctx,{sp:n.artMon},{dir:n.dir||'down',moving:n.moving,map184:true},this.tick,n.x*T+(n.ox||0)+16-camX,n.y*T+(n.oy||0)+28-camY);continue;}
         if(n.itemArt){drawItem(G.ctx,n.itemArt,n.x*T-camX,n.y*T-camY,32);continue;}
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
         const dirn = n.dir || "down";

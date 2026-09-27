@@ -1,3 +1,4 @@
+import {FAMILIES184} from './families184.mjs';
 import {EXTRA_MOVES92,MOVE_FORMS92} from './moves92.mjs';
 // Anatomical profiles use stable species numbers so renamed saves share the same rules.
 const GROUPS=[
@@ -61,6 +62,8 @@ const GROUPS=[
  [[147,148,151], '仲間を守る獣の牙と前足', 'fang claw tail stomp', 'じめん'],
  [[153], '虹色の角と森を守る力', 'horn stomp', 'くさ ひかり']
 ];
+const FORMS184=["thread stomp","stomp breath","tail wing","spike voice","roll stomp","thread claw","wing thread","voice stomp","thread stomp","stomp breath","spike stomp","wing beam","mist drain","wing tail","claw thread","kick tail claw","claw fang tail breath","claw roll tail","claw fang tail horn breath","claw tail breath","wing thread","roll claw tail","claw thread","claw tail","wing fang","horn fang stomp","claw stomp","horn kick tail","kick stomp","roll stomp","stomp roll","claw fang tail horn breath","claw fang tail horn wing breath"];
+GROUPS.push(...FAMILIES184.map((f,i)=>[[201+i*3,202+i*3,203+i*3],f[4],FORMS184[i],f[1].includes('ひかり')?'くさ みず':'ひかり じめん']),[[300],'道を刻んだ石の体と柔らかな根','stomp roll breath','くさ みず']);
 export const APPEARANCE_PROFILES92=Object.fromEntries(GROUPS.flatMap(([ids,reason,forms,cross])=>ids.map(id=>[id,{reason,forms:['body','orb','beam','aura','voice','rain','mist','drain',...forms.split(' ')],cross:cross.split(' ')}])));
 export const LEARNSET_NOTES92={};
 export function expandLearnsets92(species,moves){

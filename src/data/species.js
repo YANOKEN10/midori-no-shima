@@ -275,6 +275,8 @@ import {addEvolutions63} from './redesignV63.js';
 addEvolutions63(SPECIES);
 import {addEvolutions94} from './redesignV94.js';
 addEvolutions94(SPECIES);
+import {addSpecies184} from './species184.mjs';
+addSpecies184(SPECIES);
 export const DEX_ORDER = Object.keys(SPECIES).sort((a, b) => SPECIES[a].no - SPECIES[b].no);
 export const DEX_TOTAL = DEX_ORDER.length;
 

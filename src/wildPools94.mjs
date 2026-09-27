@@ -1,3 +1,4 @@
+import {FAMILIES184} from './data/families184.mjs';
 import {canonicalName} from './data/redesignV47.js';
 export const WILD_ADDITIONS94={
  natureforest:[['コノハギ',8,12,8],['リーフィン',5,8,8],['チョウマユ',6,10,12]],
@@ -22,3 +23,6 @@ export function balanceWildPools94(pool,mapId){
 
 // New families enter the ordinary pools; user-authored pools remain explicit.
 for(const [map,name,lv] of [["route14","ユラポン",30],["forgottenRuins","カケラル",18],["route8","コロベル",18],["kageri","ネムリフ",18],["shadowDepths","スミル",18],["ashRoad","ホノラン",18],["resureBeach","ミズマリ",18],["radenInside","サビット",18],["sunValley","タネフル",18],["forgottenRuins","ジオポル",18],["route16","ピリゼル",35],["gaonPark","ホシモチ",18],["merire","クウロム",45],["mountain","ソラコ",8],["radenInside","コギア",12],["kageri","ヨイコネ",12]]){(WILD_ADDITIONS94[map]??=[]).push([name,lv,lv+4,10]);}
+
+for(const f of FAMILIES184){const level=['glacier','blizzard'].includes(f[2])?26:['volcano1','volcanicDepths'].includes(f[2])?24:14;(WILD_ADDITIONS94[f[2]]??=[]).push([f[0][0],level,level+4,8]);}
+(WILD_ADDITIONS94.merire??=[]).push(['ミチオボエ',42,46,3]);
