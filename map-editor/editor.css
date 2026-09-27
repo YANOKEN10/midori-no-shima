@@ -24,3 +24,5 @@
 .room-grid111{height:calc(100% - 100px);min-height:200px}.room-card111{display:flex;flex-direction:column}.room-card111>button{flex:none}.room-body111{height:auto;min-height:0;flex:1}.room-body111 #viewport{flex:1}.room-body111>canvas{min-height:0}@media(max-width:700px){.room-grid111{height:calc(100% - 155px)}.room-body111{height:auto}.room-workspace111>p{font-size:11px}}
 
 .room-body111 #mapCanvas{margin:auto}
+
+.encounter-summary182{flex:none;padding:10px 12px;background:#f7f7e8;border-bottom:1px solid #c5d5bd;max-height:160px;overflow:auto}.encounter-summary182>strong{font-size:13px}.encounter-chips182{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;font-size:12px}.encounter-chip182{display:inline-flex;align-items:center;flex-wrap:wrap;gap:7px;background:white;border:1px solid #c8d7c2;border-radius:7px;padding:5px 8px}.encounter-chip182 small{color:#667c62;font-size:10px}@media(max-width:700px){.encounter-summary182{max-height:125px;padding:7px 9px}}
