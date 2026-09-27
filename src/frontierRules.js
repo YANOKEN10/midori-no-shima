@@ -1,6 +1,7 @@
+import {PARK_NAMES189} from './parkEncounters189.mjs';
 import {isGaonPark131} from './parkMaps131.mjs';
 import {endTarget} from './endgameRules.js';
-export const PARK_SPECIES=['ウリボン','スナボンネ','ワンヒノ','シオマント','ネコデン','ドロヌマ','カマキリン','ハナヤリ','タヌポン','フワクジ'];
+export const PARK_SPECIES=['ウリボン','スナボンネ','ワンヒノ','シオマント','ネコデン','ドロヌマ','カマキリン','ハナヤリ','タヌポン','フワクジ',...Object.values(PARK_NAMES189).flat()];
 export const RESURE_EMBLEM='レスレ・エンブレム',VOLCANO_EMBLEM='マニケレオ・エンブレム';
 export const VOLCANO_BATTLE={catchRate:3,escapeDisabled:true};
 export function jstDay(now=new Date()){return new Date(now.getTime()+9*3600000).toISOString().slice(0,10);}

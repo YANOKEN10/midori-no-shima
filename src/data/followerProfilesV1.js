@@ -6808,3 +6808,6 @@ for(let no=201;no<=300;no++){const size=no===300?48:32+(no-201)%3*8;FOLLOWER_PRO
 
 // Replaces the rejected deer family with original multi-arm flower spirits.
 for(const no of [282,283,284]){FOLLOWER_PROFILES[no].src="monsters/family-v188/follower/"+no+".png";FOLLOWER_PROFILES[no].srcMap="monsters/family-v188/map/"+no+".png";}
+
+// Owner-requested evolution redraws: separately authored map and three-frame walking sprites.
+for(const no of [117,144,160,164,180]){const size=no===160?40:48;FOLLOWER_PROFILES[no]={src:'monsters/revision-v189/follower/'+no+'.png',srcMap:'monsters/revision-v189/map/'+no+'.png',size,extent:size,rows:3,kind:no===180?'float':'walk',frameMs:180,ownBounds189:true,dirs:Array.from({length:4},()=>[(80-size)/2,72-size,size,size])};}

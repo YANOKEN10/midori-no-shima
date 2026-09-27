@@ -1,3 +1,4 @@
+import {parkRule189} from './parkEncounters189.mjs';
 import {canonicalName} from './data/redesignV47.js';
 export const WILD_WINDOWS94={
  'カエデリア':{hours:[18,6],label:'毎日18:00〜翌6:00（日本時間）'},
@@ -7,10 +8,10 @@ export const WILD_WINDOWS94={
  'フワクジ':{days:[4],hours:[5,10],label:'木曜日5:00〜10:00（日本時間）'}
 };
 export const NO_WILD94=new Set(['ハヤナギ','カゲナギ']);
-export function wildWindow91(name){return WILD_WINDOWS94[canonicalName(name)]?.label||null;}
+export function wildWindow91(name,mapId){return (parkRule189(mapId,canonicalName(name))||WILD_WINDOWS94[canonicalName(name)])?.label||null;}
 export function wildAvailable91(name,now=new Date(),mapId,ignoreTime=false){
  name=canonicalName(name);if(NO_WILD94.has(name))return false;
- const rule=WILD_WINDOWS94[name];if(!rule)return true;if(rule.map&&mapId&&mapId!==rule.map)return false;if(ignoreTime)return true;
+ const rule=parkRule189(mapId,name)||WILD_WINDOWS94[name];if(!rule)return true;if(rule.map&&mapId&&mapId!==rule.map)return false;if(ignoreTime)return true;
  const j=new Date(now.getTime()+9*3600000),hour=j.getUTCHours()+j.getUTCMinutes()/60;
  if(rule.days&&!rule.days.includes(j.getUTCDay()))return false;
  const[start,end]=rule.hours;return start<end?hour>=start&&hour<end:hour>=start||hour<end;

@@ -161,6 +161,7 @@ const FILES = {
 import {applyArtRedesign,canonicalName} from './redesignV47.js';
 applyArtRedesign(FILES,'front');
 for(const s of SPECIES184)FILES[s.name]='../../assets/monsters/battle-v187/front/'+s.no+'.png';
+for(const [name,no]of Object.entries({'ハネリュウ':160,'ソラリュウ':117,'ヴァルディオ':144,'コウエンラ':164,'オボロニカ':180}))FILES[name]='../../assets/monsters/revision-v189/front/'+no+'.png';
 const cache = new Map();
 for (const name of Object.keys(FILES)) {
   const img = new Image();
@@ -327,6 +328,7 @@ const BACK_FILES = {
 };
 applyArtRedesign(BACK_FILES,'back');
 for(const s of SPECIES184)BACK_FILES[s.name]='../../assets/monsters/battle-v187/back/'+s.no+'.png';
+for(const [name,no]of Object.entries({'ハネリュウ':160,'ソラリュウ':117,'ヴァルディオ':144,'コウエンラ':164,'オボロニカ':180}))BACK_FILES[name]='../../assets/monsters/revision-v189/back/'+no+'.png';
 const backCache = new Map();
 for (const name of Object.keys(BACK_FILES)) {
   const img = new Image();

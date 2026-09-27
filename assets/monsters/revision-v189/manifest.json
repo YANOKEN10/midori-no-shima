@@ -1,0 +1,118 @@
+{
+  "generationMode": "built-in image_gen",
+  "nativeBattle": 96,
+  "walkingLogical": 24,
+  "adolescentLogical": 20,
+  "entries": [
+    {
+      "name": "ハネリュウ",
+      "no": 160,
+      "assets": {
+        "front": {
+          "path": "assets/monsters/revision-v189/front/160.png",
+          "sha256": "e19051c48da3ae29aa80a9a6b32d77c2f5058e5b6d73d0fe89cc458b787bb2fd"
+        },
+        "back": {
+          "path": "assets/monsters/revision-v189/back/160.png",
+          "sha256": "14ba5a8af6a41d174c03d1664ed56ed44af89876698da1f131b3264b325146aa"
+        },
+        "map": {
+          "path": "assets/monsters/revision-v189/map/160.png",
+          "sha256": "88e4e90f34dd6abe07e890f97f220e74f2ee76f80317e249f28faf4096b6dfc2"
+        },
+        "follower": {
+          "path": "assets/monsters/revision-v189/follower/160.png",
+          "sha256": "ad1c08306627e082492d5276a2e2523a36ddefde4f950557bfaf77b8bc07d91e"
+        }
+      }
+    },
+    {
+      "name": "ソラリュウ",
+      "no": 117,
+      "assets": {
+        "front": {
+          "path": "assets/monsters/revision-v189/front/117.png",
+          "sha256": "2999ecf2fdc9d00d31b398255c968fb08e783fa7583c31039e4dc06391fa3fcc"
+        },
+        "back": {
+          "path": "assets/monsters/revision-v189/back/117.png",
+          "sha256": "66020f0dde696bafab7a6c4abf56d8e574b00bcf34c734a54c0ef44e8e2ea42b"
+        },
+        "map": {
+          "path": "assets/monsters/revision-v189/map/117.png",
+          "sha256": "e33d393795e80bbb5754f5bc20762825c97b47be0452bdd4761ca31dad9941be"
+        },
+        "follower": {
+          "path": "assets/monsters/revision-v189/follower/117.png",
+          "sha256": "a4d77df61472b35045b66b50d1c788ebde1873baf0d9b7e88e2bde268f0fb3fc"
+        }
+      }
+    },
+    {
+      "name": "ヴァルディオ",
+      "no": 144,
+      "assets": {
+        "front": {
+          "path": "assets/monsters/revision-v189/front/144.png",
+          "sha256": "6c7abcd1487f136ac357f38d2d63497f26c1db34e091c4edc1fba38dbeaa7b6c"
+        },
+        "back": {
+          "path": "assets/monsters/revision-v189/back/144.png",
+          "sha256": "b43893bbe8f7707b4db93a04cd79ff204a51d0d23af6be172701016133f4e3b5"
+        },
+        "map": {
+          "path": "assets/monsters/revision-v189/map/144.png",
+          "sha256": "69314327c28af23d155c97f11aadc6d3ea86ccd0f182eb632e90dd8d82d5c8cb"
+        },
+        "follower": {
+          "path": "assets/monsters/revision-v189/follower/144.png",
+          "sha256": "1e5deac977539417fc0295bd08920755c95a8ced5d6d1698e20629441fbe9ccb"
+        }
+      }
+    },
+    {
+      "name": "コウエンラ",
+      "no": 164,
+      "assets": {
+        "front": {
+          "path": "assets/monsters/revision-v189/front/164.png",
+          "sha256": "b81e771c3f5d273911e93bb79b40917dc07e5ff545969d7a595abde62b70821b"
+        },
+        "back": {
+          "path": "assets/monsters/revision-v189/back/164.png",
+          "sha256": "9cfc9ac4d1058d397d7693771a1a8b096ac63db47dc22109b4d7895c4edda9e4"
+        },
+        "map": {
+          "path": "assets/monsters/revision-v189/map/164.png",
+          "sha256": "e0ab90aa5c201c0d17f73804ea6f9f2b560ee38e87f89f7c59f3693e9d8cc445"
+        },
+        "follower": {
+          "path": "assets/monsters/revision-v189/follower/164.png",
+          "sha256": "824ed3b60680c90e521f358355320500dd8231a227c60d8cc0d48726cf85b4ce"
+        }
+      }
+    },
+    {
+      "name": "オボロニカ",
+      "no": 180,
+      "assets": {
+        "front": {
+          "path": "assets/monsters/revision-v189/front/180.png",
+          "sha256": "93b69b867d40166e96be250b48e1eeeede2e85d6e6c3f321a0c36cc390309ee7"
+        },
+        "back": {
+          "path": "assets/monsters/revision-v189/back/180.png",
+          "sha256": "fa8b5a8865d9be273b6135ddf5ed110f573d8f9190cbe986a6b856b5af9d4e6d"
+        },
+        "map": {
+          "path": "assets/monsters/revision-v189/map/180.png",
+          "sha256": "7f6f918166972d0bc1be873eff415031242718331bd7e821fc286444ab85c4cb"
+        },
+        "follower": {
+          "path": "assets/monsters/revision-v189/follower/180.png",
+          "sha256": "c81dbf21045be31884a47b053db1c17f9865d1a5c63a1f58b66df715fd4f9c02"
+        }
+      }
+    }
+  ]
+}

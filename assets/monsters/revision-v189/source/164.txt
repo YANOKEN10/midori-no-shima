@@ -1,0 +1,2 @@
+ヒノマシ・エンラセツの猿の顔、丸耳、拳、巻いた尾を継承する最終進化。大きな腕と金色の炎のたてがみ。
+Built-in image_gen. Transparent sprite atlas: battle front/back authored on 96px logical grid; map/walking separately simplified to 20px for160 and24px for final evolutions. Four directions, idle and two steps. Flat limited colors, clear dark outline, no texture or glow.

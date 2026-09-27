@@ -1,3 +1,4 @@
+import {parkPool189} from './parkEncounters189.mjs';
 import {addWildPools94,balanceWildPools94} from './wildPools94.mjs';
 import {filterWild91} from './wildAvailability91.mjs';
 import {canonicalName} from './data/redesignV47.js';
@@ -10,7 +11,7 @@ export const RARE_RULES = [
 export const EXCLUSIVE_WILD = new Set(RARE_RULES.map(r=>r.name));
 export const EVOLUTION_ONLY = new Set(['ユウレイン','ボウレイ']);
 export function ordinaryEncounters(list=[],mapId,now=new Date(),mode='clock'){
- const pool=filterWild91(addWildPools94(list,mapId),now,mapId,mode!=='clock').filter(e=>(!EXCLUSIVE_WILD.has(e[0])||(mapId==='mountain'&&e[0]==='コケゴロ'))&&!EVOLUTION_ONLY.has(e[0]));
+ const pool=filterWild91((parkPool189(mapId)||addWildPools94(list,mapId)),now,mapId,mode!=='clock').filter(e=>(!EXCLUSIVE_WILD.has(e[0])||(mapId==='mountain'&&e[0]==='コケゴロ'))&&!EVOLUTION_ONLY.has(e[0]));
  return balanceWildPools94(filterWild91(scheduledPool(pool,mapId,now,mode),now,mapId,mode!=='clock'),mapId);
 }
 export function rareAreasUnlocked(save){return !!save.flags?.['v5:dex'] && MAPS.natureforest.npcs.every((n,i)=>!n.trainer||save.flags?.['beat:natureforest:'+i]);}

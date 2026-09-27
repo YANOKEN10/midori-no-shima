@@ -1,0 +1,2 @@
+ソラコの丸い顔・乳白色の角・赤い翼を継承した中間進化。発達途中の翼と丈夫な四足。
+Built-in image_gen. Transparent sprite atlas: battle front/back authored on 96px logical grid; map/walking separately simplified to 20px for160 and24px for final evolutions. Four directions, idle and two steps. Flat limited colors, clear dark outline, no texture or glow.

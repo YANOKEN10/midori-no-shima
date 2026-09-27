@@ -7,7 +7,7 @@ export const followerProfile = name => FOLLOWER_PROFILES[SPECIES[name]?.no] || n
 // Sizes describe the visible silhouette, never the transparent 80px cell.
 export const followerSize = name => followerProfile(name)?.size || 32;
 export function followerMetrics(name, dir='right') {
-  const p = followerProfile(name), audited=FOLLOWER_BOUNDS119[SPECIES[name]?.no], col=columns[dir]??0, samples=audited?.rects.filter((r,i)=>i%4===col), rect=samples?[0,0,Math.max(...samples.map(r=>r[2])),Math.max(...samples.map(r=>r[3]))]:p?.dirs[col];
+  const p = followerProfile(name), audited=p?.ownBounds189?null:FOLLOWER_BOUNDS119[SPECIES[name]?.no], col=columns[dir]??0, samples=audited?.rects.filter((r,i)=>i%4===col), rect=samples?[0,0,Math.max(...samples.map(r=>r[2])),Math.max(...samples.map(r=>r[3]))]:p?.dirs[col];
   if (!p || !rect) return {width:32,height:32};
   return {width:Math.max(1,Math.round(rect[2]*p.size/(audited?.extent||p.extent))),height:Math.max(1,Math.round(rect[3]*p.size/(audited?.extent||p.extent)))};
 }
@@ -36,7 +36,7 @@ export function followerFrame(name,dir,phase=0,mapMode=false) {
   if(!p||!im?.complete||!im.naturalWidth)return null;
   const col=columns[dir]??0,row=mapMode&&p.srcMap?0:((phase%p.rows)+p.rows)%p.rows,key=(mapMode&&p.srcMap?'map:':'')+SPECIES[name].no+':'+col+':'+row;
   if(frames.has(key))return frames.get(key);
-  const audited=FOLLOWER_BOUNDS119[SPECIES[name]?.no],rect=audited?.rects[row*4+col], [x,y,w,h]=rect||p.dirs[col],size=followerMetrics(name,dir),c=document.createElement('canvas');
+  const audited=p?.ownBounds189?null:FOLLOWER_BOUNDS119[SPECIES[name]?.no],rect=audited?.rects[row*4+col], [x,y,w,h]=rect||p.dirs[col],size=followerMetrics(name,dir),c=document.createElement('canvas');
   c.width=size.width;c.height=size.height;
   const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;
   // Source rows have uneven gutters. Audited rectangles avoid adjacent-frame feet.

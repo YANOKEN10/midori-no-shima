@@ -6,7 +6,7 @@ import {startBattle,wait} from './battle.js';
 import {saveLocal,saveCloud} from './save.js';
 import {cloud} from './cloud.js';
 import {beep} from './audio.js';
-import {SHIP_TICKET,SHIP_MAPS,VOYAGE_MS,boardingOpen,registeredCount,canReceiveTicket,hasShipTicket,voyageDocked,voyageRemaining,trainerAvailable,markTrainer,daycareRemaining,eligiblePairs,checkParents,eggMoves,depositParents,reclaimDaycare} from './voyageRules.js';
+import {SHIP_TICKET,SHIP_MAPS,VOYAGE_MS,boardingOpen,registeredCount,canReceiveTicket,hasShipTicket,voyageDocked,voyageRemaining,trainerAvailable,markTrainer,daycareRemaining,eligiblePairs,daycareBaby189,checkParents,eggMoves,depositParents,reclaimDaycare} from './voyageRules.js';
 async function persist(){saveLocal();if(cloud.signedIn)await saveCloud(true);}
 export function refreshVoyageNpcs(world){
  const s=State.save,away=!!s.flags['power:passed']&&!hasShipTicket(s);
@@ -74,18 +74,18 @@ export async function voyageNpc(world,n){
 }
 async function daycare(world){
  const s=State.save;
- if(s.daycare){const remaining=daycareRemaining(s);const ready=remaining===0;await ui.say(ready?['同じ種類のガオンが 生まれたよ！','レベル１で 特別な技を覚えているよ。']:['元気に お世話しているよ。','生まれるまで あと'+remaining+'歩だよ。']);
+ if(s.daycare){const remaining=daycareRemaining(s);const ready=remaining===0;await ui.say(ready?['赤ちゃんガオンが 生まれたよ！','レベル１で 特別な技を覚えているよ。']:['元気に お世話しているよ。','生まれるまで あと'+remaining+'歩だよ。']);
   const action=await ui.choice([ready?'３匹を受け取る':'親２匹を引き取る','戻る'],{rows:2});if(action!==0)return;
   if(!ready&&!await ui.ask(['まだ 赤ちゃんは生まれていないよ。','引き取ると 今回の歩数はリセットされる。','それでも 引き取る？']))return;
   const returned=reclaimDaycare(s,ready);if(!returned)return;
   if(ready){const baby=returned.at(-1);ownMon(baby.sp);await persist();beep('levelup');await ui.say([baby.sp+' Lv.1を 受け取った！','特別な技：'+baby.eggMove,'親２匹も お返ししたよ。','手持ちに入らないガオンは ボックスに送ったよ。']);}else{await persist();await ui.say(['親２匹を お返ししたよ。']);}return;
  }
- await ui.say(['ぼくは 育て屋のマリオ。','同じ種類のガオンを ２匹預けてね。','2000歩歩くと 同じ種類のLv.1が生まれるよ。','普段のレベルアップでは 覚えない技を覚えるよ。']);
- const groups=eligiblePairs(s);if(!groups.length){await ui.say(['手持ちかボックスに 同じ種類を２匹用意してね。']);return;}
+ await ui.say(['ぼくは 育て屋のマリオ。','同じ種類のガオンを ２匹預けてね。','ホシモチと別のガオンでも 預かれるよ。','その場合は 相手の進化前のLv.1が生まれるよ。','2000歩で 赤ちゃんに会えるよ。','普段のレベルアップでは 覚えない技を覚えるよ。']);
+ const groups=eligiblePairs(s);if(!groups.length){await ui.say(['同じ種類を２匹、またはホシモチと別のガオンを用意してね。']);return;}
  const chosen=await ui.choice([...groups.map(([sp])=>sp),'戻る'],{rows:6});if(chosen<0||chosen>=groups.length)return;
- let available=groups[chosen][1],refs=[];for(let i=0;i<2;i++){const ix=await ui.choice(available.map(r=>(r.collection==='party'?'手持ち ':'ボックス ')+(r.mon.nick||r.mon.sp)+' Lv.'+r.mon.lv),{rows:6});if(ix<0)return;refs.push(available[ix]);available=available.filter((_,j)=>j!==ix);}
+ let available=groups[chosen][1],refs=[];for(let i=0;i<2;i++){const ix=await ui.choice(available.map(r=>(r.collection==='party'?'手持ち ':'ボックス ')+(r.mon.nick||r.mon.sp)+' Lv.'+r.mon.lv),{rows:6});if(ix<0)return;refs.push(available[ix]);available=available.filter((r,j)=>j!==ix&&(i!==0||daycareBaby189(refs[0].mon.sp,r.mon.sp)));}
  const error=checkParents(s,refs);if(error){await ui.say([error]);return;}
  if(!await ui.ask([refs.map(r=>(r.mon.nick||r.mon.sp)+' Lv.'+r.mon.lv).join(' と '),'この２匹を 預けますか？']))return;
- const baby=makeMon(refs[0].mon.sp,1),pool=eggMoves(baby.sp),extra=pool[Math.floor(Math.random()*pool.length)];baby.moves=baby.moves.slice(0,3);baby.moves.push(newMove(extra));baby.eggMove=extra;
+ const baby=makeMon(daycareBaby189(refs[0].mon.sp,refs[1].mon.sp),1),pool=eggMoves(baby.sp),extra=pool[Math.floor(Math.random()*pool.length)];baby.moves=baby.moves.slice(0,3);baby.moves.push(newMove(extra));baby.eggMove=extra;
  const failed=depositParents(s,refs,baby);if(failed){await ui.say([failed]);return;}await persist();await ui.say(['大切に 預かるよ。','2000歩歩いたら また来てね。']);
 }

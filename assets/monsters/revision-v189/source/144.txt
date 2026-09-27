@@ -1,0 +1,2 @@
+起動画面右上の竜を基準とする。青い体と黄色い翼・角・腹。胸を張る力強い四足、後ろに伸びる角と大きな翼。細かな鱗を整理し、落ち着いた成竜の顔。
+Built-in image_gen. Transparent sprite atlas: battle front/back authored on 96px logical grid; map/walking separately simplified to 20px for160 and24px for final evolutions. Four directions, idle and two steps. Flat limited colors, clear dark outline, no texture or glow.

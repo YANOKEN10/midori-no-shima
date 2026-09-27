@@ -8,12 +8,12 @@ const events={'marine:meroron':'メロロン','power:weeklyRaimei':'ライメイ
 const habitats=new Map();
 function add(name,map,kind,rate=null){
  if(!map)return;name=canonicalName(name);if(!habitats.has(name))habitats.set(name,[]);
- const entries=habitats.get(name);if(!entries.some(e=>e.mapId===map.id&&e.kind===kind))entries.push({mapId:map.id,mapName:map.name,kind,rate,window91:wildWindow91(name)});
+ const entries=habitats.get(name);if(!entries.some(e=>e.mapId===map.id&&e.kind===kind))entries.push({mapId:map.id,mapName:map.name,kind,rate,window91:wildWindow91(name,map.id)});
 }
 function addPool(map,list,kind){
  const weights=new Map();for(const [name,,,weight] of list)if(weight>0){const key=canonicalName(name);weights.set(key,(weights.get(key)||0)+weight);}
  const total=[...weights.values()].reduce((a,b)=>a+b,0);
- for(const [name,weight] of weights){const rule=scheduleForMap(map.id);if(wildWindow91(name)&&kind==='outside-window'&&rule?.hours?.[0]===18&&rule.hours[1]===6)continue;add(name,map,kind,weight/total);}
+ for(const [name,weight] of weights){const rule=scheduleForMap(map.id);if(wildWindow91(name,map.id)&&kind==='outside-window'&&rule?.hours?.[0]===18&&rule.hours[1]===6)continue;add(name,map,kind,weight/total);}
 }
 for(const map of Object.values(MAPS)){
  const rule=map.encountersConfigured86?null:scheduleForMap(map.id);
@@ -27,7 +27,7 @@ for(const map of Object.values(MAPS)){
 for(const rule of RARE_RULES)if(!MAPS[rule.map]?.encountersConfigured86)add(rule.name,MAPS[rule.map],'rare',rule.rate);
 export function habitatEntries(name){return (habitats.get(canonicalName(name))||[]).map(e=>({...e}));}
 export function habitatNames(name){return [...new Set(habitatEntries(name).map(e=>e.mapName))];}
-export function habitatRateLabel(entry){if(entry.window91)return entry.window91+'のみ：遭遇時'+Number((entry.rate*100).toFixed(2))+'％';
+export function habitatRateLabel(entry){if(entry.window91&&entry.mapId?.startsWith('gaonPark'))return entry.window91+'に出現';if(entry.window91)return entry.window91+'のみ：遭遇時'+Number((entry.rate*100).toFixed(2))+'％';
  if(entry.kind==='event')return entry.mapId==='leafTown'?'クリア後・虹の研究員の３つの調査を達成・Lv.80':'条件付きイベント（通常抽選なし）';
  const percent=Number((entry.rate*100).toFixed(2))+'％';
  const rule=scheduleForMap(entry.mapId,entry.kind.startsWith('water')?'water':'land');
