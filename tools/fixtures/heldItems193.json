@@ -1,0 +1,1300 @@
+[
+  {
+    "source": "おんみつマント",
+    "name": "しじまのヴェール",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "secondaryGuard": true
+    },
+    "desc": "攻撃技に付随する追加効果を防ぐ。"
+  },
+  {
+    "source": "とくせいガード",
+    "name": "心核の留め具",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "abilityGuard": true
+    },
+    "desc": "相手による持ち主の性質の入れ替えを防ぐ。"
+  },
+  {
+    "source": "いかさまダイス",
+    "name": "連星の歯車",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "multi": true
+    },
+    "desc": "2〜5回の連続攻撃が4回か5回になる。"
+  },
+  {
+    "source": "パンチグローブ",
+    "name": "震撃のこて",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "punch": true
+    },
+    "desc": "拳の技を1.1倍にし、その技の接触をなくす。"
+  },
+  {
+    "source": "クリアチャーム",
+    "name": "不屈の紋章",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "dropGuard": true
+    },
+    "desc": "相手からの能力低下を防ぐ。"
+  },
+  {
+    "source": "ものまねハーブ",
+    "name": "うつし鏡の花",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "copyBoost": true
+    },
+    "desc": "相手の能力上昇を一度だけ自分にも写す。使うとなくなる。"
+  },
+  {
+    "source": "ブーストエナジー",
+    "name": "原動の炉心",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "boost": true
+    },
+    "desc": "原動・共鳴の性質を持つガオンの一番高い能力を強化。スピード1.5倍、他1.3倍。"
+  },
+  {
+    "source": "ちからのハチマキ",
+    "name": "猛進の留め金",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "category": "phys",
+      "power": 1.1
+    },
+    "desc": "物理技の威力を1.1倍にする。"
+  },
+  {
+    "source": "ものしりメガネ",
+    "name": "星読みの羽根筆",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "category": "spec",
+      "power": 1.1
+    },
+    "desc": "特殊技の威力を1.1倍にする。"
+  },
+  {
+    "source": "きあいのハチマキ",
+    "name": "不倒の結び目",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "survive": 0.1
+    },
+    "desc": "倒れる攻撃を受けた際、10％の確率でHP1を残す。"
+  },
+  {
+    "source": "せんせいのツメ",
+    "name": "先駆の風車",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "quick": 0.2
+    },
+    "desc": "20％の確率で、同じ優先度の相手より先に動く。"
+  },
+  {
+    "source": "たつじんのおび",
+    "name": "破陣の羅針盤",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "superPower": 1.2
+    },
+    "desc": "相性が有利な攻撃の威力を1.2倍にする。"
+  },
+  {
+    "source": "きあいのタスキ",
+    "name": "命継ぎのリボン",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "sash": true
+    },
+    "desc": "HP満タンで倒れる攻撃を受けても一度だけHP1で耐える。"
+  },
+  {
+    "source": "こだわりスカーフ",
+    "name": "疾走の誓約",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "choice": "spd"
+    },
+    "desc": "スピード1.5倍。同じ技しか選べなくなる。交代で解除。"
+  },
+  {
+    "source": "こだわりハチマキ",
+    "name": "剛腕の誓約",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "choice": "atk"
+    },
+    "desc": "アタック1.5倍。同じ技しか選べなくなる。交代で解除。"
+  },
+  {
+    "source": "こだわりメガネ",
+    "name": "叡智の誓約",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "choice": "spc"
+    },
+    "desc": "マジック1.5倍。同じ技しか選べなくなる。交代で解除。"
+  },
+  {
+    "source": "ゴツゴツメット",
+    "name": "棘甲の留め具",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "contactHurt": 0.16666666666666666
+    },
+    "desc": "接触して攻撃した相手へ、相手の最大HPの1/6の反撃。"
+  },
+  {
+    "source": "するどいツメ",
+    "name": "裂光の破片",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "crit": true
+    },
+    "desc": "急所に当たる確率が1段階上がる。"
+  },
+  {
+    "source": "ねばりのかぎづめ",
+    "name": "絡根の輪",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "bindTurns": 7
+    },
+    "desc": "自分がかける拘束を7ターン持続させる。"
+  },
+  {
+    "source": "おうじゃのしるし",
+    "name": "威風の軍配",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "flinch": 0.1
+    },
+    "desc": "ひるみ効果のない攻撃で10％の確率でひるませる。"
+  },
+  {
+    "source": "のどスプレー",
+    "name": "響命の蜜",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "soundBoost": true
+    },
+    "desc": "音の技を使うと一度だけマジックが1段階上がる。"
+  },
+  {
+    "source": "あかいいと",
+    "name": "双想のブローチ",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "reflectCharm": true
+    },
+    "desc": "魅了されたとき相手にも魅了を返す。"
+  },
+  {
+    "source": "いのちのたま",
+    "name": "血潮の灯芯",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "life": true
+    },
+    "desc": "攻撃威力1.3倍。攻撃後に最大HPの1/10を失う。"
+  },
+  {
+    "source": "しんかのきせき",
+    "name": "若芽のゆりかご",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "evolutionGuard": true
+    },
+    "desc": "進化先のあるガオンのブロックとバリアを1.5倍にする。"
+  },
+  {
+    "source": "とつげきチョッキ",
+    "name": "沈黙の鎧",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "assault": true
+    },
+    "desc": "バリア1.5倍。変化技を使えなくなる。"
+  },
+  {
+    "source": "じゃくてんほけん",
+    "name": "逆境の火種",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weakness": true
+    },
+    "desc": "弱点を突かれると一度だけアタックとマジックが2段階上がる。"
+  },
+  {
+    "source": "からぶりほけん",
+    "name": "再起のぜんまい",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "missBoost": true
+    },
+    "desc": "命中判定で技を外すと一度だけスピードが2段階上がる。"
+  },
+  {
+    "source": "かいがらのすず",
+    "name": "還流の水瓶",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "damageHeal": 0.125
+    },
+    "desc": "与えた実ダメージの1/8だけHPを回復する。"
+  },
+  {
+    "source": "メトロノーム",
+    "name": "積響のこだま",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "repeat": true
+    },
+    "desc": "同じ技を連続使用するたび威力20％増加。最大2倍。"
+  },
+  {
+    "source": "ピントレンズ",
+    "name": "星穿ちの針",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "crit": true
+    },
+    "desc": "急所に当たる確率が1段階上がる。"
+  },
+  {
+    "source": "こうかくレンズ",
+    "name": "導光のしおり",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "accuracy": 1.1
+    },
+    "desc": "技の命中率を1.1倍にする。"
+  },
+  {
+    "source": "フォーカスレンズ",
+    "name": "待宵の照準器",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "lateAccuracy": 1.2
+    },
+    "desc": "相手の行動後なら技の命中率を1.2倍にする。"
+  },
+  {
+    "source": "ぼうじんゴーグル",
+    "name": "清風の面紗",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "dustGuard": true
+    },
+    "desc": "天候のダメージと粉の技を防ぐ。"
+  },
+  {
+    "source": "ぼうごパット",
+    "name": "隔触の手甲",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "contactGuard": true
+    },
+    "desc": "接触で発動する相手の性質の効果を防ぐ。"
+  },
+  {
+    "source": "あつぞこブーツ",
+    "name": "浮路の足輪",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "hazardGuard": true
+    },
+    "desc": "交代で場に出た際に受ける罠を無効にする。"
+  },
+  {
+    "source": "だっしゅつボタン",
+    "name": "帰巣の呼び鈴",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "ejectHit": true
+    },
+    "desc": "攻撃を受けて生き残ると一度だけ控えと交代できる。"
+  },
+  {
+    "source": "だっしゅつパック",
+    "name": "転身の小箱",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "ejectDrop": true
+    },
+    "desc": "能力が低下すると一度だけ控えと交代できる。"
+  },
+  {
+    "source": "ビビリだま",
+    "name": "奮起の銅鑼",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "intimidateBoost": true
+    },
+    "desc": "相手にアタックを下げられると一度だけスピードが1段階上がる。"
+  },
+  {
+    "source": "くろいヘドロ",
+    "name": "夜露の発酵壺",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "typeHeal": "やみ"
+    },
+    "desc": "やみガオンは毎ターン最大HPの1/16回復。他は1/8を失う。"
+  },
+  {
+    "source": "しめつけバンド",
+    "name": "束縛の石輪",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "bindDamage": 0.16666666666666666
+    },
+    "desc": "拘束による毎ターンのダメージを最大HPの1/6にする。"
+  },
+  {
+    "source": "かえんだま",
+    "name": "燻火の香炉",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "selfStatus": "やけど"
+    },
+    "desc": "状態異常がなければターン終了時に自分がやけどになる。"
+  },
+  {
+    "source": "どくどくだま",
+    "name": "瘴気の小瓶",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "selfStatus": "もうどく"
+    },
+    "desc": "状態異常がなければターン終了時に自分がもうどくになる。"
+  },
+  {
+    "source": "レッドカード",
+    "name": "追風の号笛",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "forceOut": true
+    },
+    "desc": "攻撃を受けて生き残ると一度だけ相手を控えと交代させる。"
+  },
+  {
+    "source": "ルームサービス",
+    "name": "逆刻の砂時計",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "roomSlow": true
+    },
+    "desc": "逆転空間に入ると一度だけスピードが1段階下がる。"
+  },
+  {
+    "source": "こうこうのしっぽ",
+    "name": "悠久の錘",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "last": true
+    },
+    "desc": "同じ優先度の技では、スピードによらず後に行動する。"
+  },
+  {
+    "source": "くっつきバリ",
+    "name": "寄生のとげ玉",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "sticky": true
+    },
+    "desc": "毎ターン最大HPの1/8を失う。接触した手ぶらの相手へ移る。"
+  },
+  {
+    "source": "ねらいのまと",
+    "name": "無防備の標札",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "target": true
+    },
+    "desc": "タイプ相性による攻撃無効がなくなる。"
+  },
+  {
+    "source": "ノーマルジュエル",
+    "name": "一閃の光片",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "gem": "ひかり"
+    },
+    "desc": "ひかりの攻撃を一度だけ1.3倍にする。"
+  },
+  {
+    "source": "たべのこし",
+    "name": "めぐみの弁当",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "heal": 0.0625
+    },
+    "desc": "ターン終了時に最大HPの1/16を回復する。"
+  },
+  {
+    "source": "おおきなねっこ",
+    "name": "吸命のつる瓶",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "drain": 1.3
+    },
+    "desc": "吸収技によるHP回復量を1.3倍にする。"
+  },
+  {
+    "source": "ひかりのねんど",
+    "name": "長護の織糸",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "screenTurns": 3
+    },
+    "desc": "自分が張る防護幕の持続が3ターン延びる。"
+  },
+  {
+    "source": "ばんのうがさ",
+    "name": "天避けの天蓋",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weatherGuard": true
+    },
+    "desc": "晴れと雨による自分への威力補正を無効にする。"
+  },
+  {
+    "source": "ふうせん",
+    "name": "空渡りの羽舟",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "float": true
+    },
+    "desc": "じめん技を無効化。別の攻撃を受けると壊れる。"
+  },
+  {
+    "source": "きれいなぬけがら",
+    "name": "解縛の鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "escape": true
+    },
+    "desc": "拘束されていても控えと交代できる。"
+  },
+  {
+    "source": "しろいハーブ",
+    "name": "復元の若露",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "restoreDrops": true
+    },
+    "desc": "下がった能力を一度だけ元に戻す。"
+  },
+  {
+    "source": "メンタルハーブ",
+    "name": "澄心の茶葉",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "mental": true
+    },
+    "desc": "魅了や技を制限する状態を一度だけ解除する。"
+  },
+  {
+    "source": "きゅうこん",
+    "name": "潮応の芽珠",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "hitType": "みず",
+      "hitStat": "spc"
+    },
+    "desc": "みず技を受けると一度だけマジックが1段階上がる。"
+  },
+  {
+    "source": "じゅうでんち",
+    "name": "雷応の火花筒",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "hitType": "でんき",
+      "hitStat": "atk"
+    },
+    "desc": "でんき技を受けると一度だけアタックが1段階上がる。"
+  },
+  {
+    "source": "ひかりごけ",
+    "name": "波守りの海綿",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "hitType": "みず",
+      "hitStat": "sdef"
+    },
+    "desc": "みず技を受けると一度だけバリアが1段階上がる。"
+  },
+  {
+    "source": "ゆきだま",
+    "name": "霜返しの結晶",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "hitType": "みず",
+      "hitStat": "atk"
+    },
+    "desc": "みず技を受けると一度だけアタックが1段階上がる。"
+  },
+  {
+    "source": "あついいわ",
+    "name": "陽留めのランタン",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weather": "sun"
+    },
+    "desc": "自分が起こす晴れを3ターン延長する。"
+  },
+  {
+    "source": "しめったいわ",
+    "name": "雨呼びの水盤",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weather": "rain"
+    },
+    "desc": "自分が起こす雨を3ターン延長する。"
+  },
+  {
+    "source": "さらさらいわ",
+    "name": "砂巡りの風見",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weather": "sand"
+    },
+    "desc": "自分が起こす砂嵐を3ターン延長する。"
+  },
+  {
+    "source": "つめたいいわ",
+    "name": "冬守りの氷柱",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weather": "snow"
+    },
+    "desc": "自分が起こす雪を3ターン延長する。"
+  },
+  {
+    "source": "ひかりのこな",
+    "name": "揺影の薄絹",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "evasion": 0.9
+    },
+    "desc": "自分を狙う技の命中率を0.9倍にする。"
+  },
+  {
+    "source": "グランドコート",
+    "name": "地脈の刺繍",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "fieldTurns": 3
+    },
+    "desc": "自分が作る場の効果を3ターン延長する。"
+  },
+  {
+    "source": "パワフルハーブ",
+    "name": "瞬燃の芯",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "instantCharge": true
+    },
+    "desc": "ためる技を一度だけ準備なしで使える。"
+  },
+  {
+    "source": "エレキシード",
+    "name": "雷庭の実",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "field": "electric",
+      "fieldStat": "def"
+    },
+    "desc": "雷の場で一度だけブロックが1段階上がる。"
+  },
+  {
+    "source": "サイコシード",
+    "name": "星庭の実",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "field": "star",
+      "fieldStat": "sdef"
+    },
+    "desc": "星の場で一度だけバリアが1段階上がる。"
+  },
+  {
+    "source": "ミストシード",
+    "name": "霞庭の実",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "field": "mist",
+      "fieldStat": "sdef"
+    },
+    "desc": "霧の場で一度だけバリアが1段階上がる。"
+  },
+  {
+    "source": "グラスシード",
+    "name": "芽庭の実",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "field": "grass",
+      "fieldStat": "def"
+    },
+    "desc": "草の場で一度だけブロックが1段階上がる。"
+  },
+  {
+    "source": "かるいし",
+    "name": "羽化の中空石",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "weight": 0.5
+    },
+    "desc": "体重を半分にする。重さを使う技の計算にも反映。"
+  },
+  {
+    "source": "きせきのタネ",
+    "name": "芽吹きの琥珀",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "くさ",
+      "power": 1.2
+    },
+    "desc": "くさの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "もくたん",
+    "name": "炉花のかけら",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ほのお",
+      "power": 1.2
+    },
+    "desc": "ほのおの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "しんぴのしずく",
+    "name": "潮騒の真珠",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "みず",
+      "power": 1.2
+    },
+    "desc": "みずの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "シルクのスカーフ",
+    "name": "白耀の織帯",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "するどいくちばし",
+    "name": "風紋の翼飾り",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "ぎんのこな",
+    "name": "甲虫の彩砂",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "むし",
+      "power": 1.2
+    },
+    "desc": "むしの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "やわらかいすな",
+    "name": "砂脈の陶笛",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2
+    },
+    "desc": "じめんの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "くろいメガネ",
+    "name": "夜帳の瞳石",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2
+    },
+    "desc": "やみの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "くろおび",
+    "name": "拳紋の鼓",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "とけないこおり",
+    "name": "霜華の髪飾り",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "みず",
+      "power": 1.2
+    },
+    "desc": "みずの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "まがったスプーン",
+    "name": "念光の小鏡",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "メタルコート",
+    "name": "鉱脈の肩当て",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2
+    },
+    "desc": "じめんの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "じしゃく",
+    "name": "雷紋の円環",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "でんき",
+      "power": 1.2
+    },
+    "desc": "でんきの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "かたいいし",
+    "name": "断崖の礎",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2
+    },
+    "desc": "じめんの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "どくバリ",
+    "name": "瘴花の封蝋",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2
+    },
+    "desc": "やみの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "のろいのおふだ",
+    "name": "幽灯の燭台",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2
+    },
+    "desc": "やみの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "りゅうのキバ",
+    "name": "天翔の徽章",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "ようせいのハネ",
+    "name": "虹紡ぎの飾り",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2
+    },
+    "desc": "ひかりの攻撃威力を1.2倍にする。"
+  },
+  {
+    "source": "ひのたまプレート",
+    "name": "紅炉の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ほのお",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ほのおの攻撃威力1.2倍。クウロムの戦闘タイプをほのおに変える。"
+  },
+  {
+    "source": "しずくプレート",
+    "name": "蒼潮の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "みず",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "みずの攻撃威力1.2倍。クウロムの戦闘タイプをみずに変える。"
+  },
+  {
+    "source": "いかずちプレート",
+    "name": "紫雷の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "でんき",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "でんきの攻撃威力1.2倍。クウロムの戦闘タイプをでんきに変える。"
+  },
+  {
+    "source": "みどりのプレート",
+    "name": "翠芽の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "くさ",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "くさの攻撃威力1.2倍。クウロムの戦闘タイプをくさに変える。"
+  },
+  {
+    "source": "つららのプレート",
+    "name": "霜藍の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "みず",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "みずの攻撃威力1.2倍。クウロムの戦闘タイプをみずに変える。"
+  },
+  {
+    "source": "こぶしのプレート",
+    "name": "闘耀の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ひかりの攻撃威力1.2倍。クウロムの戦闘タイプをひかりに変える。"
+  },
+  {
+    "source": "もうどくプレート",
+    "name": "瘴紫の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "やみの攻撃威力1.2倍。クウロムの戦闘タイプをやみに変える。"
+  },
+  {
+    "source": "だいちのプレート",
+    "name": "黄土の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "じめんの攻撃威力1.2倍。クウロムの戦闘タイプをじめんに変える。"
+  },
+  {
+    "source": "あおぞらプレート",
+    "name": "天青の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ひかりの攻撃威力1.2倍。クウロムの戦闘タイプをひかりに変える。"
+  },
+  {
+    "source": "ふしぎのプレート",
+    "name": "念彩の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ひかりの攻撃威力1.2倍。クウロムの戦闘タイプをひかりに変える。"
+  },
+  {
+    "source": "たまむしプレート",
+    "name": "虹甲の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "むし",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "むしの攻撃威力1.2倍。クウロムの戦闘タイプをむしに変える。"
+  },
+  {
+    "source": "がんせきプレート",
+    "name": "巌橙の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "じめんの攻撃威力1.2倍。クウロムの戦闘タイプをじめんに変える。"
+  },
+  {
+    "source": "もののけプレート",
+    "name": "幽墨の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "やみの攻撃威力1.2倍。クウロムの戦闘タイプをやみに変える。"
+  },
+  {
+    "source": "りゅうのプレート",
+    "name": "天鱗の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ひかりの攻撃威力1.2倍。クウロムの戦闘タイプをひかりに変える。"
+  },
+  {
+    "source": "こわもてプレート",
+    "name": "宵黒の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "やみ",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "やみの攻撃威力1.2倍。クウロムの戦闘タイプをやみに変える。"
+  },
+  {
+    "source": "こうてつプレート",
+    "name": "鋼灰の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "じめん",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "じめんの攻撃威力1.2倍。クウロムの戦闘タイプをじめんに変える。"
+  },
+  {
+    "source": "せいれいプレート",
+    "name": "夢白の界鍵",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "type": "ひかり",
+      "power": 1.2,
+      "typeSpecies": "クウロム"
+    },
+    "desc": "ひかりの攻撃威力1.2倍。クウロムの戦闘タイプをひかりに変える。"
+  },
+  {
+    "source": "こころのしずく",
+    "name": "双天の共鳴珠",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "ソラリュウ",
+        "ソラハタリ"
+      ],
+      "types": [
+        "ひかり",
+        "みず"
+      ],
+      "power": 1.2
+    },
+    "desc": "ソラリュウ・ソラハタリ専用。ひかり・みずの攻撃を1.2倍。"
+  },
+  {
+    "source": "こんごうだま",
+    "name": "刻鋼の動力核",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "クロノヴァ"
+      ],
+      "types": [
+        "でんき",
+        "じめん"
+      ],
+      "power": 1.2
+    },
+    "desc": "クロノヴァ専用。でんき・じめんの攻撃を1.2倍。"
+  },
+  {
+    "source": "だいこんごうだま",
+    "name": "刻鋼の覚醒炉",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "クロノヴァ"
+      ],
+      "types": [
+        "でんき",
+        "じめん"
+      ],
+      "power": 1.2,
+      "form": "atk"
+    },
+    "desc": "クロノヴァ専用。でんき・じめんの攻撃を1.2倍。戦闘中は覚醒し、アタック1.2倍。"
+  },
+  {
+    "source": "しらたま",
+    "name": "潮界の波紋環",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "タイドリア"
+      ],
+      "types": [
+        "ひかり",
+        "みず"
+      ],
+      "power": 1.2
+    },
+    "desc": "タイドリア専用。ひかり・みずの攻撃を1.2倍。"
+  },
+  {
+    "source": "だいしらたま",
+    "name": "潮界の覚醒冠",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "タイドリア"
+      ],
+      "types": [
+        "ひかり",
+        "みず"
+      ],
+      "power": 1.2,
+      "form": "spc"
+    },
+    "desc": "タイドリア専用。ひかり・みずの攻撃を1.2倍。戦闘中は覚醒し、マジック1.2倍。"
+  },
+  {
+    "source": "はっきんだま",
+    "name": "幽墨の筆架",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "オボロニカ"
+      ],
+      "types": [
+        "やみ",
+        "みず"
+      ],
+      "power": 1.2
+    },
+    "desc": "オボロニカ専用。やみ・みずの攻撃を1.2倍。"
+  },
+  {
+    "source": "だいはっきんだま",
+    "name": "幽墨の覚醒硯",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "オボロニカ"
+      ],
+      "types": [
+        "やみ",
+        "みず"
+      ],
+      "power": 1.2,
+      "form": "spd"
+    },
+    "desc": "オボロニカ専用。やみ・みずの攻撃を1.2倍。戦闘中は覚醒し、スピード1.2倍。"
+  },
+  {
+    "source": "くちたけん",
+    "name": "暁牙の戦旗",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "ヴァルディオ"
+      ],
+      "types": [],
+      "power": 1.2,
+      "form": "atk"
+    },
+    "desc": "ヴァルディオ専用。戦闘中は覚醒し、アタック1.2倍。"
+  },
+  {
+    "source": "くちたたて",
+    "name": "山守りの大印",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "コケゴロ"
+      ],
+      "types": [],
+      "power": 1.2,
+      "form": "def"
+    },
+    "desc": "コケゴロ専用。戦闘中は覚醒し、ブロック1.2倍。"
+  },
+  {
+    "source": "でんきだま",
+    "name": "幼雷の宝冠",
+    "kind": "held",
+    "price": 8000,
+    "effect193": {
+      "species": [
+        "デンデマリ"
+      ],
+      "doubleAttack": true
+    },
+    "desc": "デンデマリ専用。アタックとマジックが2倍になる。"
+  }
+]

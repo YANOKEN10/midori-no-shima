@@ -1,3 +1,4 @@
+import {create193} from './held193.mjs';
 import {alignKnownMoves192,allowsMove192} from './moveRules192.mjs';
 import {migrateBalanceHp189} from './data/balance189.mjs';
 import {migrateBalanceHp176} from './data/balance176.mjs';
@@ -84,7 +85,8 @@ function statTerm(m,key) {
   return Math.floor((2*species(m.sp).base[key]+(m.iv[key]||0)+Math.floor((m.ev[key]||0)/4))*m.lv/100);
 }
 export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
-export function statOf(m,key) { const value=key==='hp'?maxHp(m):statTerm(m,key)+5;return Math.floor(value*(item(m.heldItem).stat===key?1.1:1)); }
+const heldStats193=create193({species});
+export function statOf(m,key) { const value=key==='hp'?maxHp(m):statTerm(m,key)+5;return Math.floor(value*(item(m.heldItem).stat===key?1.1:1)*heldStats193.multiplier(m,key)); }
 export function evTotal(m) { return STAT_KEYS.reduce((n,k)=>n+(m.ev?.[k]||0),0); }
 export function effortRoom171(m,key,amount=10){
  if(!STAT_KEYS.includes(key)||!Number.isFinite(amount)||amount<=0)return 0;

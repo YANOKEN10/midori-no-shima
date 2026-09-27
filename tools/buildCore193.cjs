@@ -1,0 +1,1 @@
+const fs=require('fs');const rows=JSON.parse(fs.readFileSync('tools/fixtures/heldItems193.json'));fs.writeFileSync('src/heldCore193.js',fs.readFileSync('tools/heldCore193.template','utf8').replace('__ITEMS__',JSON.stringify(rows.map(({source,...x})=>x))));fs.writeFileSync('src/held193.mjs',"import './heldCore193.js';\nexport const {ITEMS193,create193}=globalThis.GaonHeld193;\n");

@@ -1,3 +1,5 @@
+import {create193} from './held193.mjs';
+import {MOVES} from './data/moves.js';
 import {battleMusic129} from './battleMusic129.mjs';
 import {showGrowth124} from './summary124.js';
 import {participationRewards122} from './training122.mjs';
@@ -33,10 +35,15 @@ export function wait(ms) { return new Promise((r) => setTimeout(r, ms)); }
 const STAGE = [0.25, 0.28, 0.33, 0.4, 0.5, 0.66, 1, 1.5, 2, 2.5, 3, 3.5, 4];
 function stageMul(s) { return STAGE[Math.max(-6, Math.min(6, s)) + 6]; }
 
+const heldMessages193=[];
+const held193=create193({species,maxHp,rawStat:statOf,moves:MOVES,log:(m,text)=>heldMessages193.push(monName(m)+'：'+text)});
+async function flushHeld193(){if(heldMessages193.length)await ui.say(heldMessages193.splice(0));}
 function fresh(mon, isPlayer) {
+  const state=held193.enter(mon);
+
   return {
     mon: mon, player: Boolean(isPlayer),
-    st: { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 },
+    st: Object.assign(state.st,{atk:0,def:0,spd:0,spc:0,sdef:0,acc:0}),
     flinch: false, sleep: 0, leech: false, trap: 0,
     shakeX: 0, hidden: false, flash: 0,
   };
@@ -87,7 +94,7 @@ export async function startBattle(opts) {
     trainer: opts.trainer || null,
     foeParty: foeParty, foeIndex: 0, participants122:new Set(you?[you]:[]), pendingEvos122:[],
     you: you ? fresh(you, true) : null, foe: fresh(foeParty[0], false),
-    turn: 0, runTries: 0, hpAnim: true, caught: false,
+    field193:{}, turn: 0, runTries: 0, hpAnim: true, caught: false,
     intro: 'trainer',introTime:0,
   };
   if (B.you) B.you.showHp = you.hp;
@@ -144,6 +151,7 @@ export async function startBattle(opts) {
   battle.active = false;
   ui.setBattleMode(false);
   lastEvo = B.pendingEvos122 || [];
+  for(const mon of [...B.playerParty,...B.foeParty])delete mon.combat193;
   B = null;
   if (result === "win" && isTrainer && !opts.facility) {
     const money = opts.trainer.money || 0;
@@ -187,10 +195,14 @@ async function chooseAction() {
 
 async function chooseMove() {
   const m = B.you.mon;
+  if(m.combat193?.charging)return m.moves.find(x=>x.name===m.combat193.charging);
+  const usable=m.moves.filter(x=>x.pp>0&&held193.allowed(m,x.name));
+  if(!usable.length)return {name:'わるあがき',pp:1,max:1};
   const labels = m.moves.map(mv=>mv.name);
   const details = m.moves.map(mv=>'PP '+mv.pp+' / '+mv.max);
   const i = await ui.choice(labels, { columns: 2, rows: 2, battle: true, details, types:m.moves.map(mv=>moveData(mv.name).type) });
   if (i < 0) return null;
+  if(!held193.allowed(m,m.moves[i].name)){await ui.say(['持ち物や状態の効果で、その技は使えません。']);return null;}
   if (m.moves[i].pp <= 0) { await ui.say(["わざの のこりが ない！"]); return null; }
   return m.moves[i];
 }
@@ -203,6 +215,7 @@ async function chooseItem() {
 }
 
 async function choosePartyMember() {
+  if(B.you.mon.combat193?.bind>0&&!held193.item(B.you.mon).escape){await ui.say(['拘束されていて交代できません。']);return -1;}
   const p = B.playerParty;
   const labels = p.map((m, i) => {
     return (i === p.indexOf(B.you.mon) ? "・" : "　") + monName(m) + " Lv" + m.lv + " " + m.hp + "/" + maxHp(m) + (m.status ? " " + m.status : "");
@@ -217,6 +230,7 @@ async function choosePartyMember() {
 async function switchTo(i) {
   await ui.say(["もどれ！ " + monName(B.you.mon) + "！"]);
   B.you = fresh(B.playerParty[i], true);
+  enterField193(B.you);
   B.participants122.add(B.you.mon);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
@@ -234,24 +248,27 @@ async function doTurn(playerMove, skipPlayer) {
   let youFirst;
   if (skipPlayer || !playerMove) youFirst = false;
   else if (pPri !== fPri) youFirst = pPri > fPri;
-  else youFirst = youSpd === foeSpd ? chance(0.5) : youSpd > foeSpd;
+  else {const a=held193.order(B.you.mon),b=held193.order(B.foe.mon);youFirst=a!==b?a>b:youSpd===foeSpd?chance(.5):B.field193.roomTurns>0?youSpd<foeSpd:youSpd>foeSpd;}
 
   const order = youFirst ? [[B.you, B.foe, playerMove], [B.foe, B.you, foeMove]]
                          : [[B.foe, B.you, foeMove], [B.you, B.foe, playerMove]];
 
   for (const [atk, def, mv] of order) {
     if (!mv) continue;
+    if(atk!==B.you&&atk!==B.foe||def!==B.you&&def!==B.foe)continue;
     if (fainted(atk.mon) || fainted(def.mon)) continue;
     await useMove(atk, def, mv);
-    if (fainted(def.mon)) break;
+    await heldSwitches193();
+    await flushHeld193();
+    if (fainted(def.mon)||fainted(atk.mon)) break;
   }
 
   // ターンの おわり（どく・やけど・エネスポンジ）
   for (const s of [B.you, B.foe]) {
       if (!s) continue;
     if (fainted(s.mon)) continue;
-    if (s.mon.status === "どく" || s.mon.status === "やけど") {
-      const d = Math.max(1, Math.floor(maxHp(s.mon) / 16));
+    if (["どく","やけど","もうどく"].includes(s.mon.status)) {
+      const d = Math.max(1, Math.floor(maxHp(s.mon) / 16)*(s.mon.status==='もうどく'?(s.mon.combat193.toxic=(s.mon.combat193.toxic||0)+1):1));
       s.mon.hp = Math.max(0, s.mon.hp - d);
       await ui.say([label(s) + "は " + s.mon.status + "の ダメージを うけた！"]);
       beep("weak");
@@ -266,6 +283,8 @@ async function doTurn(playerMove, skipPlayer) {
       await wait(220);
     }
   }
+  for(const side of [B.you,B.foe])if(side)held193.tick(side.mon,B.field193);
+  held193.tickField(B.field193);await flushHeld193();
   B.turn++;
 }
 
@@ -273,8 +292,9 @@ function label(s) { return s.player ? monName(s.mon) : "あいての " + monName
 
 function pickFoeMove() {
   const m = B.foe.mon;
-  const usable = m.moves.filter((x) => x.pp > 0);
-  if (!usable.length) return null;
+  if(m.combat193?.charging)return m.moves.find(x=>x.name===m.combat193.charging);
+  const usable = m.moves.filter((x) => x.pp > 0&&held193.allowed(m,x.name));
+  if (!usable.length) return {name:'わるあがき',pp:1,max:1};
   if (!B.isTrainer) return usable[rnd(usable.length)];
   // トレーナーは あいしょうの いい わざを えらびやすい
   let best = usable[0], bestScore = -1;
@@ -290,7 +310,8 @@ function pickFoeMove() {
 
 /* --- わざを つかう --------------------------------------------- */
 async function useMove(atk, def, mv) {
-  const d = moveData(mv.name);
+  const d = mv.name==='わるあがき'?{type:'ひかり',cat:'phys',pow:50,acc:100,contact193:true,fx:{recoil:.25}}:moveData(mv.name);
+  if(atk.mon.combat193?.charm&&chance(.5)){await ui.say(['心を奪われて動けない！']);return;}
 
   // ねむり・まひ の はんてい
   if (atk.mon.status === "ねむり") {
@@ -302,27 +323,33 @@ async function useMove(atk, def, mv) {
     await ui.say([label(atk) + "は からだが しびれて うごけない！"]);
     return;
   }
-  if (atk.flinch) { atk.flinch = false; await ui.say([label(atk) + "は ひるんで うごけない！"]); return; }
+  if (atk.flinch||atk.mon.combat193?.flinch) { atk.flinch = false; await ui.say([label(atk) + "は ひるんで うごけない！"]); return; }
 
-  mv.pp = Math.max(0, mv.pp - 1);
+  const charging=!!atk.mon.combat193?.charging;
+  if(!charging)mv.pp = Math.max(0, mv.pp - 1);
+  if(!held193.beginMove(atk.mon,mv.name,d)){await flushHeld193();return;}
   await ui.say([label(atk) + "の " + mv.name + "！"]);
 
   // めいちゅう
-  if (!chance(Math.min(1, (d.acc / 100) * stageMul(atk.st.acc)))) {
+  if (!chance(Math.min(1, (d.acc / 100) * stageMul(atk.st.acc) * held193.accuracy(atk.mon,def.mon,d)))) {
+    held193.miss(atk.mon);
     await ui.say([label(atk) + "の こうげきは はずれた！"]);
     return;
   }
 
   const fx = d.fx || {};
+  if(held193.immune(atk.mon,def.mon,d)){await ui.say(["持ち物に守られて 効果がない！"]);return;}
 
   // へんかわざ
   if (d.cat === "stat" || !d.pow) {
+    held193.effects(atk.mon,def.mon,{...d,fx193:d.fx193?.hazard?{...d.fx193,targetSide:def.player?'player':'foe'}:d.fx193},B.field193);
     await applyEffects(atk, def, fx, 0);
+    held193.afterAttack(atk.mon,def.mon,d,0);
     return;
   }
 
   // ダメージ
-  const times = fx.multi ? (fx.multi[0] + rnd(fx.multi[1] - fx.multi[0] + 1)) : 1;
+  const times = fx.multi ? held193.hits(atk.mon,fx.multi) : 1;
   let total = 0, eff = 1, crit = false;
   for (let i = 0; i < times; i++) {
     if (fainted(def.mon)) break;
@@ -330,8 +357,10 @@ async function useMove(atk, def, mv) {
     eff = r.eff;
     if (r.crit) crit = true;
     if (r.eff === 0) break;
-    def.mon.hp = Math.max(0, def.mon.hp - r.dmg);
-    total += r.dmg;
+    const dealt=held193.damage(def.mon,r.dmg);
+    def.mon.hp = Math.max(0, def.mon.hp - dealt);
+    total += dealt;
+    held193.afterHit(atk.mon,def.mon,d,r.eff,dealt);
     def.shakeX = 8;
     def.flash = 140;
     beep(r.eff >= 2 ? "super" : r.eff < 1 ? "weak" : "hit");
@@ -346,7 +375,7 @@ async function useMove(atk, def, mv) {
 
   // すいとる・はんどう
   if (fx.drain && total > 0) {
-    const heal = Math.max(1, Math.floor(total * fx.drain));
+    const heal = Math.max(1, Math.floor(total * fx.drain * (held193.item(atk.mon).drain||1)));
     atk.mon.hp = Math.min(maxHp(atk.mon), atk.mon.hp + heal);
     await ui.say([label(atk) + "は たいりょくを すいとった！"]);
   }
@@ -356,13 +385,14 @@ async function useMove(atk, def, mv) {
     await ui.say([label(atk) + "は はんどうで きずついた！"]);
   }
 
-  if (!fainted(def.mon)) await applyEffects(atk, def, fx, total);
+  if (!fainted(def.mon)){if(!held193.item(def.mon).secondaryGuard)held193.effects(atk.mon,def.mon,d,B.field193);await applyEffects(atk, def, held193.item(def.mon).secondaryGuard?{self:fx.self,heal:fx.heal,rest:fx.rest}:fx,total);}
+  held193.afterAttack(atk.mon,def.mon,d,total);
 }
 
 function calcDamage(atk, def, d, fx) {
   const a = atk.mon, b = def.mon;
-  const spTypes = species(b.sp).types;
-  const eff = effect(d.type, spTypes);
+  const spTypes = held193.types(b);
+  const eff = held193.effectiveness(b,effect(d.type,spTypes));
   if (eff === 0) return { dmg: 0, eff: 0, crit: false };
 
   const phys = d.cat === "phys";
@@ -370,28 +400,29 @@ function calcDamage(atk, def, d, fx) {
   let D = statOf(b, phys ? "def" : "sdef") * stageMul(phys ? def.st.def : def.st.sdef);
   if (phys && a.status === "やけど") A *= 0.5;
 
-  const critRate = (fx.crit ? 0.125 : 0.0625);
+  const critRate = held193.crit(a,fx.crit ? 0.125 : 0.0625);
   const crit = chance(critRate);
   if (crit) { A = statOf(a, phys ? "atk" : "spc"); D = statOf(b, phys ? "def" : "sdef"); }
 
   let dmg = Math.floor(Math.floor(Math.floor((2 * a.lv) / 5 + 2) * d.pow * A / Math.max(1, D)) / 50) + 2;
   if (crit) dmg *= 2;
-  if (species(a.sp).types.indexOf(d.type) >= 0) dmg = Math.floor(dmg * 1.5);
-  dmg = Math.floor(dmg * eff);
+  if (held193.types(a).indexOf(d.type) >= 0) dmg = Math.floor(dmg * 1.5);
+  if(B.field193.weather==='snow'&&phys&&held193.types(b).includes('みず'))dmg/=1.5;
+  dmg = Math.floor(dmg * eff * held193.power(a,b,d,eff,B.field193));
   dmg = Math.floor(dmg * (217 + rnd(39)) / 255);
   return { dmg: Math.max(1, dmg), eff: eff, crit: crit };
 }
 
 async function applyEffects(atk, def, fx, dealt) {
-  if (fx.self) {
+  if (fx.self && atk.mon.hp>0) {
     for (const k of Object.keys(fx.self)) {
-      atk.st[k] = Math.max(-6, Math.min(6, atk.st[k] + fx.self[k]));
+      const raised=held193.change(atk.mon,{[k]:fx.self[k]},atk.mon);held193.copyBoost(atk.mon,def.mon,raised);
       await ui.say([label(atk) + "の " + statName(k) + "が " + (fx.self[k] > 0 ? "あがった！" : "さがった！")]);
     }
   }
   if (fx.foe && (!fx.chance || chance(fx.chance))) {
     for (const k of Object.keys(fx.foe)) {
-      def.st[k] = Math.max(-6, Math.min(6, def.st[k] + fx.foe[k]));
+      held193.change(def.mon,{[k]:fx.foe[k]},atk.mon);
       await ui.say([label(def) + "の " + statName(k) + "が " + (fx.foe[k] > 0 ? "あがった！" : "さがった！")]);
     }
   }
@@ -401,7 +432,7 @@ async function applyEffects(atk, def, fx, dealt) {
       const immune = (fx.status === "やけど" && t.indexOf("ほのお") >= 0) ||
                      (fx.status === "まひ" && t.indexOf("でんき") >= 0);
       if (!immune) {
-        def.mon.status = fx.status;
+        held193.status(def.mon,fx.status,B.field193);
         if (fx.status === "ねむり") def.sleep = 1 + rnd(3);
         await ui.say([label(def) + "は " + fx.status + "に なった！"]);
       }
@@ -409,13 +440,13 @@ async function applyEffects(atk, def, fx, dealt) {
   }
   if (fx.flinch && chance(fx.flinch)) def.flinch = true;
   if (fx.leech) { def.leech = true; await ui.say([label(def) + "に たねを うえつけた！"]); }
-  if (fx.heal) {
+  if (fx.heal && atk.mon.hp>0) {
     const h = Math.floor(maxHp(atk.mon) * fx.heal);
     atk.mon.hp = Math.min(maxHp(atk.mon), atk.mon.hp + h);
     beep("heal");
     await ui.say([label(atk) + "は たいりょくを かいふくした！"]);
   }
-  if (fx.rest) {
+  if (fx.rest && atk.mon.hp>0) {
     atk.mon.hp = maxHp(atk.mon);
     atk.mon.status = "ねむり";
     atk.sleep = 2;
@@ -423,8 +454,8 @@ async function applyEffects(atk, def, fx, dealt) {
     await ui.say([label(atk) + "は ねむって げんきに なった！"]);
   }
   if (fx.reset) {
-    B.you.st = { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 };
-    B.foe.st = { atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 };
+    Object.assign(B.you.st,{ atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 });
+    Object.assign(B.foe.st,{ atk: 0, def: 0, spd: 0, spc: 0, sdef: 0, acc: 0 });
     await ui.say(["のうりょくの へんかが もとに もどった！"]);
   }
 }
@@ -580,10 +611,11 @@ async function onFoeDown() {
 
   }
   // つぎの あいて
-  if (B.isTrainer && B.foeIndex + 1 < B.foeParty.length) {
-    B.foeIndex++;
+  if (B.isTrainer && B.foeParty.some(m=>!fainted(m))) {
+    B.foeIndex=B.foeParty.findIndex(m=>!fainted(m));
     await ui.say([B.trainer.name + "は " + B.foeParty[B.foeIndex].sp + "を くりだした！"]);
     B.foe = fresh(B.foeParty[B.foeIndex], false);
+    enterField193(B.foe);
     B.foe.showHp = B.foe.mon.hp;
     seeMon(B.foe.mon.sp);
     return "";
@@ -603,6 +635,7 @@ async function onYouDown() {
   }
   const i = await choosePartyMemberForce();
   B.you = fresh(B.playerParty[i], true);
+  enterField193(B.you);
   B.participants122.add(B.you.mon);
   B.you.showHp = B.you.mon.hp;
   await ui.say(["ゆけっ！ " + monName(B.you.mon) + "！"]);
@@ -657,6 +690,7 @@ function drawBattle() {
     }
   }
 
+  for(const side of [B.you,B.foe])if(side&&!side.hidden&&held193.item(side.mon).form){G.use('ui');const x=side.player?64:244,y=side.player?115:40;G.ctx.fillStyle='#fff0a7';G.ctx.strokeStyle='#cf9333';G.ctx.lineWidth=2;G.ctx.beginPath();G.ctx.moveTo(x,y-9);G.ctx.lineTo(x+7,y);G.ctx.lineTo(x,y+9);G.ctx.lineTo(x-7,y);G.ctx.closePath();G.ctx.fill();G.ctx.stroke();G.textFit('覚醒',x-16,y+11,32,3,10);}
   // 下の わく（メニューが うかんで 見えないように）
   G.use("ui");
   if(!ui.busy)drawBattlePanel(G.ctx);
@@ -708,4 +742,13 @@ function infoBox(x, y, side, mine) {
 
   if(m.status)G.text(m.status,x+10,y+39,3,8);
   if(mine)battleLabel(G.ctx,Math.round(shown)+' / '+maxHp(m),x+w-10,y+44,{size:11,color:'#234957',align:'right',numeric:true});
+}
+
+function enterField193(side){const field=B.field193;if(field.hazards?.[side.player?'player':'foe']&&!held193.item(side.mon).hazardGuard)side.mon.hp=Math.max(0,side.mon.hp-Math.max(1,Math.floor(maxHp(side.mon)/8)));held193.fieldTriggers(side.mon,field);}
+async function heldSwitches193(){
+ for(const side of [B.you,B.foe]){if(!side?.mon.hp)continue;const st=held193.state(side.mon);if(!st.eject&&!st.forceOut)continue;
+ const target=st.forceOut?(side===B.you?B.foe:B.you):side;if(!target?.mon.hp)continue;const party=target.player?B.playerParty:B.foeParty,choices=party.map((m,i)=>m!==target.mon&&m.hp>0?i:-1).filter(i=>i>=0);
+ if(choices.length){let i=choices[rnd(choices.length)];if(target.player&&!st.forceOut){const answer=await ui.choice([...choices.map(j=>monName(party[j])),'交代しない'],{rows:6});if(answer<0||answer>=choices.length){delete st.eject;continue;}i=choices[answer];}held193.consume(side.mon);if(target.player)await switchTo(i);else{B.foeIndex=i;B.foe=fresh(party[i],false);enterField193(B.foe);await ui.say([party[i].sp+'に交代した！']);}}
+ delete st.eject;delete st.forceOut;
+ }
 }

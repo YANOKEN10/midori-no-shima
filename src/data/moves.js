@@ -1,3 +1,5 @@
+import {MOVES193} from './moves193.mjs';
+import {MOVE_FORMS92} from './moves92.mjs';
 import {EXTRA_MOVES92} from './moves92.mjs';
 // ============================================================
 //  わざ
@@ -130,3 +132,6 @@ export const MOVE_ALIASES = {
 export const canonicalMoveName=name=>MOVE_ALIASES[name]||name;
 
 export const BURST_MOVE_NAMES = ["ファイアバースト","リーフバースト","アクアバースト","サンダーバースト","ロックバースト","ダークバースト","ホワイトバースト","ビーストバースト"];
+
+Object.assign(MOVES,MOVES193);
+for(const [name,m] of Object.entries(MOVES)){m.punch193=MOVE_FORMS92[name]==='fist'||/ナックル|フィスト/.test(name);m.sound193=MOVE_FORMS92[name]==='voice'||/ボイス|うた|声|こだま/.test(name);m.powder193=/スモッグ|ヘイズ/.test(name);m.contact193=m.cat==='phys'&&!/ピストル|シュート|スパイク/.test(name);}
