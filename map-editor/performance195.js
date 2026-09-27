@@ -1,0 +1,6 @@
+// One raster per active view. Geometry is immutable between editor refreshes;
+// new image resources get a separate revision so late-loading art stays visible.
+export function createSceneCache195(){let map,revision,canvas;return{draw(target,next,version,paint){if(!canvas)canvas=document.createElement('canvas');if(map!==next||revision!==version){canvas.width=next.rows[0].length*32;canvas.height=next.rows.length*32;const context=canvas.getContext('2d');context.imageSmoothingEnabled=false;paint(context);map=next;revision=version;}target.drawImage(canvas,0,0);}};}
+// IntersectionObserver includes clipping by the scrolling palette. No per-card
+// layout reads or offscreen sprite loads on map interaction.
+export function createVisiblePalette195(invalidate){const painters=new Map(),visible=new Set();const observer=new IntersectionObserver(entries=>{for(const e of entries){if(!painters.has(e.target))continue;if(e.isIntersecting)visible.add(e.target);else visible.delete(e.target);}invalidate();},{rootMargin:'80px'});return{add(canvas,paint){painters.set(canvas,paint);observer.observe(canvas);},clear(){observer.disconnect();painters.clear();visible.clear();},paint(version){for(const canvas of visible)painters.get(canvas)?.(version);}};}
