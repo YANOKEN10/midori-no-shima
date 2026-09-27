@@ -1,3 +1,4 @@
+import {allowsMove192} from './moveRules192.mjs';
 import {language166,setLanguage166} from './i18n166.mjs';
 import {canonicalTrainingItem125} from './training122.mjs';
 import {showSummary124,showGrowth124} from './summary124.js';
@@ -155,6 +156,13 @@ async function useOutside(name) {
   if(name==='レベルの実'){const i=await partyMenu(true);if(i<0)return;const m=State.save.party[i];if(m.lv>=100){await ui.say(['すでに レベル100です。']);return;}if(!useItem(name))return;const {gainExp,expForLevel}=await import('./state.js');const result=gainExp(m,expForLevel(m.lv+1)-m.exp);await showGrowth124(m,result.growth);for(const name of result.learned)await teachMove92(m,name,ui,()=>{State.dirty=true;saveLocal();});if(result.evolve&&await ui.ask([result.evolve+'へ 進化しますか？'])){m.sp=result.evolve;State.save.dexSeen[m.sp]=true;State.save.dexOwn[m.sp]=true;}healFull(m);saveLocal();await ui.say(['レベルが１ 上がった！']);return;}
 
   const d = itemData(name);
+  if(d.kind==='moveScroll'){
+    const i=await partyMenu(true);if(i<0)return;const mon=State.save.party[i];
+    if(!allowsMove192(SPECIES[mon.sp],d.move)){await ui.say(['このガオンは その分類の攻撃技を覚えられません。']);return;}
+    if(mon.moves.some(m=>m.name===d.move)){await ui.say(['すでに '+d.move+'を覚えています。']);return;}
+    if(!hasItem(name))return;
+    await teachMove92(mon,d.move,ui,()=>{useItem(name);State.dirty=true;saveLocal();});return;
+  }
   if(d.kind==='evBoost'){
  const i=await partyMenu(true);if(i<0)return;
  const m=State.save.party[i],{effortRoom171,boostEffort171}=await import('./state.js');

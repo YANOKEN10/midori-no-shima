@@ -1,3 +1,4 @@
+import {MOVE_SCROLLS192} from '../moveScrolls192.mjs';
 import {MATERIAL_ITEMS172} from '../materials172.mjs';
 import {EV_ITEMS122,canonicalTrainingItem125} from '../training122.mjs';
 // ============================================================
@@ -5,6 +6,7 @@ import {EV_ITEMS122,canonicalTrainingItem125} from '../training122.mjs';
 //   kind: net(つかまえる) / heal / cure / revive / escape / key
 // ============================================================
 export const ITEMS = {
+ ...Object.fromEntries(MOVE_SCROLLS192.map(({name,...data})=>[name,data])),
  ...Object.fromEntries(MATERIAL_ITEMS172.map(({name,kind,amount,price,desc})=>[name,{kind,amount,price,desc}])),
  ...Object.fromEntries(EV_ITEMS122.map(({name,...item})=>[name,item])),
  "小型ボート":{kind:"key",price:0,desc:"川や海に向いて使う。岸へ進むと上陸。"},

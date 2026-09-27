@@ -1,3 +1,4 @@
+import {alignKnownMoves192,allowsMove192} from './moveRules192.mjs';
 import {migrateBalanceHp189} from './data/balance189.mjs';
 import {migrateBalanceHp176} from './data/balance176.mjs';
 import {rivalName168} from './rival168.mjs';
@@ -54,6 +55,7 @@ export function makeMon(spName, lv, opt) {
   for (const name of pool) if (uniq.indexOf(name) < 0) uniq.push(name);
   for (const name of uniq.slice(-4)) m.moves.push(newMove(name));
   if (!m.moves.length) m.moves.push(newMove("タックル"));
+  alignKnownMoves192(m,sp);
   m.hp = maxHp(m);
   return m;
 }
@@ -74,10 +76,11 @@ export function normalizeMonStats(m) {
   m.ev=normalizeEV(m.ev);m.statVersion=2;
   migrateBalanceHp176(m,BALANCE176.before[m.sp],BALANCE176.after[m.sp]);
   migrateBalanceHp189(m,BALANCE189.before[m.sp],species(m.sp).base);
+  alignKnownMoves192(m,species(m.sp));
   return m;
 }
 function statTerm(m,key) {
-  if(m.statVersion!==2||m.balanceVersion176!==1||m.balanceVersion189!==1||!m.ev||!m.iv)normalizeMonStats(m);
+  if(m.moveRules192!==m.sp||m.statVersion!==2||m.balanceVersion176!==1||m.balanceVersion189!==1||!m.ev||!m.iv)normalizeMonStats(m);
   return Math.floor((2*species(m.sp).base[key]+(m.iv[key]||0)+Math.floor((m.ev[key]||0)/4))*m.lv/100);
 }
 export function maxHp(m) { return statTerm(m,'hp')+m.lv+10; }
@@ -134,6 +137,7 @@ export function gainExp(m, amount) {
 
 export function learnMove(m, name) {
   name = canonicalMoveName(name);
+  if(!allowsMove192(species(m.sp),name))return "incompatible";
   if (m.moves.some((x) => x.name === name)) return "already";
   if (m.moves.length < 4) { m.moves.push(newMove(name)); return "ok"; }
   return "full";

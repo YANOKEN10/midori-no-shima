@@ -1,3 +1,4 @@
+import {allowsMove192} from './moveRules192.mjs';
 import {recordBirth} from './frontierRules.js';
 import {SPECIES} from './data/species.js';
 import {MOVES} from './data/moves.js';
@@ -14,7 +15,7 @@ export function voyageDocked(save,now=Date.now()){return !!save.voyage&&voyageRe
 export function trainerAvailable(save,id,now=new Date()){return save.shipBattles?.[id]!==japanTime(now).day;}
 export function markTrainer(save,id,now=new Date()){save.shipBattles||={};save.shipBattles[id]=japanTime(now).day;}
 export function daycareRemaining(save){return save.daycare?Math.max(0,save.daycare.readyAt-(save.steps||0)):0;}
-export function eggMoves(sp){const normal=new Set(SPECIES[sp].learn.map(e=>e[1]));const all=Object.keys(MOVES).filter(n=>!normal.has(n));const themed=all.filter(n=>SPECIES[sp].types.includes(MOVES[n].type)&&MOVES[n].pow<=100);return themed.length?themed:all.filter(n=>MOVES[n].pow<=80);}
+export function eggMoves(sp){const normal=new Set(SPECIES[sp].learn.map(e=>e[1]));const all=Object.keys(MOVES).filter(n=>!normal.has(n)&&allowsMove192(SPECIES[sp],n));const themed=all.filter(n=>SPECIES[sp].types.includes(MOVES[n].type)&&MOVES[n].pow<=100);return themed.length?themed:all.filter(n=>MOVES[n].pow<=80);}
 export function parentOptions(save){return ['party','box'].flatMap(collection=>(save[collection]||[]).map((mon,index)=>({collection,index,mon})));}
 export function daycareBaby189(a,b){if(!a||!b||!SPECIES[a]||!SPECIES[b])return null;if(a==='ホシモチ'&&b==='ホシモチ')return null;if(a!=='ホシモチ'&&b!=='ホシモチ')return a===b?a:null;let name=a==='ホシモチ'?b:a;const seen=new Set();while(!seen.has(name)){seen.add(name);const prior=Object.keys(SPECIES).find(n=>SPECIES[n].evo?.to===name);if(!prior)return name;name=prior;}return null;}
 export function eligiblePairs(save){const groups={},all=parentOptions(save),stars=all.filter(r=>r.mon.sp==='ホシモチ');for(const ref of all)(groups[ref.mon.sp]||=[]).push(ref);return Object.entries(groups).filter(([n,refs])=>n!=='ホシモチ'&&(refs.length>=2||stars.length)).map(([n,refs])=>[n,[...refs,...stars]]);}

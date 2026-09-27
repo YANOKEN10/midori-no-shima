@@ -92,7 +92,7 @@ export const ui = {
     else if (w.kind === "choice") updateChoice(w);
     else if(w.kind==='itemList'){
       const pocketDir=w.pockets?(In.repeat('left',now,350,220)?-1:In.repeat('right',now,350,220)?1:0):0;
-      if(pocketDir){w.category=(w.category+pocketDir+3)%3;w.i=0;beep('blip');}
+      if(pocketDir){w.category=(w.category+pocketDir+4)%4;w.i=0;beep('blip');}
       const list=visibleItems(w),n=list.length;w.i=Math.min(w.i,Math.max(0,n-1));
       if(n&&In.repeat('down',now)){w.i=(w.i+1)%n;beep('blip');}if(n&&In.repeat('up',now)){w.i=(w.i+n-1)%n;beep('blip');}
       if(In.hit('b')){beep('back');close(w,null);}else if(n&&In.hit('a')){beep('ok');close(w,{...list[w.i],category:w.category,index:w.i});}

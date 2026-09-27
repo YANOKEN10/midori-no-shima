@@ -1,3 +1,4 @@
+import {allowsMove192} from './moveRules192.mjs';
 import {SPECIES} from './data/species.js';
 import {MOVES,canonicalMoveName,newMove} from './data/moves.js';
 
@@ -9,13 +10,13 @@ export function recallableMoves92(mon, catalog=SPECIES) {
   let changed=true;
   while(changed){changed=false;for(const sp of Object.values(catalog))if(sp.evo&&family.has(catalog[sp.evo.to])&&!family.has(sp)){family.add(sp);changed=true;}}
   const known=new Set(mon.moves.map(m=>canonicalMoveName(m.name))), available=new Map();
-  for(const sp of family)for(const [level,raw] of sp.learn){const name=canonicalMoveName(raw);if(level<=mon.lv&&MOVES[name]&&!known.has(name))available.set(name,Math.min(level,available.get(name)??Infinity));}
+  for(const sp of family)for(const [level,raw] of sp.learn){const name=canonicalMoveName(raw);if(level<=mon.lv&&allowsMove192(current,name)&&MOVES[name]&&!known.has(name))available.set(name,Math.min(level,available.get(name)??Infinity));}
   return [...available].map(([name,level])=>({name,level})).sort((a,b)=>a.level-b.level||a.name.localeCompare(b.name,'ja'));
 }
 
 export async function teachMove92(mon,raw,ui,onChanged=()=>{}) {
   const name=canonicalMoveName(raw), move=MOVES[name];
-  if(!move||mon.moves.some(m=>canonicalMoveName(m.name)===name))return false;
+  if(!move||!allowsMove192(SPECIES[mon.sp],name)||mon.moves.some(m=>canonicalMoveName(m.name)===name))return false;
   await ui.say([name+'を おぼえられます。',move.type+' / '+(move.cat==='phys'?'ぶつり':move.cat==='spec'?'とくしゅ':'へんか')+' / 威力 '+(move.pow||'—')+' / PP '+move.pp,move.desc||'']);
   let slot=mon.moves.length;
   if(slot>=4){

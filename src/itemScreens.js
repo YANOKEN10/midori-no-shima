@@ -2,8 +2,8 @@ import {salePrice} from './itemSelling.js';
 import * as G from './gfx.js';
 import {item} from './data/items.js';
 import {drawItem} from './itemArt.js';
-export const POCKETS=['かいふく','ラグネット','たいせつなもの'];
-export function pocket(name){const k=item(name).kind;return k==='key'?2:k==='ball'?1:0;}
+export const POCKETS=['かいふく','ラグネット','たいせつなもの','わざじゅもん'];
+export function pocket(name){const k=item(name).kind;return k==='moveScroll'?3:k==='key'?2:k==='ball'?1:0;}
 export function visibleItems(w){return w.pockets?w.items.filter(e=>pocket(e.name)===w.category):w.items;}
 export function drawItemList(w){
  const list=visibleItems(w),selected=list[w.i],shop=w.mode==='buy',sell=w.mode==='sell';G.use('ui');G.clear(1);
