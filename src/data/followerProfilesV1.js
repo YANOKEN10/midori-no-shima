@@ -6805,3 +6805,6 @@ export const FOLLOWER_PROFILES = {
 
 // New sprites use a 2px rendered pixel, matching the world terrain.
 for(let no=201;no<=300;no++){const size=no===300?48:32+(no-201)%3*8;FOLLOWER_PROFILES[no]={src:'monsters/expansion-v184/follower/'+no+'.png',srcMap:'monsters/expansion-v184/map/'+no+'.png',size,extent:size,rows:2,kind:'walk',frameMs:180,dirs:Array.from({length:4},()=>[(80-size)/2,72-size,size,size])};}
+
+// Replaces the rejected deer family with original multi-arm flower spirits.
+for(const no of [282,283,284]){FOLLOWER_PROFILES[no].src="monsters/family-v188/follower/"+no+".png";FOLLOWER_PROFILES[no].srcMap="monsters/family-v188/map/"+no+".png";}

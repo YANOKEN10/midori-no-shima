@@ -465,11 +465,11 @@ export const FAMILIES184=[
       "ひかり"
     ],
     "sunValley",
-    "stitched petals and willow, dusty rose and olive",
-    "deer-like forest animal with willow branch antlers, rose petal fur and four delicate hooves",
-    "small willow fawn with two petal ear tufts",
-    "slender deer with budding willow antlers and a petal mane",
-    "majestic willow deer with a wide flowering branch crown and trailing rose-petal mane"
+    "cobalt-blue seed body, crimson lotus petals, golden articulated twig arms and broken seed rings",
+    "floating nonhuman seed-mask plant spirit, white diamond eyes, petal fingers and tucked curled leaf feet",
+    "tiny floating seed with two gold twig arms and a red three-petal collar",
+    "broad floating seed with four arms and layered crimson shoulder petals",
+    "grand floating lotus guardian with six arms, broad red petal mantle and two segmented golden rings"
   ],
   [
     [

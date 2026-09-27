@@ -1,3 +1,4 @@
+import {chromePortrait187} from '../battlePortrait187.js';
 import {SPECIES184} from './species184.mjs';
 // 画像生成で作った バトル専用の絵。
 // まだ絵がないガオンは battle.js で従来のドット絵へ戻す。
@@ -159,7 +160,7 @@ const FILES = {
 
 import {applyArtRedesign,canonicalName} from './redesignV47.js';
 applyArtRedesign(FILES,'front');
-for(const s of SPECIES184)FILES[s.name]='../../assets/monsters/expansion-v184/front/'+s.no+'.png';
+for(const s of SPECIES184)FILES[s.name]='../../assets/monsters/battle-v187/front/'+s.no+'.png';
 const cache = new Map();
 for (const name of Object.keys(FILES)) {
   const img = new Image();
@@ -325,7 +326,7 @@ const BACK_FILES = {
   メロロン: "../../assets/monsters/redesign-v11/back/153-meroron-back.png",
 };
 applyArtRedesign(BACK_FILES,'back');
-for(const s of SPECIES184)BACK_FILES[s.name]='../../assets/monsters/expansion-v184/back/'+s.no+'.png';
+for(const s of SPECIES184)BACK_FILES[s.name]='../../assets/monsters/battle-v187/back/'+s.no+'.png';
 const backCache = new Map();
 for (const name of Object.keys(BACK_FILES)) {
   const img = new Image();
@@ -338,7 +339,7 @@ export function battleArt(name, back = false) {
   name=canonicalName(name);
   const img = back ? backCache.get(name) : cache.get(name);
   if (back && !(img && img.complete && img.naturalWidth)) return battleArt(name, false);
-  return img && img.complete && img.naturalWidth ? img : null;
+  return img && img.complete && img.naturalWidth ? (name==='クロムギア'?chromePortrait187(img):img) : null;
 }
 
 export const BATTLE_ART_FILES = FILES;

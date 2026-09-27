@@ -1,5 +1,7 @@
 # Gaon artwork 201–300
 
+Battle portraits in this directory are historical. Current battle portraits are in ../battle-v187/. The map and follower atlases here remain current and unchanged.
+
 These 100 species extend the existing 200 with 33 three-stage families and one standalone species. Data for the original 200 is preserved.
 
 ## Rendering specification

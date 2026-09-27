@@ -1,0 +1,66 @@
+{
+  "generationMode": "built-in image_gen",
+  "replaces": "Rejected deer family 282-284",
+  "worldLogicalSizes": [
+    16,
+    20,
+    24
+  ],
+  "worldDisplaySizes": [
+    32,
+    40,
+    48
+  ],
+  "battleLogicalExtents": [
+    60,
+    74,
+    88
+  ],
+  "entries": [
+    {
+      "id": 282,
+      "prompt": "Create a 4 column by 3 row sprite atlas for original Gaon World creature ハナヌイ: a tiny floating cobalt-blue seed creature with a round faceless midnight-blue seed mask, two small white diamond eyes, TWO short golden twig arms ending in three rounded petal fingers, a red three-petal collar, plump teardrop body and two curled leaf feet tucked underneath, one small broken golden seed ring behind the head. Organic plant spirit, NOT a deer, NOT human, no nose mouth beard hair clothing or superhero insignia. Colorful BLUE RED GOLD CREAM palette. Use the reference ONLY as inspiration for radial arms and floating posture; don't copy the person or clothing. Row1 overhead MAP idle directions DOWN / UP / RIGHT / LEFT. Row2 follower walking step A same four directions. Row3 follower walking step B same directions with different small body bob and limb positions. Up direction MUST be a genuine rear view, no eyes or face. All 12 sprites same size and anchors, wide empty transparent gutters. Coarse world pixel art, approximately 16 native pixels across each sprite, clear big square pixels, thick dark one-pixel silhouette outline and flat colors with one shadow tone. No text, no scenery, no large effects outside the creature, transparent background.\r\n",
+      "sourceHash": "437e93392a35dd626b8d83f09111088922faf2b9d25f81663ed8c9fe5d77e7d6",
+      "assets": {
+        "map": {
+          "path": "assets/monsters/family-v188/map/282.png",
+          "sha256": "fe117c285f9b27720be74b349990c14513afb51b92daca427e85931333c7db93"
+        },
+        "follower": {
+          "path": "assets/monsters/family-v188/follower/282.png",
+          "sha256": "4545e108a26a4f58f6b79824da9f123c2319c251395da63fe08f10d458cc5335"
+        }
+      }
+    },
+    {
+      "id": 283,
+      "prompt": "Create a 4 column by 3 row sprite atlas for original Gaon World creature ヌイエダ: a medium floating cobalt-blue seed spirit with a wide nonhuman midnight seed mask, two white diamond eyes, FOUR golden branching twig arms with three rounded petal fingers per hand, layered crimson lotus petals spreading behind the shoulders, a stout tapered blue body with tucked curled leaf feet, one segmented golden seed ring behind the shoulders. Organic plant spirit, NOT a deer, NOT human, no nose mouth beard hair clothing or superhero insignia. Colorful BLUE RED GOLD CREAM palette. Use the reference ONLY as inspiration for radial arms and floating posture; don't copy the person or clothing. Row1 overhead MAP idle directions DOWN / UP / RIGHT / LEFT. Row2 follower walking step A same four directions. Row3 follower walking step B same directions with different small body bob and limb positions. Up direction MUST be a genuine rear view, no eyes or face. All 12 sprites same size and anchors, wide empty transparent gutters. Coarse world pixel art, approximately 20 native pixels across each sprite, clear big square pixels, thick dark one-pixel silhouette outline and flat colors with one shadow tone. No text, no scenery, no large effects outside the creature, transparent background.\r\n",
+      "sourceHash": "c782cfc6a5fa67244cc879bdbab48e2d15cf8e17e476025cc8c1ed019529cffe",
+      "assets": {
+        "map": {
+          "path": "assets/monsters/family-v188/map/283.png",
+          "sha256": "4d07ae45eb8463a41c02c6a51ad4c68e4ce650d835be386526df6228b2fff3fc"
+        },
+        "follower": {
+          "path": "assets/monsters/family-v188/follower/283.png",
+          "sha256": "34d5dcd3bc6b922a809ad754093d6721703c726e8d6953f6a8a87134084e28d2"
+        }
+      }
+    },
+    {
+      "id": 284,
+      "prompt": "Create a 4 column by 3 row sprite atlas for original Gaon World creature ハナカガリ: a grand broad floating cobalt-blue lotus guardian creature with a small angular midnight-blue nonhuman seed mask and two white diamond eyes, SIX golden branching twig arms radiating symmetrically with three rounded petal fingers per hand, a magnificent layered crimson lotus petal mantle fanning around a stout blue seed body, curled leaf feet tucked under it and two concentric segmented golden seed rings rising behind the shoulders. Organic plant spirit, NOT a deer, NOT human, no nose mouth beard hair clothing or superhero insignia. Colorful BLUE RED GOLD CREAM palette. Use the reference ONLY as inspiration for radial arms and floating posture; don't copy the person or clothing. Row1 overhead MAP idle directions DOWN / UP / RIGHT / LEFT. Row2 follower walking step A same four directions. Row3 follower walking step B same directions with different small body bob and limb positions. Up direction MUST be a genuine rear view, no eyes or face. All 12 sprites same size and anchors, wide empty transparent gutters. Coarse world pixel art, approximately 24 native pixels across each sprite, clear big square pixels, thick dark one-pixel silhouette outline and flat colors with one shadow tone. No text, no scenery, no large effects outside the creature, transparent background.\r\n",
+      "sourceHash": "8753062ea07bd4e00f3c8a2fa9be73bb62225fda233a088756f4073dea2c2024",
+      "assets": {
+        "map": {
+          "path": "assets/monsters/family-v188/map/284.png",
+          "sha256": "efad61f714a829fe3a6f5e101352eb2850f216a93e7c397fc4ccec338f00715e"
+        },
+        "follower": {
+          "path": "assets/monsters/family-v188/follower/284.png",
+          "sha256": "bea8b10d8895467054f66533d76aecdbec82e99dd38607c95feeeca6901cac14"
+        }
+      }
+    }
+  ]
+}

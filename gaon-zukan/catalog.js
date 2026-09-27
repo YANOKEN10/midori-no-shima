@@ -5,3 +5,6 @@ for(const cell of document.querySelectorAll(".learnset tbody td:nth-child(2)")){
 // Keep long move lists readable without stretching the entire evolution family.
 for(const details of document.querySelectorAll('.learnset')){const table=details.querySelector('table');if(!table)continue;const panel=document.createElement('div');panel.className='detail-scroll';panel.tabIndex=0;panel.setAttribute('role','region');panel.setAttribute('aria-label',details.closest('article').querySelector('b').textContent+'のおぼえるわざ');table.before(panel);panel.append(table);}
 for(const arrow of document.querySelectorAll('.arrow')){const text=arrow.textContent.replace(/→/g,'').trim();arrow.replaceChildren(document.createTextNode(text+' '));const icon=document.createElement('span');icon.className='evolution-direction';icon.textContent='→';arrow.append(icon);}
+
+// Final evolution: remove empty image margins and show its larger body.
+import('/src/battlePortrait187.js').then(async({chromePortrait187})=>{const img=[...document.querySelectorAll('article')].find(card=>card.querySelector('b')?.textContent.trim()==='クロムギア')?.querySelector('img');if(!img)return;await img.decode();const portrait=chromePortrait187(img);if(portrait===img)return;img.src=portrait.toDataURL();img.style.transform='scale(1.35)';img.style.transformOrigin='center bottom';}).catch(console.error);
