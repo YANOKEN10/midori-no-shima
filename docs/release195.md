@@ -9,3 +9,5 @@ Verification:
 - Scheduler test: coalescing, idle shutdown, bounded settling, hidden/resume.
 - Browser regression: placement, undo/redo, draft save/reload, scrolling to a previously hidden species, resource/model cache invalidation.
 - Existing public maps are never modified by verification.
+
+Production verification (26869e4): API 200, 37 published maps, revision 144 unchanged. Browser regression passed including connection dialog and room workspace; no page errors. Production zoom measurement: 6 image draws / 6ms script time. Image visibility checks wait for network completion instead of a fixed delay.
