@@ -163,12 +163,7 @@ applyArtRedesign(FILES,'front');
 for(const s of SPECIES184)FILES[s.name]='../../assets/monsters/battle-v187/front/'+s.no+'.png';
 for(const [name,no]of Object.entries({'ハネリュウ':160,'ソラリュウ':117,'ヴァルディオ':144,'コウエンラ':164,'オボロニカ':180}))FILES[name]='../../assets/monsters/revision-v189/front/'+no+'.png';
 const cache = new Map();
-for (const name of Object.keys(FILES)) {
-  const img = new Image();
-  img.decoding = "async";
-  img.src = new URL(FILES[name], import.meta.url).href;
-  cache.set(name, img);
-}
+
 
 // プレイヤー側専用の背面絵。完成した種類から順に追加する。
 const BACK_FILES = {
@@ -330,16 +325,12 @@ applyArtRedesign(BACK_FILES,'back');
 for(const s of SPECIES184)BACK_FILES[s.name]='../../assets/monsters/battle-v187/back/'+s.no+'.png';
 for(const [name,no]of Object.entries({'ハネリュウ':160,'ソラリュウ':117,'ヴァルディオ':144,'コウエンラ':164,'オボロニカ':180}))BACK_FILES[name]='../../assets/monsters/revision-v189/back/'+no+'.png';
 const backCache = new Map();
-for (const name of Object.keys(BACK_FILES)) {
-  const img = new Image();
-  img.decoding = "async";
-  img.src = new URL(BACK_FILES[name], import.meta.url).href;
-  backCache.set(name, img);
-}
+
 
 export function battleArt(name, back = false) {
   name=canonicalName(name);
-  const img = back ? backCache.get(name) : cache.get(name);
+  const store=back?backCache:cache,files=back?BACK_FILES:FILES;
+  let img=store.get(name);if(!img&&files[name]){img=new Image();img.decoding='async';img.src=new URL(files[name],import.meta.url).href;store.set(name,img);}
   if (back && !(img && img.complete && img.naturalWidth)) return battleArt(name, false);
   return img && img.complete && img.naturalWidth ? (name==='クロムギア'?chromePortrait187(img):img) : null;
 }

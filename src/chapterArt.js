@@ -1,3 +1,5 @@
+import {lazyImages198} from './lazyImages198.js';
+const art198=lazyImages198({clinic81:new URL('../assets/scene-v86/hospital86.png',import.meta.url).href,cottage:new URL('../assets/house-v60/chalet.png',import.meta.url).href,atlasImage:new URL('../assets/world-v5/swiss-atlas-v1.png',import.meta.url).href});
 import {drawRoomProp188} from './roomArt188.js';
 import {drawRouteWall178} from './routeEdges178.mjs';
 import {drawLabProp177} from './labArt177.js';
@@ -28,8 +30,8 @@ import {asset as frontierAsset72} from './frontierArt.js';
 import {drawEditorGround72,editorGroundReady72} from './editorGround72.js';
 import {alpineReady65,drawAlpineProp65} from './alpineArt65.js';
 import {drawForest61,drawJungleFeet61} from './jungleArt61.js';
-const clinic81=new Image();clinic81.src=new URL('../assets/scene-v86/hospital86.png',import.meta.url).href;
-const cottage=new Image();cottage.src=new URL('../assets/house-v60/chalet.png',import.meta.url).href;
+
+
 import {drawSign,signReady} from './signArt.js';
 import {drawRoad,roadReady,roadStyle} from './roadArt.js';
 import {environmentReady,environmentProp,paintEnvironment,coastTile} from './decorArt.js';
@@ -44,10 +46,10 @@ import {paintInterior,drawFurniture72} from './interiorArt.js';
 // Tile-based rendering of the new material pack. The source atlas is preserved.
 import { tileFor } from './tiles.js';
 import * as G from './gfx.js';
-const atlasImage=new Image();atlasImage.src=new URL('../assets/world-v5/swiss-atlas-v1.png',import.meta.url).href;
+
 let atlas=null;fetch(new URL('../assets/world-v5/atlas.json',import.meta.url)).then(r=>r.json()).then(d=>{atlas=d;}).catch(e=>console.error('Tile atlas:',e));
 const cache=new WeakMap();
-export function drawMaterial(ctx,key,x,y,w,h){if(drawTownArt152(ctx,key,x,y,w,h))return true;if(drawPond87(ctx,key,x,y,w,h))return true;if(drawReadable84(ctx,key,x,y,w,h))return true;if(key==='chaletClinic'&&clinic81.complete&&clinic81.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(clinic81,x+w*13/160,y-h*7/160,w,h);return true;}if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&cottage.complete&&cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!atlasImage.complete||!atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;if(treeArt85(key))fitSprite85(ctx,atlasImage,x,y,w,h,s.rect);else ctx.drawImage(atlasImage,...s.rect,x,y,w,h);return true;}
+export function drawMaterial(ctx,key,x,y,w,h){if(drawTownArt152(ctx,key,x,y,w,h))return true;if(drawPond87(ctx,key,x,y,w,h))return true;if(drawReadable84(ctx,key,x,y,w,h))return true;if(key==='chaletClinic'&&art198.clinic81.complete&&art198.clinic81.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(art198.clinic81,x+w*13/160,y-h*7/160,w,h);return true;}if(key==='sign')return drawSign(ctx,x,y,w,h);if(key==='chalet'&&art198.cottage.complete&&art198.cottage.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(art198.cottage,x,y,w,h);return true;}const s=atlas?.sprites[key];if(!s||!art198.atlasImage.complete||!art198.atlasImage.naturalWidth)return false;ctx.imageSmoothingEnabled=false;if(treeArt85(key))fitSprite85(ctx,art198.atlasImage,x,y,w,h,s.rect);else ctx.drawImage(art198.atlasImage,...s.rect,x,y,w,h);return true;}
 function ground(ctx,id,x,y){if(!drawMaterial(ctx,id,x,y,32,32)){ctx.fillStyle='#75c7a2';ctx.fillRect(x,y,32,32);}}
 // Rural tracks keep the grass texture; connected neighbours share open edges.
 function landscape(c,map,x,y,ch){
@@ -74,10 +76,10 @@ function cliff(c,map,x,y){
  drawRouteWall178(c,dx,dy,{left:x===0,stone:!!map.townDesign,phase:y});
 }
 function drawChapterBase72(ctx,map,camX,camY){
- if(!pondReady87()||!resourceArtReady85()||!readableReady84()||!activeReady83()||!clinic81.complete||!clinic81.naturalWidth||!signReady()||!cottage.complete||!cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
+ if(!pondReady87()||!resourceArtReady85()||!readableReady84()||!activeReady83()||!art198.clinic81.complete||!art198.clinic81.naturalWidth||!signReady()||!art198.cottage.complete||!art198.cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
  if(drawForest61(ctx,map,camX,camY,drawMaterial))return true;
  if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
- if(!atlas||!atlasImage.complete||!atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
+ if(!atlas||!art198.atlasImage.complete||!art198.atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
  if(!cv){cv=document.createElement('canvas');cv.width=map.rows[0].length*32;cv.height=map.rows.length*32;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;
  for(let y=0;y<map.rows.length;y++)for(let x=0;x<map.rows[y].length;x++){

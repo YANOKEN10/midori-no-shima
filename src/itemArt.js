@@ -31,16 +31,17 @@ export const ITEM_ART126=Object.freeze({
   "夕映エンブレム": "23.png",
   "たいかいパス": "24.png"
 });
-const images=new Map(Object.entries(ITEM_ART126).map(([name,file])=>{const im=new Image();im.src=new URL('../assets/items-v13/'+file,import.meta.url).href;return [name,im];}));
-const mining171=new Image();mining171.src=new URL('../assets/items-v171/mining-kit.png',import.meta.url).href;images.set('採掘セット',mining171);
-for(const d of MATERIAL_ITEMS172){const im=new Image();im.src=new URL('../'+d.file,import.meta.url).href;images.set(d.name,im);}
+const images=new Map(Object.entries(ITEM_ART126).map(([name,file])=>[name,new URL('../assets/items-v13/'+file,import.meta.url).href]));
+images.set('採掘セット',new URL('../assets/items-v171/mining-kit.png',import.meta.url).href);
+for(const d of MATERIAL_ITEMS172)images.set(d.name,new URL('../'+d.file,import.meta.url).href);
+const loaded198=new Map();function itemImage198(name){const url=images.get(name);if(!url)return null;let im=loaded198.get(url);if(!im){im=new Image();im.decoding='async';im.src=url;loaded198.set(url,im);}return im;}
 // Preserve atlas indices for saved items; the Marine Emblem shares the water emblem art.
 images.set('マリンエンブレム',images.get('湖風エンブレム'));
 images.set('カラット・エンブレム',images.get('陽刻エンブレム'));
 images.set('船のチケット',images.get('たいかいパス'));
 images.set('レスレ・エンブレム',images.get('森響エンブレム'));
 images.set('マニケレオ・エンブレム',images.get('石笛エンブレム'));
-export function drawItem(ctx,name,x,y,size=40){name=canonicalTrainingItem125(name);if(MATERIAL_ITEMS172.some(d=>d.name===name)){const im=images.get(name);if(!im?.complete||!im.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,x,y,size,size);return true;}if(ITEMS[name]?.kind==='evBoost')name='リカバーのみ';if(ITEMS[name]?.kind==='evReduce')name='リカバーのみ';if(ITEMS[name]?.kind==='treasure'){drawTreasure171(ctx,name,x,y,size);return true;}if(ITEMS[name]?.kind==='ore')return drawOre174(ctx,name,x,y,size);if(ITEMS[name]?.kind==='held'){ctx.save();ctx.translate(x,y);ctx.scale(size/40,size/40);ctx.fillStyle='#263e47';if(name==='パワーバンド'){ctx.fillRect(8,8,24,24);ctx.fillStyle='#c76c43';ctx.fillRect(10,10,20,20);ctx.fillStyle='#263e47';ctx.fillRect(15,15,10,10);ctx.fillStyle='#f0ce6d';ctx.fillRect(24,16,8,8);}else if(name==='まもりのおまもり'){ctx.strokeStyle='#8b774b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(20,13,8,Math.PI,0);ctx.stroke();ctx.fillRect(10,13,20,22);ctx.fillStyle='#529779';ctx.fillRect(12,15,16,18);ctx.fillStyle='#f0db8b';ctx.fillRect(17,20,6,7);}else{ctx.beginPath();ctx.moveTo(20,5);ctx.lineTo(32,15);ctx.lineTo(27,33);ctx.lineTo(12,34);ctx.lineTo(7,17);ctx.closePath();ctx.fill();ctx.fillStyle='#a799df';ctx.beginPath();ctx.moveTo(20,8);ctx.lineTo(29,17);ctx.lineTo(25,30);ctx.lineTo(12,30);ctx.lineTo(10,17);ctx.closePath();ctx.fill();ctx.fillStyle='#e0daff';ctx.fillRect(16,13,5,13);}ctx.restore();return true;}const im=images.get(ITEMS[name]?.kind==='moveScroll'?'ガオンずかん':name);if(!im?.complete||!im.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,x,y,size,size);return true;}
+export function drawItem(ctx,name,x,y,size=40){name=canonicalTrainingItem125(name);if(MATERIAL_ITEMS172.some(d=>d.name===name)){const im=itemImage198(name);if(!im?.complete||!im.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,x,y,size,size);return true;}if(ITEMS[name]?.kind==='evBoost')name='リカバーのみ';if(ITEMS[name]?.kind==='evReduce')name='リカバーのみ';if(ITEMS[name]?.kind==='treasure'){drawTreasure171(ctx,name,x,y,size);return true;}if(ITEMS[name]?.kind==='ore')return drawOre174(ctx,name,x,y,size);if(ITEMS[name]?.kind==='held'){ctx.save();ctx.translate(x,y);ctx.scale(size/40,size/40);ctx.fillStyle='#263e47';if(name==='パワーバンド'){ctx.fillRect(8,8,24,24);ctx.fillStyle='#c76c43';ctx.fillRect(10,10,20,20);ctx.fillStyle='#263e47';ctx.fillRect(15,15,10,10);ctx.fillStyle='#f0ce6d';ctx.fillRect(24,16,8,8);}else if(name==='まもりのおまもり'){ctx.strokeStyle='#8b774b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(20,13,8,Math.PI,0);ctx.stroke();ctx.fillRect(10,13,20,22);ctx.fillStyle='#529779';ctx.fillRect(12,15,16,18);ctx.fillStyle='#f0db8b';ctx.fillRect(17,20,6,7);}else{ctx.beginPath();ctx.moveTo(20,5);ctx.lineTo(32,15);ctx.lineTo(27,33);ctx.lineTo(12,34);ctx.lineTo(7,17);ctx.closePath();ctx.fill();ctx.fillStyle='#a799df';ctx.beginPath();ctx.moveTo(20,8);ctx.lineTo(29,17);ctx.lineTo(25,30);ctx.lineTo(12,30);ctx.lineTo(10,17);ctx.closePath();ctx.fill();ctx.fillStyle='#e0daff';ctx.fillRect(16,13,5,13);}ctx.restore();return true;}const im=itemImage198(ITEMS[name]?.kind==='moveScroll'?'ガオンずかん':name);if(!im?.complete||!im.naturalWidth)return false;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,x,y,size,size);return true;}
 
 images.set('小型ボート',images.get('船のチケット'));
 images.set('レベルの実',images.get('ガオンのくすり'));
@@ -50,7 +51,7 @@ images.set('ダーク・エンブレム',images.get('夕映エンブレム'));
 images.set('マスター・エンブレム',images.get('たいかいパス'));
 
 // Shared by the guide so canvas icons render only after their source images are ready.
-export function itemArtReady(){return Promise.all([...new Set(images.values())].map(im=>im.complete?Promise.resolve():new Promise(resolve=>{im.addEventListener('load',resolve,{once:true});im.addEventListener('error',resolve,{once:true});})));}
+export function itemArtReady(){return Promise.all([...new Set([...images.keys()].map(itemImage198))].map(im=>im.complete?Promise.resolve():new Promise(resolve=>{im.addEventListener('load',resolve,{once:true});im.addEventListener('error',resolve,{once:true});})));}
 
 function drawTreasure171(ctx,name,x,y,size){
  const coin=name==='古代のきんか',star=name==='ほしの宝石';
