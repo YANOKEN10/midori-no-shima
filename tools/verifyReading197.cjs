@@ -1,0 +1,24 @@
+const fs=require('fs'),assert=require('assert/strict');
+const {chromium}=require('C:/Users/voraz/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{
+ let server; if(!process.env.BASE_URL){const path=require('path');server=require('http').createServer((q,r)=>{const p=path.resolve('.'+decodeURIComponent(new URL(q.url,'http://localhost').pathname));if(!p.startsWith(process.cwd()+path.sep)){r.writeHead(403).end();return;}r.setHeader('Content-Type',p.endsWith('.js')||p.endsWith('.mjs')?'text/javascript':p.endsWith('.json')?'application/json':p.endsWith('.png')?'image/png':'application/octet-stream');const stream=fs.createReadStream(p);stream.on('error',()=>r.writeHead(404).end());stream.pipe(r);});await new Promise(r=>server.listen(0,'127.0.0.1',r));}const base=process.env.BASE_URL||'http://127.0.0.1:'+server.address().port,out='artifacts/reading197';fs.mkdirSync(out,{recursive:true});
+ const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});
+ try{const page=await browser.newPage({viewport:{width:900,height:700}});page.setDefaultTimeout(120000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/reading197-test',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet"><body style="background:#eee"><canvas id="screen" style="width:640px;height:576px"></canvas><div id="pad"></div><div id="joystick"><div id="stickKnob"></div></div>'}));
+ await page.goto(base+'/reading197-test');
+ await page.evaluate(async()=>{const [G,U,R,E,I,N,L]=await Promise.all([import('/src/gfx.js'),import('/src/ui.js'),import('/src/readingCanvas197.js'),import('/src/easyJapanese197.mjs'),import('/src/data/items.js'),import('/src/input.js'),import('/src/i18n166.mjs')]);Object.assign(window,{G,U,R,E,I,N,L});await document.fonts.ready;G.markFontReady();N.initInput();});
+ const report=await page.evaluate(()=>{
+  const assert=(x,m)=>{if(!x)throw Error(m)},han=/[一-龠]/,items=Object.entries(I.ITEMS),seen=new Map(),duplicates=[];let rubyCount=0;
+  for(const [name,item]of items){const display=E.plain197(name);if(seen.has(display))duplicates.push([name,seen.get(display),display]);seen.set(display,name);for(const value of [name,item.desc])for(const p of E.parts197(value)){if(han.test(p.text)){assert(p.ruby,'Missing ruby '+value+' / '+p.text);assert([...p.text].filter(c=>han.test(c)).every(E.allowedKanji197),'High grade kanji '+value);assert(/^[ぁ-ゖー]+$/.test(p.ruby),'Not hiragana '+JSON.stringify(p));rubyCount++;} }for(const line of R.wrap197(G.ctx,item.desc,244,11))assert(line.parts.reduce((n,p)=>n+p.width,0)<=244.01,'Overflow '+name);}
+  assert(!duplicates.length,'duplicate display names '+JSON.stringify(duplicates));assert(E.plain197('採掘セット')==='たんけんセット','kit name');assert(I.item('採掘セット').kind==='key','canonical kit unchanged');assert(E.parts197('2人').some(p=>p.ruby==='ふたり'),'two people');assert(E.parts197('13人').some(p=>p.ruby==='にん'),'counter');
+  L.setLanguage166('en');assert(R.wrap197(G.ctx,'採掘セット',250,15).every(l=>l.parts.every(p=>!p.ruby)),'English must not receive ruby');L.setLanguage166('ja');return {items:items.length,rubyCount,duplicates};
+ });
+ const sample='こんにちは。木漏れ日の谷へようこそ。採掘セットで 木や岩を調べよう。努力値が上限に達しているので 使えません。';
+ await page.evaluate(s=>{G.use('ui');G.clear(1);U.ui.say(s,{speaker:'村の案内人'});U.ui.update(100000);U.ui.draw();},sample);
+ await page.locator('#screen').screenshot({path:out+'/dialogue.png'});
+ let presses=0;for(;presses<30&&await page.evaluate(()=>U.ui.busy);presses++){await page.keyboard.down('KeyZ');await page.evaluate(()=>{U.ui.update(16);N.endFrame();});await page.keyboard.up('KeyZ');await page.evaluate(()=>{U.ui.update(100000);N.endFrame();});}assert(presses<30,'dialogue did not finish');report.dialoguePresses=presses;
+ await page.evaluate(()=>{U.ui.clear();U.ui.itemList(['採掘セット','小型ボート','心核の留め具','叡智の誓約','レベルの実','石炭'].map(name=>({name,n:1})));U.ui.draw();});await page.locator('#screen').screenshot({path:out+'/items.png'});
+ await page.evaluate(()=>{U.ui.clear();window.chosen=null;U.ui.itemList([{name:'採掘セット',n:1}]).then(v=>window.chosen=v);});await page.keyboard.down('KeyZ');await page.evaluate(()=>{U.ui.update(16);N.endFrame();});await page.keyboard.up('KeyZ');assert.equal(await page.evaluate(()=>window.chosen?.name),'採掘セット','selection returns saved canonical ID');
+ assert.deepEqual(errors,[]);report.errors=errors;fs.writeFileSync(out+(process.env.BASE_URL?'/production-result.json':'/result.json'),JSON.stringify(report,null,2));console.log('PASS',report);
+ }finally{await browser.close();if(server)server.close();}
+})().catch(e=>{console.error(e);process.exitCode=1});

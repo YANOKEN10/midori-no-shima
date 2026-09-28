@@ -1,3 +1,4 @@
+import {wrap197,drawLine197,fit197,width197} from './readingCanvas197.js';
 import {drawMoveCell123} from './windowArt123.js';
 import {battleLabel,battleCells} from './battleUi.js';
 import {drawBattlePanel} from './battleSceneArt.js';
@@ -144,7 +145,7 @@ function pageLines(w) {
   if (w.flat && w.rev === G.fontRevision()) return w.flat;
   const flat = [];
   for (const l of w.lines) {
-    for (const part of G.wrap(l, sayWidth(), TEXT_SIZE)) flat.push(part);
+    for (const part of wrap197(G.ctx,l,sayWidth(),TEXT_SIZE)) flat.push(part);
   }
   w.flat = flat;
   w.rev = G.fontRevision();
@@ -159,7 +160,7 @@ function curPage(w) {
 
 function updateSay(w, dt) {
   const cur = curPage(w);
-  const total = cur.join("").length;
+  const total = cur.reduce((n,l)=>n+l.text.length,0);
 
   if (w.shown < total) {
     if (In.hit("a") || In.hit("b")) { w.shown = total; return; }
@@ -180,16 +181,14 @@ function drawSay(w) {
   G.use("ui");
   const cur = curPage(w);
   if(battleMode)drawBattlePanel(G.ctx);else G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
-  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,14)+28);G.window9(BOX.x+4,BOX.y-25,width,26);G.textFit(w.speaker,BOX.x+16,BOX.y-20,width-24,3,14);}
+  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,14)+28);G.window9(BOX.x+4,BOX.y-34,width,35);fit197(G.ctx,w.speaker,BOX.x+16,BOX.y-18,width-24,12,G.PAL[3]);}
   let left = Math.floor(w.shown);
   for (let i = 0; i < cur.length; i++) {
     const line = cur[i];
-    const show = line.slice(0, Math.max(0, left));
-    left -= line.length;
-    if(battleMode)battleLabel(G.ctx,show,BOX.x+PAD,BOX.y+27+i*26,{size:16,maxWidth:sayWidth()});
-    else G.textFit(show, BOX.x + PAD, BOX.y + 20 + i * LINE_H, sayWidth(), 3, TEXT_SIZE);
+    drawLine197(G.ctx,line,BOX.x+PAD,BOX.y+20+i*LINE_H,TEXT_SIZE,battleMode?'#f2f9ff':G.PAL[3],Math.max(0,left));
+    left-=line.text.length;
   }
-  const total = cur.join("").length;
+  const total = cur.reduce((n,l)=>n+l.text.length,0);
   if (w.shown >= total && Math.floor(now / 300) % 2 === 0) {
     G.text("▼", BOX.x + BOX.w - PAD - 10, BOX.y + BOX.h - 20, 3, 10);
   }
@@ -202,7 +201,7 @@ function drawSay(w) {
 function boxOf(w) {
   if(w.battle)return {...BOX,rows:2};
   let widest = 0;
-  for (const s of w.items) widest = Math.max(widest, G.textW(s, TEXT_SIZE));
+  for (const s of w.items) widest = Math.max(widest, width197(G.ctx,s,TEXT_SIZE));
   let width = Math.max(w.w || 0, widest + CH_PAD_L + CH_PAD_R, 96);
   width = Math.min(width, w.maxWidth||G.W-16, G.W - 16);
 
@@ -261,7 +260,7 @@ function drawChoice(w) {
     const cellW=(b.w-16)/2;
     w.items.forEach((label,i)=>{const x=b.x+8+(i%2)*cellW,y=b.y+CH_PAD_Y+Math.floor(i/2)*CH_ROW;
       if(i===w.i)G.text('▶',x+4,y,3,12);
-      G.textFit(label,x+22,y,cellW-28,3,14);
+      fit197(G.ctx,label,x+22,y,cellW-28,14,G.PAL[3]);
     });
     return;
   }
@@ -272,7 +271,7 @@ function drawChoice(w) {
     const y = b.y + CH_PAD_Y + r * CH_ROW;
     if (i === w.i) G.text("▶", b.x + 14, y, 3, 12);
     const right=w.rightLabels?.[i],rw=right?G.textW(right,12)+8:0;
-    G.textFit(w.items[i], b.x + CH_PAD_L, y, maxW-rw, 3, TEXT_SIZE);
+    fit197(G.ctx,w.items[i],b.x+CH_PAD_L,y,maxW-rw,TEXT_SIZE,G.PAL[3]);
     if(right)G.text(right,b.x+b.w-CH_PAD_R-G.textW(right,12),y+2,3,12);
   }
   if (w.extra) w.extra(b, w.i);
