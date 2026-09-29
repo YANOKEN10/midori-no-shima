@@ -1,3 +1,4 @@
+import {dialoguePanel200,speakerPlate200,choiceMark200,continueMark200,INK200} from './dialogueArt200.js';
 import {wrap197,drawLine197,fit197,width197} from './readingCanvas197.js';
 import {drawMoveCell123} from './windowArt123.js';
 import {battleLabel,battleCells} from './battleUi.js';
@@ -17,9 +18,9 @@ import * as In from "./input.js";
 import { beep } from "./audio.js";
 
 const BOX = { x: 8, y: 196, w: 304, h: 84 };
-const PAD = 24;                 // わくの 内がわの よゆう（左右）
-const LINE_H = 26;              // 1行の 高さ
-const TEXT_SIZE = 15;
+const PAD = 18;                 // わくの 内がわの よゆう（左右）
+const LINE_H = 29;              // 1行の 高さ
+const TEXT_SIZE = 16;
 const SAY_LINES = 2;            // 1ページに 出す 行数
 
 const CH_PAD_L = 32;            // ▶ のぶんの 左よゆう
@@ -180,17 +181,17 @@ function updateSay(w, dt) {
 function drawSay(w) {
   G.use("ui");
   const cur = curPage(w);
-  if(battleMode)drawBattlePanel(G.ctx);else G.window9(BOX.x, BOX.y, BOX.w, BOX.h);
-  if(!battleMode&&w.speaker){const width=Math.min(292,G.textW(w.speaker,14)+28);G.window9(BOX.x+4,BOX.y-34,width,35);fit197(G.ctx,w.speaker,BOX.x+16,BOX.y-18,width-24,12,G.PAL[3]);}
+  dialoguePanel200(G.ctx,BOX.x,BOX.y,BOX.w,BOX.h);
+  if(!battleMode&&w.speaker){const width=Math.min(280,Math.max(74,width197(G.ctx,w.speaker,13)+30));speakerPlate200(G.ctx,BOX.x+5,BOX.y-25,width,27);fit197(G.ctx,w.speaker,BOX.x+21,BOX.y-13,width-27,13,'#fffdf2');}
   let left = Math.floor(w.shown);
   for (let i = 0; i < cur.length; i++) {
     const line = cur[i];
-    drawLine197(G.ctx,line,BOX.x+PAD,BOX.y+20+i*LINE_H,TEXT_SIZE,battleMode?'#f2f9ff':G.PAL[3],Math.max(0,left));
+    drawLine197(G.ctx,line,BOX.x+PAD,BOX.y+20+i*LINE_H,TEXT_SIZE,INK200,Math.max(0,left));
     left-=line.text.length;
   }
   const total = cur.reduce((n,l)=>n+l.text.length,0);
   if (w.shown >= total && Math.floor(now / 300) % 2 === 0) {
-    G.text("▼", BOX.x + BOX.w - PAD - 10, BOX.y + BOX.h - 20, 3, 10);
+    continueMark200(G.ctx,BOX.x+BOX.w-18,BOX.y+BOX.h-13);
   }
 }
 
@@ -242,7 +243,7 @@ function updateChoice(w) {
 function drawChoice(w) {
   G.use("ui");
   const b = boxOf(w);
-  if(w.battle)drawBattlePanel(G.ctx,b.x,b.y,b.w,b.h);else G.window9(b.x, b.y, b.w, b.h);
+  if(w.battle)drawBattlePanel(G.ctx,b.x,b.y,b.w,b.h);else dialoguePanel200(G.ctx,b.x,b.y,b.w,b.h);
   if(w.battle){
     const cells=battleCells(b);
     w.items.forEach((label,i)=>{
@@ -259,8 +260,8 @@ function drawChoice(w) {
   if(w.columns===2){
     const cellW=(b.w-16)/2;
     w.items.forEach((label,i)=>{const x=b.x+8+(i%2)*cellW,y=b.y+CH_PAD_Y+Math.floor(i/2)*CH_ROW;
-      if(i===w.i)G.text('▶',x+4,y,3,12);
-      fit197(G.ctx,label,x+22,y,cellW-28,14,G.PAL[3]);
+      if(i===w.i)choiceMark200(G.ctx,x,y-9,cellW-2,CH_ROW-1);
+      fit197(G.ctx,label,x+22,y,cellW-28,14,INK200);
     });
     return;
   }
@@ -269,9 +270,9 @@ function drawChoice(w) {
     const i = w.top + r;
     if (i >= w.items.length) break;
     const y = b.y + CH_PAD_Y + r * CH_ROW;
-    if (i === w.i) G.text("▶", b.x + 14, y, 3, 12);
+    if(i===w.i)choiceMark200(G.ctx,b.x+6,y-9,b.w-12,CH_ROW-1);
     const right=w.rightLabels?.[i],rw=right?G.textW(right,12)+8:0;
-    fit197(G.ctx,w.items[i],b.x+CH_PAD_L,y,maxW-rw,TEXT_SIZE,G.PAL[3]);
+    fit197(G.ctx,w.items[i],b.x+CH_PAD_L,y,maxW-rw,TEXT_SIZE,INK200);
     if(right)G.text(right,b.x+b.w-CH_PAD_R-G.textW(right,12),y+2,3,12);
   }
   if (w.extra) w.extra(b, w.i);

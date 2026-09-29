@@ -1,3 +1,4 @@
+import {alertBubble200} from './dialogueArt200.js';
 import {NPC_WALK_MS168} from './rival168.mjs';
 import {encounterRate150,waterPool150} from './encounterTerrain150.mjs';
 import {drawPickup139} from './pickupArt139.js';
@@ -1209,8 +1210,7 @@ export const world = {
         if (!newPerson) G.drawScaled(matchedNpcFrame(img2), n.x * T - camX+(n.ox||0), n.y * T - camY - 28+(n.oy||0), 32, 48);
         if (n.alert) {
           G.use("ui");
-          G.window9(n.x * T - camX + 6, n.y * T - camY - 34, 22, 26);
-          G.text("！", n.x * T - camX + 11, n.y * T - camY - 30, 3, 16);
+          alertBubble200(G.ctx,n.x*T-camX+16,n.y*T-camY-12);
         }
       }
     }

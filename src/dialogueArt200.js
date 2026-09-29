@@ -1,0 +1,7 @@
+export const INK200='#173f3b';
+function shape(c,x,y,w,h,k=3){c.beginPath();c.moveTo(x+k,y);c.lineTo(x+w-k,y);c.lineTo(x+w,y+k);c.lineTo(x+w,y+h-k);c.lineTo(x+w-k,y+h);c.lineTo(x+k,y+h);c.lineTo(x,y+h-k);c.lineTo(x,y+k);c.closePath();}
+export function dialoguePanel200(c,x,y,w,h){c.save();shape(c,x+2,y+3,w,h);c.fillStyle='#102c2b70';c.fill();shape(c,x,y,w,h);c.fillStyle=INK200;c.fill();shape(c,x+2,y+2,w-4,h-4,2);c.fillStyle='#d9b966';c.fill();shape(c,x+3,y+3,w-6,h-6,2);c.fillStyle='#fffdf2';c.fill();c.fillStyle='#e9e5d3';c.fillRect(x+7,y+h-6,w-14,2);c.fillStyle='#d9b966';c.fillRect(x+8,y+9,3,10);c.restore();}
+export function speakerPlate200(c,x,y,w,h){c.save();shape(c,x,y,w,h,3);c.fillStyle=INK200;c.fill();c.fillStyle='#d9b966';c.fillRect(x+6,y+6,2,h-12);c.restore();}
+export function choiceMark200(c,x,y,w,h){c.save();shape(c,x,y,w,h,2);c.fillStyle='#f4dc88';c.fill();c.fillStyle=INK200;c.beginPath();c.moveTo(x+7,y+h/2-4);c.lineTo(x+12,y+h/2);c.lineTo(x+7,y+h/2+4);c.fill();c.restore();}
+export function continueMark200(c,x,y){c.save();c.fillStyle=INK200;c.beginPath();c.moveTo(x,y);c.lineTo(x+8,y);c.lineTo(x+4,y+5);c.closePath();c.fill();c.restore();}
+export function alertBubble200(c,cx,bottom){c.save();const x=Math.round(cx)-10,y=Math.round(bottom)-27;shape(c,x,y,20,23,4);c.fillStyle=INK200;c.fill();shape(c,x+2,y+2,16,19,3);c.fillStyle='#fff4c8';c.fill();c.beginPath();c.moveTo(cx-3,y+22);c.lineTo(cx,y+27);c.lineTo(cx+4,y+22);c.fillStyle=INK200;c.fill();c.fillStyle=INK200;c.fillRect(x+8,y+5,4,9);c.fillRect(x+8,y+16,4,3);c.restore();}

@@ -1,3 +1,4 @@
+import {uiFont200} from './typography200.mjs';
 import {t166,languageRevision166} from './i18n166.mjs';
 import {drawWindow123} from './windowArt123.js';
 // ============================================================
@@ -210,7 +211,7 @@ export function fontOk() { return fontReady; }
 export function fontRevision() { return fontRev+languageRevision166()*100000; }
 
 export function setFont(size) {
-  ctx.font = '700 '+(size || 15) + 'px "M PLUS Rounded 1c", "DotGothic16", sans-serif';
+  ctx.font = uiFont200(size || 15);
   ctx.textBaseline = "top";
 }
 export function text(str, x, y, c, size) {
