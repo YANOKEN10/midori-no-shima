@@ -1,3 +1,4 @@
+import {transparentProp202} from './transparentProps202.mjs';
 import {reconcileGrass201} from './grassConsistency201.mjs';
 import {upgradePark189} from './parkEncounters189.mjs';
 import {ROOM_FLOORS188,ROOM_PROPS188,upgradeRoom188} from './roomLayout188.mjs';
@@ -131,7 +132,7 @@ export function applyEdit(base,doc,cat){const sources198=new WeakMap(),source198
  if(o.type==='furniture'&&src.room){map.editorStyledFurniture73.push({room:src.room,f:[src.kind,o.x,o.y,p.w,p.h,o.turn81||0,src.originalW81||p.w,src.originalH81||p.h,o.color115]});if(changed&&!src.wallMount86&&!src.walkable)fill(p,'t');continue;}
  if(o.type==='furniture'){(map.room?map.room.furniture:map.editorAddedFurniture72).push([o.template,o.x,o.y,p.w,p.h,o.turn81||0,src.originalW81||p.w,src.originalH81||p.h,o.color115]);if(changed&&!src.wallMount86&&!src.walkable)fill(p,'t');continue;}
  if(compactBuilding162(p)){p.editorUnder73=[];for(let y=p.y;y<p.y+p.h;y++)for(let x=p.x;x<p.x+p.w;x++)p.editorUnder73.push({x,y,ch:['W','.',',','f'].includes(grid[y]?.[x])?grid[y][x]:fallback});}
- if(!old){p.editorPlaced89=true;if(p.harborBoat140||/tree|fir|conifer|broadleaf|palm/i.test(p.art||'')){p.editorUnder73=[];for(let y=p.y;y<p.y+p.h;y++)for(let x=p.x;x<p.x+p.w;x++){const ch=grid[y]?.[x];p.editorUnder73.push({x,y,ch:(['.',',','f'].includes(ch)||p.harborBoat140&&['W','d'].includes(ch))?ch:fallback});}}}
+ if(!old){p.editorPlaced89=true;if(p.harborBoat140||transparentProp202(p)||/tree|fir|conifer|broadleaf|palm/i.test(p.art||'')){p.editorUnder73=[];for(let y=p.y;y<p.y+p.h;y++)for(let x=p.x;x<p.x+p.w;x++){const ch=grid[y]?.[x];p.editorUnder73.push({x,y,ch:(['.',',','f'].includes(ch)||(p.harborBoat140||transparentProp202(p))&&['W','d','"'].includes(ch))?ch:fallback});}}}
  if(old&&old.x===o.x&&old.y===o.y&&!o.turn81&&doc.tiles.some(t=>t.x>=o.x&&t.x<o.x+p.w&&t.y>=o.y&&t.y<o.y+p.h)){for(let yy=0;yy<p.h;yy++)for(let xx=0;xx<p.w;xx++)if(base.rows[o.y+yy]?.[o.x+xx]!==undefined)set(o.x+xx,o.y+yy,base.rows[o.y+yy][o.x+xx]);}
  if(isTree83(p))fill(p,'T');
  if(changed&&src.mask){for(let yy=0;yy<src.h;yy++)for(let xx=0;xx<src.w;xx++)set(p.x+xx,p.y+yy,src.mask[yy]?.[xx]==='#'?'#':fallback);}else if((changed||src.altar182)&&src.walkable){p.editorUnder73=[];for(let y=p.y;y<p.y+p.h;y++)for(let x=p.x;x<p.x+p.w;x++){const ch=grid[y]?.[x];p.editorUnder73.push({x,y,ch:['.',',','f'].includes(ch)?ch:fallback});}if(src.altar182)fill(p,fallback);else if(src.group==='grass'||src.tile==='\"')fill(p,'\"');else for(const t of p.editorUnder73)set(t.x,t.y,t.ch);}else if(changed||iceCrystal186(src))fill(p,src.tile||'#');

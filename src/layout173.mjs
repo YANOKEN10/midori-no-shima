@@ -3,7 +3,7 @@ import {MATERIAL_PROPS172} from './materials172.mjs';
 export {target173};
 // Rebuild only requested maps. Old furnishings remain in editor storage.
 export function upgrade173(base,d,cat){
- if(!target173(base)||d.layout173)return d;
+ if(!target173(base)||d.layout173||base.id==='marineHall'&&d.homeInterior202)return d;
  if(base.id==='merire'){
   if(d.waterfallDesign173)return d;const tiles=new Map(d.tiles.map(t=>[t.x+','+t.y,t])),pool=new Set();
   for(let y=21;y<=22;y++)for(let x=26;x<=35;x++)if(![...base.npcs,...base.warps,...(d.links||[])].some(p=>Math.abs(p.x-x)+Math.abs(p.y-y)<=1)){pool.add(x+','+y);tiles.set(x+','+y,{x,y,material:'water173'});}
