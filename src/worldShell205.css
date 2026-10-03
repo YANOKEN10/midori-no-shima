@@ -1,25 +1,26 @@
-/* A field journal controller, framed by the valleys and their Gaon. */
-html,body{background:#234f43;color:#fff6d9}
-#world-shell205{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 0,#f0e7bb55,transparent 60%),url('../assets/shell-v205/valley.svg') center bottom/cover,#628e76}
-#world-shell205::after{content:"";position:absolute;inset:12px;border:1px solid #f7e8af42;border-radius:24px;pointer-events:none}
-.shell-brand205{position:absolute;top:7%;left:4%;color:#fff1c4;font:700 clamp(14px,1.6vw,25px)/1.4 'M PLUS Rounded 1c',sans-serif;letter-spacing:.15em;text-shadow:0 2px 2px #234f4380}
+/* Bold ink outlines and flat color blocks echo the game sprites. */
+html,body{background:#123d35;color:#f7f4dd}
+#world-shell205{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:url('../assets/shell-v205/valley.svg?v=206') center bottom/cover,#1e5b49}
+#world-shell205::after{display:none}
+.shell-brand205{position:absolute;top:7%;left:4%;color:#f5f0d3;font:900 clamp(15px,1.6vw,25px)/1.4 'Arial Black','Yu Gothic',sans-serif;letter-spacing:.08em;text-shadow:3px 3px 0 #0c302b}
 .shell-brand205 span{display:block;font-size:11px;letter-spacing:.1em;margin-top:5px}
 .shell-gaon205{position:absolute;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 9px 0 #153f3828);width:clamp(90px,14vw,220px);height:25vh;bottom:10%}
 .shell-leaf205{left:2%}.shell-fire205{right:1%;bottom:17%}.shell-water205{left:9%;bottom:1%;width:clamp(70px,9vw,140px);height:16vh}
 .shell-label205{position:absolute;bottom:22px;right:28px;color:#e4eac5;font-size:11px;letter-spacing:.1em}
 #stage{z-index:1}#pad{z-index:2}
-#screen{border-radius:12px;box-shadow:0 0 0 3px #f1df9f,0 0 0 8px #355e4d,0 0 0 10px #e2cf9566,0 18px 34px #123e3966}
-#whoami{color:#fff1c4;background:#244f43ed;border:1px solid #d3cd9977;border-radius:12px;padding:5px 10px}
-.btn{font-family:'M PLUS Rounded 1c','Yu Gothic',sans-serif;font-weight:700;backdrop-filter:none;color:#fff8dc;border-color:#e8d6a0;text-shadow:0 1px #194337;box-shadow:inset 0 2px 0 #ffffff66,inset 0 -5px 0 #153c3933,0 5px 0 #183f38,0 9px 13px #183f3833}
-#joystick{background:radial-gradient(circle,#7ba58b 0 36%,#527964 37% 63%,#c9cc9f 64% 66%,#416851 67%);border:3px solid #e1d6a8;box-shadow:inset 0 2px 2px #fff8ce66,0 5px 0 #214a3e,0 10px 20px #234b3b44}
-#joystick::before{inset:13px;border:1px dashed #f0e4b575}
-#joystick::after{content:'✦';position:absolute;left:50%;top:5px;transform:translateX(-50%);font:17px serif;color:#efe3af;pointer-events:none}
-#stickKnob{background:radial-gradient(circle at 35% 25%,#cee6a0,#7faf6e 55%,#416a49);border:3px solid #f4e8b5;box-shadow:inset 0 3px 2px #ffffff66,0 5px 0 #264e3b,0 7px 12px #163b3c55}
-#joystick.on #stickKnob{box-shadow:inset 0 2px 4px #fff9cf88,0 3px 0 #264e3b,0 0 13px #def09888}
-#ba{background:radial-gradient(circle at 34% 25%,#ffe7a5,#e6b454 62%,#b78235);border-color:#fff0ba;color:#563d25;text-shadow:none}
-#bb{background:radial-gradient(circle at 34% 25%,#c0eee0,#63b5a4 62%,#397c72);border-color:#d3f2d8;color:#194b43;text-shadow:none}
-#bs,#bm{background:linear-gradient(#f4e9c9,#dcd0a7);border-color:#f9edc7;color:#355646;text-shadow:none;letter-spacing:1px}
-.btn.on,.btn:active{filter:brightness(1.13);transform:translateY(3px);box-shadow:inset 0 2px 4px #234d3944,0 2px 0 #234d39}
+#screen{border-radius:4px;box-shadow:0 0 0 4px #102d2b,0 0 0 8px #f6eed2,0 0 0 12px #102d2b,0 15px 0 #102d2b66}
+#whoami{color:#f7f2dd;background:#163a32;border:3px solid #0c2926;border-radius:4px;padding:5px 10px}
+.btn{font-family:'Arial Black','Arial',sans-serif;font-weight:900;backdrop-filter:none;border:4px solid #102d2b;color:#102d2b;text-shadow:none;box-shadow:inset 0 4px 0 #ffffff66,inset 0 -5px 0 #102d2b22,0 6px 0 #102d2b;}
+.btn::after{display:none}
+#joystick{background:#204e40;border:4px solid #102d2b;box-shadow:inset 0 0 0 5px #4b9e70,0 6px 0 #102d2b}
+#joystick::before{inset:17px;border:4px solid #102d2b;background:#326c50}
+#joystick::after{content:'';inset:11px;left:11px;top:11px;transform:none;border-radius:50%;background:linear-gradient(#a6ce8a,#a6ce8a) center 0/6px 9px no-repeat,linear-gradient(#a6ce8a,#a6ce8a) center bottom/6px 9px no-repeat,linear-gradient(#a6ce8a,#a6ce8a) left center/9px 6px no-repeat,linear-gradient(#a6ce8a,#a6ce8a) right center/9px 6px no-repeat;pointer-events:none}
+#stickKnob{background:#a7d55c;border:4px solid #102d2b;box-shadow:inset 0 5px 0 #daf092,inset 0 -6px 0 #70a53c,0 5px 0 #102d2b;z-index:1}
+#joystick.on #stickKnob{box-shadow:inset 0 4px 0 #daf092,inset 0 -4px 0 #70a53c,0 3px 0 #102d2b}
+#ba{background:#f47656;border-color:#102d2b;color:#102d2b;text-shadow:none;font-size:32px;}
+#bb{background:#65c8de;border-color:#102d2b;color:#102d2b;text-shadow:none;font-size:29px;}
+#bs,#bm{background:#f2eccd;border-color:#102d2b;border-radius:6px;color:#102d2b;text-shadow:none;font:900 11px 'Arial Black','Arial',sans-serif;letter-spacing:.7px}
+.btn.on,.btn:active{filter:none;transform:translateY(4px);box-shadow:inset 0 3px 0 #102d2b33,0 2px 0 #102d2b}
 body.touch .shell-brand205{top:max(17px,env(safe-area-inset-top));left:18px;font-size:12px;letter-spacing:.13em}
 body.touch .shell-brand205 span{display:none}
 body.touch .shell-leaf205{left:8%;bottom:34%;width:76px;height:82px}
