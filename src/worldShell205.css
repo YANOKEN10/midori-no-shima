@@ -1,0 +1,35 @@
+/* A field journal controller, framed by the valleys and their Gaon. */
+html,body{background:#234f43;color:#fff6d9}
+#world-shell205{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 0,#f0e7bb55,transparent 60%),url('../assets/shell-v205/valley.svg') center bottom/cover,#628e76}
+#world-shell205::after{content:"";position:absolute;inset:12px;border:1px solid #f7e8af42;border-radius:24px;pointer-events:none}
+.shell-brand205{position:absolute;top:7%;left:4%;color:#fff1c4;font:700 clamp(14px,1.6vw,25px)/1.4 'M PLUS Rounded 1c',sans-serif;letter-spacing:.15em;text-shadow:0 2px 2px #234f4380}
+.shell-brand205 span{display:block;font-size:11px;letter-spacing:.1em;margin-top:5px}
+.shell-gaon205{position:absolute;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 9px 0 #153f3828);width:clamp(90px,14vw,220px);height:25vh;bottom:10%}
+.shell-leaf205{left:2%}.shell-fire205{right:1%;bottom:17%}.shell-water205{left:9%;bottom:1%;width:clamp(70px,9vw,140px);height:16vh}
+.shell-label205{position:absolute;bottom:22px;right:28px;color:#e4eac5;font-size:11px;letter-spacing:.1em}
+#stage{z-index:1}#pad{z-index:2}
+#screen{border-radius:12px;box-shadow:0 0 0 3px #f1df9f,0 0 0 8px #355e4d,0 0 0 10px #e2cf9566,0 18px 34px #123e3966}
+#whoami{color:#fff1c4;background:#244f43ed;border:1px solid #d3cd9977;border-radius:12px;padding:5px 10px}
+.btn{font-family:'M PLUS Rounded 1c','Yu Gothic',sans-serif;font-weight:700;backdrop-filter:none;color:#fff8dc;border-color:#e8d6a0;text-shadow:0 1px #194337;box-shadow:inset 0 2px 0 #ffffff66,inset 0 -5px 0 #153c3933,0 5px 0 #183f38,0 9px 13px #183f3833}
+#joystick{background:radial-gradient(circle,#7ba58b 0 36%,#527964 37% 63%,#c9cc9f 64% 66%,#416851 67%);border:3px solid #e1d6a8;box-shadow:inset 0 2px 2px #fff8ce66,0 5px 0 #214a3e,0 10px 20px #234b3b44}
+#joystick::before{inset:13px;border:1px dashed #f0e4b575}
+#joystick::after{content:'✦';position:absolute;left:50%;top:5px;transform:translateX(-50%);font:17px serif;color:#efe3af;pointer-events:none}
+#stickKnob{background:radial-gradient(circle at 35% 25%,#cee6a0,#7faf6e 55%,#416a49);border:3px solid #f4e8b5;box-shadow:inset 0 3px 2px #ffffff66,0 5px 0 #264e3b,0 7px 12px #163b3c55}
+#joystick.on #stickKnob{box-shadow:inset 0 2px 4px #fff9cf88,0 3px 0 #264e3b,0 0 13px #def09888}
+#ba{background:radial-gradient(circle at 34% 25%,#ffe7a5,#e6b454 62%,#b78235);border-color:#fff0ba;color:#563d25;text-shadow:none}
+#bb{background:radial-gradient(circle at 34% 25%,#c0eee0,#63b5a4 62%,#397c72);border-color:#d3f2d8;color:#194b43;text-shadow:none}
+#bs,#bm{background:linear-gradient(#f4e9c9,#dcd0a7);border-color:#f9edc7;color:#355646;text-shadow:none;letter-spacing:1px}
+.btn.on,.btn:active{filter:brightness(1.13);transform:translateY(3px);box-shadow:inset 0 2px 4px #234d3944,0 2px 0 #234d39}
+body.touch .shell-brand205{top:max(17px,env(safe-area-inset-top));left:18px;font-size:12px;letter-spacing:.13em}
+body.touch .shell-brand205 span{display:none}
+body.touch .shell-leaf205{left:8%;bottom:34%;width:76px;height:82px}
+body.touch .shell-fire205{right:8%;bottom:33%;width:82px;height:88px}
+body.touch .shell-water205{left:calc(50% - 32px);bottom:20px;width:64px;height:68px}
+body.touch .shell-label205{display:none}
+body.touch #world-shell205::after{inset:8px;border-radius:20px}
+@media(max-height:730px) and (orientation:portrait){body.touch .shell-leaf205,body.touch .shell-fire205{bottom:35%;height:55px;width:55px}body.touch .shell-water205{height:45px;width:45px;left:calc(50% - 22px);bottom:10px}}
+@media(orientation:landscape) and (max-height:560px){body.touch #stage{inset:0 20%;height:100%;padding:12px 0}body.touch #screen{height:85vh!important;width:auto!important;max-width:58vw;object-fit:contain}body.touch #joystick{width:112px;height:112px;left:18px;bottom:75px}body.touch #ba{right:15px;bottom:133px;width:62px;height:62px}body.touch #bb{right:64px;bottom:64px;width:57px;height:57px}body.touch #bm{left:22px;bottom:17px;width:90px}body.touch #bs{right:18px;bottom:12px;width:90px}body.touch .shell-gaon205{display:none}body.touch .shell-brand205{top:20px;font-size:10px;left:15px}}
+@media(max-width:1000px){body:not(.touch) .shell-brand205{top:18px}body:not(.touch) .shell-brand205 span{display:none}}
+@media(prefers-reduced-motion:reduce){#stickKnob{transition:none}}
+body.touch .shell-brand205{top:max(61px,calc(env(safe-area-inset-top) + 32px));left:20px;font-size:10px}
+@media(orientation:landscape) and (max-height:560px){body.touch .shell-brand205{display:none}}
