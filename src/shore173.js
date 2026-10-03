@@ -1,3 +1,4 @@
+import {shoreRows203} from './shoreRows203.mjs';
 export const SHORE_MAPS173=['belerio','leafTown','raden','route7','merire'];
 const cache=new Map();
 export function drawBank173(c,mask,x,y,water=false){let cv=cache.get(mask);if(!cv){cv=document.createElement('canvas');cv.width=cv.height=16;const p=cv.getContext('2d'),box=(col,x,y,w,h)=>{p.fillStyle=col;p.fillRect(x,y,w,h);};
@@ -9,6 +10,6 @@ export function drawBank173(c,mask,x,y,water=false){let cv=cache.get(mask);if(!c
  for(const[bit,xx,yy]of [[16,0,0],[32,12,0],[64,12,12],[128,0,12]])if(mask&bit){box('#285b66',xx,yy,4,4);box('#9b794e',xx,yy,3,3);box('#7ea557',xx,yy,2,1);}
  cache.set(mask,cv);}
  c.imageSmoothingEnabled=false;if(water){c.fillStyle='#229fc7';c.fillRect(x,y,32,32);c.fillStyle='#56bad0';c.fillRect(x+12,y+20,12,2);}c.drawImage(cv,x,y,32,32);return true;}
-export function drawShore173(c,map,cx=0,cy=0){if(!SHORE_MAPS173.includes(map.id))return;const g=map.editorVisualRows73||map.rows,land=(x,y)=>g[y]?.[x]!==undefined&&!['W','d'].includes(g[y][x]);
+export function drawShore173(c,map,cx=0,cy=0){if(!SHORE_MAPS173.includes(map.id))return;const g=shoreRows203(map),land=(x,y)=>g[y]?.[x]!==undefined&&!['W','d'].includes(g[y][x]);
  for(let y=Math.max(0,Math.floor(cy/32));y<Math.min(g.length,Math.ceil((cy+c.canvas.height)/32));y++)for(let x=Math.max(0,Math.floor(cx/32));x<Math.min(g[0].length,Math.ceil((cx+c.canvas.width)/32));x++){if(g[y][x]!=='W')continue;let mask=(land(x,y-1)?1:0)|(land(x+1,y)?2:0)|(land(x,y+1)?4:0)|(land(x-1,y)?8:0);if(!(mask&9)&&land(x-1,y-1))mask|=16;if(!(mask&3)&&land(x+1,y-1))mask|=32;if(!(mask&6)&&land(x+1,y+1))mask|=64;if(!(mask&12)&&land(x-1,y+1))mask|=128;if(mask)drawBank173(c,mask,x*32-cx,y*32-cy);}
 }
