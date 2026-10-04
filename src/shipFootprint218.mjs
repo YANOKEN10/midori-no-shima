@@ -1,0 +1,1 @@
+export function upgradeShip218(base,doc){if(doc.shipFootprint218)return doc;return {...doc,shipFootprint218:true,objects:doc.objects.map(o=>{const art=o.id.startsWith('p:')?base.props?.[Number(o.id.slice(2))]?.art:o.template;return ['ferry','eShip','liner86'].includes(art?.replace(/^legacy73-/,''))?{...o,y:o.y+2}:o;})};}
