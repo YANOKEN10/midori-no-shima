@@ -1,3 +1,4 @@
+import {defaultWaterPool217} from './waterEncounters217.mjs';
 // All availability windows use Japan time, matching the other calendar events.
 export const SCHEDULED_ENCOUNTERS=[
  {name:'タキビィ',map:'natureforest',min:7,max:9,rate:.01,hours:[18,6],label:'18:00〜翌6:00'},
@@ -17,7 +18,7 @@ export function scheduledAvailable(rule,now=new Date()){
 }
 export function scheduleForMap(id,medium='land'){return SCHEDULED_ENCOUNTERS.find(r=>r.map===id&&(r.medium||'land')===medium);}
 export function scheduledBattleOptions(name){const r=SCHEDULED_ENCOUNTERS.find(r=>r.name===name);return r?.wildFleeRate?{wildFleeRate:r.wildFleeRate}:{};}
-export function waterEncounters(mapId,now=new Date(),mode='clock'){return scheduledPool([['サカナビ',30,40,50],['ミナモリス',35,45,50]],mapId,now,mode,'water');}
+export function waterEncounters(mapId,now=new Date(),mode='clock'){return scheduledPool(defaultWaterPool217(mapId),mapId,now,mode,'water');}
 export function scheduledPool(list,mapId,now=new Date(),mode='clock',medium='land'){
  const base=list.filter(e=>!SCHEDULED_ENCOUNTERS.some(r=>r.name===e[0])),rule=scheduleForMap(mapId,medium);
  if(!rule||mode==='inactive'||mode!=='active'&&!scheduledAvailable(rule,now))return base;

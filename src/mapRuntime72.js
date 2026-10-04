@@ -1,3 +1,4 @@
+import {enableBoat217} from './waterEncounters217.mjs';
 import {PARK_NAMES189} from './parkEncounters189.mjs';
 import {roomTarget188} from './roomLayout188.mjs';
 import {blankTarget181} from './workshopMaps181.mjs';
@@ -30,4 +31,4 @@ export async function loadPublishedMaps(maps){try{
  // Apply inbound links after every map patch, so map iteration order cannot undo them.
  for(const other of Object.values(maps))other.warps=other.warps.map(w=>{const move=moves.find(m=>w.to===m.map&&Math.abs(w.tx-m.x)<=1&&Math.abs(w.ty-m.y)<=1);if(!move)return w;const dx=w.tx-move.x,dy=w.ty-move.y,[rx,ry]=move.turn===1?[-dy,dx]:move.turn===2?[-dx,-dy]:move.turn===3?[dy,-dx]:[dx,dy];return {...w,tx:move.nx+rx,ty:move.ny+ry};});
  if(!validateLinks75(maps).length)connectMaps75(maps);
- }catch(e){const cat=catalog(maps,[]);for(const[id,m]of Object.entries(maps))if((PARK_NAMES189[m.id]||roomTarget188(m)||blankTarget181(m.id)||(m.props||[]).some(iceCrystal186)||target173(m)||maps160(m.id)||m.fashionTown||m.id==='daycare'||grassMap151(m.id)||enclosedTown114(m)||m.id==='mountain'&&m.forestBorder||m.kind==='in'&&m.room?.rug)&&!m.editor72)maps[id]=applyEdit(m,initial(m),cat);console.warn('公開マップを取得できなかったため標準マップを使います。');}addHomeSign117(maps.village);connectTwoCellExits140(maps);applyLayout160(maps.manikereo);connectStation160(maps);}
+ }catch(e){const cat=catalog(maps,[]);for(const[id,m]of Object.entries(maps))if((PARK_NAMES189[m.id]||roomTarget188(m)||blankTarget181(m.id)||(m.props||[]).some(iceCrystal186)||target173(m)||maps160(m.id)||m.fashionTown||m.id==='daycare'||grassMap151(m.id)||enclosedTown114(m)||m.id==='mountain'&&m.forestBorder||m.kind==='in'&&m.room?.rug)&&!m.editor72)maps[id]=applyEdit(m,initial(m),cat);console.warn('公開マップを取得できなかったため標準マップを使います。');}for(const map of Object.values(maps))enableBoat217(map);addHomeSign117(maps.village);connectTwoCellExits140(maps);applyLayout160(maps.manikereo);connectStation160(maps);}
