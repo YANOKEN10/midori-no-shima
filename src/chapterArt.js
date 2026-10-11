@@ -79,7 +79,7 @@ function cliff(c,map,x,y){
 function drawChapterBase72(ctx,map,camX,camY){
  if(!pondReady87()||!resourceArtReady85()||!readableReady84()||!activeReady83()||!art198.clinic81.complete||!art198.clinic81.naturalWidth||!signReady()||!art198.cottage.complete||!art198.cottage.naturalWidth){ctx.fillStyle='#172d36';ctx.fillRect(0,0,G.W,G.H);return true;}
  if(drawForest61(ctx,map,camX,camY,drawMaterial))return true;
- if(drawFrontierMap(ctx,map,camX,camY,drawMaterial))return true;
+ if(drawFrontierMap(ctx,map,camX,camY,drawMaterial,!!atlas&&art198.atlasImage.complete&&art198.atlasImage.naturalWidth>0))return true;
  if(!atlas||!art198.atlasImage.complete||!art198.atlasImage.naturalWidth){ctx.fillStyle='#76c6a1';ctx.fillRect(0,0,G.W,G.H);return true;}
  let cv=cache.get(map);
  if(!cv){cv=document.createElement('canvas');cv.width=map.rows[0].length*32;cv.height=map.rows.length*32;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;
