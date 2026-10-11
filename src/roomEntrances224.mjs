@@ -1,6 +1,6 @@
 // Top/bottom entrances are horizontal; migrated side entrances are vertical.
 const SIDE227={shipLounge:{shipGalley86:[3,10],shipCabins:[28,10]},shipCabins:{shipLounge:[1,10]}};
-const EXITS={karatSalon:{'@back':[7,13]},daycare:{'@back':[10,17]},shipDeck:{shipLounge:[15,3]},shipLounge:{shipDeck:[15,20],shipCaptain86:[15,3],shipGalley86:[2,11],shipCabins:[28,11]},shipCabins:{shipLounge:[0,11],shipCorridor123:[15,2]}};
+const EXITS={manikereoStation:{manikereo:[16,25]},karatSalon:{'@back':[7,13]},daycare:{'@back':[10,17]},shipDeck:{shipLounge:[15,3]},shipLounge:{shipDeck:[15,20],shipCaptain86:[15,3],shipGalley86:[2,11],shipCabins:[28,11]},shipCabins:{shipLounge:[0,11],shipCorridor123:[15,2]}};
 export function applyRoomEntrances224(map,doc){
  if(!doc.roomEntrances224||!EXITS[map.id])return;
  map.roomEntrances224=true;
@@ -8,6 +8,6 @@ export function applyRoomEntrances224(map,doc){
  if(map.id==='shipLounge')map.spawn={x:16,y:18};
 }
 export function connectRoomEntrances224(maps){
- const arrivals={shipDeck:{shipLounge:[16,5]},shipLounge:{shipDeck:[16,18],shipCaptain86:[16,5],shipGalley86:[5,11],shipCabins:[26,11]},shipCabins:{shipLounge:[3,11],shipCorridor123:[15,5]}};
+ const arrivals={manikereoStation:{manikereo:[16,23]},shipDeck:{shipLounge:[16,5]},shipLounge:{shipDeck:[16,18],shipCaptain86:[16,5],shipGalley86:[5,11],shipCabins:[26,11]},shipCabins:{shipLounge:[3,11],shipCorridor123:[15,5]}};
  for(const map of Object.values(maps))for(const w of map.warps||[]){if(!maps[w.to]?.roomEntrances224)continue;const p=arrivals[w.to]?.[map.id];if(p){w.tx=p[0];w.ty=p[1];}}
 }
