@@ -1,3 +1,4 @@
+import {applyRoomEntrances221} from './roomEntrances221.mjs';
 import {upgradeRoute7220} from './route7Encounters220.mjs';
 import {boatShoreTarget219} from './boatShore219.mjs';
 import {upgradeShip218} from './shipFootprint218.mjs';
@@ -145,6 +146,7 @@ export function applyEdit(base,doc,cat){const sources198=new WeakMap(),source198
  if(!old){p.editorSource72=src.source;map.editorAddedProps72.push(p);if(src.building){p.door={x:o.x+src.doorOffset[0],y:o.y+src.doorOffset[1]};set(p.door.x,p.door.y,'D');map.warps.push({x:p.door.x,y:p.door.y,to:src.building==='house'?'adminHouse72':src.building,tx:src.arrival?.[0]??7,ty:src.arrival?.[1]??10,back:{map:map.id,x:p.door.x+[0,-1,0,1][o.turn81||0],y:p.door.y+[1,0,-1,0][o.turn81||0],editorDoorId72:o.id}});}}
  else {p.editorObjectId72=o.id;map.props.push(p);}
  }
+ applyRoomEntrances221(map,doc);
  // Event positions keep their behavior while editorGround72 draws the selected floor beneath them.
  for(const w of map.warps)set(w.x,w.y,'D');
  for(const sign of map.signs)set(sign.x,sign.y,'S');
