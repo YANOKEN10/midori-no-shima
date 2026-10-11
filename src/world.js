@@ -1175,7 +1175,7 @@ export const world = {
     if(G.isColor()&&follower&&pose&&!State.save.boating)people.push({follower,pose,x:pose.x,y:pose.y});
     people.push(...daycareResidents(map,State.save,this.tick));
     people.push({me:true,y:this.y+this.oy/T});
-    people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>(isTree83(p)||map.editor72&&landscape98(p))&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
+    people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>p.overhead230||(isTree83(p)||map.editor72&&landscape98(p))&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
       if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,p.tree,map);G.ctx.restore();continue;}if (p.follower) {

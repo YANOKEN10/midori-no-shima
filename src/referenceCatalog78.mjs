@@ -210,9 +210,10 @@ export const REFERENCE78=[
     "w": 3,
     "h": 3,
     "walkable": true,
+    "overhead230": true,
     "mask": [
-      "#.#",
-      "#.#",
+      "...",
+      "...",
       "#.#"
     ],
     "tile": ",",
@@ -227,9 +228,10 @@ export const REFERENCE78=[
     "w": 3,
     "h": 3,
     "walkable": true,
+    "overhead230": true,
     "mask": [
-      "#.#",
-      "#.#",
+      "...",
+      "...",
       "#.#"
     ],
     "tile": ",",
