@@ -44,4 +44,4 @@ export function applyLayout160(map){
  for(const key of ['rows','editorVisualRows73'])if(map[key]){const g=map[key].map(r=>[...r]);if(old.y===y&&old.x!==x&&old.x!==x+1)g[old.y][old.x]='#';for(let i=0;i<2;i++)g[y][x+i]=key==='rows'?'D':'.';map[key]=g.map(r=>r.join(''));}
  return map;
 }
-export function connectStation160(maps){const a=maps.manikereo?.warps.filter(w=>w.station160);if(a?.length===2&&maps.manikereoStation)maps.manikereoStation.warps=maps.manikereoStation.warps.map(w=>w.to==='manikereo'?{...w,tx:a[0].x,ty:a[0].y+1}:w);}
+export function connectStation160(maps){const g=maps.galaxy?.warps.find(w=>w.to==='galaxyStation236');if(g&&maps.galaxyStation236)maps.galaxyStation236.warps=maps.galaxyStation236.warps.map(w=>w.to==='galaxy'?{...w,tx:g.back?.x??g.x,ty:g.back?.y??g.y+1}:w);const a=maps.manikereo?.warps.filter(w=>w.station160);if(a?.length===2&&maps.manikereoStation)maps.manikereoStation.warps=maps.manikereoStation.warps.map(w=>w.to==='manikereo'?{...w,tx:a[0].x,ty:a[0].y+1}:w);}

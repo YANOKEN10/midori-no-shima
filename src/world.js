@@ -1178,7 +1178,7 @@ export const world = {
     people.push(...[...map.props||[],...map.editorAddedProps72||[]].filter(p=>p.overhead230||(isTree83(p)||map.editor72&&landscape98(p))&&!p.turn81).map(tree=>({tree,y:tree.y+tree.h-.5})));
     people.sort((a, b) => a.y - b.y);
     for (const p of people) {
-      if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,p.tree,map);G.ctx.restore();continue;}if (p.follower) {
+      if(p.tree){G.ctx.save();G.ctx.translate(-camX,-camY);drawEditorProp72(G.ctx,{...p.tree,foreground238:true},map);G.ctx.restore();continue;}if (p.follower) {
         drawFollower(G.ctx,p.follower,p.pose,this.tick,p.x*T+16-camX,p.y*T+20-camY-(this.followerJoy121>this.tick?Math.round(Math.abs(Math.sin(this.tick/150))*5):0));
         if(map.tileWorld)drawGrassFeet(G.ctx,map,p.x*T,p.y*T,camX,camY);
       } else if (p.me) {

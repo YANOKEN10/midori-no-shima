@@ -52,5 +52,5 @@ export async function frontierNpc(w,n){const s=State.save,f=s.flags;
  if(n.script==='frontier:heldShop'){
   for(;;){const names=['パワーバンド','まもりのおまもり','ひらめきの石'];const i=await ui.choice([...names.map(x=>x+'　'+ITEMS[x].price+'円'),'もどる'],{rows:4});if(i<0||i===3)return;const name=names[i],d=ITEMS[name];if(!await ui.ask([d.desc,'買いますか？']))continue;if(s.money<d.price){await ui.say(['お金が 足りません。']);continue;}s.money-=d.price;s.bag[name]=(s.bag[name]||0)+1;await persist();await ui.say(['どうぐから選んで ガオンに持たせよう。']);}
  }
- if(n.script==='frontier:train'||n.script==='frontier:returnTrain'){if(new Set(s.badges).size<7){await ui.say(['列車に乗るには エンブレム７個が必要です。']);return;}if(await ui.ask(['列車に乗りますか？'])){w.enter(n.script==='frontier:train'?'galaxy':'manikereoStation',n.script==='frontier:train'?18:16,n.script==='frontier:train'?19:10,'down');await persist();}}
+ if(n.script==='frontier:train'||n.script==='frontier:returnTrain'){if(new Set(s.badges).size<7){await ui.say(['列車に乗るには エンブレム７個が必要です。']);return;}if(await ui.ask(['列車に乗りますか？'])){w.enter(n.script==='frontier:train'?'galaxyStation236':'manikereoStation',16,10,'down');await persist();}}
 }

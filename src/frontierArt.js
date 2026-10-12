@@ -1,6 +1,6 @@
 import {drawTownArt152} from './townArt152.js';
 import {drawBeach132,beachReady132} from './beach132.js';
-import {drawConcrete132} from './paving132.js';
+import {drawConcrete132,drawPaving132} from './paving132.js';
 import {volcanoBorder131} from './volcanoBorder131.js';
 import {fitSprite85,treeArt85} from './treeSprite85.js';
 import {drawResourceTree85} from './resource80.js';
@@ -27,7 +27,7 @@ export function drawFrontierMap(ctx,map,camX,camY,material,materialsReady=true){
  if(theme==='rail'){if(map.id==='manikereo'){if(!drawTownArt152(c,'herringbone152',dx,dy))drawConcrete132(c,dx,dy);}else drawConcrete132(c,dx,dy,map.kind==='in');if(map.kind==='in'&&y===6){c.fillStyle='#d4b861';c.fillRect(dx,dy+4,32,4);}}
  if(ch==='.'||ch==='D'){c.fillStyle=theme==='snow'?'#eef5f7':map.endTheme==='dark'?'#575368':theme==='ash'?'#8d8172':theme==='coast'?'#f4dfa3':'#a3c695';const near=(a,b)=>['.','D'].includes(map.rows[b]?.[a]);const l=near(x-1,y)?0:3,t=near(x,y-1)?0:3,r=near(x+1,y)?32:29,b=near(x,y+1)?32:29;c.fillRect(dx+l,dy+t,r-l,b-t);}
  if(map.endTheme&&!['W','R','T'].includes(ch))endGround(c,map,ch,dx,dy);
- drawRoad(c,map,x,y);
+ if(map.id==='galaxy')drawPaving132(c,dx,dy);else drawRoad(c,map,x,y);
  ruinFloor(c,map,x,y,ch);
  if(volcanoBorder131(c,map,x,y))continue;if(explorationWall(c,map,x,y))continue;
  if(ch==='W'){c.fillStyle=theme==='ash'&&!map.endTheme?'#ef642c':'#5299b9';c.fillRect(dx,dy,32,32);c.fillStyle=theme==='ash'&&!map.endTheme?'#ffa849':'#88c5d4';c.fillRect(dx+4,dy+12,20,2);if(map.endTheme)endWater(c,dx,dy);}
