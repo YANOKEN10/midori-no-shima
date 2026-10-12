@@ -76,7 +76,7 @@ export const REFERENCE78=[
     "art": "reference78-plaster-wall",
     "label": "白壁と瓦の塀",
     "w": 2,
-    "h": 2,
+    "h": 1,
     "walkable": false,
     "tile": "#",
     "group": "decor",

@@ -1,3 +1,4 @@
+import {stationStaffLift242,clipStationStaff242} from './stationStaff242.mjs';
 import {alertBubble200} from './dialogueArt200.js';
 import {NPC_WALK_MS168} from './rival168.mjs';
 import {encounterRate150,waterPool150} from './encounterTerrain150.mjs';
@@ -1199,7 +1200,9 @@ export const world = {
         if(n.itemArt){drawItem(G.ctx,n.itemArt,n.x*T-camX,n.y*T-camY,32);continue;}
         if(n.propArt){drawMarineAsset(G.ctx,n.propArt,n.x*T-camX,n.y*T-camY,32,32);continue;}
         const dirn = n.dir || "down";
-        const newPerson = G.isColor() && (drawRoomStaff(G.ctx,this.map,n,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0))||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)));
+        const staffLift242=stationStaffLift242(this.map,n);
+        G.ctx.save();clipStationStaff242(G.ctx,this.map,n,camX,camY);
+        const newPerson = G.isColor() && (drawRoomStaff(G.ctx,this.map,n,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)-staffLift242)||drawEden(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)-staffLift242)||drawNpc(G.ctx,n,this.tick,n.x*T-camX+(n.ox||0),n.y*T-camY-28+(n.oy||0)-staffLift242));
         const nfi = n.moving ? n.walkFrame : 0;
         const img2 = (G.isColor()
           ? G.makeColorArt(personFramesRaw(npcStyle(n))[dirn][nfi], 1, "nc" + n.look + npcKey(n) + dirn + nfi, colorsFor(n.look))
@@ -1207,7 +1210,8 @@ export const world = {
         // NPCs use the same 32 x 48 on-screen frame and foot anchor as the hero.
         // Generated NPC sources are 32 x 40 after AS scaling, which made every
         // character visibly smaller than the player on the field.
-        if (!newPerson) G.drawScaled(matchedNpcFrame(img2), n.x * T - camX+(n.ox||0), n.y * T - camY - 28+(n.oy||0), 32, 48);
+        if (!newPerson) G.drawScaled(matchedNpcFrame(img2), n.x * T - camX+(n.ox||0), n.y * T - camY - 28+(n.oy||0)-staffLift242, 32, 48);
+        G.ctx.restore();
         if (n.alert) {
           G.use("ui");
           alertBubble200(G.ctx,n.x*T-camX+16,n.y*T-camY-12);
