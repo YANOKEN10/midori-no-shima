@@ -1,3 +1,4 @@
+import {progress246} from './adventureProgress246.mjs';
 import {allowsMove192} from './moveRules192.mjs';
 import {recordBirth} from './frontierRules.js';
 import {SPECIES} from './data/species.js';
@@ -9,7 +10,7 @@ export function japanTime(now=new Date()){const d=new Date(now.getTime()+9*36000
 export function boardingOpen(now=new Date()){const h=japanTime(now).hour;return h>=12&&h<17;}
 export function registeredCount(save){return Object.entries(save.dexOwn||{}).filter(([name,v])=>v&&SPECIES[name]).length;}
 export function hasShipTicket(save){return !!save.bag?.[SHIP_TICKET];}
-export function canReceiveTicket(save){return !!save.flags?.['power:passed']&&registeredCount(save)>=15&&!hasShipTicket(save);}
+export function canReceiveTicket(save,now=Date.now()){return !!save.flags?.['power:passed']&&progress246(save,20,90,0,now).ready&&!hasShipTicket(save);}
 export function voyageRemaining(save,now=Date.now()){return Math.max(0,Number(save.voyage?.arriveAt||0)-now);}
 export function voyageDocked(save,now=Date.now()){return !!save.voyage&&voyageRemaining(save,now)===0;}
 export function trainerAvailable(save,id,now=new Date()){return save.shipBattles?.[id]!==japanTime(now).day;}

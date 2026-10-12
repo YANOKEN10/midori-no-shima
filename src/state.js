@@ -1,3 +1,4 @@
+import {migrateAdventure246} from './adventureProgress246.mjs';
 import {create193} from './held193.mjs';
 import {alignKnownMoves192,allowsMove192} from './moveRules192.mjs';
 import {migrateBalanceHp189} from './data/balance189.mjs';
@@ -149,6 +150,7 @@ export function learnMove(m, name) {
 export function newGame(playerName, rivalName) {
   return {
     ver: 3,
+    adventureStartedAt246: Date.now(),
     rareSpawns: createRareSpawns(),
     chapterVersion: 5,
     name: playerName || "レオ",
@@ -180,6 +182,7 @@ export const G = { save: newGame(), account: null, dirty: false };
 export function loadInto(data) {
   const base = newGame();
   G.save = Object.assign(base, data || {});
+  migrateAdventure246(G.save,data);
   if(data&&data.captureCount122===undefined)G.save.captureCount122=Object.values(data.dexOwn||{}).some(Boolean)?1:0;
   G.save.bag = G.save.bag || {};
   for(const [old,name]of Object.entries(EV_ITEM_ALIASES125))if(Object.hasOwn(G.save.bag,old)){G.save.bag[name]=(G.save.bag[name]||0)+G.save.bag[old];delete G.save.bag[old];}

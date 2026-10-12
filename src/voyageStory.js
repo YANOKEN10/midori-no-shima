@@ -1,3 +1,4 @@
+import {progress246,progressMessage246} from './adventureProgress246.mjs';
 import {npcDialogue,yanokenGreeting} from './npcDialogue.js';
 import {G as State,makeMon,healParty,ownMon} from './state.js';
 import {newMove} from './data/moves.js';
@@ -19,8 +20,8 @@ export function refreshVoyageNpcs(world){
 async function professor(world,n){
  const s=State.save;if(!s.flags['power:passed']||hasShipTicket(s))return;
  await ui.say(['おお！ カラット・エンブレムを 手に入れたのじゃな。','図鑑を 見せてもらおう。','仲間にしたガオン：'+registeredCount(s)+'種類']);
- if(canReceiveTicket(s)){s.bag[SHIP_TICKET]=1;s.flags['voyage:ticket']=true;await persist();beep('levelup');await ui.say(['15種類以上 登録できておる！','船のチケットを あげよう。','カラット港で 毎日12時から17時に乗れるぞ。','わしは ネイチャータウンの研究施設へ戻る。']);n.gone=true;}
- else await ui.say(['船のチケットは 15種類を仲間にしたら渡そう。','あと'+Math.max(0,15-registeredCount(s))+'種類じゃ。','それまでは この町を歩いておるよ。']);
+ if(canReceiveTicket(s)){s.bag[SHIP_TICKET]=1;s.flags['voyage:ticket']=true;await persist();beep('levelup');await ui.say(['90種類以上 登録できておる！','船のチケットを あげよう。','カラット港で 毎日12時から17時に乗れるぞ。','わしは ネイチャータウンの研究施設へ戻る。']);n.gone=true;}
+ else await ui.say(['船のチケットの条件を 確認しよう。',...progressMessage246(s,20,90),'それまでは この町を歩いておるよ。']);
 }
 export function tickVoyage(world){
  if(world.busy||ui.busy||world.moving)return false;
@@ -45,7 +46,8 @@ export async function voyageNpc(world,n){
  const s=State.save,f=s.flags;
  if(n.script==='voyage:professor'){await professor(world,n);return;}
  if(n.script==='voyage:board'){
-  if(!hasShipTicket(s)){await ui.say(['船のチケットを 見せてください。','カラット・エンブレム取得後、','図鑑に15種類 仲間を登録して','カラットタウンのスイスはかせに会いましょう。']);return;}
+  if(world.mapId==='karatPort'&&!progress246(s,20,90).ready){await ui.say(progressMessage246(s,20,90));return;}
+  if(!hasShipTicket(s)){await ui.say(['船のチケットを 見せてください。','カラット・エンブレム取得後、','図鑑に90種類 仲間を登録して','カラットタウンのスイスはかせに会いましょう。']);return;}
   if(!boardingOpen()){await ui.say(['今は 船が港にいません。','毎日12時から17時に お越しください。']);return;}
   if(!await ui.ask(['船のチケットを 確認しました。','到着までは 実際の時間で３分です。','乗船しますか？']))return;
   const now=Date.now();s.voyage={from:world.mapId,to:n.destination,departAt:now,arriveAt:now+VOYAGE_MS,arrivalAnnounced:false};

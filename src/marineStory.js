@@ -1,3 +1,4 @@
+import {progress246,progressMessage246} from './adventureProgress246.mjs';
 import {powerTarget} from './powerRules.js';
 import {G as State,makeMon} from './state.js';
 import {ui} from './ui.js';
@@ -11,9 +12,9 @@ export function refreshMarineNpcs(world){for(const n of world.npcs)if(n.script?.
 export async function marineNpc(world,n){
  const s=State.save,f=s.flags;
  if(n.script==='marine:guide'){
-  await ui.say(f['marine:passed']?['マリンエンブレムは 君の実力の証だ。','５番道路の工事も 終わったよ。','カラットタウンへ 進んでみよう。']:['エンブレムは 全部で７つと いわれている。','優れたガオンのトレーナーに 贈られる証だ。','北の４番道路から はなれの湖へ行こう。','西岸の桟橋を渡り 中央の島へ。','木のそばの宝箱を開けると 試験が始まる。']);return;
+  await ui.say(f['marine:passed']?['マリンエンブレムは 君の実力の証だ。',...(progress246(s,10,50).ready?['５番道路から カラットタウンへ進もう。']:progressMessage246(s,10,50))]:['エンブレムは 全部で７つと いわれている。','優れたガオンのトレーナーに 贈られる証だ。','北の４番道路から はなれの湖へ行こう。','西岸の桟橋を渡り 中央の島へ。','木のそばの宝箱を開けると 試験が始まる。']);return;
  }
- if(n.script==='marine:works'){await ui.say(['５番道路は 工事中だ。','エンブレム・テストに 合格する頃には','カラットタウンへの道を 開けておくよ。']);return;}
+ if(n.script==='marine:works'){await ui.say(['５番道路は 工事中だ。','テスト合格に加えて、冒険開始から10日と','仲間図鑑50種類で 道を開けるよ。']);return;}
  if(n.script==='marine:chest'){
   if(f['marine:passed']){await ui.say(['試験を乗り越えた 証が刻まれている。','マリンエンブレムは 君のものだ。']);return;}
   if(!f['marine:started']){f['marine:started']=true;await persist();await ui.say(['宝箱の中に 試験の巻物がある。','湖の四隅にいる カニポン４体に勝とう。','４体とも レベル８だ。','倒したら この島に戻ってくること。']);}
@@ -30,12 +31,12 @@ export async function marineNpc(world,n){
   if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();return;
  }
  if(n.script==='marine:elder'){
-  if(f['marine:passed']){await ui.say(['君は 立派なガオンのトレーナーだ！','５番道路から 次の町へ進もう。']);return;}
+  if(f['marine:passed']){await ui.say(['君は 立派なガオンのトレーナーだ！',...(progress246(s,10,50).ready?['５番道路から 次の町へ進もう。']:progressMessage246(s,10,50))]);return;}
   if(trialCount(s)!==4)return;
   if(!s.party.some(m=>m.hp>0)){await ui.say(['仲間を 回復させておいで。']);return;}
   await ui.say(['わしは マリンタウンの村長 エビゲル。','４体に勝ったようだな。','最後は わしとのガオンバトルだ！']);s.battleTerrain='river';
   const result=await startBattle({trainer:{name:'村長 エビゲル',party:[['カニポン',8],['サカナビ',10],['ミナモリス',12]],money:720,leader:MARINE_EMBLEM}});
-  if(result==='win'){f['marine:passed']=true;if(!s.badges.includes(MARINE_EMBLEM))s.badges.push(MARINE_EMBLEM);s.bag[MARINE_EMBLEM]=1;await persist();beep('levelup');await ui.say(['エンブレム・テスト 合格！','マリンエンブレムを 手に入れた！','５番道路の工事が 終わった。','カラットタウンへ 進めるようになった！']);}
+  if(result==='win'){f['marine:passed']=true;if(!s.badges.includes(MARINE_EMBLEM))s.badges.push(MARINE_EMBLEM);s.bag[MARINE_EMBLEM]=1;await persist();beep('levelup');await ui.say(['エンブレム・テスト 合格！','マリンエンブレムを 手に入れた！',...(progress246(s,10,50).ready?['５番道路から カラットタウンへ進めるぞ！']:progressMessage246(s,10,50))]);}
   if(result==='lose'){await world.blackout();return;}await world.checkEvolution();await persist();world.resumeBgm();return;
  }
  if(n.script==='marine:meroron'){

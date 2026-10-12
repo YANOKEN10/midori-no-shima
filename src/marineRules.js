@@ -1,3 +1,4 @@
+import {progress246,progressMessage246} from './adventureProgress246.mjs';
 import {markLegend} from './endgameRules.js';
 import {markVolcano} from './frontierRules.js';
 import {markRaimeiRelease} from './powerRules.js';
@@ -18,7 +19,9 @@ export function marineVisible(n,save,now=new Date()){
  if(n.script==='marine:meroron')return meroronAvailable(save,now);
  return true;
 }
-export function marineGate(wp,save){
+export function marineGate(wp,save,now=Date.now(),fromMap){
+ if(wp.to==='route15'&&(!fromMap||fromMap==='clearTown')&&!progress246(save,50,180,50,now).ready)return progressMessage246(save,50,180,50,now);
+ if(wp.to==='route5'&&(!fromMap||fromMap==='marine')&&!progress246(save,10,50,0,now).ready)return progressMessage246(save,10,50,0,now);
  if(wp.requires==='marine:fourEmblems')return new Set(save.badges||[]).size>=4?null:['深い霧で 道が見えない。','エンブレムが４個 集まると','カゲリの林への霧が 晴れる。'];
  if(wp.requires==='marine:passed')return save.flags?.['marine:passed']?null:['５番道路は 工事中です。','エンブレム・テストに合格すると','カラットタウンへ 通れるようになります。'];
  return null;

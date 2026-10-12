@@ -1,3 +1,4 @@
+import {flowerItems247} from './flowerItems247.mjs';
 import {stationStaffLift242,clipStationStaff242} from './stationStaff242.mjs';
 import {alertBubble200} from './dialogueArt200.js';
 import {NPC_WALK_MS168} from './rival168.mjs';
@@ -227,6 +228,7 @@ export const world = {
     this.followerTrail.reset(x,y,this.dir);this.humanTrail.reset(x,y,this.dir);
     State.save.where = { map: mapId, x: x, y: y, dir: this.dir };
     this.showName = this.map.kind === "in" ? 0 : 2200;
+    this.refreshFlower247(true);
     enterRival122(this,rivalFrom122);
     playBgm(bgmFor(mapId));
   },
@@ -234,8 +236,16 @@ export const world = {
   rivalCanStand122(x,y,n){return tileAt(this.map,x,y)!=null&&!solid(tileAt(this.map,x,y))&&!landmarkBlocked(this.map,x,y)&&!this.npcs.some(p=>p!==n&&!p.gone&&Math.hypot(p.x-x,p.y-y)<.8);},
   resumeBgm(){playBgm(bgmFor(this.mapId));},
 
+  refreshFlower247(force=false){
+    if(this.mapId!=='flowerPark')return;
+    const now=Date.now();if(!force&&now-(this.flowerCheck247||0)<1000)return;
+    this.flowerCheck247=now;const result=flowerItems247(this.map,State.save,now);this.map=result.map;
+    if(result.changed){State.dirty=true;saveLocal();}
+  },
+
   update(dt) {
     this.tick += dt;
+    if(!this.busy&&!ui.busy)this.refreshFlower247();
     if(!this.busy&&!ui.busy)for(const n of this.npcs)stepGhost139(n,this,dt);
     if(!this.busy&&!ui.busy){const step94=recordDeenaVisit94(State.save,this.mapId);if(step94){State.dirty=true;saveLocal();this.busy=true;ui.say([step94.name+'に '+step94.type+'の光が共鳴した！','虹の調査が ひとつ進んだ。']).finally(()=>{this.busy=false;});}}
     if(!this.busy){refreshMarineNpcs(this);refreshPowerNpcs(this);refreshVoyageNpcs(this);refreshFrontier(this);refreshEnd(this);refreshPostgame(this,State.save);}
@@ -246,6 +256,7 @@ export const world = {
     if(tickRival122(this)||tickEnd(this,dt))return;
     if ((this.map.freeMove || this.map.tileWorld) && !ui.busy && !this.busy) this.updateNpcRoam(dt);
     if (ui.busy || this.busy) return;
+    for(const n of this.npcs)if(n.symbol139)n.calendarHidden246=!wildAvailable91(n.artMon,new Date(),this.mapId);
     if(!this.moving){const symbol=this.npcs.find(n=>touchingSymbol139(n,this.x,this.y));if(symbol&&(!this.map.tileWorld||flag('v5:netGift'))){this.symbolBattle139(symbol);return;}}
     if(tickFrontier(this)||tickVoyage(this))return;
 
@@ -434,7 +445,7 @@ export const world = {
   async doWarp(wp) {
     this.busy = true;
     if(wp.requires==="v11:forestCleared"&&rareAreasUnlocked(State.save))setFlag("v11:forestCleared");
-    const marineLock=endGate(wp,State.save)||frontierGate(wp,State.save)||marineGate(wp,State.save)||powerGate(wp,State.save);
+    const marineLock=endGate(wp,State.save)||frontierGate(wp,State.save)||marineGate(wp,State.save,Date.now(),this.mapId)||powerGate(wp,State.save);
     if(marineLock){await ui.say(marineLock);this.busy=false;return;}
     if(wp.requires&&!wp.requires.startsWith("marine:")&&!wp.requires.startsWith("power:")&&!wp.requires.startsWith("frontier:")&&!wp.requires.startsWith("end:")&&!flag(wp.requires)){
       const lines=wp.requires==="v11:forestCleared"?["森の3人の トレーナーに 勝ってから", "この先の 聖域を 探索しよう。"]:chapterTravelHint();
@@ -1169,7 +1180,7 @@ export const world = {
     const trailingMon=followingMon();this.followerTrail.distance=Math.max(State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]?2:.7,trailingMon?followerDistance(trailingMon.sp,this.dir):1);
     const ep=this.humanTrail.pose,en=this.npcs.find(n=>n.eden&&!n.gone);
     if(en&&ep&&State.save.flags["end:eden"]&&!State.save.flags["end:momiWon"]&&!this.busy){Object.assign(en,{x:ep.x,y:ep.y,dir:ep.dir,moving:this.moving});}
-    const people = this.npcs.filter((n) => !n.gone).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
+    const people = this.npcs.filter((n) => !n.gone&&(!n.symbol139||wildAvailable91(n.artMon,new Date(),this.mapId))).map((n) => ({ n: n, y: n.y + (n.oy || 0) / T }));
     if(!this.followerTrail.pose&&!(State.save.flags['end:eden']&&!State.save.flags['end:momiWon']))this.followerTrail.face(this.x+this.ox/T,this.y+this.oy/T,this.dir,(x,y)=>this.canFreeStand(x,y));
     if(!this.followerChat121)this.followerTrail.record(this.x+this.ox/T,this.y+this.oy/T,this.dir);
     const follower=followingMon(),pose=this.followerTrail.pose;

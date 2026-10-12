@@ -2,7 +2,7 @@ export function extendVoyageChapter(M,h){
  const {add,rect,path,prop,npc,sign}=h;
  const person=(m,x,y,name,variant,script,extra={})=>npc(m,x,y,name,'boy',[],{variant,script,noRoam:true,...extra});
  person(M.karat,31,14,'スイスはかせ',2,'voyage:professor');
- for(const id of ['karatPort','resurePort']){const m=M[id];m.sailingPort=true;const n=m.npcs.find(n=>n.script==='power:ferry');n.script='voyage:board';n.name='船の添乗員';m.signs.find(s=>s.x===17&&s.y===17).text=[m.name+' 連絡船のりば','毎日12時〜17時に 乗船できます。','船のチケットは 何度でも使えます。'];for(const n of m.npcs)if(n.name==='港の船乗り')n.talk=['船のチケットは スイスはかせから。','図鑑に 15種類 仲間を登録しよう。'];}
+ for(const id of ['karatPort','resurePort']){const m=M[id];m.sailingPort=true;const n=m.npcs.find(n=>n.script==='power:ferry');n.script='voyage:board';n.name='船の添乗員';m.signs.find(s=>s.x===17&&s.y===17).text=[m.name+' 連絡船のりば','毎日12時〜17時に 乗船できます。','船のチケットは 何度でも使えます。'];for(const n of m.npcs)if(n.name==='港の船乗り')n.talk=['船のチケットは スイスはかせから。','冒険開始から20日・仲間図鑑90種類が必要だよ。'];}
  const make=(id,name)=>{const m=add(id,name,32,24,'in');m.chapter=3;m.biome='ship';m.shipRoom=true;m.spawn={x:16,y:20};return m;};
  const deck=make('shipDeck','連絡船・デッキ'),lounge=make('shipLounge','連絡船・ラウンジ'),cabins=make('shipCabins','連絡船・客室');
  deck.openDeck=true;person(deck,14,20,'船の添乗員',12,'voyage:disembark');

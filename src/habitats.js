@@ -8,7 +8,7 @@ const events={'marine:meroron':'メロロン','power:weeklyRaimei':'ライメイ
 const habitats=new Map();
 function add(name,map,kind,rate=null){
  if(!map)return;name=canonicalName(name);if(!habitats.has(name))habitats.set(name,[]);
- const entries=habitats.get(name);if(!entries.some(e=>e.mapId===map.id&&e.kind===kind))entries.push({mapId:map.id,mapName:map.name,kind,rate,window91:wildWindow91(name,map.id)});
+ const entries=habitats.get(name);if(!entries.some(e=>e.mapId===map.id&&e.kind===kind))entries.push({mapId:map.id,mapName:map.name,kind,rate,window91:kind==='event'?null:wildWindow91(name,map.id)});
 }
 function addPool(map,list,kind){
  const weights=new Map();for(const [name,,,weight] of list)if(weight>0){const key=canonicalName(name);weights.set(key,(weights.get(key)||0)+weight);}
